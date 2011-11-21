@@ -100,6 +100,9 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
     qRegisterMetaType<measure>("measure");
 //    ThreadRunning = false;
     thread_status = STOPPED;
+
+    m_thread = 0;
+    m_test = 0;
 }
 
 AeroISTWindow::~AeroISTWindow()
@@ -114,7 +117,7 @@ AeroISTWindow::~AeroISTWindow()
 }
 
 // Starts a new measurement.
-void AeroISTWindow::on_ThreadButton_clicked()
+/*void AeroISTWindow::on_ThreadButton_clicked()
 {
     if (thread_status == STOPPED){
         QModelIndex index = ui->listView->currentIndex();
@@ -148,6 +151,47 @@ void AeroISTWindow::on_ThreadButton_clicked()
         thread_status = STOPPED;
         return;
     }
+}*/
+void AeroISTWindow::on_ThreadButton_clicked(){
+    if (m_thread && m_test){
+        qDebug() << "if 1";
+        return;
+    }
+
+    QModelIndex index = ui->listView->currentIndex();
+    if (index.isValid() == false){
+        QMessageBox message;
+        message.setText("index not valid");
+        message.exec();
+        return;
+    }
+    measurementThread = measure_list->at(index.row());         // get the index
+
+    m_test = new MeasureThread(measurementThread);
+
+    if (!m_thread)
+        m_thread = new QThread(0);
+    if (m_test->thread() != m_thread)
+        m_test->moveToThread(m_thread);
+
+
+
+    // start connects
+    connect(m_thread, SIGNAL(started()), m_test, SLOT(produce()));
+
+    // stop connects
+    connect(m_thread,SIGNAL(finished()),this,SLOT(cleanup()));
+    connect(ui->ThreadButton, SIGNAL(clicked()), m_test, SLOT(stop()));
+
+    // dump connect
+    connect(m_test, SIGNAL(MeasureDone(measure)),measurementThread, SLOT(GetMeasure(measure)));
+
+    m_thread->start();
+
+}
+void AeroISTWindow::cleanup(){
+    delete m_thread; m_thread = 0;
+    delete m_test; m_test = 0;
 }
 
 void AeroISTWindow::start_loop( MeasurementsModel * measurement, MeasureThread *measureThread, const QObject *receiver, const char * slot ){

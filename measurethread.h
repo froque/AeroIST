@@ -33,13 +33,15 @@ public:
 
 signals:
     void MeasureDone(measure m);
-//    void thread_finished();
 
 public slots:
     void produce(void);
-    void start_timer(void);
+//    void start_timer(void);
+    void stop();
 
 private:
+    void read_m(void);
+    void clear_m(void);
     double GetRandomMeasurement(void);
     QElapsedTimer timer;
     measure m;
@@ -52,6 +54,10 @@ private:
     control_types_t control_type;
     bool isZero;
     QString name;
+
+    bool m_stop;
+    QThread* m_parent_thread;
+
 };
 
 #endif // MYTHREAD_H

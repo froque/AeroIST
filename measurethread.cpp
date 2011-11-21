@@ -1,7 +1,7 @@
 #include "measurethread.h"
 #include <cstdlib> // for RAND_MAX
 
-
+#include <QEventLoop>
 #include <QDebug>
 
 MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
@@ -17,20 +17,60 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
 {
     qDebug() << this << isZero << measurement->name;
     name = measurement->name;
+
+//    m_stop = false;
+    m_parent_thread = thread();
 }
 
-void MeasureThread::start_timer(void){
-    qsrand(QTime::currentTime().second()*QTime::currentTime().msec());
-    timer.start();
-}
+//void MeasureThread::start_timer(void){
+//    qsrand(QTime::currentTime().second()*QTime::currentTime().msec());
+//    timer.start();
+//}
 
 void MeasureThread::produce(){
-qDebug() << name;
-    if (current > max && isZero == false){
-//        emit thread_finished();
-        this->thread()->quit();
-        return;
+//    if (current > max && isZero == false){
+//        this->thread()->quit();
+//        return;
+//    }
+
+//    if (isZero == true){
+//        qDebug() << "zero. quiting";
+//        this->thread()->quit();
+//        return;
+//    }
+    m_stop = false;
+    timer.start();
+    QEventLoop eloop;
+
+    while(!m_stop)
+    {
+
+        read_m();
+        if (control_type != NONE){
+            current = current + step;
+        }
+        if (current > max ){
+            m_stop = true;
+        }
+
+        emit MeasureDone(m);
+
+        eloop.processEvents(QEventLoop::AllEvents, 50);
     }
+    if (m_parent_thread != thread())
+    {
+        thread()->quit();
+        moveToThread(m_parent_thread);
+    }
+
+}
+
+double MeasureThread::GetRandomMeasurement(void)
+{
+    return 10.0 * qrand() / RAND_MAX;
+}
+
+void MeasureThread::clear_m(void){
     m.alpha = 0;
     m.beta = 0;
     m.force[0] = 0;
@@ -41,6 +81,11 @@ qDebug() << name;
     m.force[5] = 0;
     m.temp=0;
     m.wind=0;
+}
+
+void MeasureThread::read_m(void){
+
+    clear_m();
 
     m.tempo = timer.elapsed()/1000.0;
 //    qDebug() << m.tempo;
@@ -102,18 +147,9 @@ qDebug() << name;
 
     Helper::msleep( 0.5 * average_number *  1000.0 * qrand() / RAND_MAX);
 
-    emit MeasureDone(m);
-    if (control_type != NONE){
-        current = current + step;
-    }
-    if (isZero == true){
-        qDebug() << "zero. quiting";
-        this->thread()->quit();
-        return;
-    }
 }
 
-double MeasureThread::GetRandomMeasurement(void)
+void MeasureThread::stop()
 {
-    return 10.0 * qrand() / RAND_MAX;
+    m_stop = true;
 }

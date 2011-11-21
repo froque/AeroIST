@@ -61,7 +61,7 @@ private slots:
     void on_actionView_Zero_details_triggered();
     void on_actionZero_List_toggled(bool arg1);
 
-
+    void cleanup();
 private:
     void start_loop( MeasurementsModel * measurement, MeasureThread *measureThread, const QObject *receiver, const char * slot);
     void stop_loop( MeasurementsModel * measurement, MeasureThread *measureThread, const QObject *receiver, const char * slot );
@@ -80,6 +80,9 @@ private:
     MeasureThread *producer;
     MeasureThread *Zproducer;
     ThreadStatus thread_status;
+
+    MeasureThread *m_test;
+    QThread *m_thread;
 };
 
 #endif // AEROISTWINDOW_H
