@@ -1,0 +1,40 @@
+#ifndef COMMON_H
+#define COMMON_H
+
+#define DEBUG 1
+#define SINGLE 0 // Don't test for open instances
+#define SINGLE_PID 0
+#define INITIAL_LIST 1
+
+enum control_types_t{
+    NONE,
+    ALPHA,
+    BETA,
+    WIND
+};
+
+enum matrix_t{
+    MIDDLE,
+    FLOOR
+};
+
+enum ThreadStatus{
+    STOPPED,
+    MEASURE_RUNNING,
+    ZERO_RUNNING
+};
+
+
+#define DEFAULT_ALPHA_MIN   -30
+#define DEFAULT_ALPHA_MAX   30
+#define DEFAULT_ALPHA_STEP  1
+
+#define DEFAULT_BETA_MIN    -170
+#define DEFAULT_BETA_MAX    170
+#define DEFAULT_BETA_STEP   1
+
+#define DEFAULT_WIND_MIN    0
+#define DEFAULT_WIND_MAX    100 //Percentage
+#define DEFAULT_WIND_STEP   1
+
+#endif // COMMON_H
