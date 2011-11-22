@@ -57,6 +57,7 @@ void MeasureThread::produce(){
 
         eloop.processEvents(QEventLoop::AllEvents, 50);
     }
+    qDebug() << m_parent_thread << thread();
     if (m_parent_thread != thread())
     {
         thread()->quit();

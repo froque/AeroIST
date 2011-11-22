@@ -29,6 +29,7 @@ private slots:
     void on_ClearButton_clicked();
     void on_GraphButton_clicked();
     void on_ThreadButton_clicked();
+    void ThreadButton_cleanup();
     void on_ZeroButton_clicked();
 
     // export actions. to be improved!
@@ -86,3 +87,4 @@ private:
 };
 
 #endif // AEROISTWINDOW_H
+
