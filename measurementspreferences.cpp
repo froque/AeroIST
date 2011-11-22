@@ -27,7 +27,7 @@ MeasurementsPreferences::MeasurementsPreferences(MeasurementsModel *measurement,
     index = ui->combo_dvm_time->findData(settings->value("default_dvm_time").toInt());
     ui->combo_dvm_time->setCurrentIndex(index);
 
-    ui->spinBox->setValue(settings->value("default_average_number").toInt());
+    ui->spinBoxAverage->setValue(settings->value("default_average_number").toInt());
 
     if (measurement->isZero){
         ui->doubleSpinBoxMax->setHidden(true);
@@ -41,6 +41,8 @@ MeasurementsPreferences::MeasurementsPreferences(MeasurementsModel *measurement,
         ui->labelSettlingTime->setHidden(true);
         ui->comboBox->hide();
         ui->labelZero->hide();
+        ui->labelN->hide();
+        ui->spinBoxN->hide();
     }else{
         ui->comboBox->setModel(list);
         ui->doubleSpinBoxSettling->setValue(settings->value("default_settling_time").toDouble());
@@ -66,7 +68,7 @@ void MeasurementsPreferences::on_buttonBox_accepted()
     measurement->name = ui->edit_name->text();
     measurement->matrix = (matrix_t) ui->combo_matrix->currentText().toInt();
     measurement->dvm_time = ui->combo_dvm_time->itemData(ui->combo_dvm_time->currentIndex()).toInt();
-    measurement->average_number = ui->spinBox->value();
+    measurement->average_number = ui->spinBoxAverage->value();
     measurement->settling_time = ui->doubleSpinBoxSettling->value();
     measurement->min = ui->doubleSpinBoxMin->value();
     measurement->max = ui->doubleSpinBoxMax->value();
@@ -78,7 +80,6 @@ void MeasurementsPreferences::on_buttonBox_accepted()
         measurement->control_type = (control_types_t) ui->controlGroup->checkedId();
         measurement->n = ui->spinBoxN->value();
     }
-    qDebug() << list->at(ui->comboBox->currentIndex());;
     measurement->zero = list->at(ui->comboBox->currentIndex());
 
 }

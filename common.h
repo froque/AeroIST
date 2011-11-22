@@ -4,7 +4,7 @@
 #define DEBUG 1
 #define SINGLE 0 // Don't test for open instances
 #define SINGLE_PID 0
-#define INITIAL_LIST 1
+#define INITIAL_LIST 0
 
 enum control_types_t{
     NONE,

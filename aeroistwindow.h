@@ -1,6 +1,6 @@
 #ifndef AEROISTWINDOW_H
 #define AEROISTWINDOW_H
-
+#include <QtGui>
 #include <QMainWindow>
 #include <QFileSystemModel>
 #include "measurementsmodel.h"
@@ -31,6 +31,7 @@ private slots:
     void on_ThreadButton_clicked();
     void ThreadButton_cleanup();
     void on_ZeroButton_clicked();
+    void ZeroButton_cleanup();
 
     // export actions. to be improved!
     void on_actionPreferences_triggered();
@@ -51,10 +52,12 @@ private slots:
     void on_actionToolbar_toggled(bool arg1);
     void on_actionMeasure_List_toggled(bool checked);
 
-    // listviews
+    // listviews and table
     void on_listView_activated(const QModelIndex &index);
     void on_listViewZero_activated(const QModelIndex &index);
     void selectionChanged(const QModelIndex &current,const QModelIndex &previous);
+    void tableview_selectionChanged( const QItemSelection & selected, const QItemSelection & deselected );
+
 
     // Zero actions
     void on_actionNew_Zero_triggered();
@@ -63,7 +66,9 @@ private slots:
     void on_actionZero_List_toggled(bool arg1);
 
     void cleanup();
+
 private:
+    void message(const QString &string);
     void start_loop( MeasurementsModel * measurement, MeasureThread *measureThread, const QObject *receiver, const char * slot);
     void stop_loop( MeasurementsModel * measurement, MeasureThread *measureThread, const QObject *receiver, const char * slot );
     void load_settings(void);
@@ -84,6 +89,9 @@ private:
 
     MeasureThread *m_test;
     QThread *m_thread;
+protected:
+    void closeEvent(QCloseEvent *event);
+
 };
 
 #endif // AEROISTWINDOW_H

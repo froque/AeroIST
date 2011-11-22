@@ -167,7 +167,7 @@
     </widget>
    </item>
    <item row="3" column="2">
-    <widget class="QSpinBox" name="spinBox">
+    <widget class="QSpinBox" name="spinBoxAverage">
      <property name="minimum">
       <number>1</number>
      </property>

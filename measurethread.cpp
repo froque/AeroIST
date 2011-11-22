@@ -17,9 +17,24 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
     n(measurement->n)
 
 {
-    qDebug() <<  isZero << measurement->name;
-    name = measurement->name;
     m_parent_thread = thread();
+
+    if (isZero == false){
+        if (measurement->zero == 0){
+            qWarning("zero is not set to the measurement");
+            return;
+        }
+        zero.alpha = measurement->zero->alpha.first();
+        zero.beta = measurement->zero->beta.first();
+        zero.wind = measurement->zero->wind.first();
+        zero.temp = measurement->zero->temp.first();
+        zero.force[0] = measurement->zero->force[0].first();
+        zero.force[1] = measurement->zero->force[1].first();
+        zero.force[2] = measurement->zero->force[2].first();
+        zero.force[3] = measurement->zero->force[3].first();
+        zero.force[4] = measurement->zero->force[4].first();
+        zero.force[5] = measurement->zero->force[5].first();
+    }
 }
 
 void MeasureThread::produce(){
@@ -31,6 +46,9 @@ void MeasureThread::produce(){
     while(!m_stop)
     {
         read_m();
+        if (isZero == false){
+            subtract(&m,zero);
+        }
         if (control_type != NONE){
             current = current + step;
         } else {
@@ -142,4 +160,17 @@ void MeasureThread::read_m(void){
 void MeasureThread::stop()
 {
     m_stop = true;
+}
+
+void MeasureThread::subtract(measure *minuend, measure subtrahend){
+    minuend->alpha -= subtrahend.alpha;
+    minuend->beta -= subtrahend.beta;
+    minuend->wind -= subtrahend.wind;
+    minuend->temp -= subtrahend.temp;
+    minuend->force[0] -= subtrahend.force[0];
+    minuend->force[1] -= subtrahend.force[1];
+    minuend->force[2] -= subtrahend.force[2];
+    minuend->force[3] -= subtrahend.force[3];
+    minuend->force[4] -= subtrahend.force[4];
+    minuend->force[5] -= subtrahend.force[5];
 }

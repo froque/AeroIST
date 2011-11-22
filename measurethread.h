@@ -40,6 +40,7 @@ public slots:
     void stop();
 
 private:
+    void subtract(measure *minuend, measure subtrahend);
     void read_m(void);
     void clear_m(void);
     double GetRandomMeasurement(void);
@@ -56,6 +57,7 @@ private:
     QString name;
     int n;
     int k;
+    measure zero;
 
     bool m_stop;
     QThread* m_parent_thread;
