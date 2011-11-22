@@ -13,51 +13,40 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
     step(measurement->step),
     current(measurement->min),
     control_type(measurement->control_type),
-    isZero(measurement->isZero)
-{
-    qDebug() << this << isZero << measurement->name;
-    name = measurement->name;
+    isZero(measurement->isZero),
+    n(measurement->n)
 
-//    m_stop = false;
+{
+    qDebug() <<  isZero << measurement->name;
+    name = measurement->name;
     m_parent_thread = thread();
 }
 
-//void MeasureThread::start_timer(void){
-//    qsrand(QTime::currentTime().second()*QTime::currentTime().msec());
-//    timer.start();
-//}
-
 void MeasureThread::produce(){
-//    if (current > max && isZero == false){
-//        this->thread()->quit();
-//        return;
-//    }
 
-//    if (isZero == true){
-//        qDebug() << "zero. quiting";
-//        this->thread()->quit();
-//        return;
-//    }
     m_stop = false;
     timer.start();
     QEventLoop eloop;
-
+    k = 1;
     while(!m_stop)
     {
-
         read_m();
         if (control_type != NONE){
             current = current + step;
+        } else {
+            if (n != 0 && k>= n ){
+                m_stop = true;
+            }
         }
         if (current > max ){
             m_stop = true;
         }
+        k++;
 
         emit MeasureDone(m);
 
         eloop.processEvents(QEventLoop::AllEvents, 50);
     }
-    qDebug() << m_parent_thread << thread();
     if (m_parent_thread != thread())
     {
         thread()->quit();

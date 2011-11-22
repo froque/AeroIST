@@ -54,6 +54,8 @@ private:
     control_types_t control_type;
     bool isZero;
     QString name;
+    int n;
+    int k;
 
     bool m_stop;
     QThread* m_parent_thread;

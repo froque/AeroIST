@@ -10,7 +10,18 @@
 MeasurementsModel::MeasurementsModel(QObject *parent)
     : QAbstractTableModel(parent)
 {
-    zero=NULL;
+    name="";
+    dvm_time=0;
+    matrix=MIDDLE;
+    average_number=0;
+    settling_time=0;
+    min=0;
+    max=0;
+    step=0;
+    control_type = NONE;
+    isZero = false;
+    zero  = 0;
+    n = 0;
 }
 
 void MeasurementsModel::load(QTextStream *in)

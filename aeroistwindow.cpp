@@ -65,7 +65,7 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
         measurement->dvm_time = 4;
         measurement->average_number = 2;
         measurement->isZero = false;
-
+        measurement->n = k;
         zero = new MeasurementsModel(this);
         zero->isZero=true;
         zero->name = QString(tr("Zero %1%1%1")).arg(k);
@@ -73,6 +73,7 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
         zero->dvm_time = 4;
         zero->average_number = 1;
         zero->control_type=NONE;
+        zero->n=1;
         switch (k%4){
         case 0:
             measurement->control_type = NONE;
@@ -225,22 +226,6 @@ void AeroISTWindow::cleanup(){
     m_thread = 0;
 }
 
-void AeroISTWindow::start_loop( MeasurementsModel * measurement, MeasureThread *measureThread, const QObject *receiver, const char * slot ){
-    connect(measureThread->thread(), SIGNAL(started()),measureThread,SLOT(start_timer()));                // 1 -just signal to start timer, on thread start
-    connect(measureThread->thread(), SIGNAL(started()), measureThread ,SLOT(produce()));                  // 2 -when thread start, it bootstraps the loop
-    connect(measurement,SIGNAL(produceMeasure()),measureThread,SLOT(produce()));               // 3 -produce more, the other half of the loop
-    connect(measureThread,SIGNAL(MeasureDone(measure)),measurement,SLOT(GetMeasure(measure))); // 4- pass the measurement, half the loop
-    connect(measureThread->thread(),SIGNAL(finished()),receiver,slot);
-    measureThread->thread()->start();
-}
-void AeroISTWindow::stop_loop( MeasurementsModel * measurement, MeasureThread *measureThread, const QObject *receiver, const char * slot ){
-    measureThread->thread()->quit();
-    disconnect(measureThread->thread(), SIGNAL(started()),measureThread,SLOT(start_timer()));                // 1 -just signal to start timer, on thread start
-    disconnect(measureThread->thread(), SIGNAL(started()), measureThread ,SLOT(produce()));                  // 2 -when thread start, it bootstraps the loop
-    disconnect(measurement,SIGNAL(produceMeasure()),measureThread,SLOT(produce()));               // 3 -produce more, the other half of the loop
-    disconnect(measureThread,SIGNAL(MeasureDone(measure)),measurement,SLOT(GetMeasure(measure))); // 4- pass the measurement, half the loop
-    disconnect(measureThread->thread(),SIGNAL(finished()),receiver,slot);
-}
 
 // Clear Plots
 void AeroISTWindow::on_ClearButton_clicked()
@@ -495,13 +480,6 @@ void AeroISTWindow::on_listViewZero_activated(const QModelIndex &index)
 
 void AeroISTWindow::on_actionNew_Zero_triggered()
 {
-    if (thread_status != STOPPED && thread_status != ZERO_RUNNING){
-        QMessageBox message;
-        message.setText("A measurement is being done");
-        message.exec();
-        return;
-    }
-    if (thread_status == STOPPED){
         MeasurementsPreferences *zero_prefs;
         ZeroThread = new MeasurementsModel;
 
@@ -516,56 +494,10 @@ void AeroISTWindow::on_actionNew_Zero_triggered()
         zero_list->newMeasure(ZeroThread);
         QModelIndex index = zero_list->index(zero_list->rowCount()-1,0);
         ui->listViewZero->setCurrentIndex(index);
-
-        producer = new MeasureThread(ZeroThread);           // start new producer, with the measurementModel metadata
-        producer->moveToThread(&producerThread);
-        thread_status = ZERO_RUNNING;
-        start_loop( ZeroThread,producer,this,SLOT(on_actionNew_Zero_triggered()));
-        return;
-    }
-    if (thread_status == ZERO_RUNNING){
-        stop_loop( ZeroThread,producer,this,SLOT(on_actionNew_Zero_triggered()));
-        producer->deleteLater();
-        thread_status = STOPPED;
-        return;
-    }
 }
 
 void AeroISTWindow::on_ZeroButton_clicked()
 {
-    if (thread_status == STOPPED){
-        QModelIndex index = ui->listViewZero->currentIndex();
-        if (index.isValid() == false){
-            QMessageBox message;
-            message.setText("index not valid");
-            message.exec();
-            return;
-        }
-        ZeroThread = zero_list->at(index.row());         // get the index
-        if (ZeroThread->rowCount(QModelIndex()) !=0){
-            QMessageBox message;
-            message.setText("Measure is not empty");
-            message.exec();
-            return;
-        }
 
-        Zproducer = new MeasureThread(ZeroThread);           // start new producer, with the measurementModel metadata
-        Zproducer->moveToThread(&producerThread);
-        thread_status = ZERO_RUNNING;
-        start_loop( ZeroThread,Zproducer,ui->ZeroButton,SLOT(click()));
-
-        QString text("Stop ");
-        text.append( ZeroThread->name);
-        ui->ZeroButton->setText(text);
-        return;
-    }
-    if (thread_status == ZERO_RUNNING){
-        stop_loop( ZeroThread,Zproducer,ui->ZeroButton,SLOT(click()));
-        ui->ZeroButton->setText("Start");
-//        Zproducer->deleteLater();
-//        delete Zproducer;
-        thread_status = STOPPED;
-        return;
-    }
 }
 

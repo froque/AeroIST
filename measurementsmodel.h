@@ -53,6 +53,7 @@ public:
     control_types_t control_type;
     bool isZero;
     MeasurementsModel *zero;
+    int n;
 
 signals:
     void produceMeasure();

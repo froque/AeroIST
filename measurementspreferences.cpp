@@ -52,6 +52,7 @@ MeasurementsPreferences::MeasurementsPreferences(MeasurementsModel *measurement,
         connect(ui->controlGroup, SIGNAL(buttonClicked(int)),this,SLOT(maxminstep_enabled(int)));
     }
     adjustSize();
+
 }
 
 
@@ -72,9 +73,12 @@ void MeasurementsPreferences::on_buttonBox_accepted()
     measurement->step = ui->doubleSpinBoxStep->value();
     if (measurement->isZero == true){
         measurement->control_type=NONE;
+        measurement->n = 1 ;                    // only one measure for a zero
     }else{
         measurement->control_type = (control_types_t) ui->controlGroup->checkedId();
+        measurement->n = ui->spinBoxN->value();
     }
+    qDebug() << list->at(ui->comboBox->currentIndex());;
     measurement->zero = list->at(ui->comboBox->currentIndex());
 
 }
@@ -86,7 +90,12 @@ void MeasurementsPreferences::test_input(){
         msgBox.exec();
         return ;
     }
-
+    if ( measurement->isZero == false && ui->comboBox->model()->rowCount(QModelIndex()) == 0){
+        QMessageBox msgBox;
+        msgBox.setText("No zeros. Create on first");
+        msgBox.exec();
+        return ;
+    }
     if (ui->controlGroup->checkedId() !=NONE && measurement->isZero != true ){
         double min,max,step;
 
@@ -112,6 +121,7 @@ void MeasurementsPreferences::maxminstep_enabled(int id){
                 ui->doubleSpinBoxMax->setEnabled(false);
                 ui->doubleSpinBoxStep->setEnabled(false);
                 ui->doubleSpinBoxSettling->setEnabled(false);
+                ui->spinBoxN->setEnabled(true);
                 return;
     case ALPHA:
                 min = DEFAULT_ALPHA_MIN;
@@ -146,5 +156,7 @@ void MeasurementsPreferences::maxminstep_enabled(int id){
     ui->doubleSpinBoxMin->setValue(min);
     ui->doubleSpinBoxMax->setValue(max);
     ui->doubleSpinBoxStep->setValue(step);
+
+    ui->spinBoxN->setEnabled(false);
 
 }
