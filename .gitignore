@@ -1,0 +1,6 @@
+AeroIST.pro.user
+Makefile
+build/
+moc/
+objs/
+ui/
