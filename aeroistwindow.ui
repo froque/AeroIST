@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>AeroISTWindow</string>
+   <string>AeroIST</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <property name="sizePolicy">
@@ -99,6 +99,9 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
        <widget class="QWidget" name="tab">
         <attribute name="title">
          <string>Table</string>
@@ -121,7 +124,7 @@
        </widget>
        <widget class="QWidget" name="tab_2">
         <attribute name="title">
-         <string>Gráficos</string>
+         <string>Graphs</string>
         </attribute>
         <layout class="QVBoxLayout" name="verticalLayout">
          <item>
@@ -145,7 +148,7 @@
            <item>
             <widget class="QPushButton" name="GraphButton">
              <property name="text">
-              <string>plota grafico</string>
+              <string>plot graph</string>
              </property>
             </widget>
            </item>

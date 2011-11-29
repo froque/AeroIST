@@ -8,7 +8,21 @@
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+    QApplication app(argc, argv);
+
+//    QTranslator translator;
+//    translator.load("aeroist");
+//    app.installTranslator(&translator);
+
+    QTranslator qtTranslator;
+    qtTranslator.load("qt_" + QLocale::system().name(), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    app.installTranslator(&qtTranslator);
+
+    QTranslator myappTranslator;
+    myappTranslator.load("aeroist_" + QLocale::system().name());
+    qDebug() << QLocale::system().name();
+    app.installTranslator(&myappTranslator);
+
     AeroISTWindow w;
 
 #if SINGLE
@@ -46,5 +60,5 @@ int main(int argc, char *argv[])
 #endif //SINGLE_PID
 
     w.show();
-    return a.exec();
+    return app.exec();
 }

@@ -41,6 +41,10 @@ FORMS += aeroistwindow.ui \
     measurementspreferences.ui \
     measurementdetails.ui
 
+TRANSLATIONS = aeroist_en.ts\
+                aeroist_pt.ts
+
+
 LIBS += -lqwt #-LC:/usr/lib/libqwt-qt4.so
 #LIBS += -lqwt-qt4 -LC:/usr/lib/libqwt-qt4.so
 

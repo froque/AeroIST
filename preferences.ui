@@ -49,7 +49,7 @@
        <item row="0" column="0">
         <widget class="QLabel" name="label">
          <property name="text">
-          <string>Dispositivo Alpha </string>
+          <string>Alpha device path</string>
          </property>
         </widget>
        </item>
@@ -59,7 +59,7 @@
        <item row="1" column="0">
         <widget class="QLabel" name="label_2">
          <property name="text">
-          <string>Dispositivo Beta</string>
+          <string>Beta device path</string>
          </property>
         </widget>
        </item>
@@ -69,7 +69,7 @@
        <item row="2" column="0">
         <widget class="QLabel" name="label_3">
          <property name="text">
-          <string>Dispositivo Motor</string>
+          <string>Wind device path</string>
          </property>
         </widget>
        </item>
@@ -79,7 +79,7 @@
        <item row="3" column="0">
         <widget class="QLabel" name="label_4">
          <property name="text">
-          <string>Dispositivo Arduino</string>
+          <string>Arduino path</string>
          </property>
         </widget>
        </item>
@@ -89,7 +89,7 @@
        <item row="4" column="0">
         <widget class="QLabel" name="label_5">
          <property name="text">
-          <string>Dispositivo Multimetro</string>
+          <string>Multimeter path</string>
          </property>
         </widget>
        </item>

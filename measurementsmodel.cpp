@@ -163,7 +163,7 @@ QVariant MeasurementsModel::headerData(int section, Qt::Orientation orientation,
     if (orientation == Qt::Horizontal) {
         switch (section) {
             case 0:
-               return tr("Tempo");
+               return tr("Time");
             case 1:
                 return tr("Fx");
             case 2:
@@ -183,7 +183,7 @@ QVariant MeasurementsModel::headerData(int section, Qt::Orientation orientation,
             case 9:
                 return tr("Wind");
             case 10:
-                return tr("Temperatura");
+                return tr("Temperature");
             default:
                 return QVariant();
         }
