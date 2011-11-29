@@ -11,24 +11,24 @@ MeasurementDetails::MeasurementDetails(MeasurementsModel *measurement, QWidget *
 
     switch (measurement->matrix){
     case MIDDLE:
-        ui->labelMatrix->setText("Middle" ); break;
+        ui->labelMatrix->setText(tr("Middle")); break;
     case FLOOR:
-        ui->labelMatrix->setText("Floor"); break;
+        ui->labelMatrix->setText(tr("Floor")); break;
     }
 
     switch (measurement->dvm_time){
     case 1:
-        ui->labelMultimeter->setText("50 ms"); break;
+        ui->labelMultimeter->setText(tr("50 ms")); break;
     case 2:
-        ui->labelMultimeter->setText("100 ms"); break;
+        ui->labelMultimeter->setText(tr("100 ms")); break;
     case 3:
-        ui->labelMultimeter->setText("500 ms"); break;
+        ui->labelMultimeter->setText(tr("500 ms")); break;
     case 4:
-        ui->labelMultimeter->setText("1 s"); break;
+        ui->labelMultimeter->setText(tr("1 s")); break;
     case 5:
-        ui->labelMultimeter->setText("5 s"); break;
+        ui->labelMultimeter->setText(tr("5 s")); break;
     case 6:
-        ui->labelMultimeter->setText("10 s"); break;
+        ui->labelMultimeter->setText(tr("10 s")); break;
     }
     ui->labelAverage->setText(QString::number(measurement->average_number));
 
@@ -50,13 +50,13 @@ MeasurementDetails::MeasurementDetails(MeasurementsModel *measurement, QWidget *
 
     } else {
         if (measurement->zero == NULL){
-            ui->labelZero->setText("None");
+            ui->labelZero->setText(tr("None"));
         }else{
             ui->labelZero->setText(measurement->zero->name);
         }
         switch (measurement->control_type){
         case NONE:
-            ui->labelControl->setText("None");
+            ui->labelControl->setText(tr("None"));
             ui->labelViewMin->hide();
             ui->labelViewMax->hide();
             ui->labelViewStep->hide();
@@ -68,7 +68,7 @@ MeasurementDetails::MeasurementDetails(MeasurementsModel *measurement, QWidget *
             ui->labelN->setText(QString::number( measurement->n));
             break;
         case ALPHA:
-            ui->labelControl->setText("Alpha");
+            ui->labelControl->setText(tr("Alpha"));
             ui->labelMin->setText(QString::number(measurement->min));
             ui->labelMax->setText(QString::number(measurement->max));
             ui->labelStep->setText(QString::number(measurement->step));
@@ -77,7 +77,7 @@ MeasurementDetails::MeasurementDetails(MeasurementsModel *measurement, QWidget *
             ui->labelViewN->hide();
             break;
         case BETA:
-            ui->labelControl->setText("Beta");
+            ui->labelControl->setText(tr("Beta"));
             ui->labelMin->setText(QString::number(measurement->min));
             ui->labelMax->setText(QString::number(measurement->max));
             ui->labelStep->setText(QString::number(measurement->step));
@@ -86,7 +86,7 @@ MeasurementDetails::MeasurementDetails(MeasurementsModel *measurement, QWidget *
             ui->labelViewN->hide();
             break;
         case WIND:
-            ui->labelControl->setText("Wind");
+            ui->labelControl->setText(tr("Wind"));
             ui->labelMin->setText(QString::number(measurement->min));
             ui->labelMax->setText(QString::number(measurement->max));
             ui->labelStep->setText(QString::number(measurement->step));

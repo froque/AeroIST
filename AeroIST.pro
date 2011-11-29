@@ -16,7 +16,7 @@ SOURCES += main.cpp \
     aeroistwindow.cpp \
     measurementsmodel.cpp \
     measurethread.cpp \
-    timescaledraw.cpp \
+#    timescaledraw.cpp \
     preferences.cpp \
     measurelist.cpp \
     measurementspreferences.cpp \
@@ -28,7 +28,7 @@ HEADERS += aeroistwindow.h \
     measure.h \
     measurementsmodel.h \
     measurethread.h \
-    timescaledraw.h \
+#    timescaledraw.h \
     preferences.h \
     measurelist.h \
     measurementspreferences.h \
@@ -44,5 +44,7 @@ FORMS += aeroistwindow.ui \
 LIBS += -lqwt #-LC:/usr/lib/libqwt-qt4.so
 #LIBS += -lqwt-qt4 -LC:/usr/lib/libqwt-qt4.so
 
-CONFIG += x86
-CONFIG -= x86_64
+#QMAKESPEC=linux-g++-64
+#QMAKESPEC=linux-g++-32
+#CONFIG += x86
+#CONFIG -= x86_64

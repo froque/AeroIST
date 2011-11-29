@@ -26,18 +26,18 @@ Preferences::Preferences(QSettings *settings,QWidget *parent) :
     ui->edit_multimetro->setText(   settings->value("multimeter_path").toString() );
 
     ui->combo_matrix->clear();
-    ui->combo_matrix->addItem("middle", MIDDLE);
-    ui->combo_matrix->addItem("floor",  FLOOR);
+    ui->combo_matrix->addItem(tr("middle"), MIDDLE);
+    ui->combo_matrix->addItem(tr("floor"),  FLOOR);
     settings->setValue("default_matrix", settings->value("default_matrix",MIDDLE));
     int index = ui->combo_matrix->findData(settings->value("default_matrix").toInt());
     ui->combo_matrix->setCurrentIndex(index);
 
-    ui->combo_dvm_time->addItem("50 ms",    1);
-    ui->combo_dvm_time->addItem("100 ms",   2);
-    ui->combo_dvm_time->addItem("500 ms",   3);
-    ui->combo_dvm_time->addItem("1 s",      4);
-    ui->combo_dvm_time->addItem("5 s",      5);
-    ui->combo_dvm_time->addItem("10 s",     6);
+    ui->combo_dvm_time->addItem(tr("50 ms"),    1);
+    ui->combo_dvm_time->addItem(tr("100 ms"),   2);
+    ui->combo_dvm_time->addItem(tr("500 ms"),   3);
+    ui->combo_dvm_time->addItem(tr("1 s"),      4);
+    ui->combo_dvm_time->addItem(tr("5 s"),      5);
+    ui->combo_dvm_time->addItem(tr("10 s"),     6);
     settings->setValue("default_dvm_time", settings->value("default_dvm_time",4));
     index = ui->combo_dvm_time->findData(settings->value("default_dvm_time").toInt());
     ui->combo_dvm_time->setCurrentIndex(index);

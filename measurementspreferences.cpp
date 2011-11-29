@@ -13,17 +13,17 @@ MeasurementsPreferences::MeasurementsPreferences(MeasurementsModel *measurement,
     ui->setupUi(this);
 
     ui->combo_matrix->clear();
-    ui->combo_matrix->addItem("middle",MIDDLE);
-    ui->combo_matrix->addItem("floor",FLOOR);
+    ui->combo_matrix->addItem(tr("middle"),MIDDLE);
+    ui->combo_matrix->addItem(tr("floor"),FLOOR);
     int index = ui->combo_matrix->findData(settings->value("default_matrix").toInt());
     ui->combo_matrix->setCurrentIndex(index);
 
-    ui->combo_dvm_time->addItem("50 ms",1);
-    ui->combo_dvm_time->addItem("100 ms",2);
-    ui->combo_dvm_time->addItem("500 ms",3);
-    ui->combo_dvm_time->addItem("1 s",4);
-    ui->combo_dvm_time->addItem("5 s",5);
-    ui->combo_dvm_time->addItem("10 s",6);
+    ui->combo_dvm_time->addItem(tr("50 ms"),1);
+    ui->combo_dvm_time->addItem(tr("100 ms"),2);
+    ui->combo_dvm_time->addItem(tr("500 ms"),3);
+    ui->combo_dvm_time->addItem(tr("1 s"),4);
+    ui->combo_dvm_time->addItem(tr("5 s"),5);
+    ui->combo_dvm_time->addItem(tr("10 s"),6);
     index = ui->combo_dvm_time->findData(settings->value("default_dvm_time").toInt());
     ui->combo_dvm_time->setCurrentIndex(index);
 
@@ -87,13 +87,13 @@ void MeasurementsPreferences::on_buttonBox_accepted()
 void MeasurementsPreferences::test_input(){
     if (ui->edit_name->text().size()==0){
         QMessageBox msgBox;
-        msgBox.setText("Name is empty");
+        msgBox.setText(tr("Name is empty"));
         msgBox.exec();
         return ;
     }
     if ( measurement->isZero == false && ui->comboBox->model()->rowCount(QModelIndex()) == 0){
         QMessageBox msgBox;
-        msgBox.setText("No zeros. Create on first");
+        msgBox.setText(tr("No zeros. Create on first"));
         msgBox.exec();
         return ;
     }
@@ -106,7 +106,7 @@ void MeasurementsPreferences::test_input(){
 
         if( min >= max || max-min < step || step == 0  ){
             QMessageBox msgBox;
-            msgBox.setText("Wrong Minimum, Maximum and Step");
+            msgBox.setText(tr("Wrong Minimum, Maximum and Step"));
             msgBox.exec();
             return ;
         }
@@ -116,7 +116,7 @@ void MeasurementsPreferences::test_input(){
 }
 
 void MeasurementsPreferences::maxminstep_enabled(int id){
-    double min,max,step;
+    double min = 0 ,max = 0,step;
     switch (id){
     case NONE:  ui->doubleSpinBoxMin->setEnabled(false);
                 ui->doubleSpinBoxMax->setEnabled(false);

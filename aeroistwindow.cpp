@@ -60,7 +60,7 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
     for (int k=0;k<6;k++){
 
         measurement = new MeasurementsModel(this);
-        measurement->name = QString("Measure n %1%1%1").arg(k);
+        measurement->name = QString(tr("Measure n %1%1%1")).arg(k);
         measurement->matrix = MIDDLE;
         measurement->dvm_time = 4;
         measurement->average_number = 2;
@@ -129,14 +129,14 @@ AeroISTWindow::~AeroISTWindow()
         QModelIndex index = ui->listView->currentIndex();
         if (index.isValid() == false){
             QMessageBox message;
-            message.setText("index not valid");
+            message.setText(tr("index not valid"));
             message.exec();
             return;
         }
         measurementThread = measure_list->at(index.row());         // get the index
         if (measurementThread->rowCount(QModelIndex()) !=0){
             QMessageBox message;
-            message.setText("Measure is not empty");
+            message.setText(tr("Measure is not empty"));
             message.exec();
             return;
         }
@@ -145,14 +145,14 @@ AeroISTWindow::~AeroISTWindow()
         thread_status = MEASURE_RUNNING;
         start_loop( measurementThread,producer,ui->ThreadButton,SLOT(click()));
 
-        QString text("Stop ");
+        QString text(tr("Stop "));
         text.append( measurementThread->name);
         ui->ThreadButton->setText(text);
         return;
     }
     if (thread_status == MEASURE_RUNNING){
         stop_loop( measurementThread,producer,ui->ThreadButton,SLOT(click()));
-        ui->ThreadButton->setText("Start");
+        ui->ThreadButton->setText(tr("Start"));
         producer->deleteLater();
         thread_status = STOPPED;
         return;
@@ -160,13 +160,13 @@ AeroISTWindow::~AeroISTWindow()
 }*/
 void AeroISTWindow::on_ThreadButton_clicked(){
 //    if (thread_status == MEASURE_RUNNING){
-//        ui->ThreadButton->setText("Start");
+//        ui->ThreadButton->setText(tr("Start"));
 //        thread_status = STOPPED;
 //        return;
 //    }
 
     if (thread_status != STOPPED && thread_status != MEASURE_RUNNING){
-        message("Thread busy");
+        message(tr("Thread busy"));
         return;
     }
 
@@ -177,12 +177,12 @@ void AeroISTWindow::on_ThreadButton_clicked(){
     if(thread_status == STOPPED){
     QModelIndex index = ui->listView->currentIndex();
     if (index.isValid() == false){
-        message("index not valid");
+        message(tr("index not valid"));
         return;
     }
     measurementThread = measure_list->at(index.row());         // get the index
     if (measurementThread->rowCount(QModelIndex()) !=0){
-        message("Measure is not empty");
+        message(tr("Measure is not empty"));
         return;
     }
     m_test = new MeasureThread(measurementThread);
@@ -205,7 +205,7 @@ void AeroISTWindow::on_ThreadButton_clicked(){
 
     m_thread->start();
     thread_status = MEASURE_RUNNING;
-    QString text("Stop ");
+    QString text(tr("Stop "));
     text.append( measurementThread->name);
     ui->ThreadButton->setText(text);
     return;
@@ -215,7 +215,7 @@ void AeroISTWindow::on_ThreadButton_clicked(){
 
 void AeroISTWindow::ThreadButton_cleanup(){
     if (thread_status == MEASURE_RUNNING){
-        ui->ThreadButton->setText("Start");
+        ui->ThreadButton->setText(tr("Start"));
         thread_status = STOPPED;
         cleanup();
         return;
@@ -310,7 +310,7 @@ void AeroISTWindow::on_actionDelete_Measure_triggered()
 
     if (measure_list->at(index) == measurementThread && thread_status == MEASURE_RUNNING){
         QMessageBox msgBox;
-        msgBox.setText("Measuring is being done. Stop it to delete");
+        msgBox.setText(tr("Measuring is being done. Stop it to delete"));
         msgBox.exec();
         return;
     }
@@ -318,7 +318,7 @@ void AeroISTWindow::on_actionDelete_Measure_triggered()
     // if the to be deleted model is shown in the table, unset
     if (measure_list->at(index) == ui->tableView->model()){
         ui->tableView->setModel(NULL);
-        ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tab),"Table");
+        ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tab),tr("Table"));
     }
     measure_list->deleteMeasure(index);
     if (index.isValid() && index.row() < measure_list->rowCount()){
@@ -333,7 +333,7 @@ void AeroISTWindow::on_actionSave_Project_triggered()
 //    if (ThreadRunning == true){
     if (thread_status != STOPPED){
         QMessageBox msgBox;
-        msgBox.setText("Measuring is being done. Stop it to save to disk");
+        msgBox.setText(tr("Measuring is being done. Stop it to save to disk"));
         msgBox.exec();
         return;
     }
@@ -347,7 +347,7 @@ void AeroISTWindow::on_actionLoad_Project_triggered()
 {
     if ( measure_list->rowCount() != 0){
         QMessageBox msgBox;
-        msgBox.setText("There is data in the project");
+        msgBox.setText(tr("There is data in the project"));
         msgBox.exec();
         return;
     }
@@ -443,7 +443,7 @@ void AeroISTWindow::on_actionDelete_Zero_triggered()
      QModelIndex index = ui->listViewZero->currentIndex();
      if (zero_list->at(index) == ZeroThread && thread_status == ZERO_RUNNING){
          QMessageBox msgBox;
-         msgBox.setText("Measuring is being done. Stop it to delete");
+         msgBox.setText(tr("Measuring is being done. Stop it to delete"));
          msgBox.exec();
          return;
      }
@@ -451,7 +451,7 @@ void AeroISTWindow::on_actionDelete_Zero_triggered()
      // if the to be deleted model is in the table, unset
      if (zero_list->at(index) == ui->tableView->model()){
          ui->tableView->setModel(NULL);
-         ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tab),"Table");
+         ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tab),tr("Table"));
      }
      zero_list->deleteMeasure(index);
      zero_list->deleteMeasure(index);
@@ -495,7 +495,7 @@ void AeroISTWindow::on_listViewZero_activated(const QModelIndex &index)
 void AeroISTWindow::on_actionNew_Zero_triggered()
 {
     if (m_thread && m_test){
-        message("Thread busy");
+        message(tr("Thread busy"));
         return;
     }
     if(thread_status == STOPPED){
@@ -536,7 +536,7 @@ void AeroISTWindow::on_actionNew_Zero_triggered()
 
         m_thread->start();
         thread_status = ZERO_RUNNING;
-        QString text("Stop ");
+        QString text(tr("Stop "));
         text.append( ZeroThread->name);
         ui->ZeroButton->setText(text);
         return;
@@ -547,7 +547,7 @@ void AeroISTWindow::on_actionNew_Zero_triggered()
 void AeroISTWindow::on_ZeroButton_clicked()
 {
     if (thread_status != STOPPED && thread_status != ZERO_RUNNING){
-        message("Thread busy");
+        message(tr("Thread busy"));
         return;
     }
 
@@ -558,12 +558,12 @@ void AeroISTWindow::on_ZeroButton_clicked()
     if(thread_status == STOPPED){
         QModelIndex index = ui->listViewZero->currentIndex();
         if (index.isValid() == false){
-            message("index not valid");
+            message(tr("index not valid"));
             return;
         }
         ZeroThread = zero_list->at(index.row());         // get the index
         if (ZeroThread->rowCount(QModelIndex()) !=0){
-            message("Measure is not empty");
+            message(tr("Measure is not empty"));
             return;
         }
         m_test = new MeasureThread(ZeroThread);
@@ -586,7 +586,7 @@ void AeroISTWindow::on_ZeroButton_clicked()
 
         m_thread->start();
         thread_status = ZERO_RUNNING;
-        QString text("Stop ");
+        QString text(tr("Stop "));
         text.append( ZeroThread->name);
         ui->ZeroButton->setText(text);
         return;
@@ -596,7 +596,7 @@ void AeroISTWindow::on_ZeroButton_clicked()
 
 void AeroISTWindow::ZeroButton_cleanup(){
     if (thread_status == ZERO_RUNNING){
-        ui->ZeroButton->setText("Start");
+        ui->ZeroButton->setText(tr("Start"));
         thread_status = STOPPED;
         cleanup();
         return;
@@ -611,7 +611,7 @@ void AeroISTWindow::message(const QString &string){
 
 void AeroISTWindow::closeEvent(QCloseEvent *event){
     if (m_thread != 0 ) {
-        message("A thread is running. Stop it to quit");
+        message(tr("A thread is running. Stop it to quit"));
         event->ignore();
     } else {
         event->accept();
@@ -634,17 +634,15 @@ void AeroISTWindow::tableview_selectionChanged( const QItemSelection & selected,
         qDebug() << index.row() << index.column();
         copy_table.append(index.data().toString() );
 
-        if(index.row() != previous.row())
-        {
+        if(index.row() != previous.row()){
             copy_table.append('\n');
-        }
-        else
-        {
+        } else{
             copy_table.append('\t');
         }
         previous = index;
-//        list.append(index.data().toString());
     }
     qDebug() << copy_table;
     QApplication::clipboard()->setText(copy_table);
+
+
 }
