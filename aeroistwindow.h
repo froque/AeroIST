@@ -4,8 +4,10 @@
 #include <QMainWindow>
 #include <QFileSystemModel>
 #include "measurementsmodel.h"
+#include "zeromodel.h"
 #include "measurethread.h"
-#include <measurelist.h>
+#include "measurelist.h"
+#include "zerolist.h"
 #include "preferences.h"
 #include "common.h"
 
@@ -79,6 +81,7 @@ private:
     Preferences * preferences;
     MeasureList *measure_list;
     MeasureList *zero_list;
+//    ZeroList *zero_list;
 
     MeasurementsModel *measurementThread;
     MeasurementsModel *ZeroThread;

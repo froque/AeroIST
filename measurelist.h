@@ -36,6 +36,7 @@ public:
     void clear(void);
 private:
     QList<MeasurementsModel*> list;
+//    QList<QAbstractTableModel*> list;
 };
 
 #endif // MEASURELIST_H

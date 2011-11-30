@@ -103,7 +103,7 @@ void MeasurementsModel::GetMeasure(measure m)
 
     endInsertRows();
 //    if (isZero == false){
-        emit produceMeasure();
+//        emit produceMeasure();
 //    }
 }
 

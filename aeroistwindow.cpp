@@ -30,11 +30,13 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
     ui->actionSave_Project->setIcon(QIcon::fromTheme("document-save-as"));
     ui->actionPreferences->setIcon(QIcon::fromTheme(""));
 
+
     // Set the list model
     measure_list = new MeasureList();
     ui->listView->setModel(measure_list);
 
-    zero_list = new MeasureList();
+//    zero_list = new MeasureList();
+    zero_list = new ZeroList();
     ui->listViewZero->setModel(zero_list);
 
     // listview personalization. It couldn't be done from the .ui file

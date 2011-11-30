@@ -1,12 +1,13 @@
 #ifndef MEASUREMENTS_H
 #define MEASUREMENTS_H
 
-#include <QTime>
 #include <QVector>
 #include <QAbstractTableModel>
 #include <QTextStream>
+
 #include "measure.h"
 #include "common.h"
+#include "zeromodel.h"
 
 #define NVARS 11
 
@@ -51,12 +52,13 @@ public:
     double max;
     double step;
     control_types_t control_type;
-    bool isZero;
-    MeasurementsModel *zero;
+    bool isZero;                        // to delete later
+    MeasurementsModel *zero;            // to delete later
+//    ZeroModel *zero;
     int n;
 
 signals:
-    void produceMeasure();
+//    void produceMeasure();
 
 public slots:
     void GetMeasure(measure m);

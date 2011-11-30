@@ -20,7 +20,9 @@ SOURCES += main.cpp \
     preferences.cpp \
     measurelist.cpp \
     measurementspreferences.cpp \
-    measurementdetails.cpp
+    measurementdetails.cpp \
+    zeromodel.cpp \
+    zerolist.cpp
 #    zerosmodel.cpp
 
 HEADERS += aeroistwindow.h \
@@ -33,7 +35,9 @@ HEADERS += aeroistwindow.h \
     measurelist.h \
     measurementspreferences.h \
     common.h \
-    measurementdetails.h
+    measurementdetails.h \
+    zeromodel.h \
+    zerolist.h
 #    zerosmodel.h
 
 FORMS += aeroistwindow.ui \
