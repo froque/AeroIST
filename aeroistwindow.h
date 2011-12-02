@@ -58,7 +58,7 @@ private slots:
     void on_listView_activated(const QModelIndex &index);
     void on_listViewZero_activated(const QModelIndex &index);
     void selectionChanged(const QModelIndex &current,const QModelIndex &previous);
-    void tableview_selectionChanged( const QItemSelection & selected, const QItemSelection & deselected );
+
 
 
     // Zero actions

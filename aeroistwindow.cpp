@@ -22,21 +22,21 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
     ui->setupUi(this);
 
     // Set some standard (freedesktop only) Icons
-    ui->actionNew_Measure->setIcon(QIcon::fromTheme("document-new"));
-    ui->actionDelete_Measure->setIcon(QIcon::fromTheme("edit-delete"));
-    ui->actionView_Measure_details->setIcon(QIcon::fromTheme("document-properties"));
+//    ui->actionNew_Measure->setIcon(QIcon::fromTheme("document-new"));
+//    ui->actionDelete_Measure->setIcon(QIcon::fromTheme("edit-delete"));
+//    ui->actionView_Measure_details->setIcon(QIcon::fromTheme("document-properties"));
 //    ui->actionClear_Project->setIcon(QIcon::fromTheme("edit-clear"));
-    ui->actionLoad_Project->setIcon(QIcon::fromTheme("document-open"));
-    ui->actionSave_Project->setIcon(QIcon::fromTheme("document-save-as"));
-    ui->actionPreferences->setIcon(QIcon::fromTheme(""));
+//    ui->actionLoad_Project->setIcon(QIcon::fromTheme("document-open"));
+//    ui->actionSave_Project->setIcon(QIcon::fromTheme("document-save-as"));
+//    ui->actionPreferences->setIcon(QIcon::fromTheme(""));
 
 
     // Set the list model
     measure_list = new MeasureList();
     ui->listView->setModel(measure_list);
 
-//    zero_list = new MeasureList();
-    zero_list = new ZeroList();
+    zero_list = new MeasureList();
+//    zero_list = new ZeroList();
     ui->listViewZero->setModel(zero_list);
 
     // listview personalization. It couldn't be done from the .ui file
@@ -106,7 +106,6 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
 #endif //INITIAL_LIST
 
     qRegisterMetaType<measure>("measure");
-//    ThreadRunning = false;
     thread_status = STOPPED;
 
     m_thread = 0;
@@ -115,7 +114,6 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
 
 AeroISTWindow::~AeroISTWindow()
 {
-//    thread->wait();
     save_settings();
     delete preferences;
     delete settings;
@@ -124,48 +122,7 @@ AeroISTWindow::~AeroISTWindow()
     delete zero_list;
 }
 
-// Starts a new measurement.
-/*void AeroISTWindow::on_ThreadButton_clicked()
-{
-    if (thread_status == STOPPED){
-        QModelIndex index = ui->listView->currentIndex();
-        if (index.isValid() == false){
-            QMessageBox message;
-            message.setText(tr("index not valid"));
-            message.exec();
-            return;
-        }
-        measurementThread = measure_list->at(index.row());         // get the index
-        if (measurementThread->rowCount(QModelIndex()) !=0){
-            QMessageBox message;
-            message.setText(tr("Measure is not empty"));
-            message.exec();
-            return;
-        }
-        producer = new MeasureThread(measurementThread);           // start new producer, with the measurementModel metadata
-        producer->moveToThread(&producerThread);
-        thread_status = MEASURE_RUNNING;
-        start_loop( measurementThread,producer,ui->ThreadButton,SLOT(click()));
-
-        QString text(tr("Stop "));
-        text.append( measurementThread->name);
-        ui->ThreadButton->setText(text);
-        return;
-    }
-    if (thread_status == MEASURE_RUNNING){
-        stop_loop( measurementThread,producer,ui->ThreadButton,SLOT(click()));
-        ui->ThreadButton->setText(tr("Start"));
-        producer->deleteLater();
-        thread_status = STOPPED;
-        return;
-    }
-}*/
 void AeroISTWindow::on_ThreadButton_clicked(){
-//    if (thread_status == MEASURE_RUNNING){
-//        ui->ThreadButton->setText(tr("Start"));
-//        thread_status = STOPPED;
-//        return;
-//    }
 
     if (thread_status != STOPPED && thread_status != MEASURE_RUNNING){
         message(tr("Thread busy"));
@@ -329,10 +286,7 @@ void AeroISTWindow::on_actionDelete_Measure_triggered()
     }
 }
 
-void AeroISTWindow::on_actionSave_Project_triggered()
-{
-//    if (producerThread.isRunning()){
-//    if (ThreadRunning == true){
+void AeroISTWindow::on_actionSave_Project_triggered(){
     if (thread_status != STOPPED){
         QMessageBox msgBox;
         msgBox.setText(tr("Measuring is being done. Stop it to save to disk"));
@@ -491,7 +445,6 @@ void AeroISTWindow::on_listViewZero_activated(const QModelIndex &index)
 
     QItemSelectionModel *selection = ui->tableView->selectionModel();
     connect(selection,SIGNAL(selectionChanged(QItemSelection,QItemSelection)),this,SLOT(tableview_selectionChanged(QItemSelection,QItemSelection)));
-
 }
 
 void AeroISTWindow::on_actionNew_Zero_triggered()
@@ -618,33 +571,4 @@ void AeroISTWindow::closeEvent(QCloseEvent *event){
     } else {
         event->accept();
     }
-}
-
-void AeroISTWindow::tableview_selectionChanged( const QItemSelection & selected, const QItemSelection & deselected ){
-
-    Q_UNUSED(deselected); Q_UNUSED(selected);
-//    QStringList list ;
-    QModelIndex index;
-    QItemSelectionModel *selectionModel = ui->tableView->selectionModel();
-    QItemSelection selection = selectionModel->selection();
-    QModelIndexList list = selection.indexes();
-    QModelIndex last = list.last();
-    QModelIndex previous = list.first();
-    QString copy_table;
-
-    foreach (index, list){
-        qDebug() << index.row() << index.column();
-        copy_table.append(index.data().toString() );
-
-        if(index.row() != previous.row()){
-            copy_table.append('\n');
-        } else{
-            copy_table.append('\t');
-        }
-        previous = index;
-    }
-    qDebug() << copy_table;
-    QApplication::clipboard()->setText(copy_table);
-
-
 }
