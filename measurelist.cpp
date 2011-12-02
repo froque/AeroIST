@@ -13,13 +13,11 @@ int MeasureList::rowCount ( const QModelIndex & parent  ) const
 
 QVariant MeasureList::data ( const QModelIndex & index, int role ) const
 {
+
     if (role == Qt::DisplayRole){
-        switch (index.column()){
-        case 0: return list.value(index.row())->name; break;
-        case 1: return list.value(index.row())->matrix;break;
-        default: return QVariant();
-        }
+        return list.value(index.row())->name;
     }
+
     return QVariant();
 }
 
