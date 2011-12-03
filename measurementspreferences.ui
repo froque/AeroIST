@@ -222,8 +222,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>286</x>
-     <y>447</y>
+     <x>295</x>
+     <y>513</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>
@@ -238,8 +238,8 @@
    <slot>test_input()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>231</x>
-     <y>447</y>
+     <x>240</x>
+     <y>513</y>
     </hint>
     <hint type="destinationlabel">
      <x>282</x>

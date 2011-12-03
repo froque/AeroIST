@@ -22,7 +22,9 @@ SOURCES += main.cpp \
     measurementspreferences.cpp \
     measurementdetails.cpp \
     zeromodel.cpp \
-    zerolist.cpp
+    zerolist.cpp \
+    zerodetails.cpp \
+    zeropreferences.cpp
 #    zerosmodel.cpp
 
 HEADERS += aeroistwindow.h \
@@ -37,13 +39,17 @@ HEADERS += aeroistwindow.h \
     common.h \
     measurementdetails.h \
     zeromodel.h \
-    zerolist.h
+    zerolist.h \
+    zerodetails.h \
+    zeropreferences.h
 #    zerosmodel.h
 
 FORMS += aeroistwindow.ui \
     preferences.ui \
     measurementspreferences.ui \
-    measurementdetails.ui
+    measurementdetails.ui \
+    zerodetails.ui \
+    zeropreferences.ui
 
 TRANSLATIONS = aeroist_en.ts\
                 aeroist_pt.ts

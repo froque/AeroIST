@@ -80,11 +80,12 @@ private:
     Ui::AeroISTWindow *ui;
     Preferences * preferences;
     MeasureList *measure_list;
-    MeasureList *zero_list;
-//    ZeroList *zero_list;
+//    MeasureList *zero_list;
+    ZeroList *zero_list;
 
     MeasurementsModel *measurementThread;
-    MeasurementsModel *ZeroThread;
+//    MeasurementsModel *ZeroThread;
+    ZeroModel* ZeroThread;
     QThread producerThread;
     MeasureThread *producer;
     MeasureThread *Zproducer;

@@ -4,7 +4,7 @@
 #include <QDialog>
 #include <QSettings>
 #include "measurementsmodel.h"
-#include "measurelist.h"
+#include "zerolist.h"
 
 namespace Ui {
     class MeasurementsPreferences;
@@ -15,7 +15,7 @@ class MeasurementsPreferences : public QDialog
     Q_OBJECT
 
 public:
-    MeasurementsPreferences(MeasurementsModel *measurement, MeasureList *list, QSettings *settings,QWidget *parent = 0);
+    MeasurementsPreferences(MeasurementsModel *measurement, ZeroList *list, QSettings *settings,QWidget *parent = 0);
     ~MeasurementsPreferences();
 
 
@@ -28,7 +28,7 @@ private slots:
 private:
     Ui::MeasurementsPreferences *ui;
     MeasurementsModel *measurement;
-    MeasureList *list;
+    ZeroList *list;
 };
 
 #endif // MEASUREMENTSPREFERENCES_H

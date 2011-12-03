@@ -4,7 +4,7 @@
 #include "QDebug"
 #include "QMessageBox"
 
-MeasurementsPreferences::MeasurementsPreferences(MeasurementsModel *measurement, MeasureList *list, QSettings *settings, QWidget *parent) :
+MeasurementsPreferences::MeasurementsPreferences(MeasurementsModel *measurement, ZeroList *list, QSettings *settings, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::MeasurementsPreferences),
     measurement(measurement),

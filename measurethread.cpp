@@ -15,7 +15,6 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
     control_type(measurement->control_type),
     isZero(measurement->isZero),
     n(measurement->n)
-
 {
     m_parent_thread = thread();
 
@@ -24,10 +23,6 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
             qWarning("zero is not set to the measurement");
             return;
         }
-        zero.alpha = measurement->zero->alpha.first();
-        zero.beta = measurement->zero->beta.first();
-        zero.wind = measurement->zero->wind.first();
-        zero.temp = measurement->zero->temp.first();
         zero.force[0] = measurement->zero->force[0].first();
         zero.force[1] = measurement->zero->force[1].first();
         zero.force[2] = measurement->zero->force[2].first();
@@ -37,8 +32,16 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
     }
 }
 
-void MeasureThread::produce(){
+MeasureThread::MeasureThread(ZeroModel *measurement,QObject *parent) :
+    QObject(parent),
+    average_number(measurement->average_number),
+    n(measurement->n)
+{
+    m_parent_thread = thread();
+}
 
+
+void MeasureThread::produce(){
     m_stop = false;
     timer.start();
     QEventLoop eloop;
@@ -70,7 +73,6 @@ void MeasureThread::produce(){
         thread()->quit();
         moveToThread(m_parent_thread);
     }
-
 }
 
 double MeasureThread::GetRandomMeasurement(void)

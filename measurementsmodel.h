@@ -53,8 +53,8 @@ public:
     double step;
     control_types_t control_type;
     bool isZero;                        // to delete later
-    MeasurementsModel *zero;            // to delete later
-//    ZeroModel *zero;
+//    MeasurementsModel *zero;            // to delete later
+    ZeroModel *zero;
     int n;
 
 signals:

@@ -30,6 +30,7 @@ class MeasureThread : public QObject//: public QThread
     Q_OBJECT
 public:
     explicit MeasureThread(MeasurementsModel *measurement, QObject *parent = 0);
+    explicit MeasureThread(ZeroModel *measurement, QObject *parent = 0);
 
 signals:
     void MeasureDone(measure m);

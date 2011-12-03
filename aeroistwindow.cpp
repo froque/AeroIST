@@ -9,7 +9,9 @@
 //#include "timescaledraw.h"
 #include <QMessageBox>
 #include "measurementspreferences.h"
+#include "zeropreferences.h"
 #include "measurementdetails.h"
+#include "zerodetails.h"
 #ifdef DEBUG
 #include <QDebug>
 #endif //DEBUG
@@ -35,8 +37,8 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
     measure_list = new MeasureList();
     ui->listView->setModel(measure_list);
 
-    zero_list = new MeasureList();
-//    zero_list = new ZeroList();
+//    zero_list = new MeasureList();
+    zero_list = new ZeroList();
     ui->listViewZero->setModel(zero_list);
 
     // listview personalization. It couldn't be done from the .ui file
@@ -348,7 +350,7 @@ void AeroISTWindow::on_listView_activated(const QModelIndex &index)
     ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tab),measure_list->at(index.row())->name);
 
     QItemSelectionModel *selection = ui->tableView->selectionModel();
-    connect(selection,SIGNAL(selectionChanged(QItemSelection,QItemSelection)),this,SLOT(tableview_selectionChanged(QItemSelection,QItemSelection)));
+//    connect(selection,SIGNAL(selectionChanged(QItemSelection,QItemSelection)),this,SLOT(tableview_selectionChanged(QItemSelection,QItemSelection)));
 
 }
 
@@ -420,12 +422,12 @@ void AeroISTWindow::on_actionDelete_Zero_triggered()
 
 void AeroISTWindow::on_actionView_Zero_details_triggered()
 {
-    MeasurementsModel *zero;
+    ZeroModel *zero;
     QModelIndex index = ui->listViewZero->currentIndex();
     if (index.isValid()){
         zero = zero_list->at(index);
 
-        MeasurementDetails *details = new MeasurementDetails(zero,this);
+        ZeroDetails *details = new ZeroDetails(zero,this);
 
         details->exec();
         delete details;
@@ -444,7 +446,7 @@ void AeroISTWindow::on_listViewZero_activated(const QModelIndex &index)
     ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tab),zero_list->at(index.row())->name);
 
     QItemSelectionModel *selection = ui->tableView->selectionModel();
-    connect(selection,SIGNAL(selectionChanged(QItemSelection,QItemSelection)),this,SLOT(tableview_selectionChanged(QItemSelection,QItemSelection)));
+//    connect(selection,SIGNAL(selectionChanged(QItemSelection,QItemSelection)),this,SLOT(tableview_selectionChanged(QItemSelection,QItemSelection)));
 }
 
 void AeroISTWindow::on_actionNew_Zero_triggered()
@@ -455,11 +457,11 @@ void AeroISTWindow::on_actionNew_Zero_triggered()
     }
     if(thread_status == STOPPED){
 
-        MeasurementsPreferences *zero_prefs;
-        ZeroThread = new MeasurementsModel;
+        ZeroPreferences *zero_prefs;
+        ZeroThread = new ZeroModel;
 
-        ZeroThread->isZero = true;
-        zero_prefs = new MeasurementsPreferences(ZeroThread,NULL,settings,this);
+
+        zero_prefs = new ZeroPreferences(ZeroThread,settings,this);
         if (zero_prefs->exec() == 0){
             delete zero_prefs;
             delete ZeroThread;

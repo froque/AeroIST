@@ -46,3 +46,9 @@ ZeroModel * ZeroList::at(QModelIndex index){
     }
     return NULL;
 }
+
+void ZeroList::clear(void){
+    while (list.size()>0){
+         deleteMeasure( index(0,0,QModelIndex()) );
+    }
+}

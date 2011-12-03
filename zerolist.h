@@ -22,7 +22,7 @@ public:
 
 //    void save(QString fileName);
 //    void load(QString fileName);
-//    void clear(void);
+    void clear(void);
 
 signals:
 
