@@ -4,6 +4,7 @@
 #include <QtCore>
 #include "measurementsmodel.h"
 #include "common.h"
+#include "zeromodel.h"
 
 class MeasureList : public QAbstractListModel
 {
@@ -21,6 +22,7 @@ public:
     MeasurementsModel * at(int position);
     MeasurementsModel * at(QModelIndex index);
 
+    bool zeroUsed(ZeroModel *zero);
 //    Qt::DropActions supportedDropActions( void ) const ;
 //    Qt::ItemFlags flags(const QModelIndex &index) const;
 //    bool insertRow ( int row, const QModelIndex & parent = QModelIndex() );

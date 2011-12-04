@@ -142,3 +142,13 @@ void MeasureList::load(QString fileName){
     }
     file.close();
 }
+
+bool MeasureList::zeroUsed(ZeroModel *zero){
+    MeasurementsModel *measurement;
+    foreach(measurement,list){
+        if (zero == measurement->zero){
+            return true;
+        }
+    }
+    return false;
+}

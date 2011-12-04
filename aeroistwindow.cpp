@@ -406,15 +406,19 @@ void AeroISTWindow::on_actionDelete_Zero_triggered()
          return;
      }
 
+     if (measure_list->zeroUsed(zero_list->at(index)) == true){
+         message(tr("This Zero is being used."));
+         return;
+     }
+
      // if the to be deleted model is in the table, unset
      if (zero_list->at(index) == ui->tableView->model()){
          ui->tableView->setModel(NULL);
          ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tab),tr("Table"));
      }
      zero_list->deleteMeasure(index);
-     zero_list->deleteMeasure(index);
+
      if (index.isValid() && index.row() < zero_list->rowCount()){
-         qDebug() << index.row();
          ui->listViewZero->setCurrentIndex(index);
      }
 }
