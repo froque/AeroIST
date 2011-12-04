@@ -7,7 +7,7 @@ ZeroModel::ZeroModel(QObject *parent) :
     dvm_time=0;
     matrix=MIDDLE;
     average_number=0;
-    n = 0;
+
 }
 
 int ZeroModel::rowCount(const QModelIndex &parent) const{

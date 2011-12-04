@@ -13,11 +13,10 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
     step(measurement->step),
     current(measurement->min),
     control_type(measurement->control_type),
-    isZero(measurement->isZero),
     n(measurement->n)
 {
     m_parent_thread = thread();
-
+    isZero = false;
     if (isZero == false){
         if (measurement->zero == 0){
             qWarning("zero is not set to the measurement");
@@ -34,10 +33,11 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
 
 MeasureThread::MeasureThread(ZeroModel *measurement,QObject *parent) :
     QObject(parent),
-    average_number(measurement->average_number),
-    n(measurement->n)
+    average_number(measurement->average_number)
 {
     m_parent_thread = thread();
+    isZero = true;
+    n=1;
 }
 
 

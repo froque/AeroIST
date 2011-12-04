@@ -29,30 +29,16 @@ MeasurementsPreferences::MeasurementsPreferences(MeasurementsModel *measurement,
 
     ui->spinBoxAverage->setValue(settings->value("default_average_number").toInt());
 
-    if (measurement->isZero){
-        ui->doubleSpinBoxMax->setHidden(true);
-        ui->doubleSpinBoxMin->setHidden(true);
-        ui->doubleSpinBoxSettling->setHidden(true);
-        ui->doubleSpinBoxStep->setHidden(true);
-        ui->groupBox->setHidden(true);
-        ui->labelMax->setHidden(true);
-        ui->labelMin->setHidden(true);
-        ui->labelStep->setHidden(true);
-        ui->labelSettlingTime->setHidden(true);
-        ui->comboBox->hide();
-        ui->labelZero->hide();
-        ui->labelN->hide();
-        ui->spinBoxN->hide();
-    }else{
-        ui->comboBox->setModel(list);
-        ui->doubleSpinBoxSettling->setValue(settings->value("default_settling_time").toDouble());
-        ui->controlGroup->setId(ui->radioButtonNone,NONE);
-        ui->controlGroup->setId(ui->radioButtonAlpha,ALPHA);
-        ui->controlGroup->setId(ui->radioButtonBeta,BETA);
-        ui->controlGroup->setId(ui->radioButtonWind,WIND);
 
-        connect(ui->controlGroup, SIGNAL(buttonClicked(int)),this,SLOT(maxminstep_enabled(int)));
-    }
+    ui->comboBox->setModel(list);
+    ui->doubleSpinBoxSettling->setValue(settings->value("default_settling_time").toDouble());
+    ui->controlGroup->setId(ui->radioButtonNone,NONE);
+    ui->controlGroup->setId(ui->radioButtonAlpha,ALPHA);
+    ui->controlGroup->setId(ui->radioButtonBeta,BETA);
+    ui->controlGroup->setId(ui->radioButtonWind,WIND);
+
+    connect(ui->controlGroup, SIGNAL(buttonClicked(int)),this,SLOT(maxminstep_enabled(int)));
+
     adjustSize();
 
 }
@@ -73,13 +59,9 @@ void MeasurementsPreferences::on_buttonBox_accepted()
     measurement->min = ui->doubleSpinBoxMin->value();
     measurement->max = ui->doubleSpinBoxMax->value();
     measurement->step = ui->doubleSpinBoxStep->value();
-    if (measurement->isZero == true){
-        measurement->control_type=NONE;
-        measurement->n = 1 ;                    // only one measure for a zero
-    }else{
-        measurement->control_type = (control_types_t) ui->controlGroup->checkedId();
-        measurement->n = ui->spinBoxN->value();
-    }
+    measurement->control_type = (control_types_t) ui->controlGroup->checkedId();
+    measurement->n = ui->spinBoxN->value();
+
     measurement->zero = list->at(ui->comboBox->currentIndex());
 
 }
@@ -91,13 +73,13 @@ void MeasurementsPreferences::test_input(){
         msgBox.exec();
         return ;
     }
-    if ( measurement->isZero == false && ui->comboBox->model()->rowCount(QModelIndex()) == 0){
+    if (  ui->comboBox->model()->rowCount(QModelIndex()) == 0){
         QMessageBox msgBox;
         msgBox.setText(tr("No zeros. Create on first"));
         msgBox.exec();
         return ;
     }
-    if (ui->controlGroup->checkedId() !=NONE && measurement->isZero != true ){
+    if (ui->controlGroup->checkedId() !=NONE ){
         double min,max,step;
 
         min = ui->doubleSpinBoxMin->value();

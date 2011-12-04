@@ -32,12 +32,6 @@ public:
     matrix_t matrix;
     int average_number;
 
-    int n;
-
-
-signals:
-//    void produceMeasure();
-
 public slots:
     void GetMeasure(measure m);
 

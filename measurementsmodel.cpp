@@ -19,7 +19,6 @@ MeasurementsModel::MeasurementsModel(QObject *parent)
     max=0;
     step=0;
     control_type = NONE;
-    isZero = false;
     zero  = 0;
     n = 0;
 }
@@ -102,9 +101,7 @@ void MeasurementsModel::GetMeasure(measure m)
     tempo.append(m.tempo);
 
     endInsertRows();
-//    if (isZero == false){
-//        emit produceMeasure();
-//    }
+
 }
 
 int MeasurementsModel::columnCount(const QModelIndex &parent = QModelIndex()) const

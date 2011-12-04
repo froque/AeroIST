@@ -60,7 +60,7 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
 
 #if INITIAL_LIST
     MeasurementsModel *measurement;
-    MeasurementsModel *zero;
+    ZeroModel *zero;
     for (int k=0;k<6;k++){
 
         measurement = new MeasurementsModel(this);
@@ -68,10 +68,10 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
         measurement->matrix = MIDDLE;
         measurement->dvm_time = 4;
         measurement->average_number = 2;
-        measurement->isZero = false;
+
         measurement->n = k;
-        zero = new MeasurementsModel(this);
-        zero->isZero=true;
+        zero = new ZeroModel(this);
+
         zero->name = QString(tr("Zero %1%1%1")).arg(k);
         zero->matrix = MIDDLE;
         zero->dvm_time = 4;
@@ -252,7 +252,7 @@ void AeroISTWindow::on_actionNew_Measure_triggered()
 {
     MeasurementsModel *measurement;
     measurement = new MeasurementsModel();
-    measurement->isZero = false;
+
     MeasurementsPreferences *meas_prefs = new MeasurementsPreferences( measurement, zero_list, settings , this);
     if (meas_prefs->exec() == 0 ){
         delete measurement;
