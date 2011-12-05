@@ -26,7 +26,7 @@ QVariant ZeroList::data ( const QModelIndex & index, int role ) const{
 
 
 void ZeroList::newMeasure(ZeroModel * measure){
-    beginInsertRows(QModelIndex(), list.size(), list.size()+1);
+    beginInsertRows(QModelIndex(), list.size(), list.size());
     list.append(measure);
     endInsertRows();
 }

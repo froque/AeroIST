@@ -90,7 +90,8 @@ void MeasurementsModel::save_csv(QTextStream *out,bool header){
 
 void MeasurementsModel::GetMeasure(measure m)
 {
-    beginInsertRows(QModelIndex(), tempo.size(), tempo.size()+1);
+    beginInsertRows(QModelIndex(), tempo.size(), tempo.size());
+
     for (int k=0;k<6;k++ ){
         force[k].append(m.force[k]);
     }

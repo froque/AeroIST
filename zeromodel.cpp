@@ -71,7 +71,7 @@ QVariant ZeroModel::headerData(int section, Qt::Orientation orientation, int rol
 }
 
 void ZeroModel::GetMeasure(measure m){
-    beginInsertRows(QModelIndex(), force[0].size(), force[0].size()+1);
+    beginInsertRows(QModelIndex(), force[0].size(), force[0].size());
     for (int k=0;k<6;k++ ){
         force[k].append(m.force[k]);
     }
