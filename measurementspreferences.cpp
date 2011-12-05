@@ -12,6 +12,12 @@ MeasurementsPreferences::MeasurementsPreferences(MeasurementsModel *measurement,
 {
     ui->setupUi(this);
 
+    proxyfilter = new QSortFilterProxyModel(this);
+    proxyfilter->setSourceModel(list);
+    proxyfilter->setFilterRole(Qt::UserRole);
+    proxyfilter->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    ui->combo_zero->setModel(proxyfilter);
+
     ui->combo_matrix->clear();
     ui->combo_matrix->addItem(tr("middle"),MIDDLE);
     ui->combo_matrix->addItem(tr("floor"),FLOOR);
@@ -29,8 +35,6 @@ MeasurementsPreferences::MeasurementsPreferences(MeasurementsModel *measurement,
 
     ui->spinBoxAverage->setValue(settings->value("default_average_number").toInt());
 
-
-    ui->comboBox->setModel(list);
     ui->doubleSpinBoxSettling->setValue(settings->value("default_settling_time").toDouble());
     ui->controlGroup->setId(ui->radioButtonNone,NONE);
     ui->controlGroup->setId(ui->radioButtonAlpha,ALPHA);
@@ -62,7 +66,7 @@ void MeasurementsPreferences::on_buttonBox_accepted()
     measurement->control_type = (control_types_t) ui->controlGroup->checkedId();
     measurement->n = ui->spinBoxN->value();
 
-    measurement->zero = list->at(ui->comboBox->currentIndex());
+    measurement->zero = list->at(ui->combo_zero->currentIndex());
 
 }
 
@@ -73,7 +77,7 @@ void MeasurementsPreferences::test_input(){
         msgBox.exec();
         return ;
     }
-    if (  ui->comboBox->model()->rowCount(QModelIndex()) == 0){
+    if (  ui->combo_zero->model()->rowCount(QModelIndex()) == 0){
         QMessageBox msgBox;
         msgBox.setText(tr("No zeros. Create on first"));
         msgBox.exec();
@@ -139,7 +143,9 @@ void MeasurementsPreferences::maxminstep_enabled(int id){
     ui->doubleSpinBoxMin->setValue(min);
     ui->doubleSpinBoxMax->setValue(max);
     ui->doubleSpinBoxStep->setValue(step);
-
     ui->spinBoxN->setEnabled(false);
+}
 
+void MeasurementsPreferences::on_combo_matrix_currentIndexChanged(int index){
+    proxyfilter->setFilterFixedString(QString::number(index));
 }

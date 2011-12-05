@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 
     QTranslator myappTranslator;
     myappTranslator.load("aeroist_" + QLocale::system().name());
-    qDebug() << QLocale::system().name();
+//    qDebug() << QLocale::system().name();
     app.installTranslator(&myappTranslator);
 
     AeroISTWindow w;

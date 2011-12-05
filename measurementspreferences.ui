@@ -195,7 +195,7 @@
     </widget>
    </item>
    <item row="4" column="2">
-    <widget class="QComboBox" name="comboBox"/>
+    <widget class="QComboBox" name="combo_zero"/>
    </item>
    <item row="6" column="2">
     <widget class="QSpinBox" name="spinBoxN">

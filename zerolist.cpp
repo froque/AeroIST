@@ -18,12 +18,15 @@ QVariant ZeroList::data ( const QModelIndex & index, int role ) const{
     if (role == Qt::DisplayRole){
         return list.value(index.row())->name;
     }
+    if(role == Qt::UserRole){
+        return list.value(index.row())->matrix;
+    }
     return QVariant();
 }
 
 
 void ZeroList::newMeasure(ZeroModel * measure){
-    beginInsertRows(QModelIndex(), 0, 0);
+    beginInsertRows(QModelIndex(), list.size(), list.size()+1);
     list.append(measure);
     endInsertRows();
 }

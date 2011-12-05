@@ -40,7 +40,7 @@ ZeroPreferences::~ZeroPreferences()
 
 void ZeroPreferences::on_buttonBox_accepted(){
     measurement->name = ui->edit_name->text();
-    measurement->matrix = (matrix_t) ui->combo_matrix->currentText().toInt();
+    measurement->matrix = (matrix_t) ui->combo_matrix->currentIndex();
     measurement->dvm_time = ui->combo_dvm_time->itemData(ui->combo_dvm_time->currentIndex()).toInt();
     measurement->average_number = ui->spinBoxAverage->value();
 }

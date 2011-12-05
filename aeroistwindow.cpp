@@ -254,7 +254,7 @@ void AeroISTWindow::on_actionNew_Measure_triggered()
     measurement = new MeasurementsModel();
 
     MeasurementsPreferences *meas_prefs = new MeasurementsPreferences( measurement, zero_list, settings , this);
-    if (meas_prefs->exec() == 0 ){
+    if (meas_prefs->exec() == QDialog::Rejected ){
         delete measurement;
         delete meas_prefs;
         return ;
@@ -270,9 +270,7 @@ void AeroISTWindow::on_actionDelete_Measure_triggered()
     QModelIndex index = ui->listView->currentIndex();
 
     if (measure_list->at(index) == measurementThread && thread_status == MEASURE_RUNNING){
-        QMessageBox msgBox;
-        msgBox.setText(tr("Measuring is being done. Stop it to delete"));
-        msgBox.exec();
+        message(tr("Measuring is being done. Stop it to delete"));
         return;
     }
 
@@ -290,9 +288,7 @@ void AeroISTWindow::on_actionDelete_Measure_triggered()
 
 void AeroISTWindow::on_actionSave_Project_triggered(){
     if (thread_status != STOPPED){
-        QMessageBox msgBox;
-        msgBox.setText(tr("Measuring is being done. Stop it to save to disk"));
-        msgBox.exec();
+        message(tr("Measuring is being done. Stop it to save to disk"));
         return;
     }
     QString fileName;
@@ -304,9 +300,7 @@ void AeroISTWindow::on_actionSave_Project_triggered(){
 void AeroISTWindow::on_actionLoad_Project_triggered()
 {
     if ( measure_list->rowCount() != 0){
-        QMessageBox msgBox;
-        msgBox.setText(tr("There is data in the project"));
-        msgBox.exec();
+        message(tr("There is data in the project"));
         return;
     }
     QString fileName;
@@ -400,9 +394,7 @@ void AeroISTWindow::on_actionDelete_Zero_triggered()
 {
      QModelIndex index = ui->listViewZero->currentIndex();
      if (zero_list->at(index) == ZeroThread && thread_status == ZERO_RUNNING){
-         QMessageBox msgBox;
-         msgBox.setText(tr("Measuring is being done. Stop it to delete"));
-         msgBox.exec();
+         message(tr("Measuring is being done. Stop it to delete"));
          return;
      }
 
@@ -466,7 +458,7 @@ void AeroISTWindow::on_actionNew_Zero_triggered()
 
 
         zero_prefs = new ZeroPreferences(ZeroThread,settings,this);
-        if (zero_prefs->exec() == 0){
+        if (zero_prefs->exec() == QDialog::Rejected){
             delete zero_prefs;
             delete ZeroThread;
             return;
