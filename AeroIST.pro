@@ -34,7 +34,6 @@ SOURCES += main.cpp \
     curvedelete.cpp
 
 HEADERS += aeroistwindow.h \
-    qwt_plot.h \
     measure.h \
     measurementsmodel.h \
     measurethread.h \

@@ -215,4 +215,6 @@ QVector<double>  MeasurementsModel::vector_data(int index){
     case 10:
         return temp;
     }
+    QVector<double> stupid_warning;
+    return stupid_warning;
 }
