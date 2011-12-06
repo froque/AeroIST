@@ -100,7 +100,7 @@
         </sizepolicy>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="tab">
         <attribute name="title">
@@ -129,37 +129,6 @@
         <layout class="QVBoxLayout" name="verticalLayout">
          <item>
           <widget class="QwtPlot" name="qwtPlot"/>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout">
-           <item>
-            <spacer name="horizontalSpacer">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>186</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QPushButton" name="GraphButton">
-             <property name="text">
-              <string>plot graph</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="ClearButton">
-             <property name="text">
-              <string>Clear</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
          </item>
         </layout>
        </widget>
@@ -213,11 +182,21 @@
     <addaction name="actionToolbar"/>
     <addaction name="actionMeasure_List"/>
     <addaction name="actionZero_List"/>
+    <addaction name="actionPlot_Legend"/>
+   </widget>
+   <widget class="QMenu" name="menuPlot">
+    <property name="title">
+     <string>Plot</string>
+    </property>
+    <addaction name="actionNew_Curve"/>
+    <addaction name="actionDelete_Curve"/>
+    <addaction name="actionClear_Plot"/>
    </widget>
    <addaction name="menuProject"/>
    <addaction name="menuEdit"/>
    <addaction name="menuExport"/>
    <addaction name="menuView"/>
+   <addaction name="menuPlot"/>
   </widget>
   <widget class="QToolBar" name="toolBar">
    <property name="windowTitle">
@@ -243,6 +222,7 @@
    <addaction name="actionNew_Zero"/>
    <addaction name="actionDelete_Zero"/>
    <addaction name="actionView_Zero_details"/>
+   <addaction name="separator"/>
   </widget>
   <action name="actionExport_to_csv">
    <property name="text">
@@ -367,6 +347,32 @@
     <string>Zero List</string>
    </property>
   </action>
+  <action name="actionNew_Curve">
+   <property name="text">
+    <string>New Curve</string>
+   </property>
+  </action>
+  <action name="actionClear_Plot">
+   <property name="text">
+    <string>Clear Plot</string>
+   </property>
+  </action>
+  <action name="actionDelete_Curve">
+   <property name="text">
+    <string>Delete Curve</string>
+   </property>
+  </action>
+  <action name="actionPlot_Legend">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Plot Legend</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
@@ -378,8 +384,6 @@
  </customwidgets>
  <tabstops>
   <tabstop>tabWidget</tabstop>
-  <tabstop>GraphButton</tabstop>
-  <tabstop>ClearButton</tabstop>
   <tabstop>tableView</tabstop>
  </tabstops>
  <resources/>

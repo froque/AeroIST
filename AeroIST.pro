@@ -24,7 +24,9 @@ SOURCES += main.cpp \
     zeromodel.cpp \
     zerolist.cpp \
     zerodetails.cpp \
-    zeropreferences.cpp
+    zeropreferences.cpp \
+    curvenew.cpp \
+    curvedelete.cpp
 #    zerosmodel.cpp
 
 HEADERS += aeroistwindow.h \
@@ -41,7 +43,9 @@ HEADERS += aeroistwindow.h \
     zeromodel.h \
     zerolist.h \
     zerodetails.h \
-    zeropreferences.h
+    zeropreferences.h \
+    curvenew.h \
+    curvedelete.h
 #    zerosmodel.h
 
 FORMS += aeroistwindow.ui \
@@ -49,7 +53,9 @@ FORMS += aeroistwindow.ui \
     measurementspreferences.ui \
     measurementdetails.ui \
     zerodetails.ui \
-    zeropreferences.ui
+    zeropreferences.ui \
+    newcurve.ui \
+    deleteplot.ui
 
 TRANSLATIONS = aeroist_en.ts\
                 aeroist_pt.ts

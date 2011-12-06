@@ -11,6 +11,7 @@
 #include "preferences.h"
 #include "common.h"
 
+
 namespace Ui {
     class AeroISTWindow;
 }
@@ -27,9 +28,7 @@ signals:
 public slots:
 
 private slots:
-    // button actions (actually not actions)
-    void on_ClearButton_clicked();
-    void on_GraphButton_clicked();
+    // buttons
     void on_ThreadButton_clicked();
     void ThreadButton_cleanup();
     void on_ZeroButton_clicked();
@@ -53,21 +52,25 @@ private slots:
     // View actions
     void on_actionToolbar_toggled(bool arg1);
     void on_actionMeasure_List_toggled(bool checked);
+    void on_actionZero_List_toggled(bool arg1);
 
     // listviews and table
     void on_listView_activated(const QModelIndex &index);
     void on_listViewZero_activated(const QModelIndex &index);
     void selectionChanged(const QModelIndex &current,const QModelIndex &previous);
 
-
-
     // Zero actions
     void on_actionNew_Zero_triggered();
     void on_actionDelete_Zero_triggered();
     void on_actionView_Zero_details_triggered();
-    void on_actionZero_List_toggled(bool arg1);
+
 
     void cleanup();
+
+    // PLOT
+    void on_actionNew_Curve_triggered();
+    void on_actionClear_Plot_triggered();
+    void on_actionDelete_Curve_triggered();
 
 private:
     void message(const QString &string);
@@ -80,11 +83,9 @@ private:
     Ui::AeroISTWindow *ui;
     Preferences * preferences;
     MeasureList *measure_list;
-//    MeasureList *zero_list;
     ZeroList *zero_list;
 
     MeasurementsModel *measurementThread;
-//    MeasurementsModel *ZeroThread;
     ZeroModel* ZeroThread;
     QThread producerThread;
     MeasureThread *producer;
@@ -93,6 +94,8 @@ private:
 
     MeasureThread *m_test;
     QThread *m_thread;
+
+
 protected:
     void closeEvent(QCloseEvent *event);
 

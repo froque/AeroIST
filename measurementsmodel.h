@@ -36,12 +36,12 @@ public:
 //    QVector<double> raw_wind;
 //    QVector<double> raw_temp;
 
-    int rowCount(const QModelIndex &parent) const;
-    int columnCount(const QModelIndex &parent) const;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    int columnCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant data(const QModelIndex &index, int role) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
 
-
+    QVector<double>  vector_data(int index);
     // metadata about the measurement
     QString name;
     int dvm_time;

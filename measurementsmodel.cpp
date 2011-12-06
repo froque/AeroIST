@@ -105,13 +105,13 @@ void MeasurementsModel::GetMeasure(measure m)
 
 }
 
-int MeasurementsModel::columnCount(const QModelIndex &parent = QModelIndex()) const
+int MeasurementsModel::columnCount(const QModelIndex &parent)  const
 {
     Q_UNUSED(parent);
     return NVARS;
 }
 
-int MeasurementsModel::rowCount(const QModelIndex &parent = QModelIndex()) const
+int MeasurementsModel::rowCount(const QModelIndex &parent ) const
 {
     Q_UNUSED(parent);
     return force[0].size();
@@ -187,4 +187,32 @@ QVariant MeasurementsModel::headerData(int section, Qt::Orientation orientation,
         }
     }
     return QVariant();
+}
+
+
+QVector<double>  MeasurementsModel::vector_data(int index){
+    switch (index) {
+    case 0:
+        return tempo;
+    case 1:
+        return force[0];
+    case 2:
+        return force[1];
+    case 3:
+        return force[2];
+    case 4:
+        return force[3];
+    case 5:
+        return force[4];
+    case 6:
+        return force[5];
+    case 7:
+        return alpha;
+    case 8:
+        return beta;
+    case 9:
+        return wind;
+    case 10:
+        return temp;
+    }
 }

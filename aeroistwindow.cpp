@@ -6,12 +6,15 @@
 #include <QFileDialog>
 #include <qwt/qwt_plot_curve.h>
 #include <qwt/qwt_plot_renderer.h>
+#include <qwt/qwt_legend.h>
 //#include "timescaledraw.h"
 #include <QMessageBox>
 #include "measurementspreferences.h"
 #include "zeropreferences.h"
 #include "measurementdetails.h"
 #include "zerodetails.h"
+#include "curvenew.h"
+#include "curvedelete.h"
 #ifdef DEBUG
 #include <QDebug>
 #endif //DEBUG
@@ -112,6 +115,10 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
 
     m_thread = 0;
     m_test = 0;
+
+    QwtLegend *legend = new QwtLegend;
+    legend->setItemMode(QwtLegend::CheckableItem);
+    ui->qwtPlot->insertLegend(legend);
 }
 
 AeroISTWindow::~AeroISTWindow()
@@ -193,30 +200,6 @@ void AeroISTWindow::cleanup(){
     m_thread = 0;
 }
 
-
-// Clear Plots
-void AeroISTWindow::on_ClearButton_clicked()
-{
-    ui->qwtPlot->detachItems(QwtPlotItem::Rtti_PlotItem,true);
-    ui->qwtPlot->replot();
-}
-
-// Plot a graph based on selected measurement
-void AeroISTWindow::on_GraphButton_clicked(){
-    QwtPlotCurve *curve1 = new QwtPlotCurve();
-
-    int row =  ui->listView->currentIndex().row();
-    if (row < 0 || row > measure_list->rowCount()){
-        return;
-    }
-
-    MeasurementsModel *measurement;
-    measurement = measure_list->at(row);
-
-    curve1->setSamples(measurement->tempo.data(),measurement->force[0].data(),measurement->tempo.size());
-    curve1->attach(ui->qwtPlot);
-    ui->qwtPlot->replot();
-}
 
 // export selected measurement to .csv
 void AeroISTWindow::on_actionExport_to_csv_triggered()
@@ -338,14 +321,9 @@ void AeroISTWindow::selectionChanged(const QModelIndex &current ,const QModelInd
 }
 
 
-void AeroISTWindow::on_listView_activated(const QModelIndex &index)
-{
+void AeroISTWindow::on_listView_activated(const QModelIndex &index){
     ui->tableView->setModel( measure_list->at(index.row()));
     ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tab),measure_list->at(index.row())->name);
-
-    QItemSelectionModel *selection = ui->tableView->selectionModel();
-//    connect(selection,SIGNAL(selectionChanged(QItemSelection,QItemSelection)),this,SLOT(tableview_selectionChanged(QItemSelection,QItemSelection)));
-
 }
 
 void AeroISTWindow::load_settings(void){
@@ -380,15 +358,7 @@ void AeroISTWindow::on_actionView_Measure_details_triggered()
     }
 }
 
-void AeroISTWindow::on_actionToolbar_toggled(bool arg1)
-{
-    ui->toolBar->setVisible(arg1);
-}
 
-void AeroISTWindow::on_actionMeasure_List_toggled(bool checked)
-{
-    ui->listView->setVisible(checked);
-}
 
 void AeroISTWindow::on_actionDelete_Zero_triggered()
 {
@@ -430,23 +400,12 @@ void AeroISTWindow::on_actionView_Zero_details_triggered()
     }
 }
 
-void AeroISTWindow::on_actionZero_List_toggled(bool arg1)
-{
-    ui->listViewZero->setVisible(arg1);
-}
-
-
-void AeroISTWindow::on_listViewZero_activated(const QModelIndex &index)
-{
+void AeroISTWindow::on_listViewZero_activated(const QModelIndex &index){
     ui->tableView->setModel( zero_list->at(index.row()));
     ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tab),zero_list->at(index.row())->name);
-
-    QItemSelectionModel *selection = ui->tableView->selectionModel();
-//    connect(selection,SIGNAL(selectionChanged(QItemSelection,QItemSelection)),this,SLOT(tableview_selectionChanged(QItemSelection,QItemSelection)));
 }
 
-void AeroISTWindow::on_actionNew_Zero_triggered()
-{
+void AeroISTWindow::on_actionNew_Zero_triggered(){
     if (m_thread && m_test){
         message(tr("Thread busy"));
         return;
@@ -497,8 +456,7 @@ void AeroISTWindow::on_actionNew_Zero_triggered()
 
 }
 
-void AeroISTWindow::on_ZeroButton_clicked()
-{
+void AeroISTWindow::on_ZeroButton_clicked(){
     if (thread_status != STOPPED && thread_status != ZERO_RUNNING){
         message(tr("Thread busy"));
         return;
@@ -556,12 +514,14 @@ void AeroISTWindow::ZeroButton_cleanup(){
     }
 }
 
+// helper fucntion to show a message
 void AeroISTWindow::message(const QString &string){
     QMessageBox message;
     message.setText(string);
     message.exec();
 }
 
+// On exit warn if thread is runing and don't close
 void AeroISTWindow::closeEvent(QCloseEvent *event){
     if (m_thread != 0 ) {
         message(tr("A thread is running. Stop it to quit"));
@@ -570,3 +530,35 @@ void AeroISTWindow::closeEvent(QCloseEvent *event){
         event->accept();
     }
 }
+
+// PLOT add, delete and clear
+void AeroISTWindow::on_actionNew_Curve_triggered(){
+    CurveNew *newcurve = new CurveNew(ui->qwtPlot, measure_list);
+    if (newcurve->exec() == QDialog::Rejected){
+        delete newcurve;
+        return;
+    }
+}
+void AeroISTWindow::on_actionDelete_Curve_triggered(){
+    CurveDelete deletecurve(ui->qwtPlot);
+    if(deletecurve.exec() == QDialog::Rejected){
+        return;
+    }
+}
+void AeroISTWindow::on_actionClear_Plot_triggered(){
+    ui->qwtPlot->detachItems(QwtPlotItem::Rtti_PlotItem,true);
+    ui->qwtPlot->replot();
+}
+// PLOT add, delete and clear - end
+
+// View widgets
+void AeroISTWindow::on_actionToolbar_toggled(bool arg1){
+    ui->toolBar->setVisible(arg1);
+}
+void AeroISTWindow::on_actionMeasure_List_toggled(bool checked){
+    ui->listView->setVisible(checked);
+}
+void AeroISTWindow::on_actionZero_List_toggled(bool arg1){
+    ui->listViewZero->setVisible(arg1);
+}
+// View widgets - end
