@@ -3,7 +3,7 @@
 # -------------------------------------------------
 QT += core \
     gui
-TARGET = AeroIST
+#TARGET = AeroIST
 TEMPLATE = app
 
 DESTDIR = build
@@ -12,7 +12,17 @@ MOC_DIR = moc
 UI_DIR = ui
 
 CONFIG += qwt
-
+#INCLUDEPATH += /usr/include/qwt
+#CONFIG += 32bit
+#CONFIG(32bit) {
+#    TARGET = 32bit_binary
+#    QMAKE_CXXFLAGS += -m32
+#    QMAKE_CXX_FLAGS_RELEASE += -m32
+#    LIBS += -L<path to 32bit libraries>
+#}
+#CONFIG(64bit) {
+#    TARGET = 64bit_binary
+#}
 #QMAKESPEC=linux-g++-64
 #QMAKESPEC=linux-g++-32
 #CONFIG += x86

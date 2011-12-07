@@ -4,9 +4,12 @@
 #include <QMetaType>
 #include <QFile>
 #include <QFileDialog>
-#include <qwt/qwt_plot_curve.h>
-#include <qwt/qwt_plot_renderer.h>
-#include <qwt/qwt_legend.h>
+//#include <qwt/qwt_plot_curve.h>
+//#include <qwt/qwt_plot_renderer.h>
+//#include <qwt/qwt_legend.h>
+#include <qwt_legend.h>
+#include <qwt_plot_curve.h>
+#include <qwt_plot_renderer.h>
 //#include "timescaledraw.h"
 #include <QMessageBox>
 #include "measurementspreferences.h"
