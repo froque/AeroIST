@@ -2,6 +2,7 @@
 #define MYTHREAD_H
 
 #include "common.h"
+#include "force.h"
 #if DEBUG
 #include <QThread>
 #endif // DEBUG
@@ -31,7 +32,7 @@ class MeasureThread : public QObject//: public QThread
 public:
     explicit MeasureThread(MeasurementsModel *measurement, QObject *parent = 0);
     explicit MeasureThread(ZeroModel *measurement, QObject *parent = 0);
-
+    ~MeasureThread();
 signals:
     void MeasureDone(measure m);
 
@@ -63,6 +64,8 @@ private:
     bool m_stop;
     QThread* m_parent_thread;
 
+    // Variables
+    Force *force;
 };
 
 #endif // MYTHREAD_H

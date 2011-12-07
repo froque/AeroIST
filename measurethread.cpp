@@ -1,4 +1,5 @@
 #include "measurethread.h"
+
 #include <cstdlib> // for RAND_MAX
 
 #include <QEventLoop>
@@ -15,6 +16,7 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
     control_type(measurement->control_type),
     n(measurement->n)
 {
+    qDebug() << "beggining of Measuremenstmodel constructor";
     m_parent_thread = thread();
     isZero = false;
     if (isZero == false){
@@ -29,6 +31,10 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
         zero.force[4] = measurement->zero->force[4].first();
         zero.force[5] = measurement->zero->force[5].first();
     }
+
+    force = new Force(measurement->matrix,measurement->dvm_time);
+
+    qDebug() << "end of Measuremenstmodel constructor";
 }
 
 MeasureThread::MeasureThread(ZeroModel *measurement,QObject *parent) :
@@ -38,8 +44,13 @@ MeasureThread::MeasureThread(ZeroModel *measurement,QObject *parent) :
     m_parent_thread = thread();
     isZero = true;
     n=1;
+    qDebug() << "end of zero constructor";
+    force = new Force(measurement->matrix,measurement->dvm_time);
 }
 
+MeasureThread::~MeasureThread(){
+    delete force;
+}
 
 void MeasureThread::produce(){
     m_stop = false;
@@ -48,6 +59,7 @@ void MeasureThread::produce(){
     k = 1;
     while(!m_stop)
     {
+        qDebug() << k << "loop";
         read_m();
         if (isZero == false){
             subtract(&m,zero);
@@ -75,8 +87,7 @@ void MeasureThread::produce(){
     }
 }
 
-double MeasureThread::GetRandomMeasurement(void)
-{
+double MeasureThread::GetRandomMeasurement(void){
     return 10.0 * qrand() / RAND_MAX;
 }
 
@@ -98,16 +109,16 @@ void MeasureThread::read_m(void){
     clear_m();
 
     m.tempo = timer.elapsed()/1000.0;
-//    qDebug() << m.tempo;
+    qDebug() << m.tempo;
     switch (control_type){
     case NONE :
         for (int k=0; k< average_number ; k++ ) m.alpha += GetRandomMeasurement();
         for (int k=0; k< average_number ; k++ ) m.beta += GetRandomMeasurement();
         for (int k=0; k< average_number ; k++ ) m.wind += GetRandomMeasurement();
-        for (int k =0; k<6; k++){
-            for (int n=0; n< average_number ; n++ )
-                m.force[k] += GetRandomMeasurement();
-        }
+//        for (int k =0; k<6; k++){
+//            for (int n=0; n< average_number ; n++ )
+//                m.force[k] += GetRandomMeasurement();
+//        }
         for (int k=0; k< average_number ; k++ ) m.temp += GetRandomMeasurement();
         break;
     case ALPHA:
@@ -115,10 +126,10 @@ void MeasureThread::read_m(void){
         for (int k=0; k< average_number ; k++ ) m.alpha += current ;//* 1.01 * GetRandomMeasurement();;
         for (int k=0; k< average_number ; k++ ) m.beta += GetRandomMeasurement();
         for (int k=0; k< average_number ; k++ ) m.wind += GetRandomMeasurement();
-        for (int k =0; k<6; k++){
-            for (int n=0; n< average_number ; n++ )
-                m.force[k] += (k+1) * m.alpha + 0.01 * GetRandomMeasurement();
-        }
+//        for (int k =0; k<6; k++){
+//            for (int n=0; n< average_number ; n++ )
+//                m.force[k] += (k+1) * m.alpha + 0.01 * GetRandomMeasurement();
+//        }
         for (int k=0; k< average_number ; k++ ) m.temp += - 2 * m.alpha  + 0.01 *GetRandomMeasurement();
         break;
     case BETA:
@@ -126,10 +137,10 @@ void MeasureThread::read_m(void){
         for (int k=0; k< average_number ; k++ ) m.alpha += GetRandomMeasurement();
         for (int k=0; k< average_number ; k++ ) m.beta += current ;//* 1.01 * GetRandomMeasurement();;
         for (int k=0; k< average_number ; k++ ) m.wind += GetRandomMeasurement();
-        for (int k =0; k<6; k++){
-            for (int n=0; n< average_number ; n++ )
-                m.force[k] += (k+1) * m.beta + 0.01 * GetRandomMeasurement();
-        }
+//        for (int k =0; k<6; k++){
+//            for (int n=0; n< average_number ; n++ )
+//                m.force[k] += (k+1) * m.beta + 0.01 * GetRandomMeasurement();
+//        }
         for (int k=0; k< average_number ; k++ ) m.temp += - 2 * m.beta  + 0.01 *GetRandomMeasurement();
         break;
     case WIND:
@@ -137,13 +148,22 @@ void MeasureThread::read_m(void){
         for (int k=0; k< average_number ; k++ ) m.alpha += GetRandomMeasurement();
         for (int k=0; k< average_number ; k++ ) m.beta += GetRandomMeasurement();
         for (int k=0; k< average_number ; k++ ) m.wind += current ;//* 1.01 * GetRandomMeasurement();;
-        for (int k =0; k<6; k++){
-            for (int n=0; n< average_number ; n++ )
-                m.force[k] += (k+1) * m.wind + 0.01 * GetRandomMeasurement();
-        }
+//        for (int k =0; k<6; k++){
+//            for (int n=0; n< average_number ; n++ )
+//                m.force[k] += (k+1) * m.wind + 0.01 * GetRandomMeasurement();
+//        }
         for (int k=0; k< average_number ; k++ ) m.temp += - 2 * m.wind  + 0.01 *GetRandomMeasurement();
         break;
     }
+
+    qDebug() << "about to make the actual measurement";
+    for (int n=0;n < average_number; n++){
+        force->read();
+        for (int k=0; k < NUMCHANNELS; k++ ){
+            m.force[k] += force->dvm_si[k];
+        }
+    }
+
 
 
     // Divide by N

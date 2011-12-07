@@ -41,4 +41,8 @@ enum ThreadStatus{
 #define DEFAULT_WIND_MAX    100 //Percentage
 #define DEFAULT_WIND_STEP   1
 
+#ifdef DEBUG
+#include <QDebug>
+#endif //DEBUG
+
 #endif // COMMON_H

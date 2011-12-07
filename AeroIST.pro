@@ -11,6 +11,8 @@ OBJECTS_DIR = objs
 MOC_DIR = moc
 UI_DIR = ui
 
+LIBS += -L/usr/local/lib -lgpib
+
 CONFIG += qwt
 #INCLUDEPATH += /usr/include/qwt
 #CONFIG += 32bit
@@ -41,7 +43,8 @@ SOURCES += main.cpp \
     zerodetails.cpp \
     zeropreferences.cpp \
     curvenew.cpp \
-    curvedelete.cpp
+    curvedelete.cpp \
+    force.cpp
 
 HEADERS += aeroistwindow.h \
     measure.h \
@@ -57,7 +60,8 @@ HEADERS += aeroistwindow.h \
     zerodetails.h \
     zeropreferences.h \
     curvenew.h \
-    curvedelete.h
+    curvedelete.h \
+    force.h
 
 FORMS += aeroistwindow.ui \
     preferences.ui \
