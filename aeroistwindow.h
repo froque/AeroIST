@@ -31,7 +31,7 @@ private slots:
     // buttons
     void on_ThreadButton_clicked();
     void ThreadButton_cleanup();
-    void on_ZeroButton_clicked();
+//    void on_ZeroButton_clicked();
     void ZeroButton_cleanup();
 
     // export actions. to be improved!

@@ -335,6 +335,7 @@ void AeroISTWindow::load_settings(void){
     restoreState(settings->value("gui/state").toByteArray());
     restoreGeometry(settings->value("gui/geometry").toByteArray());
 
+    ui->tabWidget->setCurrentIndex(settings->value("gui/tabwidget",0).toInt());
     ui->splitterLists->restoreState(settings->value("gui/splitterLists/state").toByteArray());
     ui->splitterGlobal->restoreState(settings->value("gui/splitterGlobal/state").toByteArray());
 }
@@ -343,6 +344,7 @@ void AeroISTWindow::save_settings(void){
     settings->setValue("gui/state",saveState());
     settings->setValue("gui/geometry",saveGeometry());
 
+    settings->setValue("gui/tabwidget",ui->tabWidget->currentIndex());
     settings->setValue("gui/splitterLists/state",ui->splitterLists->saveState());
     settings->setValue("gui/splitterGlobal/state",ui->splitterGlobal->saveState());
 }
@@ -414,7 +416,7 @@ void AeroISTWindow::on_actionNew_Zero_triggered(){
         return;
     }
     if(thread_status == STOPPED){
-
+        qDebug() << "action new zero" << thread_status;
         ZeroPreferences *zero_prefs;
         ZeroThread = new ZeroModel;
 
@@ -429,7 +431,7 @@ void AeroISTWindow::on_actionNew_Zero_triggered(){
         zero_list->newMeasure(ZeroThread);
         QModelIndex index = zero_list->index(zero_list->rowCount()-1,0);
         ui->listViewZero->setCurrentIndex(index);
-
+        ui->tableView->setModel(ZeroThread);
 
         m_test = new MeasureThread(ZeroThread);
 
@@ -449,8 +451,11 @@ void AeroISTWindow::on_actionNew_Zero_triggered(){
         //    connect(m_thread,SIGNAL(finished()),this,SLOT(cleanup()));
         connect(m_thread,SIGNAL(finished()),this,SLOT(ZeroButton_cleanup()));
 
-        m_thread->start();
         thread_status = ZERO_RUNNING;
+        qDebug() << "action new zero after start" << thread_status;
+
+        m_thread->start();
+
         QString text(tr("Stop "));
         text.append( ZeroThread->name);
         ui->ZeroButton->setText(text);
@@ -458,7 +463,7 @@ void AeroISTWindow::on_actionNew_Zero_triggered(){
     }
 
 }
-
+/*
 void AeroISTWindow::on_ZeroButton_clicked(){
     if (thread_status != STOPPED && thread_status != ZERO_RUNNING){
         message(tr("Thread busy"));
@@ -506,9 +511,10 @@ void AeroISTWindow::on_ZeroButton_clicked(){
         return;
     }
 
-}
+}*/
 
 void AeroISTWindow::ZeroButton_cleanup(){
+    qDebug() << "zero button cleanup" << thread_status;
     if (thread_status == ZERO_RUNNING){
         ui->ZeroButton->setText(tr("Start"));
         thread_status = STOPPED;

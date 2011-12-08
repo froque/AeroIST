@@ -29,17 +29,30 @@ enum ThreadStatus{
 };
 
 
-#define DEFAULT_ALPHA_MIN   -30
-#define DEFAULT_ALPHA_MAX   30
+//#define DEFAULT_ALPHA_MIN   -30
+//#define DEFAULT_ALPHA_MAX   30
 #define DEFAULT_ALPHA_STEP  1
 
-#define DEFAULT_BETA_MIN    -170
-#define DEFAULT_BETA_MAX    170
+//#define DEFAULT_BETA_MIN    -170
+//#define DEFAULT_BETA_MAX    170
 #define DEFAULT_BETA_STEP   1
 
 #define DEFAULT_WIND_MIN    0
 #define DEFAULT_WIND_MAX    100 //Percentage
 #define DEFAULT_WIND_STEP   1
+
+
+#define ANGLEZERO_ALPHA 730303.0
+#define ANGLEZERO_BETA 80751.0
+#define ANGLESENSITIVITY_ALPHA 0.0000009007
+#define ANGLESENSITIVITY_BETA 0.00211000
+
+#define ANGLEMAX_ALPHA 30.0
+#define ANGLEMAX_BETA 180.0
+
+#define PRECISION 0.03
+//#define ARDUINOPATH "/dev/ttyUSB0"
+
 
 #ifdef DEBUG
 #include <QDebug>

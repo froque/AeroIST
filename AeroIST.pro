@@ -44,7 +44,8 @@ SOURCES += main.cpp \
     zeropreferences.cpp \
     curvenew.cpp \
     curvedelete.cpp \
-    force.cpp
+    force.cpp \
+    angle.cpp
 
 HEADERS += aeroistwindow.h \
     measure.h \
@@ -61,7 +62,8 @@ HEADERS += aeroistwindow.h \
     zeropreferences.h \
     curvenew.h \
     curvedelete.h \
-    force.h
+    force.h \
+    angle.h
 
 FORMS += aeroistwindow.ui \
     preferences.ui \

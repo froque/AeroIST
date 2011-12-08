@@ -111,13 +111,13 @@ void MeasurementsPreferences::maxminstep_enabled(int id){
                 ui->spinBoxN->setEnabled(true);
                 return;
     case ALPHA:
-                min = DEFAULT_ALPHA_MIN;
-                max = DEFAULT_ALPHA_MAX;
+                min = - ANGLEMAX_ALPHA;
+                max = ANGLEMAX_ALPHA;
                 step = DEFAULT_ALPHA_STEP;
                 break;
     case BETA:
-                min = DEFAULT_BETA_MIN;
-                max = DEFAULT_BETA_MAX;
+                min = -ANGLEMAX_BETA;
+                max = ANGLEMAX_ALPHA;
                 step = DEFAULT_BETA_STEP;
                 break;
     case WIND:

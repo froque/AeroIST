@@ -13,7 +13,8 @@
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-
+    QCoreApplication::setOrganizationName("IST");
+    QCoreApplication::setApplicationName("AeroIST");
 //    QTranslator translator;
 //    translator.load("aeroist");
 //    app.installTranslator(&translator);

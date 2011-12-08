@@ -14,9 +14,9 @@ Preferences::Preferences(QSettings *settings,QWidget *parent) :
 {
     ui->setupUi(this);
 
-    settings->setValue("alpha_path", settings->value("alpha_path","/dev/alpha"));
+    settings->setValue("alpha_path", settings->value("alpha_path","/dev/angle_alpha"));
     ui->edit_alpha->setText(        settings->value("alpha_path").toString() );
-    settings->setValue("beta_path", settings->value("beta_path","/dev/beta"));
+    settings->setValue("beta_path", settings->value("beta_path","/dev/angle_beta"));
     ui->edit_beta->setText(         settings->value("beta_path").toString() );
     settings->setValue("motor_path", settings->value("motor_path","/dev/ttyS0"));
     ui->edit_motor->setText(        settings->value("motor_path").toString() );

@@ -13,14 +13,12 @@ void invert(int n,double coe_matrix[6][6],double matrix[6][6]);
 
 // initialize the class
 Force::Force(matrix_t matrix, int dvm_time): dvm_time(dvm_time){
-    qDebug() << "SPARTA";
     QSettings settings;
     if (matrix == FLOOR){
         filename = settings.value("forces/matrix_floor","matrix 1.coe").toString();
     } else{
         filename = settings.value("forces/matrix_middle","matrix 2.coe").toString();
     }
-    qDebug() << filename;
     std::ifstream matrix_file(filename.toStdString().c_str(),std::ios::in|std::ios::binary);
     if (matrix_file.is_open()) {
         matrix_file.read((char*)&coe, sizeof(struct matrix));
@@ -35,7 +33,6 @@ Force::Force(matrix_t matrix, int dvm_time): dvm_time(dvm_time){
     nominal_load[4] = 100.0;
     nominal_load[5] = 100.0;
 
-    qDebug() << "force constructor";
     g_id = ibdev(0,7,0,15,1,0);
     if ( ! g_id ){
         throw;
@@ -49,13 +46,9 @@ Force::~Force(){
 
 // public function. Read from the dmm and returns the forces
 void Force::read(void){
-    qDebug() << "read fucntion 1";
     read_dvm();             // determines dvm
-    qDebug() << "read fucntion 2";
     convert_dvm();        // determines dvm_si
-    qDebug() << "read fucntion 3";
     newton_method();      // determines forces
-    qDebug() << "read fucntion 4";
 }
 
 

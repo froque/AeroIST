@@ -3,6 +3,7 @@
 
 #include "common.h"
 #include "force.h"
+#include "angle.h"
 #if DEBUG
 #include <QThread>
 #endif // DEBUG
@@ -44,6 +45,7 @@ public slots:
 private:
     void subtract(measure *minuend, measure subtrahend);
     void read_m(void);
+    void read_m_debug(void);
     void clear_m(void);
     double GetRandomMeasurement(void);
     QElapsedTimer timer;
@@ -66,6 +68,8 @@ private:
 
     // Variables
     Force *force;
+    Alpha *alpha;
+    Beta *beta;
 };
 
 #endif // MYTHREAD_H
