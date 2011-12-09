@@ -49,7 +49,9 @@ MeasureThread::MeasureThread(ZeroModel *measurement,QObject *parent) :
 }
 
 MeasureThread::~MeasureThread(){
+#if REAL_MEASURES
     delete force;
+#endif //REAL_MEASURES
 }
 
 void MeasureThread::produce(){
