@@ -2,6 +2,7 @@
 #define COMMON_H
 
 #define DEBUG 1
+#define REAL_MEASURES 0
 #define SINGLE_SHARED 0 // Don't test for open instances
 #define SINGLE_PID 0
 #define SINGLE_SETTINGS 0
@@ -52,6 +53,11 @@ enum ThreadStatus{
 
 #define PRECISION 0.03
 //#define ARDUINOPATH "/dev/ttyUSB0"
+
+//#define MOTOR_DEV "/dev/ttyS0"
+#define WIND_FULLSPEED 16384.0 // 100% according to manual
+#define WIND_FULLPERCENTAGE 100.0
+
 
 
 #ifdef DEBUG

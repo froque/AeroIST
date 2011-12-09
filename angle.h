@@ -8,7 +8,7 @@ public:
     Angle();
     ~Angle();
     void read(void);
-//    void set(double);
+    void set(double);
     double angle;
     int digits;
     int zero;

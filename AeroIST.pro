@@ -45,7 +45,11 @@ SOURCES += main.cpp \
     curvenew.cpp \
     curvedelete.cpp \
     force.cpp \
-    angle.cpp
+    angle.cpp \
+    temperature.cpp \
+    botoneira.c \
+    arduino-serial.c \
+    wind.cpp
 
 HEADERS += aeroistwindow.h \
     measure.h \
@@ -63,7 +67,11 @@ HEADERS += aeroistwindow.h \
     curvenew.h \
     curvedelete.h \
     force.h \
-    angle.h
+    angle.h \
+    temperature.h \
+    botoneira.h \
+    arduino-serial.h \
+    wind.h
 
 FORMS += aeroistwindow.ui \
     preferences.ui \

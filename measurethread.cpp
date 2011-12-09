@@ -18,22 +18,17 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
 {
     m_parent_thread = thread();
     isZero = false;
-    if (isZero == false){
-        if (measurement->zero == 0){
-            qWarning("zero is not set to the measurement");
-            return;
-        }
-        zero.force[0] = measurement->zero->force[0].first();
-        zero.force[1] = measurement->zero->force[1].first();
-        zero.force[2] = measurement->zero->force[2].first();
-        zero.force[3] = measurement->zero->force[3].first();
-        zero.force[4] = measurement->zero->force[4].first();
-        zero.force[5] = measurement->zero->force[5].first();
-    }
 
+    for (int k=0; k< NUMCHANNELS;k++){
+        zero.force[k] = measurement->zero->force[k].first();
+    }
+#if REAL_MEASURES
     force = new Force(measurement->matrix,measurement->dvm_time);
     alpha = new Alpha;
     beta = new Beta;
+    temperature = new Temperature;
+    wind = new Wind;
+#endif //REAL_MEASURES
 }
 
 MeasureThread::MeasureThread(ZeroModel *measurement,QObject *parent) :
@@ -43,9 +38,14 @@ MeasureThread::MeasureThread(ZeroModel *measurement,QObject *parent) :
     m_parent_thread = thread();
     isZero = true;
     n=1;
+    control_type = NONE;
+#if REAL_MEASURES
     force = new Force(measurement->matrix,measurement->dvm_time);
     alpha = new Alpha;
     beta = new Beta;
+    temperature = new Temperature;
+    wind = new Wind;
+#endif //REAL_MEASURES
 }
 
 MeasureThread::~MeasureThread(){
@@ -58,25 +58,38 @@ void MeasureThread::produce(){
     QEventLoop eloop;
     k = 1;
     while(!m_stop) {
+        clear_m();
+#if REAL_MEASURES
+        set_m();
         read_m();
+#else
+        set_m_virtual();
+        read_m_virtual();
+#endif //REAL_MEASURES
         if (isZero == false){
             subtract(&m,zero);
         }
-        if (control_type != NONE){
-            current = current + step;
-        } else {
+
+        if (control_type == NONE){
             if (n != 0 && k>= n ){
                 m_stop = true;
             }
+        } else {
+            current = current + step;
+            if (current > max ){
+                m_stop = true;
+            }
         }
-        if (current > max ){
-            m_stop = true;
-        }
+
         k++;
+        qDebug() << "before emit signal " << m.force[0];
         emit MeasureDone(m);
 
         eloop.processEvents(QEventLoop::AllEvents, 50);
     }
+#if REAL_MEASURES
+    wind->set(0);   // cleanup
+#endif //REAL_MEASURES
     if (m_parent_thread != thread())
     {
         thread()->quit();
@@ -89,42 +102,39 @@ double MeasureThread::GetRandomMeasurement(void){
 }
 
 
-
-void MeasureThread::read_m(void){
-
-    clear_m();
-
-    m.tempo = timer.elapsed()/1000.0;
+void MeasureThread::set_m(void){
     switch (control_type){
     case NONE :
-        for (int k=0; k< average_number ; k++ ) m.wind += GetRandomMeasurement();
-        for (int k=0; k< average_number ; k++ ) m.temp += GetRandomMeasurement();
         break;
     case ALPHA:
         Helper::msleep(settling_time*1000);
-        for (int k=0; k< average_number ; k++ ) m.wind += GetRandomMeasurement();
-        for (int k=0; k< average_number ; k++ ) m.temp += - 2 * m.alpha  + 0.01 *GetRandomMeasurement();
+        alpha->set(current);
         break;
     case BETA:
         Helper::msleep(settling_time*1000);
-
-        for (int k=0; k< average_number ; k++ ) m.wind += GetRandomMeasurement();
-        for (int k=0; k< average_number ; k++ ) m.temp += - 2 * m.beta  + 0.01 *GetRandomMeasurement();
+        beta->set(current);
         break;
     case WIND:
         Helper::msleep(settling_time*1000);
-        for (int k=0; k< average_number ; k++ ) m.wind += current ;//* 1.01 * GetRandomMeasurement();;
-        for (int k=0; k< average_number ; k++ ) m.temp += - 2 * m.wind  + 0.01 *GetRandomMeasurement();
+        wind->set(current);
         break;
     }
+}
+
+void MeasureThread::read_m(void){
+
+    m.tempo = timer.elapsed()/1000.0;
 
     for (int n=0;n < average_number; n++){
         force->read();
         alpha->read();
         beta->read();
-
+        temperature->read();
+        wind->get();
         m.alpha += alpha->angle;
         m.beta += beta->angle;
+        m.temp += temperature->temp;
+        m.wind += wind->speed_actual;
         for (int k=0; k < NUMCHANNELS; k++ ){
             m.force[k] += force->dvm_si[k];
         }
@@ -140,14 +150,54 @@ void MeasureThread::read_m(void){
     m.wind = m.wind / average_number;
 }
 
+void MeasureThread::set_m_virtual(void){
+    switch (control_type){
+    case NONE :
+        break;
+    case ALPHA:
+        Helper::msleep(settling_time*1000);
+        m.alpha = current;
+        break;
+    case BETA:
+        Helper::msleep(settling_time*1000);
+        m.beta = current;
+        break;
+    case WIND:
+        Helper::msleep(settling_time*1000);
+        m.wind = current;
+        break;
+    }
+}
 
-
-void MeasureThread::read_m_debug(void){
-
-    clear_m();
+void MeasureThread::read_m_virtual(void){
 
     m.tempo = timer.elapsed()/1000.0;
-    qDebug() << m.tempo;
+
+    for (int n=0;n < average_number; n++){
+        m.alpha += GetRandomMeasurement();
+        m.beta += GetRandomMeasurement();
+        m.temp += GetRandomMeasurement();
+        m.wind += GetRandomMeasurement();
+        for (int k=0; k < NUMCHANNELS; k++ ){
+            m.force[k] += GetRandomMeasurement();
+        }
+    }
+
+    // Divide by N
+    m.alpha = m.alpha / average_number;
+    m.beta = m.beta  / average_number;
+    for (int k=0; k<6; k++){
+        m.force[k] = m.force[k] / average_number;
+    }
+    m.temp = m.temp / average_number;
+    m.wind = m.wind / average_number;
+}
+
+
+void MeasureThread::read_m_virtual_orig(void){
+
+    m.tempo = timer.elapsed()/1000.0;
+//    qDebug() << m.tempo;
     switch (control_type){
     case NONE :
         for (int k=0; k< average_number ; k++ ) m.alpha += GetRandomMeasurement();
@@ -211,6 +261,7 @@ void MeasureThread::stop()
     m_stop = true;
 }
 
+
 void MeasureThread::subtract(measure *minuend, measure subtrahend){
     minuend->force[0] -= subtrahend.force[0];
     minuend->force[1] -= subtrahend.force[1];
@@ -231,4 +282,16 @@ void MeasureThread::clear_m(void){
     m.force[5] = 0;
     m.temp=0;
     m.wind=0;
+}
+
+void MeasureThread::set_alpha(double angle){
+//    alpha->set(angle);
+}
+
+void MeasureThread::set_beta(double angle){
+//    beta->set(angle);
+}
+
+void MeasureThread::set_wind(double speed){
+//    wind->set(speed);
 }

@@ -24,13 +24,16 @@ public:
     ~AeroISTWindow();
 
 signals:
-
+    void set_alpha(double);
+    void set_beta(double);
+    void set_wind(double);
 public slots:
 
 private slots:
     // buttons
     void on_ThreadButton_clicked();
     void ThreadButton_cleanup();
+    void cleanup();
 //    void on_ZeroButton_clicked();
     void ZeroButton_cleanup();
 
@@ -64,14 +67,18 @@ private slots:
     void on_actionDelete_Zero_triggered();
     void on_actionView_Zero_details_triggered();
 
-
-    void cleanup();
-
     // PLOT
     void on_actionNew_Curve_triggered();
     void on_actionClear_Plot_triggered();
     void on_actionDelete_Curve_triggered();
 
+    // control spin boxes
+    void on_doubleSpinBoxWind_valueChanged(double arg1);
+    void on_doubleSpinBoxALpha_valueChanged(double arg1);
+    void on_doubleSpinBoxBeta_valueChanged(double arg1);
+
+    // enable/disable actions
+    void zero_actions(void);
 private:
     void message(const QString &string);
     void start_loop( MeasurementsModel * measurement, MeasureThread *measureThread, const QObject *receiver, const char * slot);

@@ -158,6 +158,10 @@ QVariant MeasurementsModel::headerData(int section, Qt::Orientation orientation,
     if (role != Qt::DisplayRole)
         return QVariant();
 
+    if (orientation == Qt::Vertical){
+        return section+1;
+    }
+
     if (orientation == Qt::Horizontal) {
         switch (section) {
             case 0:

@@ -51,14 +51,14 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
     QItemSelectionModel *selection = ui->listView->selectionModel();
     connect(selection,SIGNAL(currentChanged(QModelIndex,QModelIndex)),this,SLOT(selectionChanged(QModelIndex,QModelIndex)));
     ui->listView->setContextMenuPolicy(Qt::ActionsContextMenu);
-    ui->listView->insertAction(0,ui->actionDelete_Measure);
     ui->listView->insertAction(0,ui->actionView_Measure_details);
+    ui->listView->insertAction(0,ui->actionDelete_Measure);
 
     selection = ui->listViewZero->selectionModel();
 //    connect(selection,SIGNAL(currentChanged(QModelIndex,QModelIndex)),this,SLOT(selectionChanged(QModelIndex,QModelIndex)));
     ui->listViewZero->setContextMenuPolicy(Qt::ActionsContextMenu);
-    ui->listViewZero->insertAction(0,ui->actionDelete_Zero);
     ui->listViewZero->insertAction(0,ui->actionView_Zero_details);
+    ui->listViewZero->insertAction(0,ui->actionDelete_Zero);
 
     // load settings from .ini file
     load_settings();
@@ -122,6 +122,18 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
     QwtLegend *legend = new QwtLegend;
     legend->setItemMode(QwtLegend::CheckableItem);
     ui->qwtPlot->insertLegend(legend);
+    ui->doubleSpinBoxALpha->setRange(-ANGLEMAX_ALPHA,ANGLEMAX_ALPHA);
+    ui->doubleSpinBoxALpha->setSingleStep(DEFAULT_ALPHA_STEP);
+    ui->doubleSpinBoxALpha->setValue(0);
+    ui->doubleSpinBoxBeta->setRange(-ANGLEMAX_BETA,ANGLEMAX_BETA);
+    ui->doubleSpinBoxBeta->setSingleStep(DEFAULT_BETA_STEP);
+    ui->doubleSpinBoxBeta->setValue(0);
+    ui->doubleSpinBoxWind->setRange(DEFAULT_WIND_MIN,DEFAULT_WIND_MAX);
+    ui->doubleSpinBoxWind->setSingleStep(DEFAULT_WIND_STEP);
+    ui->doubleSpinBoxWind->setValue(0);
+
+//    connect(zero_list,SIGNAL(dataChanged(QModelIndex,QModelIndex)),this,SLOT(zero_actions(void)));
+//    connect(zero_list,SIGNAL(rowsInserted ( const QModelIndex & parent, int start, int end )),this,SLOT(zero_actions()));
 }
 
 AeroISTWindow::~AeroISTWindow()
@@ -173,7 +185,9 @@ void AeroISTWindow::on_ThreadButton_clicked(){
     connect(ui->ThreadButton, SIGNAL(clicked()), m_test, SLOT(stop()));
 //    connect(m_thread,SIGNAL(finished()),this,SLOT(cleanup()));
     connect(m_thread,SIGNAL(finished()),this,SLOT(ThreadButton_cleanup()));
-
+//    connect(this,SIGNAL(set_alpha(double)),m_test,SLOT(set_alpha(double)));
+//    connect(this,SIGNAL(set_beta(double)),m_test,SLOT(set_beta(double)));
+//    connect(this,SIGNAL(set_wind(double)),m_test,SLOT(set_wind(double)));
     m_thread->start();
     thread_status = MEASURE_RUNNING;
     QString text(tr("Stop "));
@@ -338,6 +352,7 @@ void AeroISTWindow::load_settings(void){
     ui->tabWidget->setCurrentIndex(settings->value("gui/tabwidget",0).toInt());
     ui->splitterLists->restoreState(settings->value("gui/splitterLists/state").toByteArray());
     ui->splitterGlobal->restoreState(settings->value("gui/splitterGlobal/state").toByteArray());
+    ui->tableView->horizontalHeader()->setDefaultSectionSize( settings->value("gui/tablecolumnsize",80).toInt());
 }
 
 void AeroISTWindow::save_settings(void){
@@ -347,6 +362,8 @@ void AeroISTWindow::save_settings(void){
     settings->setValue("gui/tabwidget",ui->tabWidget->currentIndex());
     settings->setValue("gui/splitterLists/state",ui->splitterLists->saveState());
     settings->setValue("gui/splitterGlobal/state",ui->splitterGlobal->saveState());
+
+    settings->setValue("gui/tablecolumnsize",ui->tableView->horizontalHeader()->defaultSectionSize());
 }
 
 void AeroISTWindow::on_actionView_Measure_details_triggered()
@@ -447,7 +464,7 @@ void AeroISTWindow::on_actionNew_Zero_triggered(){
         connect(m_test, SIGNAL(MeasureDone(measure)),ZeroThread, SLOT(GetMeasure(measure)));
 
         // stop connects
-        connect(ui->ZeroButton, SIGNAL(clicked()), m_test, SLOT(stop()));
+//        connect(ui->ZeroButton, SIGNAL(clicked()), m_test, SLOT(stop()));
         //    connect(m_thread,SIGNAL(finished()),this,SLOT(cleanup()));
         connect(m_thread,SIGNAL(finished()),this,SLOT(ZeroButton_cleanup()));
 
@@ -456,9 +473,9 @@ void AeroISTWindow::on_actionNew_Zero_triggered(){
 
         m_thread->start();
 
-        QString text(tr("Stop "));
-        text.append( ZeroThread->name);
-        ui->ZeroButton->setText(text);
+//        QString text(tr("Stop "));
+//        text.append( ZeroThread->name);
+//        ui->ZeroButton->setText(text);
         return;
     }
 
@@ -516,7 +533,7 @@ void AeroISTWindow::on_ZeroButton_clicked(){
 void AeroISTWindow::ZeroButton_cleanup(){
     qDebug() << "zero button cleanup" << thread_status;
     if (thread_status == ZERO_RUNNING){
-        ui->ZeroButton->setText(tr("Start"));
+//        ui->ZeroButton->setText(tr("Start"));
         thread_status = STOPPED;
         cleanup();
         return;
@@ -571,3 +588,26 @@ void AeroISTWindow::on_actionZero_List_toggled(bool arg1){
     ui->listViewZero->setVisible(arg1);
 }
 // View widgets - end
+
+void AeroISTWindow::on_doubleSpinBoxWind_valueChanged(double arg1){
+    emit set_wind(arg1);
+}
+
+void AeroISTWindow::on_doubleSpinBoxALpha_valueChanged(double arg1){
+    emit set_alpha(arg1);
+}
+
+void AeroISTWindow::on_doubleSpinBoxBeta_valueChanged(double arg1){
+    emit set_beta(arg1);
+}
+
+void AeroISTWindow::zero_actions(){
+    qDebug() << "zero actions";
+    if(zero_list->rowCount()==0){
+        ui->actionDelete_Zero->setEnabled(false);
+        ui->actionView_Zero_details->setEnabled(false);
+    }else{
+        ui->actionDelete_Zero->setEnabled(true);
+        ui->actionView_Zero_details->setEnabled(true);
+    }
+}

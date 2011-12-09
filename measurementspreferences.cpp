@@ -117,7 +117,7 @@ void MeasurementsPreferences::maxminstep_enabled(int id){
                 break;
     case BETA:
                 min = -ANGLEMAX_BETA;
-                max = ANGLEMAX_ALPHA;
+                max = ANGLEMAX_BETA;
                 step = DEFAULT_BETA_STEP;
                 break;
     case WIND:

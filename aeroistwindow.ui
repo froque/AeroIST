@@ -37,9 +37,47 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="ZeroButton">
+       <widget class="QLabel" name="labelAlpha">
         <property name="text">
-         <string>Start Zero</string>
+         <string>Alpha</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QDoubleSpinBox" name="doubleSpinBoxALpha">
+        <property name="keyboardTracking">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="labelBeta">
+        <property name="text">
+         <string>Beta</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QDoubleSpinBox" name="doubleSpinBoxBeta">
+        <property name="keyboardTracking">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="labelWind">
+        <property name="text">
+         <string>Wind</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QDoubleSpinBox" name="doubleSpinBoxWind">
+        <property name="keyboardTracking">
+         <bool>false</bool>
+        </property>
+        <property name="maximum">
+         <double>100.000000000000000</double>
         </property>
        </widget>
       </item>
@@ -113,10 +151,10 @@
             <bool>true</bool>
            </property>
            <attribute name="horizontalHeaderDefaultSectionSize">
-            <number>90</number>
+            <number>80</number>
            </attribute>
            <attribute name="verticalHeaderVisible">
-            <bool>false</bool>
+            <bool>true</bool>
            </attribute>
           </widget>
          </item>
@@ -182,7 +220,6 @@
     <addaction name="actionToolbar"/>
     <addaction name="actionMeasure_List"/>
     <addaction name="actionZero_List"/>
-    <addaction name="actionPlot_Legend"/>
    </widget>
    <widget class="QMenu" name="menuPlot">
     <property name="title">
@@ -218,7 +255,6 @@
    <addaction name="actionSave_Project"/>
    <addaction name="actionLoad_Project"/>
    <addaction name="separator"/>
-   <addaction name="actionPreferences"/>
    <addaction name="actionNew_Zero"/>
    <addaction name="actionDelete_Zero"/>
    <addaction name="actionView_Zero_details"/>
@@ -257,6 +293,9 @@
    </property>
   </action>
   <action name="actionDelete_Measure">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Delete Measure</string>
    </property>
@@ -289,6 +328,9 @@
    </property>
   </action>
   <action name="actionView_Measure_details">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>View Measure details</string>
    </property>
@@ -327,11 +369,17 @@
    </property>
   </action>
   <action name="actionDelete_Zero">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Delete Zero</string>
    </property>
   </action>
   <action name="actionView_Zero_details">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>View Zero details</string>
    </property>
@@ -360,17 +408,6 @@
   <action name="actionDelete_Curve">
    <property name="text">
     <string>Delete Curve</string>
-   </property>
-  </action>
-  <action name="actionPlot_Legend">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="checked">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Plot Legend</string>
    </property>
   </action>
  </widget>

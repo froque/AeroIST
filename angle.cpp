@@ -15,8 +15,8 @@ extern "C" int set_relay(int fd, char relay , int command);
 
 
 Angle::Angle(){
-//    QSettings settings;
-//    arduinofd = init_arduino(settings.value("arduino_path").toString().toStdString());
+    QSettings settings;
+    arduinofd = init_arduino(settings.value("arduino_path").toString().toStdString().c_str());
 //    arduinofd = init_arduino(ARDUINOPATH);
 }
 
@@ -24,7 +24,7 @@ Angle::~Angle(){
     close(fp);
 
 }
-/*
+
 void Angle::set(double angle_dest){
     //max
     if (angle_dest > anglemax){
@@ -60,7 +60,7 @@ void Angle::set(double angle_dest){
         set_relay(arduinofd,relay_decrease,0);
     }
     read(); //update value
-}*/
+}
 
 void Angle::read(void){
     if ( ::read(fp, &digits, sizeof(int)) == -1){

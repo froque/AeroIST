@@ -4,6 +4,8 @@
 #include "common.h"
 #include "force.h"
 #include "angle.h"
+#include "temperature.h"
+#include "wind.h"
 #if DEBUG
 #include <QThread>
 #endif // DEBUG
@@ -41,11 +43,16 @@ public slots:
     void produce(void);
 //    void start_timer(void);
     void stop();
-
+    void set_alpha(double);
+    void set_beta(double);
+    void set_wind(double);
 private:
     void subtract(measure *minuend, measure subtrahend);
+    void set_m(void);
     void read_m(void);
-    void read_m_debug(void);
+    void set_m_virtual(void);
+    void read_m_virtual(void);
+    void read_m_virtual_orig(void);
     void clear_m(void);
     double GetRandomMeasurement(void);
     QElapsedTimer timer;
@@ -70,6 +77,8 @@ private:
     Force *force;
     Alpha *alpha;
     Beta *beta;
+    Temperature *temperature;
+    Wind *wind;
 };
 
 #endif // MYTHREAD_H
