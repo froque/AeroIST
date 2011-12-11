@@ -55,7 +55,7 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
     ui->listView->insertAction(0,ui->actionDelete_Measure);
 
     selection = ui->listViewZero->selectionModel();
-//    connect(selection,SIGNAL(currentChanged(QModelIndex,QModelIndex)),this,SLOT(selectionChanged(QModelIndex,QModelIndex)));
+    connect(selection,SIGNAL(currentChanged(QModelIndex,QModelIndex)),this,SLOT(ZeroSelectionChanged(QModelIndex,QModelIndex)));
     ui->listViewZero->setContextMenuPolicy(Qt::ActionsContextMenu);
     ui->listViewZero->insertAction(0,ui->actionView_Zero_details);
     ui->listViewZero->insertAction(0,ui->actionDelete_Zero);
@@ -132,8 +132,7 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
     ui->doubleSpinBoxWind->setSingleStep(DEFAULT_WIND_STEP);
     ui->doubleSpinBoxWind->setValue(0);
 
-//    connect(zero_list,SIGNAL(dataChanged(QModelIndex,QModelIndex)),this,SLOT(zero_actions(void)));
-//    connect(zero_list,SIGNAL(rowsInserted ( const QModelIndex & parent, int start, int end )),this,SLOT(zero_actions()));
+
 }
 
 AeroISTWindow::~AeroISTWindow()
@@ -337,6 +336,16 @@ void AeroISTWindow::selectionChanged(const QModelIndex &current ,const QModelInd
     }
 }
 
+void AeroISTWindow::ZeroSelectionChanged(const QModelIndex &current ,const QModelIndex &previous){
+    Q_UNUSED(previous);
+    if (current.isValid()){
+        ui->actionDelete_Zero->setEnabled(true);
+        ui->actionView_Zero_details->setEnabled(true);
+    } else {
+        ui->actionDelete_Zero->setEnabled(false);
+        ui->actionView_Zero_details->setEnabled(false);
+    }
+}
 
 void AeroISTWindow::on_listView_activated(const QModelIndex &index){
     ui->tableView->setModel( measure_list->at(index.row()));
@@ -601,13 +610,10 @@ void AeroISTWindow::on_doubleSpinBoxBeta_valueChanged(double arg1){
     emit set_beta(arg1);
 }
 
-void AeroISTWindow::zero_actions(){
-    qDebug() << "zero actions";
-    if(zero_list->rowCount()==0){
-        ui->actionDelete_Zero->setEnabled(false);
-        ui->actionView_Zero_details->setEnabled(false);
-    }else{
-        ui->actionDelete_Zero->setEnabled(true);
-        ui->actionView_Zero_details->setEnabled(true);
+void AeroISTWindow::on_actionNames_in_Toolbar_toggled(bool arg1){
+    if(arg1){
+        ui->toolBar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    } else {
+        ui->toolBar->setToolButtonStyle(Qt::ToolButtonIconOnly);
     }
 }

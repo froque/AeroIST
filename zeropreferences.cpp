@@ -27,7 +27,12 @@ ZeroPreferences::ZeroPreferences(ZeroModel *measurement, QSettings *settings, QW
     ui->combo_dvm_time->setCurrentIndex(index);
 
     ui->spinBoxAverage->setValue(settings->value("default_average_number").toInt());
-
+    ui->doubleSpinBoxAlpha->setRange(-ANGLEMAX_ALPHA,ANGLEMAX_ALPHA);
+    ui->doubleSpinBoxAlpha->setSingleStep(DEFAULT_ALPHA_STEP);
+    ui->doubleSpinBoxBeta->setRange(-ANGLEMAX_BETA,ANGLEMAX_BETA);
+    ui->doubleSpinBoxBeta->setSingleStep(DEFAULT_BETA_STEP);
+    ui->doubleSpinBoxWind->setRange(DEFAULT_WIND_MIN,DEFAULT_WIND_MAX);
+    ui->doubleSpinBoxWind->setSingleStep(DEFAULT_WIND_STEP);
     adjustSize();
 
 }
@@ -38,14 +43,12 @@ ZeroPreferences::~ZeroPreferences()
     delete ui;
 }
 
-void ZeroPreferences::on_buttonBox_accepted(){
-    measurement->name = ui->edit_name->text();
-    measurement->matrix = (matrix_t) ui->combo_matrix->currentIndex();
-    measurement->dvm_time = ui->combo_dvm_time->itemData(ui->combo_dvm_time->currentIndex()).toInt();
-    measurement->average_number = ui->spinBoxAverage->value();
-}
+//void ZeroPreferences::on_buttonBox_accepted(){
 
-void ZeroPreferences::test_input(){
+//}
+
+//void ZeroPreferences::test_input(){
+void ZeroPreferences::accept(){
     if (ui->edit_name->text().size()==0){
         QMessageBox msgBox;
         msgBox.setText(tr("Name is empty"));
@@ -53,5 +56,15 @@ void ZeroPreferences::test_input(){
         return ;
     }
 
-    emit ZeroPreferences::accept();
+//    emit ZeroPreferences::accept();
+
+    measurement->name = ui->edit_name->text();
+    measurement->description = ui->plainTextEdit->toPlainText();
+    measurement->matrix = (matrix_t) ui->combo_matrix->currentIndex();
+    measurement->dvm_time = ui->combo_dvm_time->itemData(ui->combo_dvm_time->currentIndex()).toInt();
+    measurement->average_number = ui->spinBoxAverage->value();
+    measurement->set_alpha = ui->doubleSpinBoxAlpha->value();
+    measurement->set_alpha = ui->doubleSpinBoxBeta->value();
+    measurement->set_wind = ui->doubleSpinBoxWind->value();
+
 }

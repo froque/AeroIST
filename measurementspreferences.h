@@ -22,8 +22,9 @@ public:
 
 
 private slots:
-    void on_buttonBox_accepted();
-    void test_input();
+//    void on_buttonBox_accepted();
+//    void test_input();
+    void accept(void);
     void maxminstep_enabled(int id);
     void on_combo_matrix_currentIndexChanged(int index);
 

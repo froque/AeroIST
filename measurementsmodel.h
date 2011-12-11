@@ -44,6 +44,7 @@ public:
     QVector<double>  vector_data(int index);
     // metadata about the measurement
     QString name;
+    QString description;
     int dvm_time;
     matrix_t matrix;
     int average_number;
@@ -51,6 +52,9 @@ public:
     double min;
     double max;
     double step;
+    double set_alpha;
+    double set_beta;
+    double set_wind;
     control_types_t control_type;
     ZeroModel *zero;
     int n;

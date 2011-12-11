@@ -36,6 +36,14 @@ MeasurementsPreferences::MeasurementsPreferences(MeasurementsModel *measurement,
     ui->spinBoxAverage->setValue(settings->value("default_average_number").toInt());
 
     ui->doubleSpinBoxSettling->setValue(settings->value("default_settling_time").toDouble());
+
+    ui->doubleSpinBoxAlpha->setRange(-ANGLEMAX_ALPHA,ANGLEMAX_ALPHA);
+    ui->doubleSpinBoxAlpha->setSingleStep(DEFAULT_ALPHA_STEP);
+    ui->doubleSpinBoxBeta->setRange(-ANGLEMAX_BETA,ANGLEMAX_BETA);
+    ui->doubleSpinBoxBeta->setSingleStep(DEFAULT_BETA_STEP);
+    ui->doubleSpinBoxWind->setRange(DEFAULT_WIND_MIN,DEFAULT_WIND_MAX);
+    ui->doubleSpinBoxWind->setSingleStep(DEFAULT_WIND_STEP);
+
     ui->controlGroup->setId(ui->radioButtonNone,NONE);
     ui->controlGroup->setId(ui->radioButtonAlpha,ALPHA);
     ui->controlGroup->setId(ui->radioButtonBeta,BETA);
@@ -52,7 +60,7 @@ MeasurementsPreferences::~MeasurementsPreferences()
 {
     delete ui;
 }
-
+/*
 void MeasurementsPreferences::on_buttonBox_accepted()
 {
     measurement->name = ui->edit_name->text();
@@ -68,9 +76,10 @@ void MeasurementsPreferences::on_buttonBox_accepted()
 
     measurement->zero = list->at(ui->combo_zero->currentIndex());
 
-}
+}*/
 
-void MeasurementsPreferences::test_input(){
+//void MeasurementsPreferences::test_input(){
+void MeasurementsPreferences::accept(){
     if (ui->edit_name->text().size()==0){
         QMessageBox msgBox;
         msgBox.setText(tr("Name is empty"));
@@ -98,52 +107,79 @@ void MeasurementsPreferences::test_input(){
         }
     }
 
-    emit MeasurementsPreferences::accept();
+//    emit MeasurementsPreferences::accept();
+    measurement->name = ui->edit_name->text();
+    measurement->description = ui->plainTextEdit->toPlainText();
+    measurement->matrix = (matrix_t) ui->combo_matrix->currentText().toInt();
+    measurement->dvm_time = ui->combo_dvm_time->itemData(ui->combo_dvm_time->currentIndex()).toInt();
+    measurement->average_number = ui->spinBoxAverage->value();
+    measurement->settling_time = ui->doubleSpinBoxSettling->value();
+    measurement->min = ui->doubleSpinBoxMin->value();
+    measurement->max = ui->doubleSpinBoxMax->value();
+    measurement->step = ui->doubleSpinBoxStep->value();
+    measurement->control_type = (control_types_t) ui->controlGroup->checkedId();
+    measurement->n = ui->spinBoxN->value();
+
+    measurement->set_alpha = ui->doubleSpinBoxAlpha->value();
+    measurement->set_beta = ui->doubleSpinBoxBeta->value();
+    measurement->set_wind = ui->doubleSpinBoxWind->value();
+
+    measurement->zero = list->at(ui->combo_zero->currentIndex());
+    QDialog::accept();
 }
 
 void MeasurementsPreferences::maxminstep_enabled(int id){
     double min = 0 ,max = 0,step;
     switch (id){
     case NONE:  ui->doubleSpinBoxMin->setEnabled(false);
-                ui->doubleSpinBoxMax->setEnabled(false);
-                ui->doubleSpinBoxStep->setEnabled(false);
-                ui->doubleSpinBoxSettling->setEnabled(false);
-                ui->spinBoxN->setEnabled(true);
-                return;
+        ui->doubleSpinBoxMax->setEnabled(false);
+        ui->doubleSpinBoxStep->setEnabled(false);
+        //                ui->doubleSpinBoxSettling->setEnabled(false);
+        ui->spinBoxN->setEnabled(true);
+        ui->doubleSpinBoxAlpha->setEnabled(true);
+        ui->doubleSpinBoxBeta->setEnabled(true);
+        ui->doubleSpinBoxWind->setEnabled(true);
+        return;
     case ALPHA:
-                min = - ANGLEMAX_ALPHA;
-                max = ANGLEMAX_ALPHA;
-                step = DEFAULT_ALPHA_STEP;
-                break;
+        ui->doubleSpinBoxAlpha->setEnabled(false);
+        ui->doubleSpinBoxBeta->setEnabled(true);
+        ui->doubleSpinBoxWind->setEnabled(true);
+        min = - ANGLEMAX_ALPHA;
+        max = ANGLEMAX_ALPHA;
+        step = DEFAULT_ALPHA_STEP;
+        break;
     case BETA:
-                min = -ANGLEMAX_BETA;
-                max = ANGLEMAX_BETA;
-                step = DEFAULT_BETA_STEP;
-                break;
+        ui->doubleSpinBoxAlpha->setEnabled(true);
+        ui->doubleSpinBoxBeta->setEnabled(false);
+        ui->doubleSpinBoxWind->setEnabled(true);
+        min = -ANGLEMAX_BETA;
+        max = ANGLEMAX_BETA;
+        step = DEFAULT_BETA_STEP;
+        break;
     case WIND:
-                min = DEFAULT_WIND_MIN;
-                max = DEFAULT_WIND_MAX;
-                step = DEFAULT_WIND_STEP;
-                break;
+        ui->doubleSpinBoxAlpha->setEnabled(true);
+        ui->doubleSpinBoxBeta->setEnabled(true);
+        ui->doubleSpinBoxWind->setEnabled(false);
+        min = DEFAULT_WIND_MIN;
+        max = DEFAULT_WIND_MAX;
+        step = DEFAULT_WIND_STEP;
+        break;
     }
-
+    ui->spinBoxN->setEnabled(false);
     ui->doubleSpinBoxMin->setEnabled(true);
     ui->doubleSpinBoxMax->setEnabled(true);
     ui->doubleSpinBoxStep->setEnabled(true);
-    ui->doubleSpinBoxSettling->setEnabled(true);
-    ui->doubleSpinBoxMin->setMinimum(min);
-    ui->doubleSpinBoxMin->setMaximum(max);
+    //    ui->doubleSpinBoxSettling->setEnabled(true);
+    ui->doubleSpinBoxMin->setRange(min,max);
     ui->doubleSpinBoxMin->setSingleStep(step);
-    ui->doubleSpinBoxMax->setMinimum(min);
-    ui->doubleSpinBoxMax->setMaximum(max);
+    ui->doubleSpinBoxMax->setRange(min,max);
     ui->doubleSpinBoxMax->setSingleStep(step);
-    ui->doubleSpinBoxStep->setMinimum(min);
-    ui->doubleSpinBoxStep->setMaximum(max);
+    ui->doubleSpinBoxStep->setRange(min,max);
     ui->doubleSpinBoxStep->setSingleStep(step);
     ui->doubleSpinBoxMin->setValue(min);
     ui->doubleSpinBoxMax->setValue(max);
     ui->doubleSpinBoxStep->setValue(step);
-    ui->spinBoxN->setEnabled(false);
+
 }
 
 void MeasurementsPreferences::on_combo_matrix_currentIndexChanged(int index){

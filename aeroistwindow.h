@@ -61,6 +61,7 @@ private slots:
     void on_listView_activated(const QModelIndex &index);
     void on_listViewZero_activated(const QModelIndex &index);
     void selectionChanged(const QModelIndex &current,const QModelIndex &previous);
+    void ZeroSelectionChanged(const QModelIndex &current,const QModelIndex &previous);
 
     // Zero actions
     void on_actionNew_Zero_triggered();
@@ -78,7 +79,8 @@ private slots:
     void on_doubleSpinBoxBeta_valueChanged(double arg1);
 
     // enable/disable actions
-    void zero_actions(void);
+    void on_actionNames_in_Toolbar_toggled(bool arg1);
+
 private:
     void message(const QString &string);
     void start_loop( MeasurementsModel * measurement, MeasureThread *measureThread, const QObject *receiver, const char * slot);

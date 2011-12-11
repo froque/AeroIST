@@ -8,7 +8,7 @@ MeasurementDetails::MeasurementDetails(MeasurementsModel *measurement, QWidget *
     ui->setupUi(this);
 
     ui->labelName->setText( measurement->name);
-
+    ui->labelDescription->setText(measurement->description);
     switch (measurement->matrix){
     case MIDDLE:
         ui->labelMatrix->setText(tr("Middle")); break;
@@ -50,6 +50,9 @@ MeasurementDetails::MeasurementDetails(MeasurementsModel *measurement, QWidget *
         ui->labelStep->hide();
         ui->labelSettling->hide();
         ui->labelN->setText(QString::number( measurement->n));
+        ui->labelAlpha->setText(QString::number(measurement->set_alpha));
+        ui->labelBeta->setText(QString::number(measurement->set_beta));
+        ui->labelWind->setText(QString::number(measurement->set_wind));
         break;
     case ALPHA:
         ui->labelControl->setText(tr("Alpha"));
@@ -59,6 +62,10 @@ MeasurementDetails::MeasurementDetails(MeasurementsModel *measurement, QWidget *
         ui->labelSettling->setText(QString::number(measurement->settling_time));
         ui->labelN->hide();
         ui->labelViewN->hide();
+        ui->labelAlpha->hide();
+        ui->labelViewAlpha->hide();
+        ui->labelBeta->setText(QString::number(measurement->set_beta));
+        ui->labelWind->setText(QString::number(measurement->set_wind));
         break;
     case BETA:
         ui->labelControl->setText(tr("Beta"));
@@ -68,6 +75,10 @@ MeasurementDetails::MeasurementDetails(MeasurementsModel *measurement, QWidget *
         ui->labelSettling->setText(QString::number(measurement->settling_time));
         ui->labelN->hide();
         ui->labelViewN->hide();
+        ui->labelAlpha->setText(QString::number(measurement->set_alpha));
+        ui->labelBeta->hide();
+        ui->labelViewBeta->hide();
+        ui->labelWind->setText(QString::number(measurement->set_wind));
         break;
     case WIND:
         ui->labelControl->setText(tr("Wind"));
@@ -77,6 +88,10 @@ MeasurementDetails::MeasurementDetails(MeasurementsModel *measurement, QWidget *
         ui->labelSettling->setText(QString::number(measurement->settling_time));
         ui->labelN->hide();
         ui->labelViewN->hide();
+        ui->labelAlpha->setText(QString::number(measurement->set_alpha));
+        ui->labelBeta->setText(QString::number(measurement->set_beta));
+        ui->labelWind->hide();
+        ui->labelViewWind->hide();
         break;
     }
 

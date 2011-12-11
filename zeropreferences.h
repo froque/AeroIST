@@ -19,8 +19,9 @@ public:
     ~ZeroPreferences();
 
 private slots:
-    void on_buttonBox_accepted();
-    void test_input();
+//    void on_buttonBox_accepted();
+//    void test_input();
+    void accept();
 
 private:
     Ui::ZeroPreferences *ui;

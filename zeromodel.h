@@ -28,9 +28,13 @@ public:
 
     // metadata about the measurement
     QString name;
+    QString description;
     int dvm_time;
     matrix_t matrix;
     int average_number;
+    double set_alpha;
+    double set_beta;
+    double set_wind;
 
 public slots:
     void GetMeasure(measure m);

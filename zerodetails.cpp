@@ -8,7 +8,7 @@ ZeroDetails::ZeroDetails(ZeroModel *measurement, QWidget *parent) :
     ui->setupUi(this);
 
     ui->labelName->setText( measurement->name);
-
+    ui->labelDescription->setText(measurement->description);
     switch (measurement->matrix){
     case MIDDLE:
         ui->labelMatrix->setText(tr("Middle")); break;
@@ -31,7 +31,10 @@ ZeroDetails::ZeroDetails(ZeroModel *measurement, QWidget *parent) :
         ui->labelMultimeter->setText(tr("10 s")); break;
     }
     ui->labelAverage->setText(QString::number(measurement->average_number));
-
+    ui->labelDescription->setText(measurement->description);
+    ui->labelAlpha->setText(QString::number(measurement->set_alpha));
+    ui->labelBeta->setText(QString::number(measurement->set_beta));
+    ui->labelWind->setText(QString::number(measurement->set_wind));
     this->adjustSize();
 
 }
