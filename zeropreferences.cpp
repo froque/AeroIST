@@ -67,4 +67,5 @@ void ZeroPreferences::accept(){
     measurement->set_alpha = ui->doubleSpinBoxBeta->value();
     measurement->set_wind = ui->doubleSpinBoxWind->value();
 
+    QDialog::accept();
 }

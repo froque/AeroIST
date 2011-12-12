@@ -12,6 +12,7 @@
 #include <qwt_plot_renderer.h>
 //#include "timescaledraw.h"
 #include <QMessageBox>
+#include <QtXml>
 #include "measurementspreferences.h"
 #include "zeropreferences.h"
 #include "measurementdetails.h"
@@ -292,7 +293,95 @@ void AeroISTWindow::on_actionSave_Project_triggered(){
     }
     QString fileName;
     fileName = QFileDialog::getSaveFileName(this, tr("Save Project"), ".", "");
-    measure_list->save(fileName);
+//    measure_list->save(fileName);
+    QDomDocument document;
+    QDomElement root = document.createElement("Zero");
+    document.appendChild(root);
+
+    ZeroModel *zero;
+    for (int k=0; k<zero_list->rowCount(); k++){
+        zero = zero_list->at(k);
+        QDomElement zero_element = document.createElement("Zero");
+        document.appendChild(zero_element);
+
+        QDomElement name = document.createElement("Name");
+        name.appendChild(document.createTextNode(zero->name));
+        zero_element.appendChild(name);
+
+        QDomElement id = document.createElement("Id");
+        id.appendChild(document.createTextNode(QString::number(k)));
+        zero_element.appendChild(id);
+
+        QDomElement description = document.createElement("Description");
+        description.appendChild(document.createTextNode(zero->description));
+        zero_element.appendChild(description);
+
+        QDomElement dvm_time = document.createElement("DVM Time");
+        dvm_time.appendChild(document.createTextNode(QString::number(zero->dvm_time)));
+        zero_element.appendChild(dvm_time);
+
+        QDomElement matrix = document.createElement("Matrix");
+        matrix.appendChild(document.createTextNode(QString::number(zero->matrix)));
+        zero_element.appendChild(matrix);
+
+        QDomElement average_number = document.createElement("average_number");
+        average_number.appendChild(document.createTextNode(QString::number(zero->average_number)));
+        zero_element.appendChild(average_number);
+
+        QDomElement set_alpha = document.createElement("Set Alpha");
+        set_alpha.appendChild(document.createTextNode(QString::number(zero->set_beta)));
+        zero_element.appendChild(set_alpha);
+
+        QDomElement set_beta = document.createElement("Set Beta");
+        set_beta.appendChild(document.createTextNode(QString::number(zero->set_beta)));
+        zero_element.appendChild(set_beta);
+
+        QDomElement set_wind = document.createElement("Set Wind");
+        set_wind.appendChild(document.createTextNode(QString::number(zero->set_wind)));
+        zero_element.appendChild(set_wind);
+
+        QDomElement data = document.createElement("Data");
+        zero_element.appendChild(data);
+
+        QDomElement force;
+        force = document.createElement("Force X");
+        data.appendChild(force);
+        for (int n=0; n < zero->rowCount(); n++){
+            force.appendChild(document.createTextNode(QString::number(zero->force[0].at(n))));
+        }
+        force = document.createElement("Force Y");
+        data.appendChild(force);
+        for (int n=0; n < zero->rowCount(); n++){
+            force.appendChild(document.createTextNode(QString::number(zero->force[0].at(n))));
+        }
+        force = document.createElement("Force Z");
+        data.appendChild(force);
+        for (int n=0; n < zero->rowCount(); n++){
+            force.appendChild(document.createTextNode(QString::number(zero->force[0].at(n))));
+        }
+        force = document.createElement("Moment X");
+        data.appendChild(force);
+        for (int n=0; n < zero->rowCount(); n++){
+            force.appendChild(document.createTextNode(QString::number(zero->force[0].at(n))));
+        }
+        force = document.createElement("Moment Y");
+        data.appendChild(force);
+        for (int n=0; n < zero->rowCount(); n++){
+            force.appendChild(document.createTextNode(QString::number(zero->force[0].at(n))));
+        }
+        force = document.createElement("Moment Z");
+        data.appendChild(force);
+        for (int n=0; n < zero->rowCount(); n++){
+            force.appendChild(document.createTextNode(QString::number(zero->force[0].at(n))));
+        }
+    }
+
+    QFile file(fileName);
+    if (file.open(QFile::WriteOnly|QFile::Text)){
+        QTextStream out(&file);
+        out << document.toString();
+    }
+    file.close();
 }
 
 

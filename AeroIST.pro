@@ -1,8 +1,9 @@
 # -------------------------------------------------
 # Project created by QtCreator 2011-08-11T23:59:52
 # -------------------------------------------------
-QT += core \
-    gui
+QT += core
+QT += gui
+QT += xml
 #TARGET = AeroIST
 TEMPLATE = app
 
