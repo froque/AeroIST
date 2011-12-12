@@ -288,6 +288,9 @@
    <property name="text">
     <string>New Measure</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
    <property name="iconVisibleInMenu">
     <bool>true</bool>
    </property>
@@ -307,6 +310,9 @@
    <property name="text">
     <string>Delete Measure</string>
    </property>
+   <property name="shortcut">
+    <string>Del</string>
+   </property>
    <property name="iconVisibleInMenu">
     <bool>true</bool>
    </property>
@@ -314,6 +320,9 @@
   <action name="actionSave_Project">
    <property name="text">
     <string>Save Project</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
    </property>
    <property name="iconVisibleInMenu">
     <bool>true</bool>
@@ -323,6 +332,9 @@
    <property name="text">
     <string>Load Project</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
    <property name="iconVisibleInMenu">
     <bool>true</bool>
    </property>
@@ -330,6 +342,9 @@
   <action name="actionClear_Project">
    <property name="text">
     <string>Clear Project</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+C</string>
    </property>
    <property name="iconVisibleInMenu">
     <bool>true</bool>
@@ -375,6 +390,9 @@
    <property name="text">
     <string>New Zero</string>
    </property>
+   <property name="shortcut">
+    <string>Alt+N</string>
+   </property>
   </action>
   <action name="actionDelete_Zero">
    <property name="enabled">
@@ -382,6 +400,9 @@
    </property>
    <property name="text">
     <string>Delete Zero</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+Del</string>
    </property>
   </action>
   <action name="actionView_Zero_details">
@@ -406,6 +427,9 @@
   <action name="actionNew_Curve">
    <property name="text">
     <string>New Curve</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+C</string>
    </property>
   </action>
   <action name="actionClear_Plot">
@@ -441,8 +465,14 @@
   </customwidget>
  </customwidgets>
  <tabstops>
+  <tabstop>listView</tabstop>
+  <tabstop>listViewZero</tabstop>
   <tabstop>tabWidget</tabstop>
   <tabstop>tableView</tabstop>
+  <tabstop>ThreadButton</tabstop>
+  <tabstop>doubleSpinBoxALpha</tabstop>
+  <tabstop>doubleSpinBoxBeta</tabstop>
+  <tabstop>doubleSpinBoxWind</tabstop>
  </tabstops>
  <resources/>
  <connections/>

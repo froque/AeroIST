@@ -439,6 +439,21 @@ void AeroISTWindow::load_settings(void){
     ui->splitterLists->restoreState(settings->value("gui/splitterLists/state").toByteArray());
     ui->splitterGlobal->restoreState(settings->value("gui/splitterGlobal/state").toByteArray());
     ui->tableView->horizontalHeader()->setDefaultSectionSize( settings->value("gui/tablecolumnsize",80).toInt());
+
+    QAction * action;
+    QList<QAction*> actions;
+
+    actions.append(ui->menuEdit->actions());
+    actions.append(ui->menuExport->actions());
+    actions.append(ui->menuPlot->actions());
+    actions.append(ui->menuProject->actions());
+    actions.append(ui->menuView->actions());
+
+    foreach (action, actions) {
+        if (!action->isSeparator() ){
+            action->setShortcut(QKeySequence(settings->value(QString("gui/shortcut/%1").arg(action->objectName()) ,action->shortcut().toString()).toString()));
+        }
+    }
 }
 
 void AeroISTWindow::save_settings(void){
@@ -448,8 +463,24 @@ void AeroISTWindow::save_settings(void){
     settings->setValue("gui/tabwidget",ui->tabWidget->currentIndex());
     settings->setValue("gui/splitterLists/state",ui->splitterLists->saveState());
     settings->setValue("gui/splitterGlobal/state",ui->splitterGlobal->saveState());
-
     settings->setValue("gui/tablecolumnsize",ui->tableView->horizontalHeader()->defaultSectionSize());
+
+
+    QAction * action;
+    QList<QAction*> actions;
+
+    actions.append(ui->menuEdit->actions());
+    actions.append(ui->menuExport->actions());
+    actions.append(ui->menuPlot->actions());
+    actions.append(ui->menuProject->actions());
+    actions.append(ui->menuView->actions());
+
+    foreach (action, actions) {
+        if (!action->isSeparator() ){
+        settings->setValue(QString("gui/shortcut/%1").arg(action->objectName()) ,action->shortcut().toString());
+        }
+    }
+
 }
 
 void AeroISTWindow::on_actionView_Measure_details_triggered()

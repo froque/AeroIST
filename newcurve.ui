@@ -62,6 +62,14 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>lineEdit</tabstop>
+  <tabstop>comboBox_x</tabstop>
+  <tabstop>listWidget_x</tabstop>
+  <tabstop>comboBox_y</tabstop>
+  <tabstop>listWidget_y</tabstop>
+  <tabstop>buttonBox</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>

@@ -131,6 +131,17 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>edit_name</tabstop>
+  <tabstop>plainTextEdit</tabstop>
+  <tabstop>spinBoxAverage</tabstop>
+  <tabstop>combo_matrix</tabstop>
+  <tabstop>combo_dvm_time</tabstop>
+  <tabstop>doubleSpinBoxAlpha</tabstop>
+  <tabstop>doubleSpinBoxBeta</tabstop>
+  <tabstop>doubleSpinBoxWind</tabstop>
+  <tabstop>buttonBox</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
