@@ -13,6 +13,10 @@
 //#include "timescaledraw.h"
 #include <QMessageBox>
 #include <QtXml>
+#include <QXmlSchema>
+#include <QXmlSchemaValidator>
+//#include <QtXmlPatterns/QXmlSchema>
+//#include <QtXmlPatterns/QXmlSchemaValidator>
 #include "measurementspreferences.h"
 #include "zeropreferences.h"
 #include "measurementdetails.h"
@@ -251,7 +255,7 @@ void AeroISTWindow::on_actionExportPlot_triggered()
 void AeroISTWindow::on_actionNew_Measure_triggered()
 {
     MeasurementsModel *measurement;
-    measurement = new MeasurementsModel();
+    measurement = new MeasurementsModel(measure_list->getFreeId());
 
     MeasurementsPreferences *meas_prefs = new MeasurementsPreferences( measurement, zero_list, settings , this);
     if (meas_prefs->exec() == QDialog::Rejected ){
@@ -286,96 +290,35 @@ void AeroISTWindow::on_actionDelete_Measure_triggered()
     }
 }
 
+
+void AeroISTWindow::on_actionSave_Project_as_triggered(){
+    if (thread_status != STOPPED){
+        message(tr("Measuring is being done. Stop it to save to disk"));
+        return;
+    }
+
+    project_filename = QFileDialog::getSaveFileName(this, tr("Save Project"), ".", "");
+    save_xml(project_filename);
+}
+
 void AeroISTWindow::on_actionSave_Project_triggered(){
     if (thread_status != STOPPED){
         message(tr("Measuring is being done. Stop it to save to disk"));
         return;
     }
-    QString fileName;
-    fileName = QFileDialog::getSaveFileName(this, tr("Save Project"), ".", "");
-//    measure_list->save(fileName);
+    if (project_filename.isNull() || project_filename.isEmpty()){
+        project_filename = QFileDialog::getSaveFileName(this, tr("Save Project"), ".", "");
+    }
+    save_xml(project_filename);
+}
+
+void AeroISTWindow::save_xml(QString fileName){
     QDomDocument document;
-    QDomElement root = document.createElement("Zero");
+    QDomElement root = document.createElement(TAG_PROJECT);
     document.appendChild(root);
 
-    ZeroModel *zero;
-    for (int k=0; k<zero_list->rowCount(); k++){
-        zero = zero_list->at(k);
-        QDomElement zero_element = document.createElement("Zero");
-        document.appendChild(zero_element);
-
-        QDomElement name = document.createElement("Name");
-        name.appendChild(document.createTextNode(zero->name));
-        zero_element.appendChild(name);
-
-        QDomElement id = document.createElement("Id");
-        id.appendChild(document.createTextNode(QString::number(k)));
-        zero_element.appendChild(id);
-
-        QDomElement description = document.createElement("Description");
-        description.appendChild(document.createTextNode(zero->description));
-        zero_element.appendChild(description);
-
-        QDomElement dvm_time = document.createElement("DVM Time");
-        dvm_time.appendChild(document.createTextNode(QString::number(zero->dvm_time)));
-        zero_element.appendChild(dvm_time);
-
-        QDomElement matrix = document.createElement("Matrix");
-        matrix.appendChild(document.createTextNode(QString::number(zero->matrix)));
-        zero_element.appendChild(matrix);
-
-        QDomElement average_number = document.createElement("average_number");
-        average_number.appendChild(document.createTextNode(QString::number(zero->average_number)));
-        zero_element.appendChild(average_number);
-
-        QDomElement set_alpha = document.createElement("Set Alpha");
-        set_alpha.appendChild(document.createTextNode(QString::number(zero->set_beta)));
-        zero_element.appendChild(set_alpha);
-
-        QDomElement set_beta = document.createElement("Set Beta");
-        set_beta.appendChild(document.createTextNode(QString::number(zero->set_beta)));
-        zero_element.appendChild(set_beta);
-
-        QDomElement set_wind = document.createElement("Set Wind");
-        set_wind.appendChild(document.createTextNode(QString::number(zero->set_wind)));
-        zero_element.appendChild(set_wind);
-
-        QDomElement data = document.createElement("Data");
-        zero_element.appendChild(data);
-
-        QDomElement force;
-        force = document.createElement("Force X");
-        data.appendChild(force);
-        for (int n=0; n < zero->rowCount(); n++){
-            force.appendChild(document.createTextNode(QString::number(zero->force[0].at(n))));
-        }
-        force = document.createElement("Force Y");
-        data.appendChild(force);
-        for (int n=0; n < zero->rowCount(); n++){
-            force.appendChild(document.createTextNode(QString::number(zero->force[0].at(n))));
-        }
-        force = document.createElement("Force Z");
-        data.appendChild(force);
-        for (int n=0; n < zero->rowCount(); n++){
-            force.appendChild(document.createTextNode(QString::number(zero->force[0].at(n))));
-        }
-        force = document.createElement("Moment X");
-        data.appendChild(force);
-        for (int n=0; n < zero->rowCount(); n++){
-            force.appendChild(document.createTextNode(QString::number(zero->force[0].at(n))));
-        }
-        force = document.createElement("Moment Y");
-        data.appendChild(force);
-        for (int n=0; n < zero->rowCount(); n++){
-            force.appendChild(document.createTextNode(QString::number(zero->force[0].at(n))));
-        }
-        force = document.createElement("Moment Z");
-        data.appendChild(force);
-        for (int n=0; n < zero->rowCount(); n++){
-            force.appendChild(document.createTextNode(QString::number(zero->force[0].at(n))));
-        }
-    }
-
+    zero_list->save_xml(root);
+    measure_list->save_xml(root);
     QFile file(fileName);
     if (file.open(QFile::WriteOnly|QFile::Text)){
         QTextStream out(&file);
@@ -393,8 +336,53 @@ void AeroISTWindow::on_actionLoad_Project_triggered()
     }
     QString fileName;
     fileName = QFileDialog::getOpenFileName(this, tr("Load Project"), ".", "");
+    if (fileName.isNull() || fileName.isEmpty()){
+        return;
+    }
+//    measure_list->load(fileName);
+    QDomDocument document;
 
-    measure_list->load(fileName);
+    QFile file(fileName);
+    if (!file.open(QIODevice::ReadOnly|QIODevice::Text)){
+        message(tr("Could not open file"));
+        return;
+    }
+
+    QXmlSchema schema;
+
+    schema.load( QUrl::fromLocalFile(settings->value("schema_file","aeroist.xsd").toString()) );
+    if (schema.isValid()){
+        QXmlSchemaValidator validator( schema );
+        qDebug() << "validate filename:";
+        if(!validator.validate(QUrl::fromLocalFile(fileName))){
+            message(tr("Couldn't confirm xml file"));
+        }
+    } else {
+        message(tr("Couldn't confirm xml file"));
+    }
+
+    document.setContent(&file);
+    file.close();
+    QDomElement root = document.firstChildElement();
+
+    zero_list->load_xml(root);
+    measure_list->load_xml(root);
+
+    MeasurementsModel *measure;
+    for (int m =0; m< measure_list->rowCount(); m++){
+        measure = measure_list->at(m);
+        measure->zero = NULL;
+
+        for (int k=0; k<zero_list->rowCount(); k++){
+            if (zero_list->at(k)->id == measure->zero_id){
+                measure->zero = zero_list->at(k);
+            }
+        }
+        if (measure->zero == NULL){
+            message(tr("A measurement has an Zero that is not in the list. It will be removed"));
+            measure_list->deleteMeasure(measure_list->index(m));
+        }
+    }
 }
 
 
@@ -533,10 +521,10 @@ void AeroISTWindow::on_actionNew_Zero_triggered(){
     if(thread_status == STOPPED){
         qDebug() << "action new zero" << thread_status;
         ZeroPreferences *zero_prefs;
-        ZeroThread = new ZeroModel;
+        ZeroThread = new ZeroModel(zero_list->getFreeId());
 
 
-        zero_prefs = new ZeroPreferences(ZeroThread,settings,this);
+        zero_prefs = new ZeroPreferences(ZeroThread,settings, this);
         if (zero_prefs->exec() == QDialog::Rejected){
             delete zero_prefs;
             delete ZeroThread;
@@ -706,3 +694,4 @@ void AeroISTWindow::on_actionNames_in_Toolbar_toggled(bool arg1){
         ui->toolBar->setToolButtonStyle(Qt::ToolButtonIconOnly);
     }
 }
+

@@ -7,8 +7,9 @@
 #include "QDebug"
 #endif // DEBUG
 
-MeasurementsModel::MeasurementsModel(QObject *parent)
-    : QAbstractTableModel(parent)
+MeasurementsModel::MeasurementsModel(int id,QObject *parent)
+    : QAbstractTableModel(parent),
+    id(id)
 {
     name="";
     dvm_time=0;
@@ -21,6 +22,11 @@ MeasurementsModel::MeasurementsModel(QObject *parent)
     control_type = NONE;
     zero  = 0;
     n = 0;
+}
+MeasurementsModel::MeasurementsModel(QDomElement root, QObject *parent):
+    QAbstractTableModel(parent)
+{
+    load_xml(root);
 }
 
 void MeasurementsModel::load(QTextStream *in)
@@ -117,7 +123,7 @@ int MeasurementsModel::rowCount(const QModelIndex &parent ) const
     return force[0].size();
 }
 
-QVariant MeasurementsModel::data(const QModelIndex &index, int role = Qt::DisplayRole) const
+QVariant MeasurementsModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid()){
         return QVariant();
@@ -221,4 +227,236 @@ QVector<double>  MeasurementsModel::vector_data(int index){
     }
     QVector<double> stupid_warning;
     return stupid_warning;
+}
+
+
+void MeasurementsModel::save_xml(QDomElement root ){
+    QDomElement name = root.ownerDocument().createElement(TAG_NAME);
+    name.appendChild(root.ownerDocument().createTextNode(this->name));
+    root.appendChild(name);
+
+    QDomElement id = root.ownerDocument().createElement(TAG_ID);
+    id.appendChild(root.ownerDocument().createTextNode(QString::number(this->id)));
+    root.appendChild(id);
+
+    QDomElement description = root.ownerDocument().createElement(TAG_DESCRIPTION);
+    description.appendChild(root.ownerDocument().createTextNode(this->description));
+    root.appendChild(description);
+
+    QDomElement dvm_time = root.ownerDocument().createElement(TAG_DVM_TIME);
+    dvm_time.appendChild(root.ownerDocument().createTextNode(QString::number(this->dvm_time)));
+    root.appendChild(dvm_time);
+
+    QDomElement matrix = root.ownerDocument().createElement(TAG_MATRIX);
+    matrix.appendChild(root.ownerDocument().createTextNode(QString::number(this->matrix)));
+    root.appendChild(matrix);
+
+    QDomElement average_number = root.ownerDocument().createElement(TAG_AVERAGE_NUMBER);
+    average_number.appendChild(root.ownerDocument().createTextNode(QString::number(this->average_number)));
+    root.appendChild(average_number);
+
+    QDomElement settling_time = root.ownerDocument().createElement(TAG_SETTLING_TIME);
+    settling_time.appendChild(root.ownerDocument().createTextNode(QString::number(this->settling_time)));
+    root.appendChild(settling_time);
+
+    QDomElement min = root.ownerDocument().createElement(TAG_MIN);
+    min.appendChild(root.ownerDocument().createTextNode(QString::number(this->min)));
+    root.appendChild(min);
+
+    QDomElement max = root.ownerDocument().createElement(TAG_MAX);
+    max.appendChild(root.ownerDocument().createTextNode(QString::number(this->max)));
+    root.appendChild(max);
+
+    QDomElement step = root.ownerDocument().createElement(TAG_STEP);
+    step.appendChild(root.ownerDocument().createTextNode(QString::number(this->step)));
+    root.appendChild(step);
+
+    QDomElement set_alpha = root.ownerDocument().createElement(TAG_SET_ALPHA);
+    set_alpha.appendChild(root.ownerDocument().createTextNode(QString::number(this->set_alpha)));
+    root.appendChild(set_alpha);
+
+    QDomElement set_beta = root.ownerDocument().createElement(TAG_SET_BETA);
+    set_beta.appendChild(root.ownerDocument().createTextNode(QString::number(this->set_beta)));
+    root.appendChild(set_beta);
+
+    QDomElement set_wind = root.ownerDocument().createElement(TAG_SET_WIND);
+    set_wind.appendChild(root.ownerDocument().createTextNode(QString::number(this->set_wind)));
+    root.appendChild(set_wind);
+
+    QDomElement control_type = root.ownerDocument().createElement(TAG_CONTROL_TYPE);
+    control_type.appendChild(root.ownerDocument().createTextNode(QString::number(this->control_type)));
+    root.appendChild(control_type);
+
+    QDomElement n = root.ownerDocument().createElement(TAG_N);
+    n.appendChild(root.ownerDocument().createTextNode(QString::number(this->n)));
+    root.appendChild(n);
+
+    QDomElement zero_id = root.ownerDocument().createElement(TAG_ZERO_ID);
+    zero_id.appendChild(root.ownerDocument().createTextNode(QString::number(this->zero_id)));
+    root.appendChild(zero_id);
+
+    QDomElement data_element = root.ownerDocument().createElement(TAG_DATA);
+    root.appendChild(data_element);
+
+    QDomElement force;
+    QDomElement element;
+    QString tag_header;
+    QString data;
+    for (int row=0; row < rowCount(); row++){
+        element = root.ownerDocument().createElement(TAG_ITEM);
+        data_element.appendChild(element);
+        for (int column =0; column < columnCount(); column++){
+            tag_header = this->headerData(column,Qt::Horizontal).toString().simplified();
+            tag_header.replace(" ","_");
+            force = root.ownerDocument().createElement(tag_header);
+            data = this->data(this->index(row,column)).toString();
+            force.appendChild( root.ownerDocument().createTextNode(data));
+            element.appendChild(force);
+        }
+    }
+}
+
+
+void MeasurementsModel::load_xml(QDomElement root){
+    QDomNodeList nodelist = root.childNodes();
+    QDomNode node;
+    QDomElement element;
+    for (int k=0; k< nodelist.count();k++){
+        node = nodelist.at(k);
+        element = node.toElement();
+        if (element.tagName() == TAG_NAME){
+            this->name = element.text();
+        }
+        if (element.tagName() == TAG_DESCRIPTION){
+            this->description = element.text();
+        }
+        if (element.tagName() == TAG_ID){
+            this->id = element.text().toInt();
+        }
+        if (element.tagName() == TAG_DVM_TIME){
+            this->dvm_time = element.text().toInt();
+        }
+        if (element.tagName() == TAG_AVERAGE_NUMBER){
+            this->average_number = element.text().toInt();
+        }
+        if (element.tagName() == TAG_SET_ALPHA){
+            this->set_alpha = element.text().toDouble();
+        }
+        if (element.tagName() == TAG_SET_BETA){
+            this->set_beta = element.text().toDouble();
+        }
+        if (element.tagName() == TAG_SET_WIND){
+            this->set_wind = element.text().toDouble();
+        }
+        if (element.tagName() == TAG_MATRIX){
+            int m = element.text().toInt();
+            switch (m){
+            case FLOOR: this->matrix = FLOOR; break;
+            case MIDDLE: this->matrix = MIDDLE; break;
+            }
+        }
+        if (element.tagName() == TAG_CONTROL_TYPE){
+            int m = element.text().toInt();
+            switch (m){
+            case NONE: this->control_type = NONE; break;
+            case ALPHA: this->control_type = ALPHA; break;
+            case BETA: this->control_type = BETA; break;
+            case WIND: this->control_type = WIND; break;
+            }
+        }
+        if (element.tagName() == TAG_MIN){
+            this->min = element.text().toDouble();
+        }
+        if (element.tagName() == TAG_MAX){
+            this->max = element.text().toDouble();
+        }
+        if (element.tagName() == TAG_STEP){
+            this->step = element.text().toDouble();
+        }
+        if (element.tagName() == TAG_SETTLING_TIME){
+            this->settling_time = element.text().toInt();
+        }
+        if (element.tagName() == TAG_N){
+            this->n = element.text().toInt();
+        }
+        if (element.tagName() == TAG_ZERO_ID){
+            this->zero_id = element.text().toInt();         //fixme
+        }
+
+        if (element.tagName() == TAG_DATA){
+            QDomNodeList items = element.childNodes();
+            QDomElement item;
+            for (int row = 0; row < items.count(); row++){
+                insertRow(rowCount());
+                item = items.at(row).toElement();
+                QDomNodeList forces = item.childNodes();
+                QDomElement force;
+                for (int column = 0; column< forces.count(); column++ ){
+                    force = forces.at(column).toElement();
+                    this->setData(this->index(row,column),force.text());
+                }
+            }
+        }
+    }
+}
+
+
+
+
+bool MeasurementsModel::setData ( const QModelIndex & index, const QVariant & value, int role){
+    if (!index.isValid()){
+        return false;
+    }
+
+    if (role == Qt::EditRole) {
+        int row = index.row();
+        if (force[0].size() < row ){
+            return false;
+        }
+        switch (index.column()) {
+        case 0:
+            tempo.replace(row,value.toDouble());
+        case 1:
+            force[0].replace(row,value.toDouble());
+        case 2:
+            force[1].replace(row,value.toDouble());
+        case 3:
+            force[2].replace(row,value.toDouble());
+        case 4:
+            force[3].replace(row,value.toDouble());
+        case 5:
+            force[4].replace(row,value.toDouble());
+        case 6:
+            force[5].replace(row,value.toDouble());
+        case 7:
+            alpha.replace(row,value.toDouble());
+        case 8:
+            beta.replace(row,value.toDouble());
+        case 9:
+            wind.replace(row,value.toDouble());
+        case 10:
+            temp.replace(row,value.toDouble());
+
+        }
+    }
+    return true;
+}
+
+bool MeasurementsModel::insertRows ( int row, int count, const QModelIndex & parent ){
+    Q_UNUSED(parent)
+    if (row <0 || row > force[0].size()){
+        return false;
+    }
+    tempo.insert(row,count,0);
+    for (int k=0; k< NVARS_ZERO; k++){
+        force[k].insert(row,count,0);
+    }
+    alpha.insert(row,count,0);
+    beta.insert(row,count,0);
+    wind.insert(row,count,0);
+    temp.insert(row,count,0);
+    return true;
+}
+bool MeasurementsModel::insertRow ( int row,  const QModelIndex & parent ){
+    return insertRows(row,1,parent);
 }

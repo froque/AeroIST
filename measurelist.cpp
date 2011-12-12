@@ -1,8 +1,10 @@
 #include "measurelist.h"
 
+
 MeasureList::MeasureList (QObject * parent ) : QAbstractListModel(parent)
 {
     Q_UNUSED(parent);
+    freeId = 0 ;
 }
 
 int MeasureList::rowCount ( const QModelIndex & parent  ) const
@@ -128,6 +130,7 @@ void MeasureList::clear(void){
     }
 }
 
+/*
 void MeasureList::load(QString fileName){
     QFile file(fileName);
     if (file.open(QFile::ReadOnly|QFile::Text)){
@@ -141,7 +144,7 @@ void MeasureList::load(QString fileName){
         }
     }
     file.close();
-}
+}*/
 
 bool MeasureList::zeroUsed(ZeroModel *zero){
     MeasurementsModel *measurement;
@@ -151,4 +154,33 @@ bool MeasureList::zeroUsed(ZeroModel *zero){
         }
     }
     return false;
+}
+
+void MeasureList::save_xml(QDomElement root){
+    MeasurementsModel *measurement;
+    for (int k=0; k<rowCount(); k++){
+        measurement = list.at(k);
+        QDomElement measurement_element = root.ownerDocument().createElement(TAG_MEASURE);
+        root.appendChild(measurement_element);
+
+        measurement->save_xml(measurement_element);
+    }
+}
+
+int MeasureList::getFreeId(){
+    return freeId++;
+}
+
+void MeasureList::load_xml(QDomElement root){
+    QDomNodeList nodeslist = root.elementsByTagName(TAG_MEASURE);
+    QDomNode node;
+    QDomElement element;
+    MeasurementsModel *measure;
+    for (int k=0; k<nodeslist.count(); k++){
+        node = nodeslist.at(k);
+        element = node.toElement();
+        qDebug() << k << "measurelist loop";
+        measure =  new MeasurementsModel(element);
+        newMeasure(measure);
+    }
 }

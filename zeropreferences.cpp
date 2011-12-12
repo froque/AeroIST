@@ -64,7 +64,7 @@ void ZeroPreferences::accept(){
     measurement->dvm_time = ui->combo_dvm_time->itemData(ui->combo_dvm_time->currentIndex()).toInt();
     measurement->average_number = ui->spinBoxAverage->value();
     measurement->set_alpha = ui->doubleSpinBoxAlpha->value();
-    measurement->set_alpha = ui->doubleSpinBoxBeta->value();
+    measurement->set_beta = ui->doubleSpinBoxBeta->value();
     measurement->set_wind = ui->doubleSpinBoxWind->value();
 
     QDialog::accept();

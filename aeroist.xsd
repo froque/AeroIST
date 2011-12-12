@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+
+<!-- definition of simple elements -->
+<xs:element name="name" type="xs:string"/>
+<xs:element name="description" type="xs:string"/>
+<xs:element name="id" type="xs:int"/>
+<xs:element name="dvm_time" type="xs:int"/>
+<xs:element name="matrix" type="xs:int"/>
+<xs:element name="average_number" type="xs:positiveInteger"/>
+<xs:element name="set_alpha" type="xs:double"/>
+<xs:element name="set_beta" type="xs:double"/>
+<xs:element name="set_wind" type="xs:double"/>
+<xs:element name="item" type="xs:double" />
+<xs:element name="settling_time" type="xs:int"/>
+<xs:element name="min" type="xs:double" />
+<xs:element name="max" type="xs:double" />
+<xs:element name="step" type="xs:double" />
+<xs:element name="control_type" type="xs:int"/>
+<xs:element name="n" type="xs:int"/>
+<xs:element name="zero_id" type="xs:int"/>
+  
+
+<xs:element name="Time" type="xs:double" />
+<xs:element name="Fx" type="xs:double" />
+<xs:element name="Fy" type="xs:double" />
+<xs:element name="Fz" type="xs:double" />
+<xs:element name="Mx" type="xs:double" />
+<xs:element name="My" type="xs:double" />
+<xs:element name="Mz" type="xs:double" />
+<xs:element name="Alpha" type="xs:double" />
+<xs:element name="Beta" type="xs:double" />
+<xs:element name="Wind" type="xs:double" />
+<xs:element name="Temperature" type="xs:double" />
+
+<!-- definition of complex elements -->
+<!--<xs:element name="Time">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="item" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+<xs:element name="Fx">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="item" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+<xs:element name="Fy">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="item" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+<xs:element name="Fz">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="item" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+<xs:element name="Mx">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="item" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+<xs:element name="My">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="item" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+<xs:element name="Mz">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="item" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+<xs:element name="Alpha">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="item" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+<xs:element name="Beta">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="item" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+<xs:element name="Wind">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="item" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+<xs:element name="Temperature">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element ref="item" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+-->
+
+
+
+
+
+
+
+<xs:element name="project">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element name="zero" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:sequence>
+              <xs:element ref="name"/>
+              <xs:element ref="id"/>
+              <xs:element ref="description"/>
+              <xs:element ref="dvm_time"/>
+              <xs:element ref="matrix"/>
+              <xs:element ref="average_number"/>
+              <xs:element ref="set_alpha"/>
+              <xs:element ref="set_beta"/>
+              <xs:element ref="set_wind"/>
+              <xs:element name="data">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="item" maxOccurs="unbounded" >
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element ref="Fx"/>
+                          <xs:element ref="Fy"/>
+                          <xs:element ref="Fz"/>
+                          <xs:element ref="Mx"/>
+                          <xs:element ref="My"/>
+                          <xs:element ref="Mz"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="measurement" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:sequence>
+              <xs:element ref="name"/>
+              <xs:element ref="id"/>
+              <xs:element ref="description"/>
+              <xs:element ref="dvm_time"/>
+              <xs:element ref="matrix"/>
+              <xs:element ref="average_number"/>
+              <xs:element ref="settling_time"/>
+              <xs:element ref="min"/>              
+              <xs:element ref="max"/>              
+              <xs:element ref="step"/>
+              <xs:element ref="set_alpha"/>
+              <xs:element ref="set_beta"/>
+              <xs:element ref="set_wind"/>
+              <xs:element ref="control_type"/>
+              <xs:element ref="n"/>
+              <xs:element ref="zero_id"/>
+              <xs:element name="data">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="item" maxOccurs="unbounded" >
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element ref="Time"/>
+                          <xs:element ref="Fx"/>
+                          <xs:element ref="Fy"/>
+                          <xs:element ref="Fz"/>
+                          <xs:element ref="Mx"/>
+                          <xs:element ref="My"/>
+                          <xs:element ref="Mz"/>
+                          <xs:element ref="Alpha"/>
+                          <xs:element ref="Beta"/>
+                          <xs:element ref="Wind"/>
+                          <xs:element ref="Temperature"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+</xs:schema>

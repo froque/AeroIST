@@ -4,7 +4,7 @@ ZeroList::ZeroList(QObject *parent) :
     QAbstractListModel(parent)
 {
     Q_UNUSED(parent);
-
+    freeId = 0;
 }
 
 
@@ -24,6 +24,9 @@ QVariant ZeroList::data ( const QModelIndex & index, int role ) const{
     return QVariant();
 }
 
+int ZeroList::getFreeId(){
+    return freeId++;
+}
 
 void ZeroList::newMeasure(ZeroModel * measure){
     beginInsertRows(QModelIndex(), list.size(), list.size());
@@ -53,5 +56,29 @@ ZeroModel * ZeroList::at(QModelIndex index){
 void ZeroList::clear(void){
     while (list.size()>0){
          deleteMeasure( index(0,0,QModelIndex()) );
+    }
+}
+
+void ZeroList::save_xml(QDomElement root){
+    ZeroModel *zero;
+    for (int k=0; k<rowCount(); k++){
+        zero = list.at(k);
+        QDomElement zero_element = root.ownerDocument().createElement(TAG_ZERO);
+        root.appendChild(zero_element);
+
+        zero->save_xml(zero_element);
+    }
+}
+void ZeroList::load_xml(QDomElement root){
+    QDomNodeList nodeslist = root.elementsByTagName(TAG_ZERO);
+    QDomNode node;
+    QDomElement element;
+    ZeroModel *zero;
+    for (int k=0; k<nodeslist.count(); k++){
+        node = nodeslist.at(k);
+        element = node.toElement();
+        qDebug() << k << "zerolist loop";
+        zero =  new ZeroModel(element);
+        newMeasure(zero);
     }
 }

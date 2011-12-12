@@ -1,13 +1,20 @@
 #include "zeromodel.h"
 
-ZeroModel::ZeroModel(QObject *parent) :
-    QAbstractTableModel(parent)
+ZeroModel::ZeroModel(int id,QObject *parent) :
+    QAbstractTableModel(parent),
+    id(id)
 {
     name="";
     dvm_time=0;
     matrix=MIDDLE;
     average_number=0;
 
+}
+
+ZeroModel::ZeroModel(QDomElement root,QObject *parent) :
+    QAbstractTableModel(parent)
+{
+    load_xml(root);
 }
 
 int ZeroModel::rowCount(const QModelIndex &parent) const{
@@ -76,4 +83,163 @@ void ZeroModel::GetMeasure(measure m){
         force[k].append(m.force[k]);
     }
     endInsertRows();
+}
+
+void ZeroModel::save_xml(QDomElement root){
+    QDomElement name = root.ownerDocument().createElement(TAG_NAME);
+    name.appendChild(root.ownerDocument().createTextNode(this->name));
+    root.appendChild(name);
+
+    QDomElement id = root.ownerDocument().createElement(TAG_ID);
+    id.appendChild(root.ownerDocument().createTextNode(QString::number(this->id)));
+    root.appendChild(id);
+
+    QDomElement description = root.ownerDocument().createElement(TAG_DESCRIPTION);
+    description.appendChild(root.ownerDocument().createTextNode(this->description));
+    root.appendChild(description);
+
+    QDomElement dvm_time = root.ownerDocument().createElement(TAG_DVM_TIME);
+    dvm_time.appendChild(root.ownerDocument().createTextNode(QString::number(this->dvm_time)));
+    root.appendChild(dvm_time);
+
+    QDomElement matrix = root.ownerDocument().createElement(TAG_MATRIX);
+    matrix.appendChild(root.ownerDocument().createTextNode(QString::number(this->matrix)));
+    root.appendChild(matrix);
+
+    QDomElement average_number = root.ownerDocument().createElement(TAG_AVERAGE_NUMBER);
+    average_number.appendChild(root.ownerDocument().createTextNode(QString::number(this->average_number)));
+    root.appendChild(average_number);
+
+    QDomElement set_alpha = root.ownerDocument().createElement(TAG_SET_ALPHA);
+    set_alpha.appendChild(root.ownerDocument().createTextNode(QString::number(this->set_alpha)));
+    root.appendChild(set_alpha);
+
+    QDomElement set_beta = root.ownerDocument().createElement(TAG_SET_BETA);
+    set_beta.appendChild(root.ownerDocument().createTextNode(QString::number(this->set_beta)));
+    root.appendChild(set_beta);
+
+    QDomElement set_wind = root.ownerDocument().createElement(TAG_SET_WIND);
+    set_wind.appendChild(root.ownerDocument().createTextNode(QString::number(this->set_wind)));
+    root.appendChild(set_wind);
+
+    QDomElement data_element = root.ownerDocument().createElement(TAG_DATA);
+    root.appendChild(data_element);
+
+    QDomElement force;
+    QString tag_header;
+    QDomElement element;
+    QString data;
+
+    for (int row=0; row < rowCount(); row++){
+        element = root.ownerDocument().createElement(TAG_ITEM);
+        data_element.appendChild(element);
+        for (int column =0; column < columnCount(); column++){
+            tag_header = this->headerData(column,Qt::Horizontal).toString().simplified();
+            tag_header.replace(" ","_");
+            force = root.ownerDocument().createElement(tag_header);
+            data = this->data(this->index(row,column)).toString();
+            force.appendChild( root.ownerDocument().createTextNode(data));
+            element.appendChild(force);
+        }
+    }
+}
+
+void ZeroModel::load_xml(QDomElement root){
+
+    QDomNodeList nodelist = root.childNodes();
+    QDomNode node;
+    QDomElement element;
+    for (int k=0; k< nodelist.count();k++){
+        node = nodelist.at(k);
+        element = node.toElement();
+        if (element.tagName() == TAG_NAME){
+            this->name = element.text();
+        }
+        if (element.tagName() == TAG_DESCRIPTION){
+            this->description = element.text();
+        }
+        if (element.tagName() == TAG_ID){
+            this->id = element.text().toInt();
+        }
+        if (element.tagName() == TAG_DVM_TIME){
+            this->dvm_time = element.text().toInt();
+        }
+        if (element.tagName() == TAG_AVERAGE_NUMBER){
+            this->average_number = element.text().toInt();
+        }
+        if (element.tagName() == TAG_SET_ALPHA){
+            this->set_alpha = element.text().toDouble();
+        }
+        if (element.tagName() == TAG_SET_BETA){
+            this->set_beta = element.text().toDouble();
+        }
+        if (element.tagName() == TAG_SET_WIND){
+            this->set_wind = element.text().toDouble();
+        }
+        if (element.tagName() == TAG_MATRIX){
+            int m = element.text().toInt();
+            switch (m){
+            case FLOOR: this->matrix = FLOOR; break;
+            case MIDDLE: this->matrix = MIDDLE; break;
+            }
+        }
+
+        if (element.tagName() == TAG_DATA){
+            QDomNodeList items = element.childNodes();
+            QDomElement item;
+            for (int row = 0; row < items.count(); row++){
+                insertRow(rowCount());
+                item = items.at(row).toElement();
+                QDomNodeList forces = item.childNodes();
+                QDomElement force;
+                for (int column = 0; column< forces.count(); column++ ){
+                    force = forces.at(column).toElement();
+                    this->setData(this->index(row,column),force.text());
+                }
+            }
+        }
+    }
+}
+
+
+bool ZeroModel::setData ( const QModelIndex & index, const QVariant & value, int role){
+    if (!index.isValid()){
+        return false;
+    }
+
+    if (role == Qt::EditRole) {
+        int row = index.row();
+        if (force[0].size() < row ){
+            return false;
+        }
+        switch (index.column()) {
+        case 0:
+            force[0].replace(row,value.toDouble());
+        case 1:
+            force[1].replace(row,value.toDouble());
+        case 2:
+            force[2].replace(row,value.toDouble());
+        case 3:
+            force[3].replace(row,value.toDouble());
+        case 4:
+            force[4].replace(row,value.toDouble());
+        case 5:
+            force[5].replace(row,value.toDouble());
+        }
+    }
+    return true;
+}
+
+bool ZeroModel::insertRows ( int row, int count, const QModelIndex & parent ){
+    Q_UNUSED(parent)
+    if (row <0 || row > force[0].size()){
+        return false;
+    }
+    for (int k=0; k< NVARS_ZERO; k++){
+        force[k].insert(row,count,-1);
+    }
+    return true;
+}
+bool ZeroModel::insertRow ( int row,  const QModelIndex & parent ){
+    return insertRows(row,1,parent);
 }

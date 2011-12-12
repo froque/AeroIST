@@ -6,6 +6,7 @@
 #include "common.h"
 #include "zeromodel.h"
 
+
 class MeasureList : public QAbstractListModel
 {
     Q_OBJECT
@@ -34,8 +35,12 @@ public:
 
 
     void save(QString fileName);
-    void load(QString fileName);
+    void save_xml(QDomElement root);
+    void load_xml(QDomElement root);
+//    void load(QString fileName);
     void clear(void);
+    int getFreeId();
+    int freeId;
 private:
     QList<MeasurementsModel*> list;
 //    QList<QAbstractTableModel*> list;

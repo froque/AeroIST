@@ -193,6 +193,7 @@ void MeasureThread::read_m_virtual(void){
     }
     m.temp = m.temp / average_number;
     m.wind = m.wind / average_number;
+    Helper::msleep( 0.5 * average_number *  1000.0 * qrand() / RAND_MAX);
 }
 
 

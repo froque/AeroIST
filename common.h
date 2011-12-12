@@ -12,14 +12,14 @@
 #define AEROIST "AeroIST"
 
 enum control_types_t{
-    NONE,
+    NONE=0,
     ALPHA,
     BETA,
     WIND
 };
 
 enum matrix_t{
-    MIDDLE,
+    MIDDLE=0,
     FLOOR
 };
 
@@ -64,4 +64,28 @@ enum ThreadStatus{
 #include <QDebug>
 #endif //DEBUG
 
+
+#define TAG_NAME "name"
+#define TAG_ID "id"
+#define TAG_DESCRIPTION "description"
+#define TAG_DVM_TIME "dvm_time"
+#define TAG_MATRIX "matrix"
+#define TAG_AVERAGE_NUMBER "average_number"
+#define TAG_SET_ALPHA "set_alpha"
+#define TAG_SET_BETA "set_beta"
+#define TAG_SET_WIND "set_wind"
+#define TAG_DATA "data"
+#define TAG_SETTLING_TIME "settling_time"
+#define TAG_MIN "min"
+#define TAG_MAX "max"
+#define TAG_STEP "step"
+#define TAG_CONTROL_TYPE "control_type"
+#define TAG_N "n"
+#define TAG_ZERO_ID "zero_id"
+#define TAG_ZERO "zero"
+#define TAG_MEASURE "measurement"
+#define TAG_ITEM "item"
+#define TAG_PROJECT "project"
 #endif // COMMON_H
+
+

@@ -81,13 +81,15 @@ private slots:
     // enable/disable actions
     void on_actionNames_in_Toolbar_toggled(bool arg1);
 
+    void on_actionSave_Project_as_triggered();
+
 private:
     void message(const QString &string);
     void start_loop( MeasurementsModel * measurement, MeasureThread *measureThread, const QObject *receiver, const char * slot);
     void stop_loop( MeasurementsModel * measurement, MeasureThread *measureThread, const QObject *receiver, const char * slot );
     void load_settings(void);
     void save_settings(void);
-
+    void save_xml(QString fileName);
     QSettings *settings;
     Ui::AeroISTWindow *ui;
     Preferences * preferences;
@@ -103,7 +105,7 @@ private:
 
     MeasureThread *m_test;
     QThread *m_thread;
-
+    QString project_filename;
 
 protected:
     void closeEvent(QCloseEvent *event);

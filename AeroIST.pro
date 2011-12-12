@@ -4,6 +4,8 @@
 QT += core
 QT += gui
 QT += xml
+QT += xmlpatterns
+
 #TARGET = AeroIST
 TEMPLATE = app
 

@@ -125,6 +125,7 @@ void MeasurementsPreferences::accept(){
     measurement->set_wind = ui->doubleSpinBoxWind->value();
 
     measurement->zero = list->at(ui->combo_zero->currentIndex());
+    measurement->zero_id = measurement->zero->id;
     QDialog::accept();
 }
 

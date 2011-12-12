@@ -4,6 +4,7 @@
 #include <QAbstractListModel>
 #include "common.h"
 #include "zeromodel.h"
+#include "QDomElement"
 
 class ZeroList : public QAbstractListModel
 {
@@ -22,8 +23,11 @@ public:
 
 //    void save(QString fileName);
 //    void load(QString fileName);
+    void save_xml(QDomElement root);
+    void load_xml(QDomElement root);
     void clear(void);
-
+    int getFreeId();
+    int freeId;
 signals:
 
 public slots:
