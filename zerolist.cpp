@@ -77,7 +77,6 @@ void ZeroList::load_xml(QDomElement root){
     for (int k=0; k<nodeslist.count(); k++){
         node = nodeslist.at(k);
         element = node.toElement();
-        qDebug() << k << "zerolist loop";
         zero =  new ZeroModel(element);
         newMeasure(zero);
     }

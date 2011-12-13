@@ -24,15 +24,6 @@ public:
     MeasurementsModel * at(QModelIndex index);
 
     bool zeroUsed(ZeroModel *zero);
-//    Qt::DropActions supportedDropActions( void ) const ;
-//    Qt::ItemFlags flags(const QModelIndex &index) const;
-//    bool insertRow ( int row, const QModelIndex & parent = QModelIndex() );
-//    bool insertRows ( int row, int count, const QModelIndex & parent = QModelIndex() );
-//    bool removeRow(int position, const QModelIndex &parent = QModelIndex());
-//    bool removeRows(int position, int rows, const QModelIndex &parent = QModelIndex());
-//    bool setData ( const QModelIndex & index, const QVariant & value, int role = Qt::EditRole);
-//    bool setItemData ( const QModelIndex & index, const QMap<int, QVariant> & roles );
-
 
     void save(QString fileName);
     void save_xml(QDomElement root);

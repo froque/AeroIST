@@ -95,7 +95,7 @@ float Wind::convert_percentage(unsigned char nethigh, unsigned char netlow){
         percentage =  (WIND_FULLPERCENTAGE * (speed - WIND_FULLSPEED *4) /WIND_FULLSPEED); // -200%% - 0%
     }
 
-//    qDebug() << nethigh << netlow << speed << percentage;
+
     return percentage;
 }
 

@@ -4,25 +4,21 @@
 #include <QMetaType>
 #include <QFile>
 #include <QFileDialog>
-//#include <qwt/qwt_plot_curve.h>
-//#include <qwt/qwt_plot_renderer.h>
-//#include <qwt/qwt_legend.h>
 #include <qwt_legend.h>
 #include <qwt_plot_curve.h>
 #include <qwt_plot_renderer.h>
-//#include "timescaledraw.h"
 #include <QMessageBox>
 #include <QtXml>
 #include <QXmlSchema>
 #include <QXmlSchemaValidator>
-//#include <QtXmlPatterns/QXmlSchema>
-//#include <QtXmlPatterns/QXmlSchemaValidator>
+
 #include "measurementspreferences.h"
 #include "zeropreferences.h"
 #include "measurementdetails.h"
 #include "zerodetails.h"
 #include "curvenew.h"
 #include "curvedelete.h"
+
 #ifdef DEBUG
 #include <QDebug>
 #endif //DEBUG
@@ -42,7 +38,7 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
     ui->actionLoad_Project->setIcon(QIcon::fromTheme("document-open"));
     ui->actionSave_Project->setIcon(QIcon::fromTheme("document-save-as"));
 //    ui->actionPreferences->setIcon(QIcon::fromTheme(""));
-
+    qDebug() << QIcon::themeName() << ui->toolBar->iconSize();
 
     // Set the list model
     measure_list = new MeasureList();
@@ -285,7 +281,6 @@ void AeroISTWindow::on_actionDelete_Measure_triggered()
     }
     measure_list->deleteMeasure(index);
     if (index.isValid() && index.row() < measure_list->rowCount()){
-        qDebug() << index.row();
         ui->listView->setCurrentIndex(index);
     }
 }
@@ -353,7 +348,6 @@ void AeroISTWindow::on_actionLoad_Project_triggered()
     schema.load( QUrl::fromLocalFile(settings->value("schema_file","aeroist.xsd").toString()) );
     if (schema.isValid()){
         QXmlSchemaValidator validator( schema );
-        qDebug() << "validate filename:";
         if(!validator.validate(QUrl::fromLocalFile(fileName))){
             message(tr("Couldn't confirm xml file"));
         }

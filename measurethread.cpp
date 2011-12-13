@@ -84,7 +84,6 @@ void MeasureThread::produce(){
         }
 
         k++;
-        qDebug() << "before emit signal " << m.force[0];
         emit MeasureDone(m);
 
         eloop.processEvents(QEventLoop::AllEvents, 50);
@@ -200,7 +199,7 @@ void MeasureThread::read_m_virtual(void){
 void MeasureThread::read_m_virtual_orig(void){
 
     m.tempo = timer.elapsed()/1000.0;
-//    qDebug() << m.tempo;
+
     switch (control_type){
     case NONE :
         for (int k=0; k< average_number ; k++ ) m.alpha += GetRandomMeasurement();

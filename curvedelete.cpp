@@ -19,7 +19,6 @@ CurveDelete::~CurveDelete()
 
 void CurveDelete::accept(){
     if(ui->listWidget->currentIndex().isValid()){
-        qDebug() << "index is valid";
         plot->itemList().at(ui->listWidget->currentIndex().row())->detach();
         plot->replot();
         QDialog::accept();
