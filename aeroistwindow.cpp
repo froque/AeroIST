@@ -65,55 +65,6 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
     load_settings();
     preferences = new Preferences(settings,this);
 
-#if INITIAL_LIST
-    MeasurementsModel *measurement;
-    ZeroModel *zero;
-    for (int k=0;k<6;k++){
-
-        measurement = new MeasurementsModel(this);
-        measurement->name = QString(tr("Measure n %1%1%1")).arg(k);
-        measurement->matrix = MIDDLE;
-        measurement->dvm_time = 4;
-        measurement->average_number = 2;
-
-        measurement->n = k;
-        zero = new ZeroModel(this);
-
-        zero->name = QString(tr("Zero %1%1%1")).arg(k);
-        zero->matrix = MIDDLE;
-        zero->dvm_time = 4;
-        zero->average_number = 1;
-        zero->control_type=NONE;
-        zero->n=1;
-
-        switch (k%4){
-        case 0:
-            measurement->control_type = NONE;
-            break;
-        case 1:
-            measurement->control_type = ALPHA;
-            break;
-        case 2:
-            measurement->control_type = BETA;
-            break;
-        case 3:
-            measurement->control_type = WIND;
-            break;
-        }
-        measurement->min = 100 ;//* (k%4 +1);
-        measurement->max = 200 ;//* (k%4 +1);
-        measurement->step = 19 ;// * (k%4 +1);
-        measurement->settling_time = 0 ;
-        measure_list->newMeasure(measurement);
-        zero_list->newMeasure(zero);
-        measurement->zero = zero_list->at(k);
-        ui->listView->setCurrentIndex(measure_list->index(measure_list->rowCount()-1,0));
-//        ui->listViewZero->setCurrentIndex(zero_list->index(zero_list->rowCount()-1,0));
-
-//        ui->ZeroButton->click();
-    }
-#endif //INITIAL_LIST
-
     qRegisterMetaType<measure>("measure");
     thread_status = STOPPED;
 
@@ -236,6 +187,7 @@ void AeroISTWindow::on_actionExport_to_csv_triggered()
         QTextStream out(&data);       
         measurement->save_csv(&out,true);
     }
+    data.close();
 }
 
 // Save current plot to file based on extension

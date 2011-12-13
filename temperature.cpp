@@ -30,6 +30,7 @@ Temperature::Temperature(){
 }
 
 Temperature::~Temperature(){
+    close(arduinofd);
 }
 
 

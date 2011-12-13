@@ -22,7 +22,7 @@ Angle::Angle(){
 
 Angle::~Angle(){
     close(fp);
-
+    close(arduinofd);
 }
 
 void Angle::set(double angle_dest){

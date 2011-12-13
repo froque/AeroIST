@@ -4,6 +4,7 @@
 
 #include <QEventLoop>
 #include <QDebug>
+#include <QSettings>
 
 MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
     QObject(parent),
@@ -13,6 +14,9 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
     max(measurement->max),
     step(measurement->step),
     current(measurement->min),
+    set_alpha(measurement->set_alpha),
+    set_beta(measurement->set_beta),
+    set_wind(measurement->set_wind),
     control_type(measurement->control_type),
     n(measurement->n)
 {
@@ -22,36 +26,47 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
     for (int k=0; k< NUMCHANNELS;k++){
         zero.force[k] = measurement->zero->force[k].first();
     }
-#if REAL_MEASURES
-    force = new Force(measurement->matrix,measurement->dvm_time);
-    alpha = new Alpha;
-    beta = new Beta;
-    temperature = new Temperature;
-    wind = new Wind;
-#endif //REAL_MEASURES
+
+    QSettings settings;
+    virtual_measures = settings.value("virtual_measures",false).toBool();
+    if (!virtual_measures){
+        force = new Force(measurement->matrix,measurement->dvm_time);
+        alpha = new Alpha;
+        beta = new Beta;
+        temperature = new Temperature;
+        wind = new Wind;
+    }
 }
 
 MeasureThread::MeasureThread(ZeroModel *measurement,QObject *parent) :
     QObject(parent),
-    average_number(measurement->average_number)
+    average_number(measurement->average_number),
+    set_alpha(measurement->set_alpha),
+    set_beta(measurement->set_beta),
+    set_wind(measurement->set_wind)
 {
     m_parent_thread = thread();
     isZero = true;
     n=1;
     control_type = NONE;
-#if REAL_MEASURES
-    force = new Force(measurement->matrix,measurement->dvm_time);
-    alpha = new Alpha;
-    beta = new Beta;
-    temperature = new Temperature;
-    wind = new Wind;
-#endif //REAL_MEASURES
+
+    if (!virtual_measures){
+        force = new Force(measurement->matrix,measurement->dvm_time);
+        alpha = new Alpha;
+        beta = new Beta;
+        temperature = new Temperature;
+        wind = new Wind;
+    }
 }
 
 MeasureThread::~MeasureThread(){
-#if REAL_MEASURES
-    delete force;
-#endif //REAL_MEASURES
+    if (!virtual_measures){
+        delete force;
+        delete alpha;
+        delete beta;
+        delete temperature;
+        delete wind;
+    }
 }
 
 void MeasureThread::produce(){
@@ -59,15 +74,17 @@ void MeasureThread::produce(){
     timer.start();
     QEventLoop eloop;
     k = 1;
+    set_initial();
     while(!m_stop) {
         clear_m();
-#if REAL_MEASURES
-        set_m();
-        read_m();
-#else
-        set_m_virtual();
-        read_m_virtual();
-#endif //REAL_MEASURES
+        if (!virtual_measures){
+            set_m();
+            read_m();
+        } else {
+
+            set_m_virtual();
+            read_m_virtual();
+        }
         if (isZero == false){
             subtract(&m,zero);
         }
@@ -88,9 +105,12 @@ void MeasureThread::produce(){
 
         eloop.processEvents(QEventLoop::AllEvents, 50);
     }
-#if REAL_MEASURES
-    wind->set(0);   // cleanup
-#endif //REAL_MEASURES
+
+    // cleanup
+    if (!virtual_measures){
+        wind->set(0);
+    }
+
     if (m_parent_thread != thread())
     {
         thread()->quit();
@@ -102,6 +122,30 @@ double MeasureThread::GetRandomMeasurement(void){
     return 10.0 * qrand() / RAND_MAX;
 }
 
+void MeasureThread::set_initial(void){
+    switch (control_type){
+    case NONE :
+        alpha->set(this->set_alpha);
+        beta->set(this->set_beta);
+        wind->set(this->set_wind);
+        break;
+    case ALPHA:
+        alpha->set(this->min);
+        beta->set(this->set_beta);
+        wind->set(this->set_wind);
+        break;
+    case BETA:
+        alpha->set(this->set_alpha);
+        beta->set(this->min);
+        wind->set(this->set_wind);
+        break;
+    case WIND:
+        alpha->set(this->set_alpha);
+        beta->set(this->set_beta);
+        wind->set(this->min);
+        break;
+    }
+}
 
 void MeasureThread::set_m(void){
     switch (control_type){
@@ -285,7 +329,7 @@ void MeasureThread::clear_m(void){
     m.temp=0;
     m.wind=0;
 }
-
+/*
 void MeasureThread::set_alpha(double angle){
 //    alpha->set(angle);
 }
@@ -297,3 +341,4 @@ void MeasureThread::set_beta(double angle){
 void MeasureThread::set_wind(double speed){
 //    wind->set(speed);
 }
+*/

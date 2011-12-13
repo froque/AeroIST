@@ -21,8 +21,11 @@ Force::Force(matrix_t matrix, int dvm_time): dvm_time(dvm_time){
     }
     std::ifstream matrix_file(filename.toStdString().c_str(),std::ios::in|std::ios::binary);
     if (matrix_file.is_open()) {
+        qDebug() << "MATRIX FILE IS Being open";
         matrix_file.read((char*)&coe, sizeof(struct matrix));
         matrix_file.close();
+    } else {
+        qDebug() << "MATRIX FILE IS NOT Being open";
     }
     invert(NUMCHANNELS,coe.coef_lin,mat.coef_lin);
 

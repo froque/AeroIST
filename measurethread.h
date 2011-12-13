@@ -43,12 +43,13 @@ public slots:
     void produce(void);
 //    void start_timer(void);
     void stop();
-    void set_alpha(double);
-    void set_beta(double);
-    void set_wind(double);
+//    void set_alpha(double);
+//    void set_beta(double);
+//    void set_wind(double);
 private:
     void subtract(measure *minuend, measure subtrahend);
     void set_m(void);
+    void set_initial(void);
     void read_m(void);
     void set_m_virtual(void);
     void read_m_virtual(void);
@@ -63,6 +64,9 @@ private:
     double max;
     double step;
     double current;
+    double set_alpha;
+    double set_beta;
+    double set_wind;
     control_types_t control_type;
     bool isZero;
     QString name;
@@ -79,6 +83,7 @@ private:
     Beta *beta;
     Temperature *temperature;
     Wind *wind;
+    bool virtual_measures;
 };
 
 #endif // MYTHREAD_H

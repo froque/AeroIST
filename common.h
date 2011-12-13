@@ -2,7 +2,7 @@
 #define COMMON_H
 
 #define DEBUG 1
-#define REAL_MEASURES 0
+//#define REAL_MEASURES 0
 #define SINGLE_SHARED 0 // Don't test for open instances
 #define SINGLE_PID 0
 #define SINGLE_SETTINGS 0
