@@ -329,16 +329,16 @@ void MeasureThread::clear_m(void){
     m.temp=0;
     m.wind=0;
 }
-/*
-void MeasureThread::set_alpha(double angle){
-//    alpha->set(angle);
+
+void MeasureThread::control_alpha(double angle){
+    alpha->set(angle);
 }
 
-void MeasureThread::set_beta(double angle){
-//    beta->set(angle);
+void MeasureThread::control_beta(double angle){
+    beta->set(angle);
 }
 
-void MeasureThread::set_wind(double speed){
-//    wind->set(speed);
+void MeasureThread::control_wind(double speed){
+    wind->set(speed);
 }
-*/
+

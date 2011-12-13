@@ -49,6 +49,7 @@ private slots:
 
     // project actions
     void on_actionSave_Project_triggered();
+    void on_actionSave_Project_as_triggered();
     void on_actionLoad_Project_triggered();
     void on_actionClear_Project_triggered();
 
@@ -56,6 +57,7 @@ private slots:
     void on_actionToolbar_toggled(bool arg1);
     void on_actionMeasure_List_toggled(bool checked);
     void on_actionZero_List_toggled(bool arg1);
+    void on_actionNames_in_Toolbar_toggled(bool arg1);
 
     // listviews and table
     void on_listView_activated(const QModelIndex &index);
@@ -78,10 +80,7 @@ private slots:
     void on_doubleSpinBoxALpha_valueChanged(double arg1);
     void on_doubleSpinBoxBeta_valueChanged(double arg1);
 
-    // enable/disable actions
-    void on_actionNames_in_Toolbar_toggled(bool arg1);
-
-    void on_actionSave_Project_as_triggered();
+    void on_actionLine_numbers_in_table_toggled(bool arg1);
 
 private:
     void message(const QString &string);

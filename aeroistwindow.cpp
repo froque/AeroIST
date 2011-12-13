@@ -136,9 +136,20 @@ void AeroISTWindow::on_ThreadButton_clicked(){
     connect(ui->ThreadButton, SIGNAL(clicked()), m_test, SLOT(stop()));
 //    connect(m_thread,SIGNAL(finished()),this,SLOT(cleanup()));
     connect(m_thread,SIGNAL(finished()),this,SLOT(ThreadButton_cleanup()));
-//    connect(this,SIGNAL(set_alpha(double)),m_test,SLOT(set_alpha(double)));
-//    connect(this,SIGNAL(set_beta(double)),m_test,SLOT(set_beta(double)));
-//    connect(this,SIGNAL(set_wind(double)),m_test,SLOT(set_wind(double)));
+
+    // pass the values from comboboxes to the thread. only for free control
+    connect(this,SIGNAL(set_alpha(double)),m_test,SLOT(control_alpha(double)));
+    connect(this,SIGNAL(set_beta(double)),m_test,SLOT(control_beta(double)));
+    connect(this,SIGNAL(set_wind(double)),m_test,SLOT(control_wind(double)));
+    ui->doubleSpinBoxALpha->setValue( measurementThread->set_alpha);
+    ui->doubleSpinBoxBeta->setValue(measurementThread->set_beta);
+    ui->doubleSpinBoxWind->setValue( measurementThread->set_wind);
+
+    if (measurementThread->control_type == NONE){
+        ui->doubleSpinBoxALpha->setEnabled(true);
+        ui->doubleSpinBoxBeta->setEnabled(true);
+        ui->doubleSpinBoxWind->setEnabled(true);
+    }
     m_thread->start();
     thread_status = MEASURE_RUNNING;
     QString text(tr("Stop "));
@@ -153,6 +164,9 @@ void AeroISTWindow::ThreadButton_cleanup(){
     if (thread_status == MEASURE_RUNNING){
         ui->ThreadButton->setText(tr("Start"));
         thread_status = STOPPED;
+        ui->doubleSpinBoxALpha->setEnabled(false);
+        ui->doubleSpinBoxBeta->setEnabled(false);
+        ui->doubleSpinBoxWind->setEnabled(false);
         cleanup();
         return;
     }
@@ -672,3 +686,8 @@ void AeroISTWindow::on_actionNames_in_Toolbar_toggled(bool arg1){
     }
 }
 
+
+void AeroISTWindow::on_actionLine_numbers_in_table_toggled(bool arg1)
+{
+    ui->tableView->verticalHeader()->setVisible(arg1);
+}

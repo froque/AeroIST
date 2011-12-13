@@ -43,9 +43,9 @@ public slots:
     void produce(void);
 //    void start_timer(void);
     void stop();
-//    void set_alpha(double);
-//    void set_beta(double);
-//    void set_wind(double);
+    void control_alpha(double);
+    void control_beta(double);
+    void control_wind(double);
 private:
     void subtract(measure *minuend, measure subtrahend);
     void set_m(void);

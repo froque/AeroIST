@@ -45,6 +45,9 @@
       </item>
       <item>
        <widget class="QDoubleSpinBox" name="doubleSpinBoxALpha">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="keyboardTracking">
          <bool>false</bool>
         </property>
@@ -59,6 +62,9 @@
       </item>
       <item>
        <widget class="QDoubleSpinBox" name="doubleSpinBoxBeta">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="keyboardTracking">
          <bool>false</bool>
         </property>
@@ -73,6 +79,9 @@
       </item>
       <item>
        <widget class="QDoubleSpinBox" name="doubleSpinBoxWind">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="keyboardTracking">
          <bool>false</bool>
         </property>
@@ -225,6 +234,7 @@
     <addaction name="actionNames_in_Toolbar"/>
     <addaction name="actionMeasure_List"/>
     <addaction name="actionZero_List"/>
+    <addaction name="actionLine_numbers_in_table"/>
    </widget>
    <widget class="QMenu" name="menuPlot">
     <property name="title">
@@ -453,6 +463,14 @@
   <action name="actionSave_Project_as">
    <property name="text">
     <string>Save Project as ...</string>
+   </property>
+  </action>
+  <action name="actionLine_numbers_in_table">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Line numbers in table</string>
    </property>
   </action>
  </widget>
