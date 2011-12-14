@@ -12,6 +12,8 @@
 #include "arduino-serial.h"
 #include "botoneira.h"
 
+#define COMMAND_ON 1
+#define COMMAND_OFF 0
 /*int set_relay(int fd, char relay , char *command);*/
 /*int init_arduino(char *port);*/
 
@@ -33,7 +35,7 @@ int set_relay(int fd, char relay , int command){
     buffer[0]='R';
     buffer[1]=relay;
     buffer[6]='\0';
-    if(command ==1){
+    if(command == COMMAND_ON){
         buffer[2]='o';
         buffer[3]='n';
         buffer[4]='n';

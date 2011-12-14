@@ -183,7 +183,11 @@
     </widget>
    </item>
    <item row="3" column="1" rowspan="3" colspan="2">
-    <widget class="QPlainTextEdit" name="plainTextEdit"/>
+    <widget class="QPlainTextEdit" name="plainTextEdit">
+     <property name="tabChangesFocus">
+      <bool>true</bool>
+     </property>
+    </widget>
    </item>
    <item row="0" column="3">
     <widget class="QLabel" name="labelSettlingTime">

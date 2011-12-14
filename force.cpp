@@ -7,7 +7,7 @@
 #include <fstream>
 #include <QString>
 #include <QSettings>
-
+#include <stdexcept>
 
 void invert(int n,double coe_matrix[6][6],double matrix[6][6]);
 
@@ -38,7 +38,7 @@ Force::Force(matrix_t matrix, int dvm_time): dvm_time(dvm_time){
 
     g_id = ibdev(0,7,0,15,1,0);
     if ( ! g_id ){
-        throw;
+        throw std::runtime_error("unable to open GPIB device");
     }
 }
 
@@ -69,7 +69,7 @@ double  Force::ascii2newton (char *buf){
     status = sscanf(buf,"%le", &value);
     if (status != 1){
         printf("sscanf: %s\n", buf);
-        throw;
+        throw std::runtime_error("problem reading from GPIB device");
     }
     return value;
 }

@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include <iostream>
 #include <cmath>
-
+#include <stdexcept>
 #include <QSettings>
 #include <QDebug>
 
@@ -38,33 +38,44 @@ void Angle::set(double angle_dest){
     read(); //update value
 
     // if the difference is small do nothing
-    if (fabs(angle_dest - angle) < PRECISION){
+    if (fabs(angle_dest - angle) < precision){
         return ;
     }
 
-    //angle_dest is bigger
-    if (angle_dest > angle){
-        set_relay(arduinofd,relay_increase,1);
-        do{
-            read(); //update value
-
-        } while((angle_dest - angle) > PRECISION);
-        set_relay(arduinofd,relay_increase,0);
-    }
-    //angle_dest is smaller
-    if (angle_dest < angle){
-        set_relay(arduinofd,relay_decrease,1);
-        do{
-            read(); //update value
-        } while((angle - angle_dest) > PRECISION);
-        set_relay(arduinofd,relay_decrease,0);
+    while(fabs(angle_dest - angle) >= precision){
+        //angle_dest is bigger
+        if (angle_dest > angle){
+            increase(angle_dest);
+        }
+        //angle_dest is smaller
+        if (angle_dest < angle){
+            decrease(angle_dest);
+        }
+        read(); //update value
+        qDebug() << fabs(angle_dest - angle) << angle;
     }
     read(); //update value
 }
 
+void Angle::increase(double angle_dest){
+    set_relay(arduinofd,relay_increase,COMMAND_ON);
+    do{
+        read(); //update value
+
+    } while((angle_dest - angle) > precision);
+    set_relay(arduinofd,relay_increase,COMMAND_OFF);
+}
+void Angle::decrease(double angle_dest){
+    set_relay(arduinofd,relay_decrease,COMMAND_ON);
+    do{
+        read(); //update value
+    } while((angle - angle_dest) > precision);
+    set_relay(arduinofd,relay_decrease,COMMAND_OFF);
+}
+
 void Angle::read(void){
     if ( ::read(fp, &digits, sizeof(int)) == -1){
-        throw;
+        throw std::runtime_error("unable to read from angle device");
     }
     else {
         convert();
@@ -73,7 +84,7 @@ void Angle::read(void){
         displays = (int) round(angle*10); //for the first decimal part, loose the rest
         int ret_val = write(fp, &displays, sizeof(int));
         if ( ret_val == -1 || ret_val != sizeof (int)){
-            throw;
+            throw std::runtime_error("problem writing to displays");
         }
     }
 }
@@ -82,6 +93,7 @@ Beta::Beta(void){
     zero = ANGLEZERO_BETA;
     sensitivity = ANGLESENSITIVITY_BETA;
     anglemax = ANGLEMAX_BETA;
+    precision = PRECISION_BETA;
     relay_increase = '2';
     relay_decrease = '3';
 
@@ -89,7 +101,7 @@ Beta::Beta(void){
     std::string filename = settings.value("beta_path").toString().toStdString();
     fp = open(filename.c_str(),O_RDWR);
     if ( fp == -1 ){
-        throw;
+        throw std::runtime_error("unable to open beta device");
     }
 
 }
@@ -102,6 +114,7 @@ Alpha::Alpha(void) {
     zero = ANGLEZERO_ALPHA;
     sensitivity = ANGLESENSITIVITY_ALPHA;
     anglemax = ANGLEMAX_ALPHA;
+    precision = PRECISION_ALPHA;
     relay_increase = '0';
     relay_decrease = '1';
 
@@ -109,7 +122,7 @@ Alpha::Alpha(void) {
     std::string filename = settings.value("alpha_path").toString().toStdString();
     fp = open(filename.c_str(),O_RDWR);
     if ( fp == -1 ){
-        throw;
+        throw std::runtime_error("unable to open alpha device");
     }
 }
 

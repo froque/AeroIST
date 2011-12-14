@@ -26,9 +26,8 @@ Wind::Wind(void){
     QSettings settings;
     std::string filename = settings.value("motor_path").toString().toStdString();
     fd = open(filename.c_str(), O_RDWR );
-    if (fd == -1)
-    {
-        throw "unable to open serial port";
+    if (fd == -1){
+        throw std::runtime_error("unable to open serial port");
     }
 
     /***** setting several options ******/
@@ -55,9 +54,8 @@ Wind::Wind(void){
 //    options.c_cc[VMIN]=60;
     options.c_cc[VMIN]=0;
     /*  Set the new options for the port... */
-    if (tcsetattr(fd, TCSANOW, &options)!=0)
-    {
-       throw "setting attributes failed";
+    if (tcsetattr(fd, TCSANOW, &options)!=0){
+        throw std::runtime_error("setting attributes failed");
     }
 
     talk_to_simoreg();
@@ -124,15 +122,18 @@ void Wind::talk_to_simoreg(void){
 //        char c= buffer[k];
 //        if ( write(fd, &c, 1) <1){
         if ( write(fd, &buffer[k], 1) <1){
-            throw "error on writing";
+            throw std::runtime_error("error on writing");
         }
     }
 
 
     int bytesRead = read(fd,buffer2,SIMOREG_BUFLEN);
+
     if (bytesRead != SIMOREG_BUFLEN) {
         throw std::runtime_error("Error on reading from the serial port");
     }
+
+
 
     bcc=0;
     for( int k=0 ; k<bytesRead-1 ; k++) {

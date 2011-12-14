@@ -7,7 +7,6 @@
 #define SINGLE_PID 0
 #define SINGLE_SETTINGS 0
 #define SINGLE_SOCKET 0
-#define INITIAL_LIST 0
 
 #define AEROIST "AeroIST"
 
@@ -51,7 +50,10 @@ enum ThreadStatus{
 #define ANGLEMAX_ALPHA 30.0
 #define ANGLEMAX_BETA 180.0
 
-#define PRECISION 0.03
+#define PRECISION_ALPHA 0.03
+#define PRECISION_BETA 0.05
+#define COMMAND_ON 1
+#define COMMAND_OFF 0
 //#define ARDUINOPATH "/dev/ttyUSB0"
 
 //#define MOTOR_DEV "/dev/ttyS0"

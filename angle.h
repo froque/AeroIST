@@ -21,9 +21,11 @@ protected:
     char relay_increase;
     char relay_decrease;
     int arduinofd;
-
+    double precision;
 private:
-        int displays;
+    int displays;
+    void increase(double angle_dest);
+    void decrease(double angle_dest);
 };
 
 class Beta: public Angle {

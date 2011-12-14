@@ -23,6 +23,7 @@
 #include <QDebug>
 #endif //DEBUG
 
+#include <stdexcept>
 
 AeroISTWindow::AeroISTWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -54,6 +55,7 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
     ui->listView->setContextMenuPolicy(Qt::ActionsContextMenu);
     ui->listView->insertAction(0,ui->actionView_Measure_details);
     ui->listView->insertAction(0,ui->actionDelete_Measure);
+    ui->listView->insertAction(0,ui->actionExport_to_csv);
 
     selection = ui->listViewZero->selectionModel();
     connect(selection,SIGNAL(currentChanged(QModelIndex,QModelIndex)),this,SLOT(ZeroSelectionChanged(QModelIndex,QModelIndex)));
@@ -119,7 +121,13 @@ void AeroISTWindow::on_ThreadButton_clicked(){
         message(tr("Measure is not empty"));
         return;
     }
-    m_test = new MeasureThread(measurementThread);
+    try{
+        m_test = new MeasureThread(measurementThread);
+    }
+    catch ( const std::runtime_error & err ) {
+        message(tr("Error opening devices: ") + err.what());
+        return ;
+    }
 
     if (!m_thread)
         m_thread = new QThread(0);
@@ -136,6 +144,7 @@ void AeroISTWindow::on_ThreadButton_clicked(){
     connect(ui->ThreadButton, SIGNAL(clicked()), m_test, SLOT(stop()));
 //    connect(m_thread,SIGNAL(finished()),this,SLOT(cleanup()));
     connect(m_thread,SIGNAL(finished()),this,SLOT(ThreadButton_cleanup()));
+//    connect(m_thread,SIGNAL(message(QString)),this,SLOT(message(QString)));
 
     // pass the values from comboboxes to the thread. only for free control
     connect(this,SIGNAL(set_alpha(double)),m_test,SLOT(control_alpha(double)));
@@ -414,6 +423,14 @@ void AeroISTWindow::load_settings(void){
             action->setShortcut(QKeySequence(settings->value(QString("gui/shortcut/%1").arg(action->objectName()) ,action->shortcut().toString()).toString()));
         }
     }
+
+    foreach (action, ui->menuView->actions()) {
+        if (!action->isSeparator() && action->isCheckable() ){
+            action->setChecked(settings->value("gui/actioncheckable/" + action->objectName(),action->isChecked()).toBool());
+        }
+    }
+
+
 }
 
 void AeroISTWindow::save_settings(void){
@@ -440,7 +457,11 @@ void AeroISTWindow::save_settings(void){
         settings->setValue(QString("gui/shortcut/%1").arg(action->objectName()) ,action->shortcut().toString());
         }
     }
-
+    foreach (action, ui->menuView->actions()) {
+        if (!action->isSeparator() ){
+            settings->setValue("gui/actioncheckable/" + action->objectName() ,action->isChecked());
+        }
+    }
 }
 
 void AeroISTWindow::on_actionView_Measure_details_triggered()
@@ -456,8 +477,6 @@ void AeroISTWindow::on_actionView_Measure_details_triggered()
         delete details;
     }
 }
-
-
 
 void AeroISTWindow::on_actionDelete_Zero_triggered()
 {
@@ -527,7 +546,14 @@ void AeroISTWindow::on_actionNew_Zero_triggered(){
         ui->listViewZero->setCurrentIndex(index);
         ui->tableView->setModel(ZeroThread);
 
-        m_test = new MeasureThread(ZeroThread);
+        try {
+            m_test = new MeasureThread(ZeroThread);
+        }
+        catch ( const std::runtime_error & err ) {
+            message(tr("Error opening devices: ") + err.what());
+            zero_list->deleteMeasure(index);
+            return ;
+        }
 
         if (!m_thread)
             m_thread = new QThread(0);
@@ -686,8 +712,6 @@ void AeroISTWindow::on_actionNames_in_Toolbar_toggled(bool arg1){
     }
 }
 
-
-void AeroISTWindow::on_actionLine_numbers_in_table_toggled(bool arg1)
-{
+void AeroISTWindow::on_actionLine_numbers_in_table_toggled(bool arg1){
     ui->tableView->verticalHeader()->setVisible(arg1);
 }

@@ -15,6 +15,7 @@
 #include "measure.h"
 #include "measurementsmodel.h"
 
+
 #ifdef DEBUG
 class Helper: public QThread {
 public:
@@ -38,6 +39,7 @@ public:
     ~MeasureThread();
 signals:
     void MeasureDone(measure m);
+
 
 public slots:
     void produce(void);

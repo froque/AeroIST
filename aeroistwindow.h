@@ -2,7 +2,7 @@
 #define AEROISTWINDOW_H
 #include <QtGui>
 #include <QMainWindow>
-#include <QFileSystemModel>
+//#include <QFileSystemModel>
 #include "measurementsmodel.h"
 #include "zeromodel.h"
 #include "measurethread.h"
@@ -58,6 +58,7 @@ private slots:
     void on_actionMeasure_List_toggled(bool checked);
     void on_actionZero_List_toggled(bool arg1);
     void on_actionNames_in_Toolbar_toggled(bool arg1);
+    void on_actionLine_numbers_in_table_toggled(bool arg1);
 
     // listviews and table
     void on_listView_activated(const QModelIndex &index);
@@ -80,12 +81,10 @@ private slots:
     void on_doubleSpinBoxALpha_valueChanged(double arg1);
     void on_doubleSpinBoxBeta_valueChanged(double arg1);
 
-    void on_actionLine_numbers_in_table_toggled(bool arg1);
-
 private:
     void message(const QString &string);
-    void start_loop( MeasurementsModel * measurement, MeasureThread *measureThread, const QObject *receiver, const char * slot);
-    void stop_loop( MeasurementsModel * measurement, MeasureThread *measureThread, const QObject *receiver, const char * slot );
+//    void start_loop( MeasurementsModel * measurement, MeasureThread *measureThread, const QObject *receiver, const char * slot);
+//    void stop_loop( MeasurementsModel * measurement, MeasureThread *measureThread, const QObject *receiver, const char * slot );
     void load_settings(void);
     void save_settings(void);
     void save_xml(QString fileName);
@@ -97,9 +96,9 @@ private:
 
     MeasurementsModel *measurementThread;
     ZeroModel* ZeroThread;
-    QThread producerThread;
-    MeasureThread *producer;
-    MeasureThread *Zproducer;
+//    QThread producerThread;
+//    MeasureThread *producer;
+//    MeasureThread *Zproducer;
     ThreadStatus thread_status;
 
     MeasureThread *m_test;
