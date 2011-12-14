@@ -10,8 +10,10 @@
 #include <QSettings>
 #include <QDebug>
 
-extern "C" int init_arduino(const char *port);
-extern "C" int set_relay(int fd, char relay , int command);
+#include "botoneira.h"
+
+//extern "C" int init_arduino(const char *port);
+//extern "C" int set_relay(int fd, char relay , int command);
 
 
 Angle::Angle(){
@@ -52,7 +54,7 @@ void Angle::set(double angle_dest){
             decrease(angle_dest);
         }
         read(); //update value
-        qDebug() << fabs(angle_dest - angle) << angle;
+//        qDebug() << fabs(angle_dest - angle) << angle;
     }
     read(); //update value
 }
