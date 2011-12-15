@@ -130,7 +130,7 @@ void Wind::talk_to_simoreg(void){
     int bytesRead = read(fd,buffer2,SIMOREG_BUFLEN);
 
     if (bytesRead != SIMOREG_BUFLEN) {
-        throw std::runtime_error("Error on reading from the serial port");
+        throw std::runtime_error("Error on reading from the SIMOREG serial port");
     }
 
 
@@ -140,12 +140,14 @@ void Wind::talk_to_simoreg(void){
         bcc ^= buffer2[k];
     }
 
+//    printf("RECEIVING: stx:%02X lge:%02X adr:%02X net1:%02X %02X net2:%02X %02X bcc:%02X\n",buffer2[0],buffer2[1],buffer2[2],buffer2[3],buffer2[4],buffer2[5],buffer2[6],buffer2[7]);
+
     if (bcc != buffer2[bytesRead-1]) {
-        printf("bcc %02X\t\t",bcc);
+        printf("bcc that should be %02X\t\t - bcc that is %02X",bcc,buffer2[bytesRead-1]);
         throw std::runtime_error("error on BCC");
     }
 
-//    printf("RECEIVING: stx:%02X lge:%02X adr:%02X net1:%02X %02X net2:%02X %02X bcc:%02X\n",buffer2[0],buffer2[1],buffer2[2],buffer2[3],buffer2[4],buffer2[5],buffer2[6],buffer2[7]);
+
 
     terminal37 = !(buffer2[4] & 11);
 

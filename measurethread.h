@@ -49,6 +49,7 @@ public slots:
     void control_beta(double);
     void control_wind(double);
 private:
+    void prepare(matrix_t matrix , int dvm_time);
     void subtract(measure *minuend, measure subtrahend);
     void set_m(void);
     void set_initial(void);

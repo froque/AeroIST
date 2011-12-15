@@ -12,20 +12,24 @@
 #include <string.h>
 #include <stdint.h>   /* Standard types */
 
-//#include "arduino-serial.h"
+#include "arduino-serial.h"
+
 
 #include <QSettings>
 
-extern "C" int init_arduino(const char *port);
-extern "C" int serialport_write(int fd, const char* str);
-extern "C" int serialport_read_until(int fd, char* buf, char until);
+//extern "C" int init_arduino(const char *port);
+//#define SERIALRATE 9600
+//extern "C" int serialport_init(const char* serialport, int baud);
+//extern "C" int serialport_write(int fd, const char* str);
+//extern "C" int serialport_read_until(int fd, char* buf, char until);
 
 
 Temperature::Temperature(){
     temp=0;
     temp_raw=0;
     QSettings settings;
-    arduinofd = init_arduino(settings.value("arduino_path").toString().toStdString().c_str());
+    arduinofd = serialport_init(settings.value("arduino_path").toString().toStdString().c_str(),SERIALRATE);
+//    arduinofd = init_arduino(settings.value("arduino_path").toString().toStdString().c_str());
 //    arduinofd = init_arduino(ARDUINOPATH);
 }
 
@@ -43,16 +47,19 @@ void Temperature::read(void){
 
     sprintf(buffer_aux,"\"%s\"",buffer);
     while (sucess == false){
-            if( serialport_write(arduinofd, buffer) == -1){
-                perror("writing");
-//	        return -1;
-            }
+        serialport_flush(arduinofd);
+        if( serialport_write(arduinofd, buffer) == -1){
+            perror("temperature writing");
+            //	        return -1;
+        }
+        int result = serialport_read_until(arduinofd, buffer_read, '\n');
+        printf("buf: %s\n",buffer_read);
 
-            if( serialport_read_until(arduinofd, buffer_read, '\n') == -1){
-                perror("reading");
-//	        return -1;
-            }
-            if (strncmp(buffer_aux,buffer_read,3)==0){
+        if( result == -1){
+            perror("temperature reading");
+            //	        return -1;
+        }
+        if (strncmp(buffer_aux,buffer_read,3)==0){
             strncpy(buffer_aux,buffer_read + 3,4);
             temp_raw = atoi(buffer_aux);
             sucess=true;

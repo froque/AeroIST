@@ -38,6 +38,7 @@
 #include <errno.h>    /* Error number definitions */
 #include <termios.h>  /* POSIX terminal control definitions */
 #include <sys/ioctl.h>
+#include <stdexcept>
 
 
 
@@ -80,6 +81,10 @@ int serialport_read_until(int fd, char* buf, char until)
     return 0;
 }
 
+void serialport_flush(int fd){
+    tcflush(fd,TCIOFLUSH);
+}
+
 // takes the string name of the serial port (e.g. "/dev/tty.usbserial","COM1")
 // and a baud rate (bps) and connects to that port at that speed and 8N1.
 // opens the port in fully raw mode so you can send binary data.
@@ -95,13 +100,16 @@ int serialport_init(const char* serialport, int baud)
 //    fd = open(serialport, O_RDWR | O_NOCTTY | O_NDELAY);
     fd = open(serialport, O_RDWR | O_NOCTTY );
     if (fd == -1)  {
-        perror("init_serialport: Unable to open port ");
-        return -1;
+//        perror("init_serialport: Unable to open port ");
+
+        throw std::runtime_error("init_serialport: Unable to open Arduino port ");
+//        return -1;
     }
     
     if (tcgetattr(fd, &toptions) < 0) {
-        perror("init_serialport: Couldn't get term attributes");
-        return -1;
+//        perror("init_serialport: Couldn't get term attributes");
+        throw std::runtime_error("init_serialport: Couldn't get term attributes");
+//        return -1;
     }
     speed_t brate = baud; // let you override switch below if needed
     switch(baud) {
@@ -139,9 +147,11 @@ int serialport_init(const char* serialport, int baud)
     toptions.c_cc[VMIN]  = 0;
     toptions.c_cc[VTIME] = 20;
 
-    if( tcsetattr(fd, TCSANOW, &toptions) < 0) {
-        perror("init_serialport: Couldn't set term attributes");
-        return -1;
+//    if( tcsetattr(fd, TCSANOW, &toptions) < 0) {
+    if(tcsetattr(fd,TCSAFLUSH,&toptions)<0){
+//        perror("init_serialport: Couldn't set term attributes");
+        throw std::runtime_error("init_serialport: Couldn't set term attributes");
+//        return -1;
     }
 
     return fd;

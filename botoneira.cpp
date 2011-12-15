@@ -21,8 +21,8 @@ int init_arduino(const char *port){
     int fd;
     char b[1];
     fd = serialport_init(port,SERIALRATE);
-    while( read(fd,b,1)!=0)
-        ;
+//    while( read(fd,b,1)!=0)
+//        ;
     return fd;
 }
 
@@ -50,19 +50,25 @@ int set_relay(int fd, char relay , int command){
     sprintf(buffer_aux,"\"%s\"",buffer);
 
     while (sucess == false){
-	    if( serialport_write(fd, buffer) == -1){
-	        perror("writing");
-	        return -1;
-	    }
+        serialport_flush(fd);
+        printf("botoneira - write\n");
+        if( serialport_write(fd, buffer) == -1){
+            perror("botoneira writing");
+            return -1;
+        }
 	/*    usleep(atoi(argv[4])* 1000 );    */
 	//    usleep(50* 1000 );
-	    if( serialport_read_until(fd, buffer_read, '\n') == -1){
-	        perror("reading");
-	        return -1;
-	    }
-	    if (strncmp(buffer_aux,buffer_read,8)==0){
+        printf("botoneira - read\n");
+        if( serialport_read_until(fd, buffer_read, '\n') == -1){
+            printf("FODA-SE:%s\n",buffer_read);
+            perror("botoneira reading");
+//            return -1;
+        }
+        printf("botoneira - compare\n");
+        if (strncmp(buffer_aux,buffer_read,8)==0){
             sucess=true;
         }
+        printf("botoneira - sucess: %d\n",sucess);
     }
     return 0;
 }

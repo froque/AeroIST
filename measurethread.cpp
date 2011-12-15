@@ -26,16 +26,7 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
     for (int k=0; k< NUMCHANNELS;k++){
         zero.force[k] = measurement->zero->force[k].first();
     }
-
-    QSettings settings;
-    virtual_measures = settings.value("virtual_measures",false).toBool();
-    if (!virtual_measures){
-        force = new Force(measurement->matrix,measurement->dvm_time);
-        alpha = new Alpha;
-        beta = new Beta;
-        temperature = new Temperature;
-        wind = new Wind;
-    }
+    prepare(measurement->matrix,measurement->dvm_time);
 }
 
 MeasureThread::MeasureThread(ZeroModel *measurement,QObject *parent) :
@@ -49,14 +40,25 @@ MeasureThread::MeasureThread(ZeroModel *measurement,QObject *parent) :
     isZero = true;
     n=1;
     control_type = NONE;
+    prepare(measurement->matrix,measurement->dvm_time);
+}
 
+void MeasureThread::prepare(matrix_t matrix, int dvm_time){
+    QSettings settings;
+    virtual_measures = settings.value("virtual_measures",false).toBool();
     if (!virtual_measures){
-        force = new Force(measurement->matrix,measurement->dvm_time);
+//        qDebug() << "new force"<< QTime::currentTime();
+        force = new Force(matrix,dvm_time);
+//        qDebug() << "new alpha"<< QTime::currentTime();
         alpha = new Alpha;
+//        qDebug() << "new beta"<< QTime::currentTime();
         beta = new Beta;
+//        qDebug() << "new temperature"<< QTime::currentTime();
         temperature = new Temperature;
+//        qDebug() << "new wind" << QTime::currentTime();
         wind = new Wind;
     }
+    qDebug() << "end thread contructor";
 }
 
 MeasureThread::~MeasureThread(){

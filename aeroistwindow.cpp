@@ -39,7 +39,7 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
     ui->actionLoad_Project->setIcon(QIcon::fromTheme("document-open"));
     ui->actionSave_Project->setIcon(QIcon::fromTheme("document-save-as"));
 //    ui->actionPreferences->setIcon(QIcon::fromTheme(""));
-    qDebug() << QIcon::themeName() << ui->toolBar->iconSize();
+//    qDebug() << QIcon::themeName() << ui->toolBar->iconSize();
 
     // Set the list model
     measure_list = new MeasureList();
@@ -529,7 +529,7 @@ void AeroISTWindow::on_actionNew_Zero_triggered(){
         return;
     }
     if(thread_status == STOPPED){
-        qDebug() << "action new zero" << thread_status;
+//        qDebug() << "action new zero" << thread_status;
         ZeroPreferences *zero_prefs;
         ZeroThread = new ZeroModel(zero_list->getFreeId());
 
@@ -572,7 +572,7 @@ void AeroISTWindow::on_actionNew_Zero_triggered(){
         connect(m_thread,SIGNAL(finished()),this,SLOT(ZeroButton_cleanup()));
 
         thread_status = ZERO_RUNNING;
-        qDebug() << "action new zero after start" << thread_status;
+//        qDebug() << "action new zero after start" << thread_status;
 
         m_thread->start();
 
