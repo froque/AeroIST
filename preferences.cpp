@@ -3,6 +3,7 @@
 
 #include "common.h"
 #include <QDir>
+#include <QFileDialog>
 #ifdef DEBUG
 #include <QDebug>
 #endif //DEBUG
@@ -93,4 +94,40 @@ void Preferences::on_buttonBox_rejected()
 
     ui->spinBox->setValue(settings->value("default_average_number").toInt());
     ui->doubleSpinBox->setValue(settings->value("default_settling_time").toDouble());
+}
+
+void Preferences::on_toolButton_clicked(){
+    QString directory;
+    directory = QFileDialog::getExistingDirectory(this,tr("Choose Directory"),QDir::homePath(), QFileDialog::ShowDirsOnly);
+    ui->edit_project->setText(directory);
+}
+
+void Preferences::on_toolButton_2_clicked(){
+    QString file;
+    file = QFileDialog::getOpenFileName(this, tr("Choose device"),"/dev", "");
+    ui->edit_alpha->setText(file);
+}
+
+void Preferences::on_toolButton_3_clicked(){
+    QString file;
+    file = QFileDialog::getOpenFileName(this, tr("Choose device"),"/dev", "");
+    ui->edit_beta->setText(file);
+}
+
+void Preferences::on_toolButton_4_clicked(){
+    QString file;
+    file = QFileDialog::getOpenFileName(this, tr("Choose device"),"/dev", "");
+    ui->edit_motor->setText(file);
+}
+
+void Preferences::on_toolButton_5_clicked(){
+    QString file;
+    file = QFileDialog::getOpenFileName(this, tr("Choose device"),"/dev", "");
+    ui->edit_arduino->setText(file);
+}
+
+void Preferences::on_toolButton_6_clicked(){
+    QString file;
+    file = QFileDialog::getOpenFileName(this, tr("Choose device"),"/dev", "");
+    ui->edit_multimetro->setText(file);
 }
