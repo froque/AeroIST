@@ -2,7 +2,7 @@
 #include "ui_preferences.h"
 
 #include "common.h"
-
+#include <QDir>
 #ifdef DEBUG
 #include <QDebug>
 #endif //DEBUG
@@ -24,6 +24,9 @@ Preferences::Preferences(QSettings *settings,QWidget *parent) :
     ui->edit_arduino->setText(      settings->value("arduino_path" ).toString() );
     settings->setValue("multimeter_path", settings->value("multimeter_path","/dev/gpib0"));
     ui->edit_multimetro->setText(   settings->value("multimeter_path").toString() );
+
+    settings->setValue("project_folder",settings->value("project_folder",QDir::homePath()).toString());
+    ui->edit_project->setText(settings->value("project_folder").toString());
 
     ui->combo_matrix->clear();
     ui->combo_matrix->addItem(tr("middle"), MIDDLE);
@@ -70,6 +73,8 @@ void Preferences::on_buttonBox_accepted()
 
     settings->setValue("default_average_number", ui->spinBox->value());
     settings->setValue("default_settling_time",ui->doubleSpinBox->value());
+    settings->setValue("project_folder",ui->edit_project->text());
+
 }
 
 void Preferences::on_buttonBox_rejected()

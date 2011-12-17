@@ -68,6 +68,7 @@ void MeasureList::save(QString fileName){
 
 void MeasureList::clear(void){
     while (list.size()>0){
+        qDebug() << "measure list" << list.size();
          deleteMeasure( index(0,0,QModelIndex()) );
     }
 }

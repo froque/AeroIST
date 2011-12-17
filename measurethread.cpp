@@ -5,6 +5,7 @@
 #include <QEventLoop>
 #include <QDebug>
 #include <QSettings>
+#include <stdexcept>
 
 MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
     QObject(parent),
@@ -72,47 +73,53 @@ MeasureThread::~MeasureThread(){
 }
 
 void MeasureThread::produce(){
-    m_stop = false;
-    timer.start();
-    QEventLoop eloop;
-    k = 1;
-    set_initial();
-    while(!m_stop) {
-        clear_m();
+
+    if (wind->isReady() == false){
+        //        throw std::runtime_error("Wind is not ready. Try press the green button");
+        emit message(tr("Wind is not ready. Try press the green button"));
+    } else {
+
+        m_stop = false;
+        timer.start();
+        QEventLoop eloop;
+        k = 1;
+        set_initial();
+        while(!m_stop) {
+            clear_m();
+            if (!virtual_measures){
+                set_m();
+                read_m();
+            } else {
+
+                set_m_virtual();
+                read_m_virtual();
+            }
+            if (isZero == false){
+                subtract(&m,zero);
+            }
+
+            if (control_type == NONE){
+                if (n != 0 && k>= n ){
+                    m_stop = true;
+                }
+            } else {
+                current = current + step;
+                if (current > max ){
+                    m_stop = true;
+                }
+            }
+
+            k++;
+            emit MeasureDone(m);
+
+            eloop.processEvents(QEventLoop::AllEvents, 50);
+        }
+
+        // cleanup
         if (!virtual_measures){
-            set_m();
-            read_m();
-        } else {
-
-            set_m_virtual();
-            read_m_virtual();
+            wind->set(0);
         }
-        if (isZero == false){
-            subtract(&m,zero);
-        }
-
-        if (control_type == NONE){
-            if (n != 0 && k>= n ){
-                m_stop = true;
-            }
-        } else {
-            current = current + step;
-            if (current > max ){
-                m_stop = true;
-            }
-        }
-
-        k++;
-        emit MeasureDone(m);
-
-        eloop.processEvents(QEventLoop::AllEvents, 50);
     }
-
-    // cleanup
-    if (!virtual_measures){
-        wind->set(0);
-    }
-
     if (m_parent_thread != thread())
     {
         thread()->quit();

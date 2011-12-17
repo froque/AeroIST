@@ -39,7 +39,7 @@ public:
     ~MeasureThread();
 signals:
     void MeasureDone(measure m);
-
+    void message(QString);
 
 public slots:
     void produce(void);

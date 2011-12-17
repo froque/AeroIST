@@ -144,7 +144,7 @@ void AeroISTWindow::on_ThreadButton_clicked(){
     connect(ui->ThreadButton, SIGNAL(clicked()), m_test, SLOT(stop()));
 //    connect(m_thread,SIGNAL(finished()),this,SLOT(cleanup()));
     connect(m_thread,SIGNAL(finished()),this,SLOT(ThreadButton_cleanup()));
-//    connect(m_thread,SIGNAL(message(QString)),this,SLOT(message(QString)));
+    connect(m_test,SIGNAL(message(QString)),this,SLOT(message(QString)));
 
     // pass the values from comboboxes to the thread. only for free control
     connect(this,SIGNAL(set_alpha(double)),m_test,SLOT(control_alpha(double)));
@@ -159,7 +159,13 @@ void AeroISTWindow::on_ThreadButton_clicked(){
         ui->doubleSpinBoxBeta->setEnabled(true);
         ui->doubleSpinBoxWind->setEnabled(true);
     }
-    m_thread->start();
+//    try{
+        m_thread->start();
+//    }
+//    catch ( const std::runtime_error & err ) {
+//        message(tr("Error starting measurement: ") + err.what());
+//        return ;
+//    }
     thread_status = MEASURE_RUNNING;
     QString text(tr("Stop "));
     text.append( measurementThread->name);
@@ -203,7 +209,7 @@ void AeroISTWindow::on_actionExport_to_csv_triggered()
     measurement = measure_list->at(row);
 
     QString fileName;
-    fileName = QFileDialog::getSaveFileName(this, tr("Export mesurements"), ".", "");
+    fileName = QFileDialog::getSaveFileName(this, tr("Export mesurements"), settings->value("project_folder").toString(), "");
 
     QFile data(fileName);
     if (data.open(QFile::WriteOnly | QFile::Text)) {
@@ -217,7 +223,7 @@ void AeroISTWindow::on_actionExport_to_csv_triggered()
 void AeroISTWindow::on_actionExportPlot_triggered()
 {
     QString fileName;
-    fileName = QFileDialog::getSaveFileName(this, tr("Export plot"), ".", "" );
+    fileName = QFileDialog::getSaveFileName(this, tr("Export plot"), settings->value("project_folder").toString(), "" );
 
     QwtPlotRenderer* renderer = new QwtPlotRenderer();
     renderer->renderDocument(ui->qwtPlot,fileName,QSize(297,210),300);  //A4 size, 300 DPI
@@ -267,7 +273,7 @@ void AeroISTWindow::on_actionSave_Project_as_triggered(){
         return;
     }
 
-    project_filename = QFileDialog::getSaveFileName(this, tr("Save Project"), ".", "");
+    project_filename = QFileDialog::getSaveFileName(this, tr("Save Project"), settings->value("project_folder").toString(), tr("*.xml"));
     save_xml(project_filename);
 }
 
@@ -277,7 +283,7 @@ void AeroISTWindow::on_actionSave_Project_triggered(){
         return;
     }
     if (project_filename.isNull() || project_filename.isEmpty()){
-        project_filename = QFileDialog::getSaveFileName(this, tr("Save Project"), ".", "");
+        project_filename = QFileDialog::getSaveFileName(this, tr("Save Project"), settings->value("project_folder").toString(), tr("*.xml"));
     }
     save_xml(project_filename);
 }
@@ -289,6 +295,11 @@ void AeroISTWindow::save_xml(QString fileName){
 
     zero_list->save_xml(root);
     measure_list->save_xml(root);
+
+    if(fileName.endsWith(".xml",Qt::CaseInsensitive) == false){
+        fileName.append(".xml");
+    }
+
     QFile file(fileName);
     if (file.open(QFile::WriteOnly|QFile::Text)){
         QTextStream out(&file);
@@ -305,7 +316,7 @@ void AeroISTWindow::on_actionLoad_Project_triggered()
         return;
     }
     QString fileName;
-    fileName = QFileDialog::getOpenFileName(this, tr("Load Project"), ".", "");
+    fileName = QFileDialog::getOpenFileName(this, tr("Load Project"), settings->value("project_folder").toString(), tr("*.xml"));
     if (fileName.isNull() || fileName.isEmpty()){
         return;
     }
@@ -359,6 +370,7 @@ void AeroISTWindow::on_actionClear_Project_triggered()
 {
     measure_list->clear();
     zero_list->clear();
+    ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tab),tr("Table"));
 }
 
 
@@ -569,12 +581,19 @@ void AeroISTWindow::on_actionNew_Zero_triggered(){
         // stop connects
 //        connect(ui->ZeroButton, SIGNAL(clicked()), m_test, SLOT(stop()));
         //    connect(m_thread,SIGNAL(finished()),this,SLOT(cleanup()));
+        connect(m_test,SIGNAL(message(QString)),this,SLOT(message(QString)));
         connect(m_thread,SIGNAL(finished()),this,SLOT(ZeroButton_cleanup()));
 
         thread_status = ZERO_RUNNING;
 //        qDebug() << "action new zero after start" << thread_status;
 
-        m_thread->start();
+//        try{
+            m_thread->start();
+//        }
+//        catch ( const std::runtime_error & err ) {
+//            message(tr("Error starting measurement: ") + err.what());
+//            return ;
+//        }
 
 //        QString text(tr("Stop "));
 //        text.append( ZeroThread->name);

@@ -55,6 +55,7 @@ ZeroModel * ZeroList::at(QModelIndex index){
 
 void ZeroList::clear(void){
     while (list.size()>0){
+        qDebug() << "zero list" << list.size();
          deleteMeasure( index(0,0,QModelIndex()) );
     }
 }

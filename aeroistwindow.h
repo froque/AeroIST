@@ -81,8 +81,9 @@ private slots:
     void on_doubleSpinBoxALpha_valueChanged(double arg1);
     void on_doubleSpinBoxBeta_valueChanged(double arg1);
 
-private:
     void message(const QString &string);
+
+private:
 //    void start_loop( MeasurementsModel * measurement, MeasureThread *measureThread, const QObject *receiver, const char * slot);
 //    void stop_loop( MeasurementsModel * measurement, MeasureThread *measureThread, const QObject *receiver, const char * slot );
     void load_settings(void);
