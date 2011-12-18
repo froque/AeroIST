@@ -23,7 +23,7 @@ Preferences::Preferences(QSettings *settings,QWidget *parent) :
     ui->edit_motor->setText(        settings->value("motor_path").toString() );
     settings->setValue("arduino_path", settings->value("arduino_path","/dev/ttyUSB0"));
     ui->edit_arduino->setText(      settings->value("arduino_path" ).toString() );
-    settings->setValue("multimeter_path", settings->value("multimeter_path","/dev/gpib0"));
+    settings->setValue("multimeter_path", settings->value("multimeter_path","voltmeter"));
     ui->edit_multimetro->setText(   settings->value("multimeter_path").toString() );
 
     settings->setValue("project_folder",settings->value("project_folder",QDir::homePath()).toString());
@@ -124,10 +124,4 @@ void Preferences::on_toolButton_5_clicked(){
     QString file;
     file = QFileDialog::getOpenFileName(this, tr("Choose device"),"/dev", "");
     ui->edit_arduino->setText(file);
-}
-
-void Preferences::on_toolButton_6_clicked(){
-    QString file;
-    file = QFileDialog::getOpenFileName(this, tr("Choose device"),"/dev", "");
-    ui->edit_multimetro->setText(file);
 }

@@ -33,7 +33,7 @@ private slots:
 
     void on_toolButton_5_clicked();
 
-    void on_toolButton_6_clicked();
+
 
 private:
     Ui::Preferences *ui;
