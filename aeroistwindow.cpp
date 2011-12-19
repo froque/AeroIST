@@ -341,6 +341,8 @@ void AeroISTWindow::on_actionLoad_Project_triggered()
         message(tr("Couldn't confirm xml file"));
     }
 
+    project_filename = fileName;
+
     document.setContent(&file);
     file.close();
     QDomElement root = document.firstChildElement();

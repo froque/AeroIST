@@ -51,24 +51,24 @@ int set_relay(int fd, char relay , int command){
 
     while (sucess == false){
         serialport_flush(fd);
-        printf("botoneira - write\n");
+//        printf("botoneira - write\n");
         if( serialport_write(fd, buffer) == -1){
             perror("botoneira writing");
             return -1;
         }
 	/*    usleep(atoi(argv[4])* 1000 );    */
 	//    usleep(50* 1000 );
-        printf("botoneira - read\n");
+//        printf("botoneira - read\n");
         if( serialport_read_until(fd, buffer_read, '\n') == -1){
-            printf("FODA-SE:%s\n",buffer_read);
+//            printf("FODA-SE:%s\n",buffer_read);
             perror("botoneira reading");
 //            return -1;
         }
-        printf("botoneira - compare\n");
+//        printf("botoneira - compare\n");
         if (strncmp(buffer_aux,buffer_read,8)==0){
             sucess=true;
         }
-        printf("botoneira - sucess: %d\n",sucess);
+//        printf("botoneira - sucess: %d\n",sucess);
     }
     return 0;
 }

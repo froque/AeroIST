@@ -53,10 +53,11 @@ void Temperature::read(void){
             //	        return -1;
         }
         int result = serialport_read_until(arduinofd, buffer_read, '\n');
-        printf("buf: %s\n",buffer_read);
+//        printf("buf: %s\n",buffer_read);
 
         if( result == -1){
-            perror("temperature reading");
+            ;
+//            perror("temperature reading");
             //	        return -1;
         }
         if (strncmp(buffer_aux,buffer_read,3)==0){

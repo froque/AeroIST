@@ -27,7 +27,15 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
     for (int k=0; k< NUMCHANNELS;k++){
         zero.force[k] = measurement->zero->force[k].first();
     }
-    prepare(measurement->matrix,measurement->dvm_time);
+    QSettings settings;
+    virtual_measures = settings.value("virtual_measures",false).toBool();
+    if (!virtual_measures){
+        force = new Force(measurement->matrix,measurement->dvm_time,zero.force);
+        alpha = new Alpha;
+        beta = new Beta;
+        temperature = new Temperature;
+        wind = new Wind;
+    }
 }
 
 MeasureThread::MeasureThread(ZeroModel *measurement,QObject *parent) :
@@ -41,26 +49,17 @@ MeasureThread::MeasureThread(ZeroModel *measurement,QObject *parent) :
     isZero = true;
     n=1;
     control_type = NONE;
-    prepare(measurement->matrix,measurement->dvm_time);
-}
-
-void MeasureThread::prepare(matrix_t matrix, int dvm_time){
     QSettings settings;
     virtual_measures = settings.value("virtual_measures",false).toBool();
     if (!virtual_measures){
-//        qDebug() << "new force"<< QTime::currentTime();
-        force = new Force(matrix,dvm_time);
-//        qDebug() << "new alpha"<< QTime::currentTime();
+        force = new Force(measurement->matrix,measurement->dvm_time);
         alpha = new Alpha;
-//        qDebug() << "new beta"<< QTime::currentTime();
         beta = new Beta;
-//        qDebug() << "new temperature"<< QTime::currentTime();
         temperature = new Temperature;
-//        qDebug() << "new wind" << QTime::currentTime();
         wind = new Wind;
     }
-    qDebug() << "end thread contructor";
 }
+
 
 MeasureThread::~MeasureThread(){
     if (!virtual_measures){
@@ -94,9 +93,9 @@ void MeasureThread::produce(){
                 set_m_virtual();
                 read_m_virtual();
             }
-            if (isZero == false){
-                subtract(&m,zero);
-            }
+//            if (isZero == false){
+//                subtract(&m,zero);
+//            }
 
             if (control_type == NONE){
                 if (n != 0 && k>= n ){
@@ -190,7 +189,8 @@ void MeasureThread::read_m(void){
         m.temp += temperature->temp;
         m.wind += wind->speed_actual;
         for (int k=0; k < NUMCHANNELS; k++ ){
-            m.force[k] += force->dvm_si[k];
+//            m.force[k] += force->dvm_si[k];
+            m.force[k] += force->forces[k];
         }
     }
 
