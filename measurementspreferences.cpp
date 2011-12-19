@@ -3,6 +3,7 @@
 
 #include "QDebug"
 #include "QMessageBox"
+#include <cmath>
 
 MeasurementsPreferences::MeasurementsPreferences(MeasurementsModel *measurement, ZeroList *list, QWidget *parent) :
     QDialog(parent),
@@ -75,13 +76,13 @@ void MeasurementsPreferences::accept(){
         return ;
     }
     if (ui->controlGroup->checkedId() !=NONE ){
-        double min,max,step;
+        double start,end,step;
 
-        min = ui->doubleSpinBoxMin->value();
-        max = ui->doubleSpinBoxMax->value();
+        start = ui->doubleSpinBoxStart->value();
+        end = ui->doubleSpinBoxEnd->value();
         step = ui->doubleSpinBoxStep->value();
 
-        if( min >= max || max-min < step || step == 0  ){
+        if( (start > end && step > 0 ) || fabs(end-start) < fabs(step) || step == 0  ){
             QMessageBox msgBox;
             msgBox.setText(tr("Wrong Minimum, Maximum and Step"));
             msgBox.exec();
@@ -89,15 +90,14 @@ void MeasurementsPreferences::accept(){
         }
     }
 
-//    emit MeasurementsPreferences::accept();
     measurement->name = ui->edit_name->text();
     measurement->description = ui->plainTextEdit->toPlainText();
     measurement->matrix = (matrix_t) ui->combo_matrix->currentText().toInt();
     measurement->dvm_time = ui->combo_dvm_time->itemData(ui->combo_dvm_time->currentIndex()).toInt();
     measurement->average_number = ui->spinBoxAverage->value();
     measurement->settling_time = ui->doubleSpinBoxSettling->value();
-    measurement->min = ui->doubleSpinBoxMin->value();
-    measurement->max = ui->doubleSpinBoxMax->value();
+    measurement->start = ui->doubleSpinBoxStart->value();
+    measurement->end = ui->doubleSpinBoxEnd->value();
     measurement->step = ui->doubleSpinBoxStep->value();
     measurement->control_type = (control_types_t) ui->controlGroup->checkedId();
     measurement->n = ui->spinBoxN->value();
@@ -112,10 +112,10 @@ void MeasurementsPreferences::accept(){
 }
 
 void MeasurementsPreferences::maxminstep_enabled(int id){
-    double min = 0 ,max = 0,step;
+    double start = 0 ,end = 0,step;
     switch (id){
-    case NONE:  ui->doubleSpinBoxMin->setEnabled(false);
-        ui->doubleSpinBoxMax->setEnabled(false);
+    case NONE:  ui->doubleSpinBoxStart->setEnabled(false);
+        ui->doubleSpinBoxEnd->setEnabled(false);
         ui->doubleSpinBoxStep->setEnabled(false);
         //                ui->doubleSpinBoxSettling->setEnabled(false);
         ui->spinBoxN->setEnabled(true);
@@ -127,42 +127,40 @@ void MeasurementsPreferences::maxminstep_enabled(int id){
         ui->doubleSpinBoxAlpha->setEnabled(false);
         ui->doubleSpinBoxBeta->setEnabled(true);
         ui->doubleSpinBoxWind->setEnabled(true);
-        min = - ANGLEMAX_ALPHA;
-        max = ANGLEMAX_ALPHA;
+        start = - ANGLEMAX_ALPHA;
+        end = ANGLEMAX_ALPHA;
         step = DEFAULT_ALPHA_STEP;
         break;
     case BETA:
         ui->doubleSpinBoxAlpha->setEnabled(true);
         ui->doubleSpinBoxBeta->setEnabled(false);
         ui->doubleSpinBoxWind->setEnabled(true);
-        min = -ANGLEMAX_BETA;
-        max = ANGLEMAX_BETA;
+        start = -ANGLEMAX_BETA;
+        end = ANGLEMAX_BETA;
         step = DEFAULT_BETA_STEP;
         break;
     case WIND:
         ui->doubleSpinBoxAlpha->setEnabled(true);
         ui->doubleSpinBoxBeta->setEnabled(true);
         ui->doubleSpinBoxWind->setEnabled(false);
-        min = DEFAULT_WIND_MIN;
-        max = DEFAULT_WIND_MAX;
+        start = DEFAULT_WIND_MIN;
+        end = DEFAULT_WIND_MAX;
         step = DEFAULT_WIND_STEP;
         break;
     }
     ui->spinBoxN->setEnabled(false);
-    ui->doubleSpinBoxMin->setEnabled(true);
-    ui->doubleSpinBoxMax->setEnabled(true);
+    ui->doubleSpinBoxStart->setEnabled(true);
+    ui->doubleSpinBoxEnd->setEnabled(true);
     ui->doubleSpinBoxStep->setEnabled(true);
-    //    ui->doubleSpinBoxSettling->setEnabled(true);
-    ui->doubleSpinBoxMin->setRange(min,max);
-    ui->doubleSpinBoxMin->setSingleStep(step);
-    ui->doubleSpinBoxMax->setRange(min,max);
-    ui->doubleSpinBoxMax->setSingleStep(step);
-    ui->doubleSpinBoxStep->setRange(min,max);
+    ui->doubleSpinBoxStart->setRange(start,end);
+    ui->doubleSpinBoxStart->setSingleStep(step);
+    ui->doubleSpinBoxEnd->setRange(start,end);
+    ui->doubleSpinBoxEnd->setSingleStep(step);
+    ui->doubleSpinBoxStep->setRange(start,end);
     ui->doubleSpinBoxStep->setSingleStep(step);
-    ui->doubleSpinBoxMin->setValue(min);
-    ui->doubleSpinBoxMax->setValue(max);
+    ui->doubleSpinBoxStart->setValue(start);
+    ui->doubleSpinBoxEnd->setValue(end);
     ui->doubleSpinBoxStep->setValue(step);
-
 }
 
 void MeasurementsPreferences::on_combo_matrix_currentIndexChanged(int index){

@@ -53,8 +53,8 @@ public:
     matrix_t matrix;
     int average_number;
     double settling_time;
-    double min;
-    double max;
+    double start;
+    double end;
     double step;
     double set_alpha;
     double set_beta;

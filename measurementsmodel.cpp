@@ -16,8 +16,8 @@ MeasurementsModel::MeasurementsModel(int id,QObject *parent)
     matrix=MIDDLE;
     average_number=0;
     settling_time=0;
-    min=0;
-    max=0;
+    start=0;
+    end=0;
     step=0;
     control_type = NONE;
     zero  = 0;
@@ -259,13 +259,13 @@ void MeasurementsModel::save_xml(QDomElement root ){
     settling_time.appendChild(root.ownerDocument().createTextNode(QString::number(this->settling_time)));
     root.appendChild(settling_time);
 
-    QDomElement min = root.ownerDocument().createElement(TAG_MIN);
-    min.appendChild(root.ownerDocument().createTextNode(QString::number(this->min)));
-    root.appendChild(min);
+    QDomElement start = root.ownerDocument().createElement(TAG_START);
+    start.appendChild(root.ownerDocument().createTextNode(QString::number(this->start)));
+    root.appendChild(start);
 
-    QDomElement max = root.ownerDocument().createElement(TAG_MAX);
-    max.appendChild(root.ownerDocument().createTextNode(QString::number(this->max)));
-    root.appendChild(max);
+    QDomElement end = root.ownerDocument().createElement(TAG_END);
+    end.appendChild(root.ownerDocument().createTextNode(QString::number(this->end)));
+    root.appendChild(end);
 
     QDomElement step = root.ownerDocument().createElement(TAG_STEP);
     step.appendChild(root.ownerDocument().createTextNode(QString::number(this->step)));
@@ -364,11 +364,11 @@ void MeasurementsModel::load_xml(QDomElement root){
             case WIND: this->control_type = WIND; break;
             }
         }
-        if (element.tagName() == TAG_MIN){
-            this->min = element.text().toDouble();
+        if (element.tagName() == TAG_START){
+            this->start = element.text().toDouble();
         }
-        if (element.tagName() == TAG_MAX){
-            this->max = element.text().toDouble();
+        if (element.tagName() == TAG_END){
+            this->end = element.text().toDouble();
         }
         if (element.tagName() == TAG_STEP){
             this->step = element.text().toDouble();

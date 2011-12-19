@@ -14,8 +14,8 @@
 <xs:element name="set_wind" type="xs:double"/>
 <xs:element name="item" type="xs:double" />
 <xs:element name="settling_time" type="xs:int"/>
-<xs:element name="min" type="xs:double" />
-<xs:element name="max" type="xs:double" />
+<xs:element name="start" type="xs:double" />
+<xs:element name="end" type="xs:double" />
 <xs:element name="step" type="xs:double" />
 <xs:element name="control_type" type="xs:int"/>
 <xs:element name="n" type="xs:int"/>
@@ -33,92 +33,6 @@
 <xs:element name="Beta" type="xs:double" />
 <xs:element name="Wind" type="xs:double" />
 <xs:element name="Temperature" type="xs:double" />
-
-<!-- definition of complex elements -->
-<!--<xs:element name="Time">
-  <xs:complexType>
-    <xs:sequence>
-      <xs:element ref="item" maxOccurs="unbounded"/>
-    </xs:sequence>
-  </xs:complexType>
-</xs:element>
-<xs:element name="Fx">
-  <xs:complexType>
-    <xs:sequence>
-      <xs:element ref="item" maxOccurs="unbounded"/>
-    </xs:sequence>
-  </xs:complexType>
-</xs:element>
-<xs:element name="Fy">
-  <xs:complexType>
-    <xs:sequence>
-      <xs:element ref="item" maxOccurs="unbounded"/>
-    </xs:sequence>
-  </xs:complexType>
-</xs:element>
-<xs:element name="Fz">
-  <xs:complexType>
-    <xs:sequence>
-      <xs:element ref="item" maxOccurs="unbounded"/>
-    </xs:sequence>
-  </xs:complexType>
-</xs:element>
-<xs:element name="Mx">
-  <xs:complexType>
-    <xs:sequence>
-      <xs:element ref="item" maxOccurs="unbounded"/>
-    </xs:sequence>
-  </xs:complexType>
-</xs:element>
-<xs:element name="My">
-  <xs:complexType>
-    <xs:sequence>
-      <xs:element ref="item" maxOccurs="unbounded"/>
-    </xs:sequence>
-  </xs:complexType>
-</xs:element>
-<xs:element name="Mz">
-  <xs:complexType>
-    <xs:sequence>
-      <xs:element ref="item" maxOccurs="unbounded"/>
-    </xs:sequence>
-  </xs:complexType>
-</xs:element>
-<xs:element name="Alpha">
-  <xs:complexType>
-    <xs:sequence>
-      <xs:element ref="item" maxOccurs="unbounded"/>
-    </xs:sequence>
-  </xs:complexType>
-</xs:element>
-<xs:element name="Beta">
-  <xs:complexType>
-    <xs:sequence>
-      <xs:element ref="item" maxOccurs="unbounded"/>
-    </xs:sequence>
-  </xs:complexType>
-</xs:element>
-<xs:element name="Wind">
-  <xs:complexType>
-    <xs:sequence>
-      <xs:element ref="item" maxOccurs="unbounded"/>
-    </xs:sequence>
-  </xs:complexType>
-</xs:element>
-<xs:element name="Temperature">
-  <xs:complexType>
-    <xs:sequence>
-      <xs:element ref="item" maxOccurs="unbounded"/>
-    </xs:sequence>
-  </xs:complexType>
-</xs:element>
--->
-
-
-
-
-
-
 
 <xs:element name="project">
   <xs:complexType>
@@ -166,8 +80,8 @@
               <xs:element ref="matrix"/>
               <xs:element ref="average_number"/>
               <xs:element ref="settling_time"/>
-              <xs:element ref="min"/>              
-              <xs:element ref="max"/>              
+              <xs:element ref="start"/>              
+              <xs:element ref="end"/>              
               <xs:element ref="step"/>
               <xs:element ref="set_alpha"/>
               <xs:element ref="set_beta"/>

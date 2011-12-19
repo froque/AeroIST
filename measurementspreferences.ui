@@ -103,16 +103,16 @@
     <widget class="QDoubleSpinBox" name="doubleSpinBoxWind"/>
    </item>
    <item row="10" column="3">
-    <widget class="QLabel" name="labelMin">
+    <widget class="QLabel" name="labelStart">
      <property name="text">
-      <string>Minimum</string>
+      <string>Start</string>
      </property>
     </widget>
    </item>
    <item row="11" column="3">
-    <widget class="QLabel" name="labelMax">
+    <widget class="QLabel" name="labelEnd">
      <property name="text">
-      <string>Maximum</string>
+      <string>End</string>
      </property>
     </widget>
    </item>
@@ -124,14 +124,14 @@
     </widget>
    </item>
    <item row="10" column="5">
-    <widget class="QDoubleSpinBox" name="doubleSpinBoxMin">
+    <widget class="QDoubleSpinBox" name="doubleSpinBoxStart">
      <property name="enabled">
       <bool>false</bool>
      </property>
     </widget>
    </item>
    <item row="11" column="5">
-    <widget class="QDoubleSpinBox" name="doubleSpinBoxMax">
+    <widget class="QDoubleSpinBox" name="doubleSpinBoxEnd">
      <property name="enabled">
       <bool>false</bool>
      </property>
@@ -269,8 +269,8 @@
   <tabstop>doubleSpinBoxAlpha</tabstop>
   <tabstop>doubleSpinBoxBeta</tabstop>
   <tabstop>doubleSpinBoxWind</tabstop>
-  <tabstop>doubleSpinBoxMin</tabstop>
-  <tabstop>doubleSpinBoxMax</tabstop>
+  <tabstop>doubleSpinBoxStart</tabstop>
+  <tabstop>doubleSpinBoxEnd</tabstop>
   <tabstop>doubleSpinBoxStep</tabstop>
   <tabstop>buttonBox</tabstop>
  </tabstops>

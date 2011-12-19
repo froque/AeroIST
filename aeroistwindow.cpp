@@ -423,6 +423,19 @@ void AeroISTWindow::on_listView_activated(const QModelIndex &index){
 void AeroISTWindow::load_settings(void){
     QSettings settings;
 
+    // necessary settings
+    settings.setValue(SETTINGS_ALPHA_PATH, settings.value(SETTINGS_ALPHA_PATH,SETTINGS_ALPHA_PATH_DEFAULT));
+    settings.setValue(SETTINGS_BETA_PATH, settings.value(SETTINGS_BETA_PATH,SETTINGS_BETA_PATH_DEFAULT));
+    settings.setValue(SETTINGS_MOTOR_PATH, settings.value(SETTINGS_MOTOR_PATH,SETTINGS_MOTOR_PATH_DEFAULT));
+    settings.setValue(SETTINGS_ARDUINO_PATH, settings.value(SETTINGS_ARDUINO_PATH,SETTINGS_ARDUINO_PATH_DEFAULT));
+    settings.setValue(SETTINGS_MULTIMETER_PATH, settings.value(SETTINGS_MULTIMETER_PATH,SETTINGS_MULTIMETER_PATH_DEFAULT));
+    settings.setValue(SETTINGS_PROJECT_FOLDER,settings.value(SETTINGS_PROJECT_FOLDER,QDir::homePath()).toString());
+    settings.setValue(SETTINGS_DEFAULT_MATRIX, settings.value(SETTINGS_DEFAULT_MATRIX,MIDDLE));
+    settings.setValue(SETTINGS_DEFAULT_DVM_TIME, settings.value(SETTINGS_DEFAULT_DVM_TIME,4));
+    settings.setValue(SETTINGS_DEFAULT_AVERAGE_NUMBER,settings.value(SETTINGS_DEFAULT_AVERAGE_NUMBER,1));
+    settings.setValue(SETTINGS_DEFAULT_SETTLING_TIME,settings.value(SETTINGS_DEFAULT_SETTLING_TIME,0));
+
+    // optional settings
     restoreState(settings.value(SETTINGS_GUI_STATE).toByteArray());
     restoreGeometry(settings.value(SETTINGS_GUI_GEOMETRY).toByteArray());
 

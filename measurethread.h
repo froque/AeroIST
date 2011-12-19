@@ -60,8 +60,8 @@ private:
     measure m;
     int average_number;
     double settling_time;
-    double min;
-    double max;
+    double start;
+    double end;
     double step;
     double current;
     double set_alpha;

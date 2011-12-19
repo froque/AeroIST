@@ -81,16 +81,16 @@
     </widget>
    </item>
    <item row="11" column="0">
-    <widget class="QLabel" name="labelViewMin">
+    <widget class="QLabel" name="labelViewStart">
      <property name="text">
-      <string>Minimum</string>
+      <string>Start</string>
      </property>
     </widget>
    </item>
    <item row="12" column="0">
-    <widget class="QLabel" name="labelViewMax">
+    <widget class="QLabel" name="labelViewEnd">
      <property name="text">
-      <string>Maximum</string>
+      <string>End</string>
      </property>
     </widget>
    </item>
@@ -102,14 +102,14 @@
     </widget>
    </item>
    <item row="11" column="1">
-    <widget class="QLabel" name="labelMin">
+    <widget class="QLabel" name="labelStart">
      <property name="text">
       <string/>
      </property>
     </widget>
    </item>
    <item row="12" column="1">
-    <widget class="QLabel" name="labelMax">
+    <widget class="QLabel" name="labelEnd">
      <property name="text">
       <string/>
      </property>

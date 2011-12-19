@@ -11,10 +11,10 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
     QObject(parent),
     average_number(measurement->average_number),
     settling_time(measurement->settling_time),
-    min(measurement->min),
-    max(measurement->max),
+    start(measurement->start),
+    end(measurement->end),
     step(measurement->step),
-    current(measurement->min),
+    current(measurement->start),
     set_alpha(measurement->set_alpha),
     set_beta(measurement->set_beta),
     set_wind(measurement->set_wind),
@@ -29,6 +29,7 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
     }
     QSettings settings;
     virtual_measures = settings.value(SETTINGS_VIRTUAL_MEASURES,false).toBool();
+    settings.setValue(SETTINGS_VIRTUAL_MEASURES,virtual_measures);
     if (!virtual_measures){
         force = new Force(measurement->matrix,measurement->dvm_time,zero.force);
         alpha = new Alpha;
@@ -51,6 +52,7 @@ MeasureThread::MeasureThread(ZeroModel *measurement,QObject *parent) :
     control_type = NONE;
     QSettings settings;
     virtual_measures = settings.value(SETTINGS_VIRTUAL_MEASURES,false).toBool();
+    settings.setValue(SETTINGS_VIRTUAL_MEASURES,virtual_measures);
     if (!virtual_measures){
         force = new Force(measurement->matrix,measurement->dvm_time);
         alpha = new Alpha;
@@ -72,47 +74,60 @@ MeasureThread::~MeasureThread(){
 }
 
 void MeasureThread::produce(){
-    if (wind->isReady() == false){
-        //        throw std::runtime_error("Wind is not ready. Try press the green button");
-        emit message(tr("Wind is not ready. Try press the green button"));
-    } else {
-
-        m_stop = false;
-        timer.start();
-        QEventLoop eloop;
-        k = 1;
-        set_initial();
-        while(!m_stop) {
-            clear_m();
-            if (!virtual_measures){
+    m_stop = false;
+    timer.start();
+    QEventLoop eloop;
+    k = 1;
+    if (!virtual_measures){
+        if (wind->isReady() == false){
+            //        throw std::runtime_error("Wind is not ready. Try press the green button");
+            emit message(tr("Wind is not ready. Try press the green button"));
+        } else {
+            set_initial();
+            while(!m_stop) {
+                clear_m();
                 set_m();
                 read_m();
-            } else {
-                set_m_virtual();
-                read_m_virtual();
-            }
-
-            if (control_type == NONE){
-                if (n != 0 && k>= n ){
-                    m_stop = true;
+                if (control_type == NONE){
+                    if (n != 0 && k>= n ){
+                        m_stop = true;
+                    }
+                } else {
+                    current = current + step;
+                    if ((start < end && current > end ) || (start > end && current < end)){
+                        m_stop = true;
+                    }
                 }
-            } else {
-                current = current + step;
-                if (current > max ){
-                    m_stop = true;
-                }
+
+                k++;
+                emit MeasureDone(m);
+                eloop.processEvents(QEventLoop::AllEvents, 50);
             }
-
-            k++;
-            emit MeasureDone(m);
-
-            eloop.processEvents(QEventLoop::AllEvents, 50);
-        }
-
-        // cleanup
-        if (!virtual_measures){
+            // cleanup
             wind->set(0);
         }
+    } else {
+            while(!m_stop) {
+                clear_m();
+                read_m_virtual();
+                set_m_virtual();
+
+                if (control_type == NONE){
+                    if (n != 0 && k>= n ){
+                        m_stop = true;
+                    }
+                } else {
+                    current = current + step;
+                    if ((start < end && current > end ) || (start > end && current < end)){
+                        m_stop = true;
+                    }
+                }
+
+                k++;
+                emit MeasureDone(m);
+
+                eloop.processEvents(QEventLoop::AllEvents, 50);
+            }
     }
     if (m_parent_thread != thread())
     {
@@ -133,19 +148,19 @@ void MeasureThread::set_initial(void){
         wind->set(this->set_wind);
         break;
     case ALPHA:
-        alpha->set(this->min);
+        alpha->set(this->start);
         beta->set(this->set_beta);
         wind->set(this->set_wind);
         break;
     case BETA:
         alpha->set(this->set_alpha);
-        beta->set(this->min);
+        beta->set(this->start);
         wind->set(this->set_wind);
         break;
     case WIND:
         alpha->set(this->set_alpha);
         beta->set(this->set_beta);
-        wind->set(this->min);
+        wind->set(this->start);
         break;
     }
 }

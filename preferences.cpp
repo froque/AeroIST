@@ -14,24 +14,18 @@ Preferences::Preferences(QWidget *parent) :
 {
     ui->setupUi(this);
     QSettings settings;
-    settings.setValue(SETTINGS_ALPHA_PATH, settings.value(SETTINGS_ALPHA_PATH,SETTINGS_ALPHA_PATH_DEFAULT));
-    ui->edit_alpha->setText(        settings.value(SETTINGS_ALPHA_PATH).toString() );
-    settings.setValue(SETTINGS_BETA_PATH, settings.value(SETTINGS_BETA_PATH,SETTINGS_BETA_PATH_DEFAULT));
-    ui->edit_beta->setText(         settings.value(SETTINGS_BETA_PATH).toString() );
-    settings.setValue(SETTINGS_MOTOR_PATH, settings.value(SETTINGS_MOTOR_PATH,SETTINGS_MOTOR_PATH_DEFAULT));
-    ui->edit_motor->setText(        settings.value(SETTINGS_MOTOR_PATH).toString() );
-    settings.setValue(SETTINGS_ARDUINO_PATH, settings.value(SETTINGS_ARDUINO_PATH,SETTINGS_ARDUINO_PATH_DEFAULT));
-    ui->edit_arduino->setText(      settings.value(SETTINGS_ARDUINO_PATH ).toString() );
-    settings.setValue(SETTINGS_MULTIMETER_PATH, settings.value(SETTINGS_MULTIMETER_PATH,SETTINGS_MULTIMETER_PATH_DEFAULT));
-    ui->edit_multimetro->setText(   settings.value(SETTINGS_MULTIMETER_PATH).toString() );
 
-    settings.setValue(SETTINGS_PROJECT_FOLDER,settings.value(SETTINGS_PROJECT_FOLDER,QDir::homePath()).toString());
+    ui->edit_alpha->setText(        settings.value(SETTINGS_ALPHA_PATH).toString() );
+    ui->edit_beta->setText(         settings.value(SETTINGS_BETA_PATH).toString() );
+    ui->edit_motor->setText(        settings.value(SETTINGS_MOTOR_PATH).toString() );
+    ui->edit_arduino->setText(      settings.value(SETTINGS_ARDUINO_PATH ).toString() );
+    ui->edit_multimetro->setText(   settings.value(SETTINGS_MULTIMETER_PATH).toString() );
     ui->edit_project->setText(settings.value(SETTINGS_PROJECT_FOLDER).toString());
 
     ui->combo_matrix->clear();
     ui->combo_matrix->addItem(tr("middle"), MIDDLE);
     ui->combo_matrix->addItem(tr("floor"),  FLOOR);
-    settings.setValue(SETTINGS_DEFAULT_MATRIX, settings.value(SETTINGS_DEFAULT_MATRIX,MIDDLE));
+
     int index = ui->combo_matrix->findData(settings.value(SETTINGS_DEFAULT_MATRIX).toInt());
     ui->combo_matrix->setCurrentIndex(index);
 
@@ -41,14 +35,11 @@ Preferences::Preferences(QWidget *parent) :
     ui->combo_dvm_time->addItem(tr("1 s"),      4);
     ui->combo_dvm_time->addItem(tr("5 s"),      5);
     ui->combo_dvm_time->addItem(tr("10 s"),     6);
-    settings.setValue(SETTINGS_DEFAULT_DVM_TIME, settings.value(SETTINGS_DEFAULT_DVM_TIME,4));
+
     index = ui->combo_dvm_time->findData(settings.value(SETTINGS_DEFAULT_DVM_TIME).toInt());
     ui->combo_dvm_time->setCurrentIndex(index);
 
-    settings.setValue(SETTINGS_DEFAULT_AVERAGE_NUMBER,settings.value(SETTINGS_DEFAULT_AVERAGE_NUMBER,1));
     ui->spinBox->setValue(settings.value(SETTINGS_DEFAULT_AVERAGE_NUMBER).toInt());
-
-    settings.setValue(SETTINGS_DEFAULT_SETTLING_TIME,settings.value(SETTINGS_DEFAULT_SETTLING_TIME,0));
     ui->doubleSpinBox->setValue(settings.value(SETTINGS_DEFAULT_SETTLING_TIME).toDouble());
 }
 

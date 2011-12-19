@@ -41,12 +41,12 @@ MeasurementDetails::MeasurementDetails(MeasurementsModel *measurement, QWidget *
     switch (measurement->control_type){
     case NONE:
         ui->labelControl->setText(tr("None"));
-        ui->labelViewMin->hide();
-        ui->labelViewMax->hide();
+        ui->labelViewStart->hide();
+        ui->labelViewEnd->hide();
         ui->labelViewStep->hide();
         ui->labelViewSettling->hide();
-        ui->labelMin->hide();
-        ui->labelMax->hide();
+        ui->labelStart->hide();
+        ui->labelEnd->hide();
         ui->labelStep->hide();
         ui->labelSettling->hide();
         ui->labelN->setText(QString::number( measurement->n));
@@ -56,8 +56,8 @@ MeasurementDetails::MeasurementDetails(MeasurementsModel *measurement, QWidget *
         break;
     case ALPHA:
         ui->labelControl->setText(tr("Alpha"));
-        ui->labelMin->setText(QString::number(measurement->min));
-        ui->labelMax->setText(QString::number(measurement->max));
+        ui->labelStart->setText(QString::number(measurement->start));
+        ui->labelEnd->setText(QString::number(measurement->end));
         ui->labelStep->setText(QString::number(measurement->step));
         ui->labelSettling->setText(QString::number(measurement->settling_time));
         ui->labelN->hide();
@@ -69,8 +69,8 @@ MeasurementDetails::MeasurementDetails(MeasurementsModel *measurement, QWidget *
         break;
     case BETA:
         ui->labelControl->setText(tr("Beta"));
-        ui->labelMin->setText(QString::number(measurement->min));
-        ui->labelMax->setText(QString::number(measurement->max));
+        ui->labelStart->setText(QString::number(measurement->start));
+        ui->labelEnd->setText(QString::number(measurement->end));
         ui->labelStep->setText(QString::number(measurement->step));
         ui->labelSettling->setText(QString::number(measurement->settling_time));
         ui->labelN->hide();
@@ -82,8 +82,8 @@ MeasurementDetails::MeasurementDetails(MeasurementsModel *measurement, QWidget *
         break;
     case WIND:
         ui->labelControl->setText(tr("Wind"));
-        ui->labelMin->setText(QString::number(measurement->min));
-        ui->labelMax->setText(QString::number(measurement->max));
+        ui->labelStart->setText(QString::number(measurement->start));
+        ui->labelEnd->setText(QString::number(measurement->end));
         ui->labelStep->setText(QString::number(measurement->step));
         ui->labelSettling->setText(QString::number(measurement->settling_time));
         ui->labelN->hide();
