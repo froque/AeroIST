@@ -4,13 +4,15 @@
 #include "QDebug"
 #include "QMessageBox"
 
-MeasurementsPreferences::MeasurementsPreferences(MeasurementsModel *measurement, ZeroList *list, QSettings *settings, QWidget *parent) :
+MeasurementsPreferences::MeasurementsPreferences(MeasurementsModel *measurement, ZeroList *list, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::MeasurementsPreferences),
     measurement(measurement),
     list(list)
 {
     ui->setupUi(this);
+
+    QSettings settings;
 
     proxyfilter = new QSortFilterProxyModel(this);
     proxyfilter->setSourceModel(list);
@@ -21,7 +23,7 @@ MeasurementsPreferences::MeasurementsPreferences(MeasurementsModel *measurement,
     ui->combo_matrix->clear();
     ui->combo_matrix->addItem(tr("middle"),MIDDLE);
     ui->combo_matrix->addItem(tr("floor"),FLOOR);
-    int index = ui->combo_matrix->findData(settings->value("default_matrix").toInt());
+    int index = ui->combo_matrix->findData(settings.value(SETTINGS_DEFAULT_MATRIX).toInt());
     ui->combo_matrix->setCurrentIndex(index);
 
     ui->combo_dvm_time->addItem(tr("50 ms"),1);
@@ -30,12 +32,12 @@ MeasurementsPreferences::MeasurementsPreferences(MeasurementsModel *measurement,
     ui->combo_dvm_time->addItem(tr("1 s"),4);
     ui->combo_dvm_time->addItem(tr("5 s"),5);
     ui->combo_dvm_time->addItem(tr("10 s"),6);
-    index = ui->combo_dvm_time->findData(settings->value("default_dvm_time").toInt());
+    index = ui->combo_dvm_time->findData(settings.value(SETTINGS_DEFAULT_DVM_TIME).toInt());
     ui->combo_dvm_time->setCurrentIndex(index);
 
-    ui->spinBoxAverage->setValue(settings->value("default_average_number").toInt());
+    ui->spinBoxAverage->setValue(settings.value(SETTINGS_DEFAULT_AVERAGE_NUMBER).toInt());
 
-    ui->doubleSpinBoxSettling->setValue(settings->value("default_settling_time").toDouble());
+    ui->doubleSpinBoxSettling->setValue(settings.value(SETTINGS_DEFAULT_SETTLING_TIME).toDouble());
 
     ui->doubleSpinBoxAlpha->setRange(-ANGLEMAX_ALPHA,ANGLEMAX_ALPHA);
     ui->doubleSpinBoxAlpha->setSingleStep(DEFAULT_ALPHA_STEP);
@@ -52,33 +54,13 @@ MeasurementsPreferences::MeasurementsPreferences(MeasurementsModel *measurement,
     connect(ui->controlGroup, SIGNAL(buttonClicked(int)),this,SLOT(maxminstep_enabled(int)));
 
     adjustSize();
-
 }
 
 
-MeasurementsPreferences::~MeasurementsPreferences()
-{
+MeasurementsPreferences::~MeasurementsPreferences(){
     delete ui;
 }
-/*
-void MeasurementsPreferences::on_buttonBox_accepted()
-{
-    measurement->name = ui->edit_name->text();
-    measurement->matrix = (matrix_t) ui->combo_matrix->currentText().toInt();
-    measurement->dvm_time = ui->combo_dvm_time->itemData(ui->combo_dvm_time->currentIndex()).toInt();
-    measurement->average_number = ui->spinBoxAverage->value();
-    measurement->settling_time = ui->doubleSpinBoxSettling->value();
-    measurement->min = ui->doubleSpinBoxMin->value();
-    measurement->max = ui->doubleSpinBoxMax->value();
-    measurement->step = ui->doubleSpinBoxStep->value();
-    measurement->control_type = (control_types_t) ui->controlGroup->checkedId();
-    measurement->n = ui->spinBoxN->value();
 
-    measurement->zero = list->at(ui->combo_zero->currentIndex());
-
-}*/
-
-//void MeasurementsPreferences::test_input(){
 void MeasurementsPreferences::accept(){
     if (ui->edit_name->text().size()==0){
         QMessageBox msgBox;

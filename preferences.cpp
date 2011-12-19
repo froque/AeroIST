@@ -8,32 +8,31 @@
 #include <QDebug>
 #endif //DEBUG
 
-Preferences::Preferences(QSettings *settings,QWidget *parent) :
+Preferences::Preferences(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::Preferences),
-  settings(settings)
+    ui(new Ui::Preferences)
 {
     ui->setupUi(this);
+    QSettings settings;
+    settings.setValue(SETTINGS_ALPHA_PATH, settings.value(SETTINGS_ALPHA_PATH,SETTINGS_ALPHA_PATH_DEFAULT));
+    ui->edit_alpha->setText(        settings.value(SETTINGS_ALPHA_PATH).toString() );
+    settings.setValue(SETTINGS_BETA_PATH, settings.value(SETTINGS_BETA_PATH,SETTINGS_BETA_PATH_DEFAULT));
+    ui->edit_beta->setText(         settings.value(SETTINGS_BETA_PATH).toString() );
+    settings.setValue(SETTINGS_MOTOR_PATH, settings.value(SETTINGS_MOTOR_PATH,SETTINGS_MOTOR_PATH_DEFAULT));
+    ui->edit_motor->setText(        settings.value(SETTINGS_MOTOR_PATH).toString() );
+    settings.setValue(SETTINGS_ARDUINO_PATH, settings.value(SETTINGS_ARDUINO_PATH,SETTINGS_ARDUINO_PATH_DEFAULT));
+    ui->edit_arduino->setText(      settings.value(SETTINGS_ARDUINO_PATH ).toString() );
+    settings.setValue(SETTINGS_MULTIMETER_PATH, settings.value(SETTINGS_MULTIMETER_PATH,SETTINGS_MULTIMETER_PATH_DEFAULT));
+    ui->edit_multimetro->setText(   settings.value(SETTINGS_MULTIMETER_PATH).toString() );
 
-    settings->setValue("alpha_path", settings->value("alpha_path","/dev/angle_alpha"));
-    ui->edit_alpha->setText(        settings->value("alpha_path").toString() );
-    settings->setValue("beta_path", settings->value("beta_path","/dev/angle_beta"));
-    ui->edit_beta->setText(         settings->value("beta_path").toString() );
-    settings->setValue("motor_path", settings->value("motor_path","/dev/ttyS0"));
-    ui->edit_motor->setText(        settings->value("motor_path").toString() );
-    settings->setValue("arduino_path", settings->value("arduino_path","/dev/ttyUSB0"));
-    ui->edit_arduino->setText(      settings->value("arduino_path" ).toString() );
-    settings->setValue("multimeter_path", settings->value("multimeter_path","voltmeter"));
-    ui->edit_multimetro->setText(   settings->value("multimeter_path").toString() );
-
-    settings->setValue("project_folder",settings->value("project_folder",QDir::homePath()).toString());
-    ui->edit_project->setText(settings->value("project_folder").toString());
+    settings.setValue(SETTINGS_PROJECT_FOLDER,settings.value(SETTINGS_PROJECT_FOLDER,QDir::homePath()).toString());
+    ui->edit_project->setText(settings.value(SETTINGS_PROJECT_FOLDER).toString());
 
     ui->combo_matrix->clear();
     ui->combo_matrix->addItem(tr("middle"), MIDDLE);
     ui->combo_matrix->addItem(tr("floor"),  FLOOR);
-    settings->setValue("default_matrix", settings->value("default_matrix",MIDDLE));
-    int index = ui->combo_matrix->findData(settings->value("default_matrix").toInt());
+    settings.setValue(SETTINGS_DEFAULT_MATRIX, settings.value(SETTINGS_DEFAULT_MATRIX,MIDDLE));
+    int index = ui->combo_matrix->findData(settings.value(SETTINGS_DEFAULT_MATRIX).toInt());
     ui->combo_matrix->setCurrentIndex(index);
 
     ui->combo_dvm_time->addItem(tr("50 ms"),    1);
@@ -42,15 +41,15 @@ Preferences::Preferences(QSettings *settings,QWidget *parent) :
     ui->combo_dvm_time->addItem(tr("1 s"),      4);
     ui->combo_dvm_time->addItem(tr("5 s"),      5);
     ui->combo_dvm_time->addItem(tr("10 s"),     6);
-    settings->setValue("default_dvm_time", settings->value("default_dvm_time",4));
-    index = ui->combo_dvm_time->findData(settings->value("default_dvm_time").toInt());
+    settings.setValue(SETTINGS_DEFAULT_DVM_TIME, settings.value(SETTINGS_DEFAULT_DVM_TIME,4));
+    index = ui->combo_dvm_time->findData(settings.value(SETTINGS_DEFAULT_DVM_TIME).toInt());
     ui->combo_dvm_time->setCurrentIndex(index);
 
-    settings->setValue("default_average_number",settings->value("default_average_number",1));
-    ui->spinBox->setValue(settings->value("default_average_number").toInt());
+    settings.setValue(SETTINGS_DEFAULT_AVERAGE_NUMBER,settings.value(SETTINGS_DEFAULT_AVERAGE_NUMBER,1));
+    ui->spinBox->setValue(settings.value(SETTINGS_DEFAULT_AVERAGE_NUMBER).toInt());
 
-    settings->setValue("default_settling_time",settings->value("default_settling_time",0));
-    ui->doubleSpinBox->setValue(settings->value("default_settling_time").toDouble());
+    settings.setValue(SETTINGS_DEFAULT_SETTLING_TIME,settings.value(SETTINGS_DEFAULT_SETTLING_TIME,0));
+    ui->doubleSpinBox->setValue(settings.value(SETTINGS_DEFAULT_SETTLING_TIME).toDouble());
 }
 
 Preferences::~Preferences()
@@ -58,42 +57,24 @@ Preferences::~Preferences()
     delete ui;
 }
 
-void Preferences::on_buttonBox_accepted()
-{
-    settings->setValue("alpha_path",        ui->edit_alpha->text());
-    settings->setValue("beta_path",         ui->edit_beta->text());
-    settings->setValue("arduino_path",      ui->edit_arduino->text());
-    settings->setValue("motor_path",        ui->edit_motor->text());
-    settings->setValue("multimeter_path",   ui->edit_multimetro->text());
+void Preferences::on_buttonBox_accepted(){
+    QSettings settings;
+    settings.setValue(SETTINGS_ALPHA_PATH,        ui->edit_alpha->text());
+    settings.setValue(SETTINGS_BETA_PATH,         ui->edit_beta->text());
+    settings.setValue(SETTINGS_ARDUINO_PATH,      ui->edit_arduino->text());
+    settings.setValue(SETTINGS_MOTOR_PATH,        ui->edit_motor->text());
+    settings.setValue(SETTINGS_MULTIMETER_PATH,   ui->edit_multimetro->text());
 
     int index = ui->combo_matrix->currentIndex();
-    settings->setValue("default_matrix", ui->combo_matrix->itemData(index).toInt());
+    settings.setValue(SETTINGS_DEFAULT_MATRIX, ui->combo_matrix->itemData(index).toInt());
 
     index = ui->combo_dvm_time->currentIndex();
-    settings->setValue("default_dvm_time", ui->combo_dvm_time->itemData(index).toInt());
+    settings.setValue(SETTINGS_DEFAULT_DVM_TIME, ui->combo_dvm_time->itemData(index).toInt());
 
-    settings->setValue("default_average_number", ui->spinBox->value());
-    settings->setValue("default_settling_time",ui->doubleSpinBox->value());
-    settings->setValue("project_folder",ui->edit_project->text());
+    settings.setValue(SETTINGS_DEFAULT_AVERAGE_NUMBER, ui->spinBox->value());
+    settings.setValue(SETTINGS_DEFAULT_SETTLING_TIME,ui->doubleSpinBox->value());
+    settings.setValue(SETTINGS_PROJECT_FOLDER,ui->edit_project->text());
 
-}
-
-void Preferences::on_buttonBox_rejected()
-{
-    ui->edit_alpha->setText(        settings->value("alpha_path").toString() );
-    ui->edit_beta->setText(         settings->value("beta_path").toString() );
-    ui->edit_motor->setText(        settings->value("motor_path").toString() );
-    ui->edit_arduino->setText(      settings->value("arduino_path" ).toString() );
-    ui->edit_multimetro->setText(   settings->value("multimeter_path").toString() );
-
-    int index = ui->combo_matrix->findData(settings->value("default_matrix").toInt());
-    ui->combo_matrix->setCurrentIndex(index);
-
-    index = ui->combo_dvm_time->findData(settings->value("default_dvm_time").toInt());
-    ui->combo_dvm_time->setCurrentIndex(index);
-
-    ui->spinBox->setValue(settings->value("default_average_number").toInt());
-    ui->doubleSpinBox->setValue(settings->value("default_settling_time").toDouble());
 }
 
 void Preferences::on_toolButton_clicked(){

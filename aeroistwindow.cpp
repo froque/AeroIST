@@ -65,7 +65,7 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
 
     // load settings from .ini file
     load_settings();
-    preferences = new Preferences(settings,this);
+//    preferences = new Preferences(this);
 
     qRegisterMetaType<measure>("measure");
     thread_status = STOPPED;
@@ -92,8 +92,8 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
 AeroISTWindow::~AeroISTWindow()
 {
     save_settings();
-    delete preferences;
-    delete settings;
+//    delete preferences;
+//    delete settings;
     delete ui;
     delete measure_list;
     delete zero_list;
@@ -209,7 +209,12 @@ void AeroISTWindow::on_actionExport_to_csv_triggered()
     measurement = measure_list->at(row);
 
     QString fileName;
-    fileName = QFileDialog::getSaveFileName(this, tr("Export mesurements"), settings->value("project_folder").toString(), "");
+    QSettings settings;
+    fileName = QFileDialog::getSaveFileName(this, tr("Export mesurements"), settings.value(SETTINGS_PROJECT_FOLDER).toString(), tr("*.csv"));
+
+    if(fileName.endsWith(".csv",Qt::CaseInsensitive) == false){
+        fileName.append(".csv");
+    }
 
     QFile data(fileName);
     if (data.open(QFile::WriteOnly | QFile::Text)) {
@@ -223,7 +228,8 @@ void AeroISTWindow::on_actionExport_to_csv_triggered()
 void AeroISTWindow::on_actionExportPlot_triggered()
 {
     QString fileName;
-    fileName = QFileDialog::getSaveFileName(this, tr("Export plot"), settings->value("project_folder").toString(), "" );
+    QSettings settings;
+    fileName = QFileDialog::getSaveFileName(this, tr("Export plot"), settings.value(SETTINGS_PROJECT_FOLDER).toString(), "" );
 
     QwtPlotRenderer* renderer = new QwtPlotRenderer();
     renderer->renderDocument(ui->qwtPlot,fileName,QSize(297,210),300);  //A4 size, 300 DPI
@@ -234,7 +240,7 @@ void AeroISTWindow::on_actionNew_Measure_triggered()
     MeasurementsModel *measurement;
     measurement = new MeasurementsModel(measure_list->getFreeId());
 
-    MeasurementsPreferences *meas_prefs = new MeasurementsPreferences( measurement, zero_list, settings , this);
+    MeasurementsPreferences *meas_prefs = new MeasurementsPreferences( measurement, zero_list , this);
     if (meas_prefs->exec() == QDialog::Rejected ){
         delete measurement;
         delete meas_prefs;
@@ -272,8 +278,8 @@ void AeroISTWindow::on_actionSave_Project_as_triggered(){
         message(tr("Measuring is being done. Stop it to save to disk"));
         return;
     }
-
-    project_filename = QFileDialog::getSaveFileName(this, tr("Save Project"), settings->value("project_folder").toString(), tr("*.xml"));
+    QSettings settings;
+    project_filename = QFileDialog::getSaveFileName(this, tr("Save Project"), settings.value(SETTINGS_PROJECT_FOLDER).toString(), tr("*.xml"));
     save_xml(project_filename);
 }
 
@@ -283,7 +289,8 @@ void AeroISTWindow::on_actionSave_Project_triggered(){
         return;
     }
     if (project_filename.isNull() || project_filename.isEmpty()){
-        project_filename = QFileDialog::getSaveFileName(this, tr("Save Project"), settings->value("project_folder").toString(), tr("*.xml"));
+        QSettings settings;
+        project_filename = QFileDialog::getSaveFileName(this, tr("Save Project"), settings.value(SETTINGS_PROJECT_FOLDER).toString(), tr("*.xml"));
     }
     save_xml(project_filename);
 }
@@ -316,7 +323,8 @@ void AeroISTWindow::on_actionLoad_Project_triggered()
         return;
     }
     QString fileName;
-    fileName = QFileDialog::getOpenFileName(this, tr("Load Project"), settings->value("project_folder").toString(), tr("*.xml"));
+    QSettings settings;
+    fileName = QFileDialog::getOpenFileName(this, tr("Load Project"), settings.value(SETTINGS_PROJECT_FOLDER).toString(), tr("*.xml"));
     if (fileName.isNull() || fileName.isEmpty()){
         return;
     }
@@ -331,7 +339,7 @@ void AeroISTWindow::on_actionLoad_Project_triggered()
 
     QXmlSchema schema;
 
-    schema.load( QUrl::fromLocalFile(settings->value("schema_file","aeroist.xsd").toString()) );
+    schema.load( QUrl::fromLocalFile(settings.value(SETTINGS_SCHEMA_FILE,SETTINGS_SCHEMA_FILE_DEFAULT).toString()) );
     if (schema.isValid()){
         QXmlSchemaValidator validator( schema );
         if(!validator.validate(QUrl::fromLocalFile(fileName))){
@@ -377,9 +385,9 @@ void AeroISTWindow::on_actionClear_Project_triggered()
 
 
 // Open preferences dialog
-void AeroISTWindow::on_actionPreferences_triggered()
-{
-    preferences->exec();
+void AeroISTWindow::on_actionPreferences_triggered(){
+    Preferences preferences(this);
+    preferences.exec();
 }
 
 
@@ -413,15 +421,15 @@ void AeroISTWindow::on_listView_activated(const QModelIndex &index){
 }
 
 void AeroISTWindow::load_settings(void){
-    settings = new QSettings("IST", "AeroIST");
+    QSettings settings;
 
-    restoreState(settings->value("gui/state").toByteArray());
-    restoreGeometry(settings->value("gui/geometry").toByteArray());
+    restoreState(settings.value(SETTINGS_GUI_STATE).toByteArray());
+    restoreGeometry(settings.value(SETTINGS_GUI_GEOMETRY).toByteArray());
 
-    ui->tabWidget->setCurrentIndex(settings->value("gui/tabwidget",0).toInt());
-    ui->splitterLists->restoreState(settings->value("gui/splitterLists/state").toByteArray());
-    ui->splitterGlobal->restoreState(settings->value("gui/splitterGlobal/state").toByteArray());
-    ui->tableView->horizontalHeader()->setDefaultSectionSize( settings->value("gui/tablecolumnsize",80).toInt());
+    ui->tabWidget->setCurrentIndex(settings.value(SETTINGS_GUI_TABWIDGET,0).toInt());
+    ui->splitterLists->restoreState(settings.value(SETTINGS_GUI_SPLITTERLISTS_STATE).toByteArray());
+    ui->splitterGlobal->restoreState(settings.value(SETTINGS_GUI_SPLITTERGLOBAL_STATE).toByteArray());
+    ui->tableView->horizontalHeader()->setDefaultSectionSize( settings.value(SETTINGS_GUI_TABLECOLUMNSIZE,80).toInt());
 
     QAction * action;
     QList<QAction*> actions;
@@ -434,13 +442,13 @@ void AeroISTWindow::load_settings(void){
 
     foreach (action, actions) {
         if (!action->isSeparator() ){
-            action->setShortcut(QKeySequence(settings->value(QString("gui/shortcut/%1").arg(action->objectName()) ,action->shortcut().toString()).toString()));
+            action->setShortcut(QKeySequence(settings.value(SETTINGS_GUI_SHORTCUT + action->objectName() ,action->shortcut().toString()).toString()));
         }
     }
 
     foreach (action, ui->menuView->actions()) {
         if (!action->isSeparator() && action->isCheckable() ){
-            action->setChecked(settings->value("gui/actioncheckable/" + action->objectName(),action->isChecked()).toBool());
+            action->setChecked(settings.value(SETTINGS_GUI_ACTIONCHECKABLE + action->objectName(),action->isChecked()).toBool());
         }
     }
 
@@ -448,13 +456,14 @@ void AeroISTWindow::load_settings(void){
 }
 
 void AeroISTWindow::save_settings(void){
-    settings->setValue("gui/state",saveState());
-    settings->setValue("gui/geometry",saveGeometry());
+    QSettings settings;
+    settings.setValue(SETTINGS_GUI_STATE,saveState());
+    settings.setValue(SETTINGS_GUI_GEOMETRY,saveGeometry());
 
-    settings->setValue("gui/tabwidget",ui->tabWidget->currentIndex());
-    settings->setValue("gui/splitterLists/state",ui->splitterLists->saveState());
-    settings->setValue("gui/splitterGlobal/state",ui->splitterGlobal->saveState());
-    settings->setValue("gui/tablecolumnsize",ui->tableView->horizontalHeader()->defaultSectionSize());
+    settings.setValue(SETTINGS_GUI_TABWIDGET,ui->tabWidget->currentIndex());
+    settings.setValue(SETTINGS_GUI_SPLITTERLISTS_STATE,ui->splitterLists->saveState());
+    settings.setValue(SETTINGS_GUI_SPLITTERGLOBAL_STATE,ui->splitterGlobal->saveState());
+    settings.setValue(SETTINGS_GUI_TABLECOLUMNSIZE,ui->tableView->horizontalHeader()->defaultSectionSize());
 
 
     QAction * action;
@@ -468,12 +477,12 @@ void AeroISTWindow::save_settings(void){
 
     foreach (action, actions) {
         if (!action->isSeparator() ){
-        settings->setValue(QString("gui/shortcut/%1").arg(action->objectName()) ,action->shortcut().toString());
+        settings.setValue(SETTINGS_GUI_SHORTCUT + action->objectName() ,action->shortcut().toString());
         }
     }
     foreach (action, ui->menuView->actions()) {
         if (!action->isSeparator() ){
-            settings->setValue("gui/actioncheckable/" + action->objectName() ,action->isChecked());
+            settings.setValue(SETTINGS_GUI_ACTIONCHECKABLE + action->objectName() ,action->isChecked());
         }
     }
 }
@@ -548,7 +557,7 @@ void AeroISTWindow::on_actionNew_Zero_triggered(){
         ZeroThread = new ZeroModel(zero_list->getFreeId());
 
 
-        zero_prefs = new ZeroPreferences(ZeroThread,settings, this);
+        zero_prefs = new ZeroPreferences(ZeroThread, this);
         if (zero_prefs->exec() == QDialog::Rejected){
             delete zero_prefs;
             delete ZeroThread;

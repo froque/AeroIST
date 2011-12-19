@@ -11,7 +11,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>   /* Standard types */
-
+#include "common.h"
 #include "arduino-serial.h"
 
 
@@ -28,7 +28,7 @@ Temperature::Temperature(){
     temp=0;
     temp_raw=0;
     QSettings settings;
-    arduinofd = serialport_init(settings.value("arduino_path").toString().toStdString().c_str(),SERIALRATE);
+    arduinofd = serialport_init(settings.value(SETTINGS_ARDUINO_PATH).toString().toStdString().c_str(),SERIALRATE);
 //    arduinofd = init_arduino(settings.value("arduino_path").toString().toStdString().c_str());
 //    arduinofd = init_arduino(ARDUINOPATH);
 }

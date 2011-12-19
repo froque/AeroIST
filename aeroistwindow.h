@@ -89,9 +89,9 @@ private:
     void load_settings(void);
     void save_settings(void);
     void save_xml(QString fileName);
-    QSettings *settings;
+//    QSettings *settings;
     Ui::AeroISTWindow *ui;
-    Preferences * preferences;
+//    Preferences * preferences;
     MeasureList *measure_list;
     ZeroList *zero_list;
 

@@ -34,9 +34,9 @@ Force::Force(matrix_t matrix, int dvm_time):
 void Force::initialize(){
     QSettings settings;
     if (matrix == FLOOR){
-        filename = settings.value("forces/matrix_floor","matrix 1.coe").toString();
+        filename = settings.value(SETTINGS_FORCES_MATRIX_FLOOR,SETTINGS_FORCES_MATRIX_FLOOR_DEFAULT).toString();
     } else{
-        filename = settings.value("forces/matrix_middle","matrix 2.coe").toString();
+        filename = settings.value(SETTINGS_FORCES_MATRIX_MIDDLE,SETTINGS_FORCES_MATRIX_MIDDLE_DEFAULT).toString();
     }
     std::ifstream matrix_file(filename.toStdString().c_str(),std::ios::in|std::ios::binary);
     if (matrix_file.is_open()) {
@@ -58,7 +58,7 @@ void Force::initialize(){
 
 //    g_id = ibdev(0,7,0,15,1,0);
 
-    g_id = ibfind(settings.value("multimeter_path").toString().toStdString().c_str());
+    g_id = ibfind(settings.value(SETTINGS_MULTIMETER_PATH).toString().toStdString().c_str());
     if (  g_id == -1 ){
         throw std::runtime_error("unable to open GPIB device");
     }

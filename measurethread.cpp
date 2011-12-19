@@ -28,7 +28,7 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
         zero.force[k] = measurement->zero->force[k].first();
     }
     QSettings settings;
-    virtual_measures = settings.value("virtual_measures",false).toBool();
+    virtual_measures = settings.value(SETTINGS_VIRTUAL_MEASURES,false).toBool();
     if (!virtual_measures){
         force = new Force(measurement->matrix,measurement->dvm_time,zero.force);
         alpha = new Alpha;
@@ -50,7 +50,7 @@ MeasureThread::MeasureThread(ZeroModel *measurement,QObject *parent) :
     n=1;
     control_type = NONE;
     QSettings settings;
-    virtual_measures = settings.value("virtual_measures",false).toBool();
+    virtual_measures = settings.value(SETTINGS_VIRTUAL_MEASURES,false).toBool();
     if (!virtual_measures){
         force = new Force(measurement->matrix,measurement->dvm_time);
         alpha = new Alpha;

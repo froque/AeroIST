@@ -4,17 +4,17 @@
 #include "QDebug"
 #include "QMessageBox"
 
-ZeroPreferences::ZeroPreferences(ZeroModel *measurement, QSettings *settings, QWidget *parent) :
+ZeroPreferences::ZeroPreferences(ZeroModel *measurement, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ZeroPreferences),
     measurement(measurement)
 {
     ui->setupUi(this);
-
+    QSettings settings;
     ui->combo_matrix->clear();
     ui->combo_matrix->addItem(tr("middle"),MIDDLE);
     ui->combo_matrix->addItem(tr("floor"),FLOOR);
-    int index = ui->combo_matrix->findData(settings->value("default_matrix").toInt());
+    int index = ui->combo_matrix->findData(settings.value(SETTINGS_DEFAULT_MATRIX).toInt());
     ui->combo_matrix->setCurrentIndex(index);
 
     ui->combo_dvm_time->addItem(tr("50 ms"),1);
@@ -23,10 +23,10 @@ ZeroPreferences::ZeroPreferences(ZeroModel *measurement, QSettings *settings, QW
     ui->combo_dvm_time->addItem(tr("1 s"),4);
     ui->combo_dvm_time->addItem(tr("5 s"),5);
     ui->combo_dvm_time->addItem(tr("10 s"),6);
-    index = ui->combo_dvm_time->findData(settings->value("default_dvm_time").toInt());
+    index = ui->combo_dvm_time->findData(settings.value(SETTINGS_DEFAULT_DVM_TIME).toInt());
     ui->combo_dvm_time->setCurrentIndex(index);
 
-    ui->spinBoxAverage->setValue(settings->value("default_average_number").toInt());
+    ui->spinBoxAverage->setValue(settings.value(SETTINGS_DEFAULT_AVERAGE_NUMBER).toInt());
     ui->doubleSpinBoxAlpha->setRange(-ANGLEMAX_ALPHA,ANGLEMAX_ALPHA);
     ui->doubleSpinBoxAlpha->setSingleStep(DEFAULT_ALPHA_STEP);
     ui->doubleSpinBoxBeta->setRange(-ANGLEMAX_BETA,ANGLEMAX_BETA);

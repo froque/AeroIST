@@ -88,6 +88,40 @@ enum ThreadStatus{
 #define TAG_MEASURE "measurement"
 #define TAG_ITEM "item"
 #define TAG_PROJECT "project"
+
+
+
+#define SETTINGS_VIRTUAL_MEASURES "virtual_measures"
+#define SETTINGS_PROJECT_FOLDER "project_folder"
+#define SETTINGS_SCHEMA_FILE "schema_file"
+#define SETTINGS_SCHEMA_FILE_DEFAULT "aeroist.xsd"
+#define SETTINGS_GUI_STATE "gui/state"
+#define SETTINGS_GUI_GEOMETRY "gui/geometry"
+#define SETTINGS_GUI_TABWIDGET "gui/tabwidget"
+#define SETTINGS_GUI_SPLITTERLISTS_STATE "gui/splitterLists/state"
+#define SETTINGS_GUI_SPLITTERGLOBAL_STATE "gui/splitterGlobal/state"
+#define SETTINGS_GUI_TABLECOLUMNSIZE "gui/tablecolumnsize"
+#define SETTINGS_GUI_SHORTCUT "gui/shortcut/"
+#define SETTINGS_GUI_ACTIONCHECKABLE "gui/actioncheckable/"
+#define SETTINGS_DEFAULT_MATRIX "default_matrix"
+#define SETTINGS_DEFAULT_DVM_TIME "default_dvm_time"
+#define SETTINGS_DEFAULT_AVERAGE_NUMBER "default_average_number"
+#define SETTINGS_DEFAULT_SETTLING_TIME "default_settling_time"
+#define SETTINGS_FORCES_MATRIX_FLOOR "forces/matrix_floor"
+#define SETTINGS_FORCES_MATRIX_FLOOR_DEFAULT "matrix 1.coe"
+#define SETTINGS_FORCES_MATRIX_MIDDLE "forces/matrix_middle"
+#define SETTINGS_FORCES_MATRIX_MIDDLE_DEFAULT "matrix 2.coe"
+#define SETTINGS_MULTIMETER_PATH "multimeter_path"
+#define SETTINGS_MULTIMETER_PATH_DEFAULT "voltmeter"
+#define SETTINGS_ARDUINO_PATH "arduino_path"
+#define SETTINGS_ARDUINO_PATH_DEFAULT "/dev/ttyUSB0"
+#define SETTINGS_BETA_PATH "beta_path"
+#define SETTINGS_BETA_PATH_DEFAULT "/dev/angle_beta"
+#define SETTINGS_ALPHA_PATH "alpha_path"
+#define SETTINGS_ALPHA_PATH_DEFAULT "/dev/angle_alpha"
+#define SETTINGS_MOTOR_PATH "motor_path"
+#define SETTINGS_MOTOR_PATH_DEFAULT "/dev/ttyS0"
+
 #endif // COMMON_H
 
 

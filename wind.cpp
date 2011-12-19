@@ -24,7 +24,7 @@ Wind::Wind(void){
 //    fd = open(SERIALPORT, O_RDWR | O_NDELAY);
 /*    fd = open(file, O_RDWR | O_NDELAY);*/
     QSettings settings;
-    std::string filename = settings.value("motor_path").toString().toStdString();
+    std::string filename = settings.value(SETTINGS_MOTOR_PATH).toString().toStdString();
     fd = open(filename.c_str(), O_RDWR );
     if (fd == -1){
         throw std::runtime_error("unable to open serial port");

@@ -16,14 +16,10 @@ class MeasurementsPreferences : public QDialog
     Q_OBJECT
 
 public:
-    MeasurementsPreferences(MeasurementsModel *measurement, ZeroList *list, QSettings *settings,QWidget *parent = 0);
+    MeasurementsPreferences(MeasurementsModel *measurement, ZeroList *list,QWidget *parent = 0);
     ~MeasurementsPreferences();
 
-
-
 private slots:
-//    void on_buttonBox_accepted();
-//    void test_input();
     void accept(void);
     void maxminstep_enabled(int id);
     void on_combo_matrix_currentIndexChanged(int index);

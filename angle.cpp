@@ -18,7 +18,7 @@
 
 Angle::Angle(){
     QSettings settings;
-    arduinofd = init_arduino(settings.value("arduino_path").toString().toStdString().c_str());
+    arduinofd = init_arduino(settings.value(SETTINGS_ARDUINO_PATH).toString().toStdString().c_str());
 //    arduinofd = init_arduino(ARDUINOPATH);
 }
 
@@ -100,7 +100,7 @@ Beta::Beta(void){
     relay_decrease = '3';
 
     QSettings settings;
-    std::string filename = settings.value("beta_path").toString().toStdString();
+    std::string filename = settings.value(SETTINGS_BETA_PATH).toString().toStdString();
     fp = open(filename.c_str(),O_RDWR);
     if ( fp == -1 ){
         throw std::runtime_error("unable to open beta device");
@@ -121,7 +121,7 @@ Alpha::Alpha(void) {
     relay_decrease = '1';
 
     QSettings settings;
-    std::string filename = settings.value("alpha_path").toString().toStdString();
+    std::string filename = settings.value(SETTINGS_ALPHA_PATH).toString().toStdString();
     fp = open(filename.c_str(),O_RDWR);
     if ( fp == -1 ){
         throw std::runtime_error("unable to open alpha device");

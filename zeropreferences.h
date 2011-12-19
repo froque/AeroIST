@@ -15,7 +15,7 @@ class ZeroPreferences : public QDialog
     Q_OBJECT
 
 public:
-    ZeroPreferences(ZeroModel *measurement, QSettings *settings,QWidget *parent = 0);
+    ZeroPreferences(ZeroModel *measurement,QWidget *parent = 0);
     ~ZeroPreferences();
 
 private slots:
