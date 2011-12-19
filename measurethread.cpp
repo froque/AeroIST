@@ -72,7 +72,6 @@ MeasureThread::~MeasureThread(){
 }
 
 void MeasureThread::produce(){
-
     if (wind->isReady() == false){
         //        throw std::runtime_error("Wind is not ready. Try press the green button");
         emit message(tr("Wind is not ready. Try press the green button"));
@@ -89,13 +88,9 @@ void MeasureThread::produce(){
                 set_m();
                 read_m();
             } else {
-
                 set_m_virtual();
                 read_m_virtual();
             }
-//            if (isZero == false){
-//                subtract(&m,zero);
-//            }
 
             if (control_type == NONE){
                 if (n != 0 && k>= n ){
@@ -249,81 +244,9 @@ void MeasureThread::read_m_virtual(void){
 }
 
 
-void MeasureThread::read_m_virtual_orig(void){
 
-    m.tempo = timer.elapsed()/1000.0;
-
-    switch (control_type){
-    case NONE :
-        for (int k=0; k< average_number ; k++ ) m.alpha += GetRandomMeasurement();
-        for (int k=0; k< average_number ; k++ ) m.beta += GetRandomMeasurement();
-        for (int k=0; k< average_number ; k++ ) m.wind += GetRandomMeasurement();
-        for (int k =0; k<6; k++){
-            for (int n=0; n< average_number ; n++ )
-                m.force[k] += GetRandomMeasurement();
-        }
-        for (int k=0; k< average_number ; k++ ) m.temp += GetRandomMeasurement();
-        break;
-    case ALPHA:
-        Helper::msleep(settling_time*1000);
-        for (int k=0; k< average_number ; k++ ) m.alpha += current ;//* 1.01 * GetRandomMeasurement();;
-        for (int k=0; k< average_number ; k++ ) m.beta += GetRandomMeasurement();
-        for (int k=0; k< average_number ; k++ ) m.wind += GetRandomMeasurement();
-        for (int k =0; k<6; k++){
-            for (int n=0; n< average_number ; n++ )
-                m.force[k] += (k+1) * m.alpha + 0.01 * GetRandomMeasurement();
-        }
-        for (int k=0; k< average_number ; k++ ) m.temp += - 2 * m.alpha  + 0.01 *GetRandomMeasurement();
-        break;
-    case BETA:
-        Helper::msleep(settling_time*1000);
-        for (int k=0; k< average_number ; k++ ) m.alpha += GetRandomMeasurement();
-        for (int k=0; k< average_number ; k++ ) m.beta += current ;//* 1.01 * GetRandomMeasurement();;
-        for (int k=0; k< average_number ; k++ ) m.wind += GetRandomMeasurement();
-        for (int k =0; k<6; k++){
-            for (int n=0; n< average_number ; n++ )
-                m.force[k] += (k+1) * m.beta + 0.01 * GetRandomMeasurement();
-        }
-        for (int k=0; k< average_number ; k++ ) m.temp += - 2 * m.beta  + 0.01 *GetRandomMeasurement();
-        break;
-    case WIND:
-        Helper::msleep(settling_time*1000);
-        for (int k=0; k< average_number ; k++ ) m.alpha += GetRandomMeasurement();
-        for (int k=0; k< average_number ; k++ ) m.beta += GetRandomMeasurement();
-        for (int k=0; k< average_number ; k++ ) m.wind += current ;//* 1.01 * GetRandomMeasurement();;
-        for (int k =0; k<6; k++){
-            for (int n=0; n< average_number ; n++ )
-                m.force[k] += (k+1) * m.wind + 0.01 * GetRandomMeasurement();
-        }
-        for (int k=0; k< average_number ; k++ ) m.temp += - 2 * m.wind  + 0.01 *GetRandomMeasurement();
-        break;
-    }
-
-    // Divide by N
-    m.alpha = m.alpha / average_number;
-    m.beta = m.beta  / average_number;
-    for (int k=0; k<6; k++){
-        m.force[k] = m.force[k] / average_number;
-    }
-    m.temp = m.temp / average_number;
-    m.wind = m.wind / average_number;
-
-    Helper::msleep( 0.5 * average_number *  1000.0 * qrand() / RAND_MAX);
-}
-
-void MeasureThread::stop()
-{
+void MeasureThread::stop(){
     m_stop = true;
-}
-
-
-void MeasureThread::subtract(measure *minuend, measure subtrahend){
-    minuend->force[0] -= subtrahend.force[0];
-    minuend->force[1] -= subtrahend.force[1];
-    minuend->force[2] -= subtrahend.force[2];
-    minuend->force[3] -= subtrahend.force[3];
-    minuend->force[4] -= subtrahend.force[4];
-    minuend->force[5] -= subtrahend.force[5];
 }
 
 void MeasureThread::clear_m(void){
@@ -350,4 +273,3 @@ void MeasureThread::control_beta(double angle){
 void MeasureThread::control_wind(double speed){
     wind->set(speed);
 }
-

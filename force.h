@@ -27,17 +27,21 @@ struct matrix		      /* abgespeicherte Kalibriermatrix */
 
 class Force {
 public:
+    Force(matrix_t matrix, int dvm_time,double zero[NUMCHANNELS]);
     Force(matrix_t matrix, int dvm_time);
+    void initialize();
     ~Force();
     void read(void);
-    double dvm_si[NUMCHANNELS];
+    double forces[NUMCHANNELS];
+
 
 private:
     int dvm_time;
     matrix_t matrix;
     QString filename;
 
-    double forces[NUMCHANNELS];
+    double dvm_si[NUMCHANNELS];
+    double zero[NUMCHANNELS];
     double dvm[NUMCHANNELS];
 
     double nominal_load[NUMCHANNELS];

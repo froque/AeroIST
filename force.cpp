@@ -12,7 +12,26 @@
 void invert(int n,double coe_matrix[6][6],double matrix[6][6]);
 
 // initialize the class
-Force::Force(matrix_t matrix, int dvm_time): dvm_time(dvm_time){
+
+Force::Force(matrix_t matrix, int dvm_time,double zero[NUMCHANNELS]):
+    dvm_time(dvm_time),
+    matrix(matrix)
+{
+    for(int k=0; k< NUMCHANNELS;k++){
+        this->zero[k] = zero[k];
+    }
+    initialize();
+}
+Force::Force(matrix_t matrix, int dvm_time):
+    dvm_time(dvm_time),
+    matrix(matrix)
+{
+    for(int k=0; k< NUMCHANNELS;k++){
+        this->zero[k] = 0;
+    }
+    initialize();
+}
+void Force::initialize(){
     QSettings settings;
     if (matrix == FLOOR){
         filename = settings.value("forces/matrix_floor","matrix 1.coe").toString();
@@ -26,18 +45,21 @@ Force::Force(matrix_t matrix, int dvm_time): dvm_time(dvm_time){
         matrix_file.close();
     } else {
         qDebug() << "MATRIX FILE IS NOT Being open";
+        throw std::runtime_error("Could not open matrix file");
     }
     invert(NUMCHANNELS,coe.coef_lin,mat.coef_lin);
 
-    nominal_load[0] = 50.0;
+    nominal_load[0] = 50.0;         // why? well it was calibrated this way.
     nominal_load[1] = 100.0;
     nominal_load[2] = 100.0;
     nominal_load[3] = 100.0;
     nominal_load[4] = 100.0;
     nominal_load[5] = 100.0;
 
-    g_id = ibdev(0,7,0,15,1,0);
-    if ( ! g_id ){
+//    g_id = ibdev(0,7,0,15,1,0);
+
+    g_id = ibfind(settings.value("multimeter_path").toString().toStdString().c_str());
+    if (  g_id == -1 ){
         throw std::runtime_error("unable to open GPIB device");
     }
 }
@@ -99,8 +121,10 @@ void Force::newton_method( ){
     for(int i=0;i<NUMCHANNELS;i++){
         forces[i]=0;
         for(int j=0;j<NUMCHANNELS;j++){
-            forces[i] += mat.coef_lin[j][i] * dvm_si[j];   //note: matrix is transposed on file
+//            forces[i] += mat.coef_lin[j][i] * dvm_si[j];   //note: matrix is transposed on file
+            forces[i] += mat.coef_lin[j][i] * (dvm_si[j] - zero[j]);   //note: matrix is transposed on file
         }
+//        forces[i] = forces[i] - zero[i];
     }
 
     unsigned int iter=0;
@@ -110,14 +134,15 @@ void Force::newton_method( ){
         calc_function( F);  // calculate function F(x)=0
         for (int i=0;i<NUMCHANNELS;i++){
             for(int j=0;j<NUMCHANNELS;j++){
-                forces[i] -= jm_inv[i][j]*F[j];  // x = x0 - J^-1 * F(x)
+                forces[i] -= jm_inv[i][j]*F[j];  // x_n+1 = x_n - J^-1 * F(x_n)
+//                forces[i] = (forces[i] - zero[i]) - jm_inv[i][j]*F[j];  // x_n+1 = x_n - J^-1 * F(x_n)
             }
         }
         iter++;
     } while( iter < MAX_ITER && check_tolerance(F));   // stop on number reached or convergence
 }
 
-void Force::calc_function(double F[NUMCHANNELS])  //calculates THE function F(x)=0
+void Force::calc_function(double F[NUMCHANNELS])  //calculates THE function F(x)=0; => A.F + B.F^2 - R = 0
 {
     int i,j,l,k;
 
@@ -134,7 +159,8 @@ void Force::calc_function(double F[NUMCHANNELS])  //calculates THE function F(x)
                 k++;
             }
         }
-        F[i] = F[i] - dvm_si[i];
+//        F[i] = F[i] - dvm_si[i];
+        F[i] = F[i] - (dvm_si[i] - zero[i]);
     }
 }
 

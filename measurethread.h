@@ -49,14 +49,11 @@ public slots:
     void control_beta(double);
     void control_wind(double);
 private:
-    void prepare(matrix_t matrix , int dvm_time);
-    void subtract(measure *minuend, measure subtrahend);
     void set_m(void);
     void set_initial(void);
     void read_m(void);
     void set_m_virtual(void);
     void read_m_virtual(void);
-    void read_m_virtual_orig(void);
     void clear_m(void);
     double GetRandomMeasurement(void);
     QElapsedTimer timer;
