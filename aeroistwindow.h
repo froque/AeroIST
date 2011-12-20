@@ -77,7 +77,7 @@ private slots:
     void on_actionDelete_Curve_triggered();
 
     // control spin boxes
-    void on_doubleSpinBoxWind_valueChanged(double arg1);
+    void on_doubleSpinBoxMotor_valueChanged(double arg1);
     void on_doubleSpinBoxALpha_valueChanged(double arg1);
     void on_doubleSpinBoxBeta_valueChanged(double arg1);
 

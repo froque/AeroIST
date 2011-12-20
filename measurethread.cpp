@@ -36,6 +36,7 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
         beta = new Beta;
         temperature = new Temperature;
         motor = new Motor;
+        wind = new Wind;
     }
 }
 
@@ -59,6 +60,7 @@ MeasureThread::MeasureThread(ZeroModel *measurement,QObject *parent) :
         beta = new Beta;
         temperature = new Temperature;
         motor = new Motor;
+        wind = new Wind;
     }
 }
 
@@ -70,6 +72,7 @@ MeasureThread::~MeasureThread(){
         delete beta;
         delete temperature;
         delete motor;
+        delete wind;
     }
 }
 
@@ -193,10 +196,12 @@ void MeasureThread::read_m(void){
         beta->read();
         temperature->read();
         motor->get();
+        wind->read();
         m.alpha += alpha->angle;
         m.beta += beta->angle;
         m.temp += temperature->temp;
         m.motor += motor->speed_actual;
+        m.wind += wind->wind;
         for (int k=0; k < NUMCHANNELS; k++ ){
 //            m.force[k] += force->dvm_si[k];
             m.force[k] += force->forces[k];
@@ -211,6 +216,7 @@ void MeasureThread::read_m(void){
     }
     m.temp = m.temp / average_number;
     m.motor = m.motor / average_number;
+    m.wind = m.wind / average_number;
 }
 
 void MeasureThread::set_m_virtual(void){
@@ -241,6 +247,7 @@ void MeasureThread::read_m_virtual(void){
         m.beta += GetRandomMeasurement();
         m.temp += GetRandomMeasurement();
         m.motor += GetRandomMeasurement();
+        m.wind += GetRandomMeasurement();
         for (int k=0; k < NUMCHANNELS; k++ ){
             m.force[k] += GetRandomMeasurement();
         }
@@ -254,6 +261,7 @@ void MeasureThread::read_m_virtual(void){
     }
     m.temp = m.temp / average_number;
     m.motor = m.motor / average_number;
+    m.wind = m.wind / average_number;
     Helper::msleep( 0.5 * average_number *  1000.0 * qrand() / RAND_MAX);
 }
 
@@ -274,6 +282,7 @@ void MeasureThread::clear_m(void){
     m.force[5] = 0;
     m.temp=0;
     m.motor=0;
+    m.wind=0;
 }
 
 void MeasureThread::control_alpha(double angle){

@@ -11,6 +11,7 @@ struct measure{
     double beta;
     double motor;
     double temp;
+    double wind;
 };
 
 #endif // MEASURE_H

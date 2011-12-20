@@ -6,6 +6,7 @@
 #include "angle.h"
 #include "temperature.h"
 #include "motor.h"
+#include "wind.h"
 #if DEBUG
 #include <QThread>
 #endif // DEBUG
@@ -83,6 +84,7 @@ private:
     Beta *beta;
     Temperature *temperature;
     Motor *motor;
+    Wind *wind;
     bool virtual_measures;
 };
 

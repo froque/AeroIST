@@ -9,7 +9,7 @@
 #include "common.h"
 #include "zeromodel.h"
 
-#define NVARS 11
+#define NVARS 12
 
 class MeasurementsModel  : public QAbstractTableModel
 {
@@ -18,19 +18,20 @@ class MeasurementsModel  : public QAbstractTableModel
 public:
     MeasurementsModel(int id, QObject *parent=0);
     MeasurementsModel(QDomElement root,QObject *parent = 0);
-    void load(QTextStream *in);
+//    void load(QTextStream *in);
     void save(QTextStream *out);
     void save_csv(QTextStream *out,bool header);
     void save_xml(QDomElement root);
     void load_xml(QDomElement root);
-//    QVector<QTime> tempo;
-//    QVector<double> raw_tempo;
+
     QVector<double> tempo;
     QVector<double> force[6];
     QVector<double> alpha;
     QVector<double> beta;
     QVector<double> motor;
     QVector<double> temp;
+    QVector<double> wind;   // change NVARS if you add another
+
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent = QModelIndex()) const;

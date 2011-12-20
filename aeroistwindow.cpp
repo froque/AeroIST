@@ -696,8 +696,20 @@ void AeroISTWindow::message(const QString &string){
 // On exit warn if thread is runing and don't close
 void AeroISTWindow::closeEvent(QCloseEvent *event){
     if (m_thread != 0 ) {
-        message(tr("A thread is running. Stop it to quit"));
-        event->ignore();
+//        message(tr("A thread is running. Stop it to quit"));
+        QMessageBox mess;
+        mess.setText(tr("A measurement is running"));
+        mess.setInformativeText(tr("Do you really want to quit? Hardware may not be properly closed."));
+        mess.setIcon(QMessageBox::Warning);
+        mess.setStandardButtons(QMessageBox::Ok|QMessageBox::Cancel);
+        mess.setDefaultButton(QMessageBox::Cancel);
+        switch (mess.exec()){
+        case QMessageBox::Cancel:
+            event->ignore();
+            break;
+        case QMessageBox::Ok:
+            event->accept();
+        }
     } else {
         event->accept();
     }
@@ -735,7 +747,7 @@ void AeroISTWindow::on_actionZero_List_toggled(bool arg1){
 }
 // View widgets - end
 
-void AeroISTWindow::on_doubleSpinBoxWind_valueChanged(double arg1){
+void AeroISTWindow::on_doubleSpinBoxMotor_valueChanged(double arg1){
     emit set_motor(arg1);
 }
 

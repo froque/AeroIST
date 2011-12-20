@@ -28,7 +28,7 @@ MeasurementsModel::MeasurementsModel(QDomElement root, QObject *parent):
 {
     load_xml(root);
 }
-
+/*
 void MeasurementsModel::load(QTextStream *in)
 {
     int size;
@@ -55,6 +55,7 @@ void MeasurementsModel::load(QTextStream *in)
     }
     endInsertRows();
 }
+*/
 
 void MeasurementsModel::save(QTextStream *out )
 {
@@ -94,8 +95,7 @@ void MeasurementsModel::save_csv(QTextStream *out,bool header){
     }
 }
 
-void MeasurementsModel::GetMeasure(measure m)
-{
+void MeasurementsModel::GetMeasure(measure m){
     beginInsertRows(QModelIndex(), tempo.size(), tempo.size());
 
     for (int k=0;k<6;k++ ){
@@ -106,9 +106,8 @@ void MeasurementsModel::GetMeasure(measure m)
     motor.append( m.motor );
     temp.append( m.temp );
     tempo.append(m.tempo);
-
+    wind.append(m.wind);
     endInsertRows();
-
 }
 
 int MeasurementsModel::columnCount(const QModelIndex &parent)  const
@@ -132,28 +131,30 @@ QVariant MeasurementsModel::data(const QModelIndex &index, int role) const
     if (role == Qt::DisplayRole) {
         int row = index.row();
         switch (index.column()) {
-            case 0:
-                return tempo.value(row);
-            case 1:
-                return force[0].value(row);
-            case 2:
-                return force[1].value(row);
-            case 3:
-                return force[2].value(row);
-            case 4:
-                return force[3].value(row);
-            case 5:
-                return force[4].value(row);
-            case 6:
-                return force[5].value(row);
-            case 7:
-                return alpha.value(row);
-            case 8:
-                return beta.value(row);
-            case 9:
-                return motor.value(row);
-            case 10:
-                return temp.value(row);
+        case 0:
+            return tempo.value(row);
+        case 1:
+            return force[0].value(row);
+        case 2:
+            return force[1].value(row);
+        case 3:
+            return force[2].value(row);
+        case 4:
+            return force[3].value(row);
+        case 5:
+            return force[4].value(row);
+        case 6:
+            return force[5].value(row);
+        case 7:
+            return alpha.value(row);
+        case 8:
+            return beta.value(row);
+        case 9:
+            return motor.value(row);
+        case 10:
+            return temp.value(row);
+        case 11:
+            return wind.value(row);
         }
     }
     return QVariant();
@@ -170,30 +171,32 @@ QVariant MeasurementsModel::headerData(int section, Qt::Orientation orientation,
 
     if (orientation == Qt::Horizontal) {
         switch (section) {
-            case 0:
-               return tr("Time");
-            case 1:
-                return tr("Fx");
-            case 2:
-                return tr("Fy");
-            case 3:
-                return tr("Fz");
-            case 4:
-                return tr("Mx");
-            case 5:
-                return tr("My");
-            case 6:
-                return tr("Mz");
-            case 7:
-                return tr("Alpha");
-            case 8:
-                return tr("Beta");
-            case 9:
-                return tr("Motor");
-            case 10:
-                return tr("Temperature");
-            default:
-                return QVariant();
+        case 0:
+            return tr("Time");
+        case 1:
+            return tr("Fx");
+        case 2:
+            return tr("Fy");
+        case 3:
+            return tr("Fz");
+        case 4:
+            return tr("Mx");
+        case 5:
+            return tr("My");
+        case 6:
+            return tr("Mz");
+        case 7:
+            return tr("Alpha");
+        case 8:
+            return tr("Beta");
+        case 9:
+            return tr("Motor");
+        case 10:
+            return tr("Temperature");
+        case 11:
+            return tr("Wind");
+        default:
+            return QVariant();
         }
     }
     return QVariant();
@@ -224,6 +227,8 @@ QVector<double>  MeasurementsModel::vector_data(int index){
         return motor;
     case 10:
         return temp;
+    case 11:
+        return wind;
     }
     QVector<double> stupid_warning;
     return stupid_warning;
@@ -436,7 +441,8 @@ bool MeasurementsModel::setData ( const QModelIndex & index, const QVariant & va
             motor.replace(row,value.toDouble());
         case 10:
             temp.replace(row,value.toDouble());
-
+        case 11:
+            wind.replace(row,value.toDouble());
         }
     }
     return true;
@@ -455,6 +461,7 @@ bool MeasurementsModel::insertRows ( int row, int count, const QModelIndex & par
     beta.insert(row,count,0);
     motor.insert(row,count,0);
     temp.insert(row,count,0);
+    wind.insert(row,count,0);
     return true;
 }
 bool MeasurementsModel::insertRow ( int row,  const QModelIndex & parent ){
