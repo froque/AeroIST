@@ -81,7 +81,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QDoubleSpinBox" name="doubleSpinBoxWind">
+       <widget class="QDoubleSpinBox" name="doubleSpinBoxMotor">
         <property name="enabled">
          <bool>false</bool>
         </property>
@@ -493,7 +493,7 @@
   <tabstop>ThreadButton</tabstop>
   <tabstop>doubleSpinBoxALpha</tabstop>
   <tabstop>doubleSpinBoxBeta</tabstop>
-  <tabstop>doubleSpinBoxWind</tabstop>
+  <tabstop>doubleSpinBoxMotor</tabstop>
  </tabstops>
  <resources/>
  <connections/>

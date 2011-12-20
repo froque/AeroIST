@@ -17,7 +17,7 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
     current(measurement->start),
     set_alpha(measurement->set_alpha),
     set_beta(measurement->set_beta),
-    set_wind(measurement->set_wind),
+    set_motor(measurement->set_motor),
     control_type(measurement->control_type),
     n(measurement->n)
 {
@@ -35,7 +35,7 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
         alpha = new Alpha;
         beta = new Beta;
         temperature = new Temperature;
-        wind = new Wind;
+        motor = new Motor;
     }
 }
 
@@ -44,7 +44,7 @@ MeasureThread::MeasureThread(ZeroModel *measurement,QObject *parent) :
     average_number(measurement->average_number),
     set_alpha(measurement->set_alpha),
     set_beta(measurement->set_beta),
-    set_wind(measurement->set_wind)
+    set_motor(measurement->set_motor)
 {
     m_parent_thread = thread();
     isZero = true;
@@ -58,7 +58,7 @@ MeasureThread::MeasureThread(ZeroModel *measurement,QObject *parent) :
         alpha = new Alpha;
         beta = new Beta;
         temperature = new Temperature;
-        wind = new Wind;
+        motor = new Motor;
     }
 }
 
@@ -69,7 +69,7 @@ MeasureThread::~MeasureThread(){
         delete alpha;
         delete beta;
         delete temperature;
-        delete wind;
+        delete motor;
     }
 }
 
@@ -79,9 +79,8 @@ void MeasureThread::produce(){
     QEventLoop eloop;
     k = 1;
     if (!virtual_measures){
-        if (wind->isReady() == false){
-            //        throw std::runtime_error("Wind is not ready. Try press the green button");
-            emit message(tr("Wind is not ready. Try press the green button"));
+        if (motor->isReady() == false){
+            emit message(tr("Motor is not ready. Try press the green button"));
         } else {
             set_initial();
             while(!m_stop) {
@@ -104,7 +103,7 @@ void MeasureThread::produce(){
                 eloop.processEvents(QEventLoop::AllEvents, 50);
             }
             // cleanup
-            wind->set(0);
+            motor->set(0);
         }
     } else {
             while(!m_stop) {
@@ -145,22 +144,22 @@ void MeasureThread::set_initial(void){
     case NONE :
         alpha->set(this->set_alpha);
         beta->set(this->set_beta);
-        wind->set(this->set_wind);
+        motor->set(this->set_motor);
         break;
     case ALPHA:
         alpha->set(this->start);
         beta->set(this->set_beta);
-        wind->set(this->set_wind);
+        motor->set(this->set_motor);
         break;
     case BETA:
         alpha->set(this->set_alpha);
         beta->set(this->start);
-        wind->set(this->set_wind);
+        motor->set(this->set_motor);
         break;
-    case WIND:
+    case MOTOR:
         alpha->set(this->set_alpha);
         beta->set(this->set_beta);
-        wind->set(this->start);
+        motor->set(this->start);
         break;
     }
 }
@@ -177,9 +176,9 @@ void MeasureThread::set_m(void){
         Helper::msleep(settling_time*1000);
         beta->set(current);
         break;
-    case WIND:
+    case MOTOR:
         Helper::msleep(settling_time*1000);
-        wind->set(current);
+        motor->set(current);
         break;
     }
 }
@@ -193,11 +192,11 @@ void MeasureThread::read_m(void){
         alpha->read();
         beta->read();
         temperature->read();
-        wind->get();
+        motor->get();
         m.alpha += alpha->angle;
         m.beta += beta->angle;
         m.temp += temperature->temp;
-        m.wind += wind->speed_actual;
+        m.motor += motor->speed_actual;
         for (int k=0; k < NUMCHANNELS; k++ ){
 //            m.force[k] += force->dvm_si[k];
             m.force[k] += force->forces[k];
@@ -211,7 +210,7 @@ void MeasureThread::read_m(void){
         m.force[k] = m.force[k] / average_number;
     }
     m.temp = m.temp / average_number;
-    m.wind = m.wind / average_number;
+    m.motor = m.motor / average_number;
 }
 
 void MeasureThread::set_m_virtual(void){
@@ -226,9 +225,9 @@ void MeasureThread::set_m_virtual(void){
         Helper::msleep(settling_time*1000);
         m.beta = current;
         break;
-    case WIND:
+    case MOTOR:
         Helper::msleep(settling_time*1000);
-        m.wind = current;
+        m.motor = current;
         break;
     }
 }
@@ -241,7 +240,7 @@ void MeasureThread::read_m_virtual(void){
         m.alpha += GetRandomMeasurement();
         m.beta += GetRandomMeasurement();
         m.temp += GetRandomMeasurement();
-        m.wind += GetRandomMeasurement();
+        m.motor += GetRandomMeasurement();
         for (int k=0; k < NUMCHANNELS; k++ ){
             m.force[k] += GetRandomMeasurement();
         }
@@ -254,7 +253,7 @@ void MeasureThread::read_m_virtual(void){
         m.force[k] = m.force[k] / average_number;
     }
     m.temp = m.temp / average_number;
-    m.wind = m.wind / average_number;
+    m.motor = m.motor / average_number;
     Helper::msleep( 0.5 * average_number *  1000.0 * qrand() / RAND_MAX);
 }
 
@@ -274,7 +273,7 @@ void MeasureThread::clear_m(void){
     m.force[4] = 0;
     m.force[5] = 0;
     m.temp=0;
-    m.wind=0;
+    m.motor=0;
 }
 
 void MeasureThread::control_alpha(double angle){
@@ -285,6 +284,6 @@ void MeasureThread::control_beta(double angle){
     beta->set(angle);
 }
 
-void MeasureThread::control_wind(double speed){
-    wind->set(speed);
+void MeasureThread::control_motor(double speed){
+    motor->set(speed);
 }

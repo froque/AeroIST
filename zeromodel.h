@@ -42,7 +42,7 @@ public:
     int average_number;
     double set_alpha;
     double set_beta;
-    double set_wind;
+    double set_motor;
 
 public slots:
     void GetMeasure(measure m);

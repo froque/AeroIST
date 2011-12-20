@@ -5,7 +5,7 @@
 #include "force.h"
 #include "angle.h"
 #include "temperature.h"
-#include "wind.h"
+#include "motor.h"
 #if DEBUG
 #include <QThread>
 #endif // DEBUG
@@ -47,7 +47,7 @@ public slots:
     void stop();
     void control_alpha(double);
     void control_beta(double);
-    void control_wind(double);
+    void control_motor(double);
 private:
     void set_m(void);
     void set_initial(void);
@@ -66,7 +66,7 @@ private:
     double current;
     double set_alpha;
     double set_beta;
-    double set_wind;
+    double set_motor;
     control_types_t control_type;
     bool isZero;
     QString name;
@@ -82,7 +82,7 @@ private:
     Alpha *alpha;
     Beta *beta;
     Temperature *temperature;
-    Wind *wind;
+    Motor *motor;
     bool virtual_measures;
 };
 

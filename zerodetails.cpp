@@ -34,7 +34,7 @@ ZeroDetails::ZeroDetails(ZeroModel *measurement, QWidget *parent) :
     ui->labelDescription->setText(measurement->description);
     ui->labelAlpha->setText(QString::number(measurement->set_alpha));
     ui->labelBeta->setText(QString::number(measurement->set_beta));
-    ui->labelWind->setText(QString::number(measurement->set_wind));
+    ui->labelMotor->setText(QString::number(measurement->set_motor));
     this->adjustSize();
 
 }

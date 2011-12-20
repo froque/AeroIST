@@ -50,7 +50,7 @@ void MeasurementsModel::load(QTextStream *in)
         force[5].append(var.at(6).toDouble());
         alpha.append(var.at(7).toDouble());
         beta.append(var.at(8).toDouble());
-        wind.append(var.at(9).toDouble());
+        motor.append(var.at(9).toDouble());
         temp.append(var.at(10).toDouble());
     }
     endInsertRows();
@@ -103,7 +103,7 @@ void MeasurementsModel::GetMeasure(measure m)
     }
     alpha.append( m.alpha);
     beta.append( m.beta );
-    wind.append( m.wind );
+    motor.append( m.motor );
     temp.append( m.temp );
     tempo.append(m.tempo);
 
@@ -151,7 +151,7 @@ QVariant MeasurementsModel::data(const QModelIndex &index, int role) const
             case 8:
                 return beta.value(row);
             case 9:
-                return wind.value(row);
+                return motor.value(row);
             case 10:
                 return temp.value(row);
         }
@@ -189,7 +189,7 @@ QVariant MeasurementsModel::headerData(int section, Qt::Orientation orientation,
             case 8:
                 return tr("Beta");
             case 9:
-                return tr("Wind");
+                return tr("Motor");
             case 10:
                 return tr("Temperature");
             default:
@@ -221,7 +221,7 @@ QVector<double>  MeasurementsModel::vector_data(int index){
     case 8:
         return beta;
     case 9:
-        return wind;
+        return motor;
     case 10:
         return temp;
     }
@@ -279,9 +279,9 @@ void MeasurementsModel::save_xml(QDomElement root ){
     set_beta.appendChild(root.ownerDocument().createTextNode(QString::number(this->set_beta)));
     root.appendChild(set_beta);
 
-    QDomElement set_wind = root.ownerDocument().createElement(TAG_SET_WIND);
-    set_wind.appendChild(root.ownerDocument().createTextNode(QString::number(this->set_wind)));
-    root.appendChild(set_wind);
+    QDomElement set_motor = root.ownerDocument().createElement(TAG_SET_MOTOR);
+    set_motor.appendChild(root.ownerDocument().createTextNode(QString::number(this->set_motor)));
+    root.appendChild(set_motor);
 
     QDomElement control_type = root.ownerDocument().createElement(TAG_CONTROL_TYPE);
     control_type.appendChild(root.ownerDocument().createTextNode(QString::number(this->control_type)));
@@ -345,8 +345,8 @@ void MeasurementsModel::load_xml(QDomElement root){
         if (element.tagName() == TAG_SET_BETA){
             this->set_beta = element.text().toDouble();
         }
-        if (element.tagName() == TAG_SET_WIND){
-            this->set_wind = element.text().toDouble();
+        if (element.tagName() == TAG_SET_MOTOR){
+            this->set_motor = element.text().toDouble();
         }
         if (element.tagName() == TAG_MATRIX){
             int m = element.text().toInt();
@@ -361,7 +361,7 @@ void MeasurementsModel::load_xml(QDomElement root){
             case NONE: this->control_type = NONE; break;
             case ALPHA: this->control_type = ALPHA; break;
             case BETA: this->control_type = BETA; break;
-            case WIND: this->control_type = WIND; break;
+            case MOTOR: this->control_type = MOTOR; break;
             }
         }
         if (element.tagName() == TAG_START){
@@ -433,7 +433,7 @@ bool MeasurementsModel::setData ( const QModelIndex & index, const QVariant & va
         case 8:
             beta.replace(row,value.toDouble());
         case 9:
-            wind.replace(row,value.toDouble());
+            motor.replace(row,value.toDouble());
         case 10:
             temp.replace(row,value.toDouble());
 
@@ -453,7 +453,7 @@ bool MeasurementsModel::insertRows ( int row, int count, const QModelIndex & par
     }
     alpha.insert(row,count,0);
     beta.insert(row,count,0);
-    wind.insert(row,count,0);
+    motor.insert(row,count,0);
     temp.insert(row,count,0);
     return true;
 }

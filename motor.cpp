@@ -1,4 +1,4 @@
-#include "wind.h"
+#include "motor.h"
 
 #include <termios.h>
 #include <unistd.h>
@@ -12,7 +12,7 @@
 #include "common.h"
 #define SIMOREG_BUFLEN 8
 
-Wind::Wind(void){
+Motor::Motor(void){
 
     terminal37 = false;
     speed_setpoint = 0;
@@ -61,21 +61,21 @@ Wind::Wind(void){
     talk_to_simoreg();
 }
 
-Wind::~Wind(void){
+Motor::~Motor(void){
     close(fd);
 }
 
 
-void Wind::convert_velocity(double percentage, unsigned char *nethigh, unsigned char *netlow){
-    if (percentage > WIND_FULLPERCENTAGE)
+void Motor::convert_velocity(double percentage, unsigned char *nethigh, unsigned char *netlow){
+    if (percentage > MOTOR_FULLPERCENTAGE)
     {
-        percentage = WIND_FULLPERCENTAGE;
+        percentage = MOTOR_FULLPERCENTAGE;
     }
     if(percentage < 0)
     {
         percentage = 0;
     }
-    unsigned int speed = WIND_FULLSPEED*percentage/WIND_FULLPERCENTAGE;
+    unsigned int speed = MOTOR_FULLSPEED*percentage/MOTOR_FULLPERCENTAGE;
 
     *netlow  = speed%256;
     *nethigh = (speed-*netlow)/256;
@@ -83,21 +83,21 @@ void Wind::convert_velocity(double percentage, unsigned char *nethigh, unsigned 
 
 // 0x4000 = 100%
 // the drive goes from -200% to 199,9%
-float Wind::convert_percentage(unsigned char nethigh, unsigned char netlow){
+float Motor::convert_percentage(unsigned char nethigh, unsigned char netlow){
     int speed = nethigh * 256 + netlow;
 
     double percentage;
-    if (speed <= WIND_FULLSPEED *2 ) {
-        percentage =  (WIND_FULLPERCENTAGE * speed /WIND_FULLSPEED);        // 0% - 200%
+    if (speed <= MOTOR_FULLSPEED *2 ) {
+        percentage =  (MOTOR_FULLPERCENTAGE * speed /MOTOR_FULLSPEED);        // 0% - 200%
     } else {
-        percentage =  (WIND_FULLPERCENTAGE * (speed - WIND_FULLSPEED *4) /WIND_FULLSPEED); // -200%% - 0%
+        percentage =  (MOTOR_FULLPERCENTAGE * (speed - MOTOR_FULLSPEED *4) /MOTOR_FULLSPEED); // -200%% - 0%
     }
 
 
     return percentage;
 }
 
-void Wind::talk_to_simoreg(void){
+void Motor::talk_to_simoreg(void){
 
     unsigned char stx=0x02, lge=0x06, adr=0x0, net1high=0x04, net1low=0x01, net2high=0x00, net2low=0x00, bcc;
     unsigned char buffer[SIMOREG_BUFLEN];
@@ -155,7 +155,7 @@ void Wind::talk_to_simoreg(void){
 
 }
 
-void Wind::get(){
+void Motor::get(){
     talk_to_simoreg();
 
 //    if (terminal37){
@@ -165,18 +165,18 @@ void Wind::get(){
 //    }
 }
 
-void Wind::set(double speed){
+void Motor::set(double speed){
     speed_setpoint = speed;
 
     talk_to_simoreg();
 }
 
-bool Wind::isReady(void){
+bool Motor::isReady(void){
     return terminal37;
 }
 
 // delete later
-void Wind::print(void){
+void Motor::print(void){
 //    talk_to_simoreg();
     std::cout << "actual speed: " << speed_actual << std::endl;
     std::cout << "goal speed: " << speed_setpoint << std::endl;

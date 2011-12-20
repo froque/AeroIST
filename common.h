@@ -14,7 +14,7 @@ enum control_types_t{
     NONE=0,
     ALPHA,
     BETA,
-    WIND
+    MOTOR
 };
 
 enum matrix_t{
@@ -37,9 +37,9 @@ enum ThreadStatus{
 //#define DEFAULT_BETA_MAX    170
 #define DEFAULT_BETA_STEP   1
 
-#define DEFAULT_WIND_MIN    0
-#define DEFAULT_WIND_MAX    100 //Percentage
-#define DEFAULT_WIND_STEP   1
+#define DEFAULT_MOTOR_MIN    0
+#define DEFAULT_MOTOR_MAX    100 //Percentage
+#define DEFAULT_MOTOR_STEP   1
 
 
 #define ANGLEZERO_ALPHA 730303.0
@@ -56,8 +56,8 @@ enum ThreadStatus{
 #define COMMAND_OFF 0
 
 #define ARDUINO_ANALOG_REF 3.3
-#define WIND_FULLSPEED 16384.0 // 100% according to manual
-#define WIND_FULLPERCENTAGE 100.0
+#define MOTOR_FULLSPEED 16384.0 // 100% according to manual
+#define MOTOR_FULLPERCENTAGE 100.0
 
 
 
@@ -74,7 +74,7 @@ enum ThreadStatus{
 #define TAG_AVERAGE_NUMBER "average_number"
 #define TAG_SET_ALPHA "set_alpha"
 #define TAG_SET_BETA "set_beta"
-#define TAG_SET_WIND "set_wind"
+#define TAG_SET_MOTOR "set_motor"
 #define TAG_DATA "data"
 #define TAG_SETTLING_TIME "settling_time"
 #define TAG_START "start"

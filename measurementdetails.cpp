@@ -52,7 +52,7 @@ MeasurementDetails::MeasurementDetails(MeasurementsModel *measurement, QWidget *
         ui->labelN->setText(QString::number( measurement->n));
         ui->labelAlpha->setText(QString::number(measurement->set_alpha));
         ui->labelBeta->setText(QString::number(measurement->set_beta));
-        ui->labelWind->setText(QString::number(measurement->set_wind));
+        ui->labelMotor->setText(QString::number(measurement->set_motor));
         break;
     case ALPHA:
         ui->labelControl->setText(tr("Alpha"));
@@ -65,7 +65,7 @@ MeasurementDetails::MeasurementDetails(MeasurementsModel *measurement, QWidget *
         ui->labelAlpha->hide();
         ui->labelViewAlpha->hide();
         ui->labelBeta->setText(QString::number(measurement->set_beta));
-        ui->labelWind->setText(QString::number(measurement->set_wind));
+        ui->labelMotor->setText(QString::number(measurement->set_motor));
         break;
     case BETA:
         ui->labelControl->setText(tr("Beta"));
@@ -78,10 +78,10 @@ MeasurementDetails::MeasurementDetails(MeasurementsModel *measurement, QWidget *
         ui->labelAlpha->setText(QString::number(measurement->set_alpha));
         ui->labelBeta->hide();
         ui->labelViewBeta->hide();
-        ui->labelWind->setText(QString::number(measurement->set_wind));
+        ui->labelMotor->setText(QString::number(measurement->set_motor));
         break;
-    case WIND:
-        ui->labelControl->setText(tr("Wind"));
+    case MOTOR:
+        ui->labelControl->setText(tr("Motor"));
         ui->labelStart->setText(QString::number(measurement->start));
         ui->labelEnd->setText(QString::number(measurement->end));
         ui->labelStep->setText(QString::number(measurement->step));
@@ -90,8 +90,8 @@ MeasurementDetails::MeasurementDetails(MeasurementsModel *measurement, QWidget *
         ui->labelViewN->hide();
         ui->labelAlpha->setText(QString::number(measurement->set_alpha));
         ui->labelBeta->setText(QString::number(measurement->set_beta));
-        ui->labelWind->hide();
-        ui->labelViewWind->hide();
+        ui->labelMotor->hide();
+        ui->labelViewMotor->hide();
         break;
     }
 

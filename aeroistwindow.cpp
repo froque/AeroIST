@@ -82,9 +82,9 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
     ui->doubleSpinBoxBeta->setRange(-ANGLEMAX_BETA,ANGLEMAX_BETA);
     ui->doubleSpinBoxBeta->setSingleStep(DEFAULT_BETA_STEP);
     ui->doubleSpinBoxBeta->setValue(0);
-    ui->doubleSpinBoxWind->setRange(DEFAULT_WIND_MIN,DEFAULT_WIND_MAX);
-    ui->doubleSpinBoxWind->setSingleStep(DEFAULT_WIND_STEP);
-    ui->doubleSpinBoxWind->setValue(0);
+    ui->doubleSpinBoxMotor->setRange(DEFAULT_MOTOR_MIN,DEFAULT_MOTOR_MAX);
+    ui->doubleSpinBoxMotor->setSingleStep(DEFAULT_MOTOR_STEP);
+    ui->doubleSpinBoxMotor->setValue(0);
 
 
 }
@@ -149,15 +149,15 @@ void AeroISTWindow::on_ThreadButton_clicked(){
     // pass the values from comboboxes to the thread. only for free control
     connect(this,SIGNAL(set_alpha(double)),m_test,SLOT(control_alpha(double)));
     connect(this,SIGNAL(set_beta(double)),m_test,SLOT(control_beta(double)));
-    connect(this,SIGNAL(set_wind(double)),m_test,SLOT(control_wind(double)));
+    connect(this,SIGNAL(set_motor(double)),m_test,SLOT(control_motor(double)));
     ui->doubleSpinBoxALpha->setValue( measurementThread->set_alpha);
     ui->doubleSpinBoxBeta->setValue(measurementThread->set_beta);
-    ui->doubleSpinBoxWind->setValue( measurementThread->set_wind);
+    ui->doubleSpinBoxMotor->setValue( measurementThread->set_motor);
 
     if (measurementThread->control_type == NONE){
         ui->doubleSpinBoxALpha->setEnabled(true);
         ui->doubleSpinBoxBeta->setEnabled(true);
-        ui->doubleSpinBoxWind->setEnabled(true);
+        ui->doubleSpinBoxMotor->setEnabled(true);
     }
 //    try{
         m_thread->start();
@@ -181,7 +181,7 @@ void AeroISTWindow::ThreadButton_cleanup(){
         thread_status = STOPPED;
         ui->doubleSpinBoxALpha->setEnabled(false);
         ui->doubleSpinBoxBeta->setEnabled(false);
-        ui->doubleSpinBoxWind->setEnabled(false);
+        ui->doubleSpinBoxMotor->setEnabled(false);
         cleanup();
         return;
     }
@@ -736,7 +736,7 @@ void AeroISTWindow::on_actionZero_List_toggled(bool arg1){
 // View widgets - end
 
 void AeroISTWindow::on_doubleSpinBoxWind_valueChanged(double arg1){
-    emit set_wind(arg1);
+    emit set_motor(arg1);
 }
 
 void AeroISTWindow::on_doubleSpinBoxALpha_valueChanged(double arg1){

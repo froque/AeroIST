@@ -11,7 +11,7 @@
 <xs:element name="average_number" type="xs:positiveInteger"/>
 <xs:element name="set_alpha" type="xs:double"/>
 <xs:element name="set_beta" type="xs:double"/>
-<xs:element name="set_wind" type="xs:double"/>
+<xs:element name="set_motor" type="xs:double"/>
 <xs:element name="item" type="xs:double" />
 <xs:element name="settling_time" type="xs:int"/>
 <xs:element name="start" type="xs:double" />
@@ -31,7 +31,7 @@
 <xs:element name="Mz" type="xs:double" />
 <xs:element name="Alpha" type="xs:double" />
 <xs:element name="Beta" type="xs:double" />
-<xs:element name="Wind" type="xs:double" />
+<xs:element name="Motor" type="xs:double" />
 <xs:element name="Temperature" type="xs:double" />
 
 <xs:element name="project">
@@ -48,7 +48,7 @@
               <xs:element ref="average_number"/>
               <xs:element ref="set_alpha"/>
               <xs:element ref="set_beta"/>
-              <xs:element ref="set_wind"/>
+              <xs:element ref="set_motor"/>
               <xs:element name="data">
                 <xs:complexType>
                   <xs:sequence>
@@ -85,7 +85,7 @@
               <xs:element ref="step"/>
               <xs:element ref="set_alpha"/>
               <xs:element ref="set_beta"/>
-              <xs:element ref="set_wind"/>
+              <xs:element ref="set_motor"/>
               <xs:element ref="control_type"/>
               <xs:element ref="n"/>
               <xs:element ref="zero_id"/>
@@ -104,7 +104,7 @@
                           <xs:element ref="Mz"/>
                           <xs:element ref="Alpha"/>
                           <xs:element ref="Beta"/>
-                          <xs:element ref="Wind"/>
+                          <xs:element ref="Motor"/>
                           <xs:element ref="Temperature"/>
                         </xs:sequence>
                       </xs:complexType>

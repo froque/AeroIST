@@ -29,13 +29,8 @@ public:
     QVector<double> force[6];
     QVector<double> alpha;
     QVector<double> beta;
-    QVector<double> wind;
+    QVector<double> motor;
     QVector<double> temp;
-//    QVector<double> raw_force[6];
-//    QVector<double> raw_alpha;
-//    QVector<double> raw_beta;
-//    QVector<double> raw_wind;
-//    QVector<double> raw_temp;
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
@@ -58,7 +53,7 @@ public:
     double step;
     double set_alpha;
     double set_beta;
-    double set_wind;
+    double set_motor;
     control_types_t control_type;
     ZeroModel *zero;
     int zero_id;

@@ -1,12 +1,12 @@
-#ifndef WIND_H
-#define WIND_H
+#ifndef MOTOR_H
+#define MOTOR_H
 
 
 
-class Wind {
+class Motor {
 public:
-    Wind(void);
-    ~Wind(void);
+    Motor(void);
+    ~Motor(void);
     void print(void);       // delete later
     void get(void);
     void set(double);
@@ -28,4 +28,4 @@ private:
 };
 
 
-#endif // WIND_H
+#endif // MOTOR_H

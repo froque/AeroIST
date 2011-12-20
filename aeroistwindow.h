@@ -26,7 +26,7 @@ public:
 signals:
     void set_alpha(double);
     void set_beta(double);
-    void set_wind(double);
+    void set_motor(double);
 public slots:
 
 private slots:

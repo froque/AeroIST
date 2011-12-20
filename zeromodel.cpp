@@ -118,9 +118,9 @@ void ZeroModel::save_xml(QDomElement root){
     set_beta.appendChild(root.ownerDocument().createTextNode(QString::number(this->set_beta)));
     root.appendChild(set_beta);
 
-    QDomElement set_wind = root.ownerDocument().createElement(TAG_SET_WIND);
-    set_wind.appendChild(root.ownerDocument().createTextNode(QString::number(this->set_wind)));
-    root.appendChild(set_wind);
+    QDomElement set_motor = root.ownerDocument().createElement(TAG_SET_MOTOR);
+    set_motor.appendChild(root.ownerDocument().createTextNode(QString::number(this->set_motor)));
+    root.appendChild(set_motor);
 
     QDomElement data_element = root.ownerDocument().createElement(TAG_DATA);
     root.appendChild(data_element);
@@ -173,8 +173,8 @@ void ZeroModel::load_xml(QDomElement root){
         if (element.tagName() == TAG_SET_BETA){
             this->set_beta = element.text().toDouble();
         }
-        if (element.tagName() == TAG_SET_WIND){
-            this->set_wind = element.text().toDouble();
+        if (element.tagName() == TAG_SET_MOTOR){
+            this->set_motor = element.text().toDouble();
         }
         if (element.tagName() == TAG_MATRIX){
             int m = element.text().toInt();

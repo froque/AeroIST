@@ -31,8 +31,8 @@ ZeroPreferences::ZeroPreferences(ZeroModel *measurement, QWidget *parent) :
     ui->doubleSpinBoxAlpha->setSingleStep(DEFAULT_ALPHA_STEP);
     ui->doubleSpinBoxBeta->setRange(-ANGLEMAX_BETA,ANGLEMAX_BETA);
     ui->doubleSpinBoxBeta->setSingleStep(DEFAULT_BETA_STEP);
-    ui->doubleSpinBoxWind->setRange(DEFAULT_WIND_MIN,DEFAULT_WIND_MAX);
-    ui->doubleSpinBoxWind->setSingleStep(DEFAULT_WIND_STEP);
+    ui->doubleSpinBoxMotor->setRange(DEFAULT_MOTOR_MIN,DEFAULT_MOTOR_MAX);
+    ui->doubleSpinBoxMotor->setSingleStep(DEFAULT_MOTOR_STEP);
     adjustSize();
 
 }
@@ -65,7 +65,7 @@ void ZeroPreferences::accept(){
     measurement->average_number = ui->spinBoxAverage->value();
     measurement->set_alpha = ui->doubleSpinBoxAlpha->value();
     measurement->set_beta = ui->doubleSpinBoxBeta->value();
-    measurement->set_wind = ui->doubleSpinBoxWind->value();
+    measurement->set_motor = ui->doubleSpinBoxMotor->value();
 
     QDialog::accept();
 }

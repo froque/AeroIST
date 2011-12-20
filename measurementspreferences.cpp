@@ -44,13 +44,13 @@ MeasurementsPreferences::MeasurementsPreferences(MeasurementsModel *measurement,
     ui->doubleSpinBoxAlpha->setSingleStep(DEFAULT_ALPHA_STEP);
     ui->doubleSpinBoxBeta->setRange(-ANGLEMAX_BETA,ANGLEMAX_BETA);
     ui->doubleSpinBoxBeta->setSingleStep(DEFAULT_BETA_STEP);
-    ui->doubleSpinBoxWind->setRange(DEFAULT_WIND_MIN,DEFAULT_WIND_MAX);
-    ui->doubleSpinBoxWind->setSingleStep(DEFAULT_WIND_STEP);
+    ui->doubleSpinBoxMotor->setRange(DEFAULT_MOTOR_MIN,DEFAULT_MOTOR_MAX);
+    ui->doubleSpinBoxMotor->setSingleStep(DEFAULT_MOTOR_STEP);
 
     ui->controlGroup->setId(ui->radioButtonNone,NONE);
     ui->controlGroup->setId(ui->radioButtonAlpha,ALPHA);
     ui->controlGroup->setId(ui->radioButtonBeta,BETA);
-    ui->controlGroup->setId(ui->radioButtonWind,WIND);
+    ui->controlGroup->setId(ui->radioButtonMotor,MOTOR);
 
     connect(ui->controlGroup, SIGNAL(buttonClicked(int)),this,SLOT(maxminstep_enabled(int)));
 
@@ -104,7 +104,7 @@ void MeasurementsPreferences::accept(){
 
     measurement->set_alpha = ui->doubleSpinBoxAlpha->value();
     measurement->set_beta = ui->doubleSpinBoxBeta->value();
-    measurement->set_wind = ui->doubleSpinBoxWind->value();
+    measurement->set_motor = ui->doubleSpinBoxMotor->value();
 
     measurement->zero = list->at(ui->combo_zero->currentIndex());
     measurement->zero_id = measurement->zero->id;
@@ -121,12 +121,12 @@ void MeasurementsPreferences::maxminstep_enabled(int id){
         ui->spinBoxN->setEnabled(true);
         ui->doubleSpinBoxAlpha->setEnabled(true);
         ui->doubleSpinBoxBeta->setEnabled(true);
-        ui->doubleSpinBoxWind->setEnabled(true);
+        ui->doubleSpinBoxMotor->setEnabled(true);
         return;
     case ALPHA:
         ui->doubleSpinBoxAlpha->setEnabled(false);
         ui->doubleSpinBoxBeta->setEnabled(true);
-        ui->doubleSpinBoxWind->setEnabled(true);
+        ui->doubleSpinBoxMotor->setEnabled(true);
         start = - ANGLEMAX_ALPHA;
         end = ANGLEMAX_ALPHA;
         step = DEFAULT_ALPHA_STEP;
@@ -134,18 +134,18 @@ void MeasurementsPreferences::maxminstep_enabled(int id){
     case BETA:
         ui->doubleSpinBoxAlpha->setEnabled(true);
         ui->doubleSpinBoxBeta->setEnabled(false);
-        ui->doubleSpinBoxWind->setEnabled(true);
+        ui->doubleSpinBoxMotor->setEnabled(true);
         start = -ANGLEMAX_BETA;
         end = ANGLEMAX_BETA;
         step = DEFAULT_BETA_STEP;
         break;
-    case WIND:
+    case MOTOR:
         ui->doubleSpinBoxAlpha->setEnabled(true);
         ui->doubleSpinBoxBeta->setEnabled(true);
-        ui->doubleSpinBoxWind->setEnabled(false);
-        start = DEFAULT_WIND_MIN;
-        end = DEFAULT_WIND_MAX;
-        step = DEFAULT_WIND_STEP;
+        ui->doubleSpinBoxMotor->setEnabled(false);
+        start = DEFAULT_MOTOR_MIN;
+        end = DEFAULT_MOTOR_MAX;
+        step = DEFAULT_MOTOR_STEP;
         break;
     }
     ui->spinBoxN->setEnabled(false);

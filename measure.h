@@ -9,7 +9,7 @@ struct measure{
     double force[6];
     double alpha;
     double beta;
-    double wind;
+    double motor;
     double temp;
 };
 
