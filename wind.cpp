@@ -55,5 +55,7 @@ void Wind::read(void){
     // 10 bits = 1024
     // 19.9 mm H20 = 5 V => 3.98 mm H20/V
     // 1 mm H20 = 9.80665 Pa
-    wind = wind_raw * ARDUINO_ANALOG_REF/1024.0 * WIND_SENSITIVITY * MMH2O_TO_PASCAL ;
+//    wind = wind_raw * ARDUINO_ANALOG_REF/1024.0 * WIND_SENSITIVITY * MMH2O_TO_PASCAL ;
+    wind = wind_raw * ARDUINO_ANALOG_REF/1024.0 * WIND_SENSITIVITY ;
+    qDebug() << wind_raw << wind;
 }

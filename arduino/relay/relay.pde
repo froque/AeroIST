@@ -8,7 +8,7 @@ int relay;
 
 void setup(){
 
-  analogReference(EXTERNAL);
+//  analogReference(EXTERNAL);
 
   Serial.begin(9600);
   pinMode(alphaup,OUTPUT);  

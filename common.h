@@ -55,10 +55,12 @@ enum ThreadStatus{
 #define COMMAND_ON 1
 #define COMMAND_OFF 0
 
-#define ARDUINO_ANALOG_REF 3.3
+//#define ARDUINO_ANALOG_REF 3.3
+#define ARDUINO_ANALOG_REF 5.0
 #define MOTOR_FULLSPEED 16384.0 // 100% according to manual
 #define MOTOR_FULLPERCENTAGE 100.0
 
+#define TEMPERATURE_SENSITIVITY 100.0
 #define WIND_SENSITIVITY 3.98
 #define MMH2O_TO_PASCAL 9.80665
 

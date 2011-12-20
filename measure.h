@@ -1,7 +1,7 @@
 #ifndef MEASURE_H
 #define MEASURE_H
 
-#include <QTime>
+//#include <QTime>
 
 struct measure{
 //    QTime tempo;
