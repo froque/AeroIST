@@ -76,7 +76,7 @@
       <item>
        <widget class="QLabel" name="labelWind">
         <property name="text">
-         <string>Wind</string>
+         <string>Motor</string>
         </property>
        </widget>
       </item>
