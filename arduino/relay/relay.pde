@@ -7,6 +7,9 @@ int betaright = 4;
 int relay;
 
 void setup(){
+
+  analogReference(EXTERNAL);
+
   Serial.begin(9600);
   pinMode(alphaup,OUTPUT);  
   pinMode(alphadown,OUTPUT);  

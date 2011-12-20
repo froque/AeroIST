@@ -54,9 +54,8 @@ enum ThreadStatus{
 #define PRECISION_BETA 0.05
 #define COMMAND_ON 1
 #define COMMAND_OFF 0
-//#define ARDUINOPATH "/dev/ttyUSB0"
 
-//#define MOTOR_DEV "/dev/ttyS0"
+#define ARDUINO_ANALOG_REF 3.3
 #define WIND_FULLSPEED 16384.0 // 100% according to manual
 #define WIND_FULLPERCENTAGE 100.0
 
