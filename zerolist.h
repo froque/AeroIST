@@ -26,8 +26,6 @@ public:
     void save_xml(QDomElement root);
     void load_xml(QDomElement root);
     void clear(void);
-    int getFreeId();
-    int freeId;
 signals:
 
 public slots:

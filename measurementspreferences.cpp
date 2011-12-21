@@ -106,8 +106,11 @@ void MeasurementsPreferences::accept(){
     measurement->set_beta = ui->doubleSpinBoxBeta->value();
     measurement->set_motor = ui->doubleSpinBoxMotor->value();
 
-    measurement->zero = list->at(ui->combo_zero->currentIndex());
-    measurement->zero_id = measurement->zero->id;
+    ZeroModel *zero = list->at(ui->combo_zero->currentIndex());
+    for (int k=0; k < NFORCES; k++){
+        measurement->zero[k] = zero->force[k].at(0);
+    }
+    measurement->zero_name = zero->name;
     QDialog::accept();
 }
 

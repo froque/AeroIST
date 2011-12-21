@@ -71,7 +71,6 @@ enum ThreadStatus{
 
 
 #define TAG_NAME "name"
-#define TAG_ID "id"
 #define TAG_DESCRIPTION "description"
 #define TAG_DVM_TIME "dvm_time"
 #define TAG_MATRIX "matrix"
@@ -86,8 +85,9 @@ enum ThreadStatus{
 #define TAG_STEP "step"
 #define TAG_CONTROL_TYPE "control_type"
 #define TAG_N "n"
-#define TAG_ZERO_ID "zero_id"
+#define TAG_DATA_ZERO "data_zero"
 #define TAG_ZERO "zero"
+#define TAG_ZERO_NAME "zero_name"
 #define TAG_MEASURE "measurement"
 #define TAG_ITEM "item"
 #define TAG_PROJECT "project"

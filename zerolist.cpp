@@ -4,7 +4,6 @@ ZeroList::ZeroList(QObject *parent) :
     QAbstractListModel(parent)
 {
     Q_UNUSED(parent);
-    freeId = 0;
 }
 
 
@@ -22,10 +21,6 @@ QVariant ZeroList::data ( const QModelIndex & index, int role ) const{
         return list.value(index.row())->matrix;
     }
     return QVariant();
-}
-
-int ZeroList::getFreeId(){
-    return freeId++;
 }
 
 void ZeroList::newMeasure(ZeroModel * measure){

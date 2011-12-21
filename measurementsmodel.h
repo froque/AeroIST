@@ -10,13 +10,13 @@
 #include "zeromodel.h"
 
 #define NVARS 12
-
+#define NFORCES 6
 class MeasurementsModel  : public QAbstractTableModel
 {
     Q_OBJECT
 
 public:
-    MeasurementsModel(int id, QObject *parent=0);
+    MeasurementsModel( QObject *parent=0);
     MeasurementsModel(QDomElement root,QObject *parent = 0);
 //    void load(QTextStream *in);
     void save(QTextStream *out);
@@ -25,13 +25,12 @@ public:
     void load_xml(QDomElement root);
 
     QVector<double> tempo;
-    QVector<double> force[6];
+    QVector<double> force[NFORCES];
     QVector<double> alpha;
     QVector<double> beta;
     QVector<double> motor;
     QVector<double> temp;
     QVector<double> wind;   // change NVARS if you add another
-
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
@@ -42,6 +41,7 @@ public:
     bool insertRow ( int row, const QModelIndex & parent = QModelIndex() );
 
     QVector<double>  vector_data(int index);
+
     // metadata about the measurement
     QString name;
     QString description;
@@ -56,9 +56,8 @@ public:
     double set_beta;
     double set_motor;
     control_types_t control_type;
-    ZeroModel *zero;
-    int zero_id;
-    int id;
+    double zero[NFORCES];
+    QString zero_name;
     int n;
 
 signals:

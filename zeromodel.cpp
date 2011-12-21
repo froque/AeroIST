@@ -1,8 +1,7 @@
 #include "zeromodel.h"
 
-ZeroModel::ZeroModel(int id,QObject *parent) :
-    QAbstractTableModel(parent),
-    id(id)
+ZeroModel::ZeroModel(QObject *parent) :
+    QAbstractTableModel(parent)
 {
     name="";
     dvm_time=0;
@@ -90,10 +89,6 @@ void ZeroModel::save_xml(QDomElement root){
     name.appendChild(root.ownerDocument().createTextNode(this->name));
     root.appendChild(name);
 
-    QDomElement id = root.ownerDocument().createElement(TAG_ID);
-    id.appendChild(root.ownerDocument().createTextNode(QString::number(this->id)));
-    root.appendChild(id);
-
     QDomElement description = root.ownerDocument().createElement(TAG_DESCRIPTION);
     description.appendChild(root.ownerDocument().createTextNode(this->description));
     root.appendChild(description);
@@ -157,9 +152,6 @@ void ZeroModel::load_xml(QDomElement root){
         }
         if (element.tagName() == TAG_DESCRIPTION){
             this->description = element.text();
-        }
-        if (element.tagName() == TAG_ID){
-            this->id = element.text().toInt();
         }
         if (element.tagName() == TAG_DVM_TIME){
             this->dvm_time = element.text().toInt();

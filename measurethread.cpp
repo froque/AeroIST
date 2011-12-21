@@ -26,7 +26,7 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
     isZero = false;
 
     for (int k=0; k< NUMCHANNELS;k++){
-        zero.force[k] = measurement->zero->force[k].first();
+        zero.force[k] = measurement->zero[k];
     }
     QSettings settings;
     virtual_measures = settings.value(SETTINGS_VIRTUAL_MEASURES,false).toBool();

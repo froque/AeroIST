@@ -31,13 +31,8 @@ MeasurementDetails::MeasurementDetails(MeasurementsModel *measurement, QWidget *
         ui->labelMultimeter->setText(tr("10 s")); break;
     }
     ui->labelAverage->setText(QString::number(measurement->average_number));
+    ui->labelZero->setText(measurement->zero_name);
 
-
-    if (measurement->zero == NULL){
-        ui->labelZero->setText(tr("None"));
-    }else{
-        ui->labelZero->setText(measurement->zero->name);
-    }
     switch (measurement->control_type){
     case NONE:
         ui->labelControl->setText(tr("None"));

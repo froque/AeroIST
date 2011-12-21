@@ -14,7 +14,7 @@ class ZeroModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    explicit ZeroModel(int id,QObject *parent = 0);
+    explicit ZeroModel(QObject *parent = 0);
     explicit ZeroModel(QDomElement root,QObject *parent = 0);
 
 //    void load(QTextStream *in);
@@ -35,7 +35,6 @@ public:
 
     // metadata about the measurement
     QString name;
-    int id;
     QString description;
     int dvm_time;
     matrix_t matrix;

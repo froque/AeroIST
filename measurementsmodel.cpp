@@ -7,9 +7,8 @@
 #include "QDebug"
 #endif // DEBUG
 
-MeasurementsModel::MeasurementsModel(int id,QObject *parent)
-    : QAbstractTableModel(parent),
-    id(id)
+MeasurementsModel::MeasurementsModel(QObject *parent)
+    : QAbstractTableModel(parent)
 {
     name="";
     dvm_time=0;
@@ -20,7 +19,6 @@ MeasurementsModel::MeasurementsModel(int id,QObject *parent)
     end=0;
     step=0;
     control_type = NONE;
-    zero  = 0;
     n = 0;
 }
 MeasurementsModel::MeasurementsModel(QDomElement root, QObject *parent):
@@ -240,10 +238,6 @@ void MeasurementsModel::save_xml(QDomElement root ){
     name.appendChild(root.ownerDocument().createTextNode(this->name));
     root.appendChild(name);
 
-    QDomElement id = root.ownerDocument().createElement(TAG_ID);
-    id.appendChild(root.ownerDocument().createTextNode(QString::number(this->id)));
-    root.appendChild(id);
-
     QDomElement description = root.ownerDocument().createElement(TAG_DESCRIPTION);
     description.appendChild(root.ownerDocument().createTextNode(this->description));
     root.appendChild(description);
@@ -296,17 +290,31 @@ void MeasurementsModel::save_xml(QDomElement root ){
     n.appendChild(root.ownerDocument().createTextNode(QString::number(this->n)));
     root.appendChild(n);
 
-    QDomElement zero_id = root.ownerDocument().createElement(TAG_ZERO_ID);
-    zero_id.appendChild(root.ownerDocument().createTextNode(QString::number(this->zero_id)));
-    root.appendChild(zero_id);
+    QString tag_header;
+    QDomElement force;
+    QString data;
+    QDomElement element;
+
+    QDomElement data_zero = root.ownerDocument().createElement(TAG_DATA_ZERO);
+    root.appendChild(data_zero);
+
+    name = root.ownerDocument().createElement(TAG_ZERO_NAME);
+    name.appendChild(root.ownerDocument().createTextNode(this->zero_name));
+    data_zero.appendChild(name);
+
+    element = root.ownerDocument().createElement(TAG_ITEM);
+    data_zero.appendChild(element);
+    for (int column =0; column < NFORCES; column++){
+        tag_header = this->headerData(column+1,Qt::Horizontal).toString().simplified();
+        tag_header.replace(" ","_");
+        force = root.ownerDocument().createElement(tag_header);
+        data = QString::number(zero[column],'g',10);
+        force.appendChild( root.ownerDocument().createTextNode(data));
+        element.appendChild(force);
+    }
 
     QDomElement data_element = root.ownerDocument().createElement(TAG_DATA);
     root.appendChild(data_element);
-
-    QDomElement force;
-    QDomElement element;
-    QString tag_header;
-    QString data;
     for (int row=0; row < rowCount(); row++){
         element = root.ownerDocument().createElement(TAG_ITEM);
         data_element.appendChild(element);
@@ -334,9 +342,6 @@ void MeasurementsModel::load_xml(QDomElement root){
         }
         if (element.tagName() == TAG_DESCRIPTION){
             this->description = element.text();
-        }
-        if (element.tagName() == TAG_ID){
-            this->id = element.text().toInt();
         }
         if (element.tagName() == TAG_DVM_TIME){
             this->dvm_time = element.text().toInt();
@@ -384,8 +389,26 @@ void MeasurementsModel::load_xml(QDomElement root){
         if (element.tagName() == TAG_N){
             this->n = element.text().toInt();
         }
-        if (element.tagName() == TAG_ZERO_ID){
-            this->zero_id = element.text().toInt();         //fixme
+
+        if (element.tagName() == TAG_DATA_ZERO){
+            QDomNodeList items = element.childNodes();
+            QDomElement item;
+
+            for (int row = 0; row < items.count(); row++){
+                item = items.at(row).toElement();
+
+                if (item.tagName() == TAG_ZERO_NAME){
+                    this->zero_name = item.text();
+                }
+                if (item.tagName() == TAG_ITEM){
+                    QDomNodeList forces = item.childNodes();
+                    QDomElement force;
+                    for (int column = 0; column< forces.count(); column++ ){
+                        force = forces.at(column).toElement();
+                        zero[column] = force.text().toDouble();
+                    }
+                }
+            }
         }
 
         if (element.tagName() == TAG_DATA){

@@ -4,6 +4,7 @@
 
 <!-- definition of simple elements -->
 <xs:element name="name" type="xs:string"/>
+<xs:element name="zero_name" type="xs:string"/>
 <xs:element name="description" type="xs:string"/>
 <xs:element name="id" type="xs:int"/>
 <xs:element name="dvm_time" type="xs:int"/>
@@ -42,7 +43,6 @@
         <xs:complexType>
           <xs:sequence>
               <xs:element ref="name"/>
-              <xs:element ref="id"/>
               <xs:element ref="description"/>
               <xs:element ref="dvm_time"/>
               <xs:element ref="matrix"/>
@@ -75,7 +75,6 @@
         <xs:complexType>
           <xs:sequence>
               <xs:element ref="name"/>
-              <xs:element ref="id"/>
               <xs:element ref="description"/>
               <xs:element ref="dvm_time"/>
               <xs:element ref="matrix"/>
@@ -89,7 +88,25 @@
               <xs:element ref="set_motor"/>
               <xs:element ref="control_type"/>
               <xs:element ref="n"/>
-              <xs:element ref="zero_id"/>
+              <xs:element name="data_zero" >
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element ref="zero_name"/>
+                    <xs:element name="item" maxOccurs="1" >
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element ref="Fx"/>
+                          <xs:element ref="Fy"/>
+                          <xs:element ref="Fz"/>
+                          <xs:element ref="Mx"/>
+                          <xs:element ref="My"/>
+                          <xs:element ref="Mz"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
               <xs:element name="data" >
                 <xs:complexType>
                   <xs:sequence>

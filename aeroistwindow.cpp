@@ -247,7 +247,7 @@ void AeroISTWindow::on_actionExportPlot_triggered()
 void AeroISTWindow::on_actionNew_Measure_triggered()
 {
     MeasurementsModel *measurement;
-    measurement = new MeasurementsModel(measure_list->getFreeId());
+    measurement = new MeasurementsModel;
 
     MeasurementsPreferences *meas_prefs = new MeasurementsPreferences( measurement, zero_list , this);
     if (meas_prefs->exec() == QDialog::Rejected ){
@@ -337,7 +337,7 @@ void AeroISTWindow::on_actionLoad_Project_triggered()
     if (fileName.isNull() || fileName.isEmpty()){
         return;
     }
-//    measure_list->load(fileName);
+
     QDomDocument document;
 
     QFile file(fileName);
@@ -366,22 +366,6 @@ void AeroISTWindow::on_actionLoad_Project_triggered()
 
     zero_list->load_xml(root);
     measure_list->load_xml(root);
-
-    MeasurementsModel *measure;
-    for (int m =0; m< measure_list->rowCount(); m++){
-        measure = measure_list->at(m);
-        measure->zero = NULL;
-
-        for (int k=0; k<zero_list->rowCount(); k++){
-            if (zero_list->at(k)->id == measure->zero_id){
-                measure->zero = zero_list->at(k);
-            }
-        }
-        if (measure->zero == NULL){
-            message(tr("A measurement has an Zero that is not in the list. It will be removed"));
-            measure_list->deleteMeasure(measure_list->index(m));
-        }
-    }
 }
 
 
@@ -531,11 +515,6 @@ void AeroISTWindow::on_actionDelete_Zero_triggered()
          return;
      }
 
-     if (measure_list->zeroUsed(zero_list->at(index)) == true){
-         message(tr("This Zero is being used."));
-         return;
-     }
-
      // if the to be deleted model is in the table, unset
      if (zero_list->at(index) == ui->tableView->model()){
          ui->tableView->setModel(NULL);
@@ -576,7 +555,7 @@ void AeroISTWindow::on_actionNew_Zero_triggered(){
     if(thread_status == STOPPED){
 //        qDebug() << "action new zero" << thread_status;
         ZeroPreferences *zero_prefs;
-        ZeroThread = new ZeroModel(zero_list->getFreeId());
+        ZeroThread = new ZeroModel;
 
 
         zero_prefs = new ZeroPreferences(ZeroThread, this);
