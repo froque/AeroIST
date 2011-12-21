@@ -42,6 +42,7 @@ private:
 
     double dvm_si[NUMCHANNELS];
     double zero[NUMCHANNELS];
+    double dvm_si_zero[NUMCHANNELS];
     double dvm[NUMCHANNELS];
 
     double nominal_load[NUMCHANNELS];

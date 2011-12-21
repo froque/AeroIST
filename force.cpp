@@ -56,7 +56,20 @@ void Force::initialize(){
     nominal_load[4] = 100.0;
     nominal_load[5] = 100.0;
 
-//    g_id = ibdev(0,7,0,15,1,0);
+    int row,j,line,k;
+
+    // for getting the dvm for the zero. using R = AF + BF^2
+    for (row = 0; row< NUMCHANNELS; row++){
+        k = 0;
+        dvm_si_zero[row] = 0.0;
+        for (line = 0; line < NUMCHANNELS; line++){
+            dvm_si_zero[row] = dvm_si_zero[row] + coe.coef_lin[line][row] * zero[line];  //matrix is transposed on file
+            for (j = line; j < NUMCHANNELS; j++){
+                dvm_si_zero[row] = dvm_si_zero[row] + (coe.coef_qua[k][row] * zero[j] * zero[line]); //matrix is transposed on file
+                k++;
+            }
+        }
+    }
 
     g_id = ibfind(settings.value(SETTINGS_MULTIMETER_PATH).toString().toStdString().c_str());
     if (  g_id == -1 ){
@@ -117,12 +130,13 @@ void Force::newton_method( ){
     double jm[NUMCHANNELS][NUMCHANNELS];
     double jm_inv[NUMCHANNELS][NUMCHANNELS];
 
+
     //initial guess
     for(int i=0;i<NUMCHANNELS;i++){
         forces[i]=0;
         for(int j=0;j<NUMCHANNELS;j++){
 //            forces[i] += mat.coef_lin[j][i] * dvm_si[j];   //note: matrix is transposed on file
-            forces[i] += mat.coef_lin[j][i] * (dvm_si[j] - zero[j]);   //note: matrix is transposed on file
+            forces[i] += mat.coef_lin[j][i] * (dvm_si[j] - dvm_si_zero[j]);   //note: matrix is transposed on file
         }
 //        forces[i] = forces[i] - zero[i];
     }
@@ -144,23 +158,20 @@ void Force::newton_method( ){
 
 void Force::calc_function(double F[NUMCHANNELS])  //calculates THE function F(x)=0; => A.F + B.F^2 - R = 0
 {
-    int i,j,l,k;
+    int row,j,line,k;
 
-    for (i = 0; i< NUMCHANNELS; i++)
-    {
+    for (row = 0; row< NUMCHANNELS; row++){
         k = 0;
-        F[i] = 0.0;
-        for (l = 0; l < NUMCHANNELS; l++)
-        {
-            F[i] = F[i] + coe.coef_lin[l][i] * forces[l];  //matrix is transposed on file
-            for (j = l; j < NUMCHANNELS; j++)
-            {
-                F[i] = F[i] + (coe.coef_qua[k][i] * forces[j] * forces[l]); //matrix is transposed on file
+        F[row] = 0.0;
+        for (line = 0; line < NUMCHANNELS; line++){
+            F[row] = F[row] + coe.coef_lin[line][row] * forces[line];  //matrix is transposed on file
+            for (j = line; j < NUMCHANNELS; j++){
+                F[row] = F[row] + (coe.coef_qua[k][row] * forces[j] * forces[line]); //matrix is transposed on file
                 k++;
             }
         }
 //        F[i] = F[i] - dvm_si[i];
-        F[i] = F[i] - (dvm_si[i] - zero[i]);
+        F[row] = F[row] - (dvm_si[row] - dvm_si_zero[row]);
     }
 }
 

@@ -224,16 +224,16 @@ void MeasureThread::set_m_virtual(void){
     case NONE :
         break;
     case ALPHA:
-        Helper::msleep(settling_time*1000);
         m.alpha = current;
+        Helper::msleep(settling_time*1000);
         break;
     case BETA:
-        Helper::msleep(settling_time*1000);
         m.beta = current;
+        Helper::msleep(settling_time*1000);
         break;
     case MOTOR:
-        Helper::msleep(settling_time*1000);
         m.motor = current;
+        Helper::msleep(settling_time*1000);
         break;
     }
 }
