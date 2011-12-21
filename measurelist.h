@@ -23,7 +23,6 @@ public:
     MeasurementsModel * at(int position);
     MeasurementsModel * at(QModelIndex index);
 
-    void save(QString fileName);
     void save_xml(QDomElement root);
     void load_xml(QDomElement root);
     void clear(void);

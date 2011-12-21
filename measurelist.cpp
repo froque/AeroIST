@@ -45,21 +45,6 @@ MeasurementsModel * MeasureList::at(QModelIndex index){
     return NULL;
 }
 
-void MeasureList::save(QString fileName){
-    MeasurementsModel *measurement;
-    QFile file(fileName);
-
-    if (file.open(QFile::WriteOnly|QFile::Text)){
-        QTextStream out(&file);
-
-        for (int k=0; k < list.size() ;k++){
-            measurement = at(k);
-            measurement->save(&out);
-        }
-        file.close();
-    }
-}
-
 void MeasureList::clear(void){
     while (list.size()>0){
         qDebug() << "measure list" << list.size();

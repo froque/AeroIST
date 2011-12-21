@@ -19,7 +19,6 @@ public:
     MeasurementsModel( QObject *parent=0);
     MeasurementsModel(QDomElement root,QObject *parent = 0);
 
-    void save(QTextStream *out);
     void save_csv(QTextStream *out,bool header);
     void save_xml(QDomElement root);
     void load_xml(QDomElement root);

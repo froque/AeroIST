@@ -27,20 +27,9 @@ MeasurementsModel::MeasurementsModel(QDomElement root, QObject *parent):
     load_xml(root);
 }
 
-void MeasurementsModel::save(QTextStream *out ){
-    *out << name << endl;
-    *out << dvm_time << endl;
-    *out << matrix << endl;
-    int size = rowCount(QModelIndex());
-    *out << size << endl;
-
-    save_csv(out,false);
-
-}
-
 void MeasurementsModel::save_csv(QTextStream *out,bool header){
-    int rows = rowCount(QModelIndex());
-    int columns = columnCount(QModelIndex());
+    int rows = rowCount();
+    int columns = columnCount();
 
     if (header == true){
         for (int column=0; column < columns; column++){
