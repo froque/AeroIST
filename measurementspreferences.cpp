@@ -60,6 +60,7 @@ MeasurementsPreferences::MeasurementsPreferences(MeasurementsModel *measurement,
 
 MeasurementsPreferences::~MeasurementsPreferences(){
     delete ui;
+    delete proxyfilter;
 }
 
 void MeasurementsPreferences::accept(){
