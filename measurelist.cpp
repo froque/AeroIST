@@ -27,7 +27,7 @@ void MeasureList::newMeasure(MeasurementsModel * measure){
 }
 
 void MeasureList::deleteMeasure(QModelIndex index){
-    beginRemoveRows(QModelIndex(),0,list.size());
+    beginRemoveRows(QModelIndex(),index.row(),index.row());
     if (index.isValid()){
         delete list.takeAt(index.row());
     }

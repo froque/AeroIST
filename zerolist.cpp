@@ -30,7 +30,7 @@ void ZeroList::newMeasure(ZeroModel * measure){
 }
 
 void ZeroList::deleteMeasure(QModelIndex index){
-    beginRemoveRows(QModelIndex(),0,list.size());
+    beginRemoveRows(QModelIndex(),index.row(),index.row());
     if (index.isValid()){
         delete list.takeAt(index.row());
     }
