@@ -33,8 +33,8 @@ ZeroPreferences::ZeroPreferences(ZeroModel *measurement, QWidget *parent) :
     ui->doubleSpinBoxBeta->setSingleStep(DEFAULT_BETA_STEP);
     ui->doubleSpinBoxMotor->setRange(DEFAULT_MOTOR_MIN,DEFAULT_MOTOR_MAX);
     ui->doubleSpinBoxMotor->setSingleStep(DEFAULT_MOTOR_STEP);
+    ui->edit_name->setFocus();
     adjustSize();
-
 }
 
 

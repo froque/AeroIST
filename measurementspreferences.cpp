@@ -53,7 +53,7 @@ MeasurementsPreferences::MeasurementsPreferences(MeasurementsModel *measurement,
     ui->controlGroup->setId(ui->radioButtonMotor,MOTOR);
 
     connect(ui->controlGroup, SIGNAL(buttonClicked(int)),this,SLOT(maxminstep_enabled(int)));
-
+    ui->edit_name->setFocus();
     adjustSize();
 }
 
