@@ -33,6 +33,7 @@
 <xs:element name="Beta" type="xs:double" />
 <xs:element name="Motor" type="xs:double" />
 <xs:element name="Temperature" type="xs:double" />
+<xs:element name="Wind" type="xs:double" />
 
 <xs:element name="project">
   <xs:complexType>
@@ -106,6 +107,7 @@
                           <xs:element ref="Beta"/>
                           <xs:element ref="Motor"/>
                           <xs:element ref="Temperature"/>
+                          <xs:element ref="Wind"/>
                         </xs:sequence>
                       </xs:complexType>
                     </xs:element>
