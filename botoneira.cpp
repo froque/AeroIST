@@ -18,7 +18,6 @@
 
 int init_arduino(const char *port){
     int fd;
-    char b[1];
     fd = serialport_init(port,SERIALRATE);
     return fd;
 }

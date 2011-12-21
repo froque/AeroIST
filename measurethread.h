@@ -55,7 +55,6 @@ private:
     bool isZero;
     QString name;
     int n;
-    int k;
     measure zero;
 
     bool m_stop;

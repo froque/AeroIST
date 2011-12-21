@@ -20,6 +20,12 @@ MeasurementsModel::MeasurementsModel(QObject *parent)
     step=0;
     control_type = NONE;
     n = 0;
+    set_alpha = 0;
+    set_beta = 0;
+    set_motor = 0;
+    for (int k; k<NFORCES;k++ ){
+        zero[0] = 0;
+    }
 }
 MeasurementsModel::MeasurementsModel(QDomElement root, QObject *parent):
     QAbstractTableModel(parent)

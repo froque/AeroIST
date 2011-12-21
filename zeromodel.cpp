@@ -7,6 +7,9 @@ ZeroModel::ZeroModel(QObject *parent) :
     dvm_time=0;
     matrix=MIDDLE;
     average_number=0;
+    set_alpha = 0;
+    set_beta = 0;
+    set_motor = 0;
 }
 
 ZeroModel::ZeroModel(QDomElement root,QObject *parent) :

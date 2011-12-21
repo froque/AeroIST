@@ -22,6 +22,7 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
     control_type(measurement->control_type),
     n(measurement->n)
 {
+    m_stop = false;
     m_parent_thread = thread();
     isZero = false;
 
@@ -48,6 +49,7 @@ MeasureThread::MeasureThread(ZeroModel *measurement,QObject *parent) :
     set_beta(measurement->set_beta),
     set_motor(measurement->set_motor)
 {
+    m_stop = false;
     m_parent_thread = thread();
     isZero = true;
     n=1;
@@ -63,6 +65,11 @@ MeasureThread::MeasureThread(ZeroModel *measurement,QObject *parent) :
         motor = new Motor;
         wind = new Wind;
     }
+    settling_time = 0;
+    start = 0;
+    end = 0;
+    step = 0;
+    current = 0;
 }
 
 
@@ -82,17 +89,13 @@ void MeasureThread::isReady(void){
         if (motor->isReady() == false){
             throw std::runtime_error("Motor is not ready. Try press the green button");
         }
-        if (force->isReady() == false){
-            throw std::runtime_error("Error with GPIB multimeter");
-        }
     }
 }
 
 void MeasureThread::produce(){
-    m_stop = false;
+    int k = 1;
     timer.start();
     QEventLoop eloop;
-    k = 1;
     if (!virtual_measures){
         set_initial();
         while(!m_stop) {
