@@ -7,7 +7,6 @@
 #include <stdexcept>
 #include <cmath>
 
-//#include <stdio.h>  // dlete later (printf)
 #include <QSettings>
 #include <QDebug>
 #include "common.h"
@@ -22,9 +21,7 @@ Motor::Motor(void){
 
     int n;
     struct termios options;
-/*   fd = open(SERIALPORT, O_RDWR | O_NOCTTY | O_NDELAY);*/
-//    fd = open(SERIALPORT, O_RDWR | O_NDELAY);
-/*    fd = open(file, O_RDWR | O_NDELAY);*/
+
     QSettings settings;
     std::string filename = settings.value(SETTINGS_MOTOR_PATH).toString().toStdString();
     fd = open(filename.c_str(), O_RDWR );
@@ -53,7 +50,6 @@ Motor::Motor(void){
     options.c_lflag=0;
     options.c_oflag=0;
     options.c_cc[VTIME]=1;
-//    options.c_cc[VMIN]=60;
     options.c_cc[VMIN]=0;
     /*  Set the new options for the port... */
     if (tcsetattr(fd, TCSANOW, &options)!=0){
@@ -69,13 +65,11 @@ Motor::~Motor(void){
 
 
 void Motor::convert_velocity(double percentage, unsigned char *nethigh, unsigned char *netlow){
-    if (percentage > MOTOR_FULLPERCENTAGE)
-    {
+    if (percentage > MOTOR_FULLPERCENTAGE){
         percentage = MOTOR_FULLPERCENTAGE;
     }
-    if(percentage < 0)
-    {
-        percentage = 0;
+    if(percentage < 0){
+        percentage = 0.0;
     }
     unsigned int speed = MOTOR_FULLSPEED*percentage/MOTOR_FULLPERCENTAGE;
 
@@ -85,7 +79,7 @@ void Motor::convert_velocity(double percentage, unsigned char *nethigh, unsigned
 
 // 0x4000 = 100%
 // the drive goes from -200% to 199,9%
-float Motor::convert_percentage(unsigned char nethigh, unsigned char netlow){
+double Motor::convert_percentage(unsigned char nethigh, unsigned char netlow){
     int speed = nethigh * 256 + netlow;
 
     double percentage;
@@ -94,8 +88,6 @@ float Motor::convert_percentage(unsigned char nethigh, unsigned char netlow){
     } else {
         percentage =  (MOTOR_FULLPERCENTAGE * (speed - MOTOR_FULLSPEED *4) /MOTOR_FULLSPEED); // -200%% - 0%
     }
-
-
     return percentage;
 }
 
@@ -125,7 +117,7 @@ void Motor::talk_to_simoreg(void){
         }
     }
 
-    int bytesRead = read(fd,buffer2,SIMOREG_BUFLEN);
+    int bytesRead = ::read(fd,buffer2,SIMOREG_BUFLEN);
 
     if (bytesRead != SIMOREG_BUFLEN) {
         throw std::runtime_error("Error on reading from the SIMOREG serial port");
@@ -139,7 +131,7 @@ void Motor::talk_to_simoreg(void){
 //    printf("RECEIVING: stx:%02X lge:%02X adr:%02X net1:%02X %02X net2:%02X %02X bcc:%02X\n",buffer2[0],buffer2[1],buffer2[2],buffer2[3],buffer2[4],buffer2[5],buffer2[6],buffer2[7]);
 
     if (bcc != buffer2[bytesRead-1]) {    
-        printf("bcc that should be %02X\t\t - bcc that is %02X",bcc,buffer2[bytesRead-1]);
+//        printf("bcc that should be %02X\t\t - bcc that is %02X",bcc,buffer2[bytesRead-1]);
         throw std::runtime_error("error on BCC. Try the green button");
     }
 
@@ -148,21 +140,14 @@ void Motor::talk_to_simoreg(void){
     speed_actual = convert_percentage(buffer2[5], buffer2[6]);
 }
 
-void Motor::get(){
+void Motor::read(){
     talk_to_simoreg();
-
-//    if (terminal37){
-//        printf("terminal 37 is active\n");
-//    } else {
-//        printf("terminal 37 is not active\n");
-//    }
 }
 
 void Motor::set(double speed){
     speed_setpoint = speed;
     do{
         talk_to_simoreg();
-        qDebug() << speed_setpoint << speed_actual << speed_actual - speed_setpoint;
         Helper::msleep(100);
     } while ( fabs(speed_actual - speed_setpoint) > MOTOR_PRECISION);
 }

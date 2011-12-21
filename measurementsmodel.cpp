@@ -26,37 +26,8 @@ MeasurementsModel::MeasurementsModel(QDomElement root, QObject *parent):
 {
     load_xml(root);
 }
-/*
-void MeasurementsModel::load(QTextStream *in)
-{
-    int size;
-    name = in->readLine();
-    dvm_time = in->readLine().toInt();
-    matrix = (matrix_t) in->readLine().toInt();
-    size = in->readLine().toInt();
-    beginInsertRows(QModelIndex(),0,size);
-    QStringList var;
-    for (int row =0; row < size ;row++){
-        var = in->readLine().split(";");
 
-        tempo.append(var.at(0).toDouble());
-        force[0].append(var.at(1).toDouble());
-        force[1].append(var.at(2).toDouble());
-        force[2].append(var.at(3).toDouble());
-        force[3].append(var.at(4).toDouble());
-        force[4].append(var.at(5).toDouble());
-        force[5].append(var.at(6).toDouble());
-        alpha.append(var.at(7).toDouble());
-        beta.append(var.at(8).toDouble());
-        motor.append(var.at(9).toDouble());
-        temp.append(var.at(10).toDouble());
-    }
-    endInsertRows();
-}
-*/
-
-void MeasurementsModel::save(QTextStream *out )
-{
+void MeasurementsModel::save(QTextStream *out ){
     *out << name << endl;
     *out << dvm_time << endl;
     *out << matrix << endl;
@@ -108,20 +79,17 @@ void MeasurementsModel::GetMeasure(measure m){
     endInsertRows();
 }
 
-int MeasurementsModel::columnCount(const QModelIndex &parent)  const
-{
+int MeasurementsModel::columnCount(const QModelIndex &parent)  const{
     Q_UNUSED(parent);
     return NVARS;
 }
 
-int MeasurementsModel::rowCount(const QModelIndex &parent ) const
-{
+int MeasurementsModel::rowCount(const QModelIndex &parent ) const{
     Q_UNUSED(parent);
     return force[0].size();
 }
 
-QVariant MeasurementsModel::data(const QModelIndex &index, int role) const
-{
+QVariant MeasurementsModel::data(const QModelIndex &index, int role) const{
     if (!index.isValid()){
         return QVariant();
     }
@@ -158,8 +126,7 @@ QVariant MeasurementsModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-QVariant MeasurementsModel::headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const
-{
+QVariant MeasurementsModel::headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const{
     if (role != Qt::DisplayRole)
         return QVariant();
 
@@ -427,9 +394,6 @@ void MeasurementsModel::load_xml(QDomElement root){
         }
     }
 }
-
-
-
 
 bool MeasurementsModel::setData ( const QModelIndex & index, const QVariant & value, int role){
     if (!index.isValid()){

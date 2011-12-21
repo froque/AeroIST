@@ -17,9 +17,6 @@ public:
     explicit ZeroModel(QObject *parent = 0);
     explicit ZeroModel(QDomElement root,QObject *parent = 0);
 
-//    void load(QTextStream *in);
-//    void save(QTextStream *out);
-//    void save_csv(QTextStream *out,bool header);
     void load_xml(QDomElement root);
     void save_xml(QDomElement root);
 
@@ -45,7 +42,6 @@ public:
 
 public slots:
     void GetMeasure(measure m);
-
 };
 
 #endif // ZEROMODEL_H

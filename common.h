@@ -2,7 +2,7 @@
 #define COMMON_H
 
 #define DEBUG 1
-//#define REAL_MEASURES 0
+
 #define SINGLE_SHARED 0 // Don't test for open instances
 #define SINGLE_PID 0
 #define SINGLE_SETTINGS 0
@@ -29,18 +29,12 @@ enum ThreadStatus{
 };
 
 
-//#define DEFAULT_ALPHA_MIN   -30
-//#define DEFAULT_ALPHA_MAX   30
 #define DEFAULT_ALPHA_STEP  1
-
-//#define DEFAULT_BETA_MIN    -170
-//#define DEFAULT_BETA_MAX    170
 #define DEFAULT_BETA_STEP   1
 
 #define DEFAULT_MOTOR_MIN    0
 #define DEFAULT_MOTOR_MAX    100 //Percentage
 #define DEFAULT_MOTOR_STEP   1
-
 
 #define ANGLEZERO_ALPHA 730303.0
 #define ANGLEZERO_BETA 80751.0
@@ -55,7 +49,6 @@ enum ThreadStatus{
 #define COMMAND_ON 1
 #define COMMAND_OFF 0
 
-//#define ARDUINO_ANALOG_REF 3.3
 #define ARDUINO_ANALOG_REF 5.0
 #define MOTOR_FULLSPEED 16384.0 // 100% according to manual
 #define MOTOR_FULLPERCENTAGE 100.0
@@ -64,10 +57,12 @@ enum ThreadStatus{
 #define WIND_SENSITIVITY 3.98
 #define MMH2O_TO_PASCAL 9.80665
 
+#define GRAVITY 9.81      /* m/s^2 */
+#define SENSITIVITY 2.0   /* mV/V  */
+#define VCC 12            /* V     */
+#define MAX_ITER 10
+#define TOLERANCE 1e-5
 
-#ifdef DEBUG
-#include <QDebug>
-#endif //DEBUG
 
 
 #define TAG_NAME "name"
@@ -91,8 +86,6 @@ enum ThreadStatus{
 #define TAG_MEASURE "measurement"
 #define TAG_ITEM "item"
 #define TAG_PROJECT "project"
-
-
 
 #define SETTINGS_VIRTUAL_MEASURES "virtual_measures"
 #define SETTINGS_PROJECT_FOLDER "project_folder"
@@ -126,5 +119,3 @@ enum ThreadStatus{
 #define SETTINGS_MOTOR_PATH_DEFAULT "/dev/ttyS0"
 
 #endif // COMMON_H
-
-

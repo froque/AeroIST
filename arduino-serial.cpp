@@ -66,14 +66,10 @@ int serialport_read_until(int fd, char* buf, char until)
     do { 
         int n = read(fd, b, 1);  // read a char at a time
 
-//        printf("read returns %d\n",n);
         if( n==-1) return -1;    // couldn't read
         if( n==0 ) {
-              return -1;
-//            usleep( 10 * 1000 ); // wait 10 msec try again
-//            continue;
+            return -1;
         }
-//        printf("$%d$ ",b[0]);
         buf[i] = b[0]; i++;
     } while( b[0] != until );
 
@@ -94,22 +90,14 @@ int serialport_init(const char* serialport, int baud)
     struct termios toptions;
     int fd;
     
-    //fprintf(stderr,"init_serialport: opening port %s @ %d bps\n",
-    //        serialport,baud);
 
-//    fd = open(serialport, O_RDWR | O_NOCTTY | O_NDELAY);
     fd = open(serialport, O_RDWR | O_NOCTTY );
     if (fd == -1)  {
-//        perror("init_serialport: Unable to open port ");
-
         throw std::runtime_error("init_serialport: Unable to open Arduino port ");
-//        return -1;
     }
     
     if (tcgetattr(fd, &toptions) < 0) {
-//        perror("init_serialport: Couldn't get term attributes");
         throw std::runtime_error("init_serialport: Couldn't get term attributes");
-//        return -1;
     }
     speed_t brate = baud; // let you override switch below if needed
     switch(baud) {
@@ -147,11 +135,9 @@ int serialport_init(const char* serialport, int baud)
     toptions.c_cc[VMIN]  = 0;
     toptions.c_cc[VTIME] = 20;
 
-//    if( tcsetattr(fd, TCSANOW, &toptions) < 0) {
+    //    if( tcsetattr(fd, TCSANOW, &toptions) < 0) {
     if(tcsetattr(fd,TCSAFLUSH,&toptions)<0){
-//        perror("init_serialport: Couldn't set term attributes");
         throw std::runtime_error("init_serialport: Couldn't set term attributes");
-//        return -1;
     }
 
     return fd;

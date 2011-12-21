@@ -7,7 +7,7 @@
 #include <QTextStream>
 #include <QtNetwork/QLocalSocket>
 #include <QtNetwork/QLocalServer>
-
+#include "common.h"
 
 
 int main(int argc, char *argv[])
@@ -15,9 +15,6 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
     QCoreApplication::setOrganizationName("IST");
     QCoreApplication::setApplicationName("AeroIST");
-//    QTranslator translator;
-//    translator.load("aeroist");
-//    app.installTranslator(&translator);
 
     QTranslator qtTranslator;
     qtTranslator.load("qt_" + QLocale::system().name(), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
@@ -25,7 +22,7 @@ int main(int argc, char *argv[])
 
     QTranslator myappTranslator;
     myappTranslator.load("aeroist_" + QLocale::system().name());
-//    qDebug() << QLocale::system().name();
+
     app.installTranslator(&myappTranslator);
 
     AeroISTWindow w;
@@ -87,8 +84,7 @@ int main(int argc, char *argv[])
         pidnum = aux.toInt();
         qDebug() <<  pidnum << app.applicationPid() << QFileInfo(app.applicationFilePath()).fileName();
         aux = QString("/proc/%1/cmdline").arg(pidnum);
-//        aux.append(pidnum);
-//        aux.append("/cmdline");
+
         QFile proc(aux);
         qDebug() << aux;
         if (proc.exists()){

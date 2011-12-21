@@ -12,7 +12,6 @@
 void invert(int n,double coe_matrix[6][6],double matrix[6][6]);
 
 // initialize the class
-
 Force::Force(matrix_t matrix, int dvm_time,double zero[NUMCHANNELS]):
     dvm_time(dvm_time),
     matrix(matrix)
@@ -40,11 +39,9 @@ void Force::initialize(){
     }
     std::ifstream matrix_file(filename.toStdString().c_str(),std::ios::in|std::ios::binary);
     if (matrix_file.is_open()) {
-//        qDebug() << "MATRIX FILE IS Being open";
         matrix_file.read((char*)&coe, sizeof(struct matrix));
         matrix_file.close();
     } else {
-        qDebug() << "MATRIX FILE IS NOT Being open";
         throw std::runtime_error("Could not open matrix file");
     }
     invert(NUMCHANNELS,coe.coef_lin,mat.coef_lin);
@@ -84,7 +81,6 @@ Force::~Force(){
 
 
 bool Force::isReady(void){
-    qDebug() << ibsta;
 //    if ((ibsta) & (1<<(ERR))){
 //        qDebug() << ibsta << ERR ;
 //        return false;
@@ -121,11 +117,9 @@ double  Force::ascii2newton (char *buf){
 
 void Force::read_dvm(void){
     char buf[READBUFFER];
-    //  std::string dvmstr("M0VDR1A0T1L0");
     QString dvmstr = QString("M0VDR1A0T%1L0").arg(dvm_time);
 
     for (int k=0; k < NUMCHANNELS; k++ ){
-//        dvmstr[1] = 48+k;
         dvmstr.replace(1,1,QString::number(k));
         ibwrt(g_id,dvmstr.toStdString().c_str(),dvmstr.size());
         ibrd(g_id,buf, READBUFFER);
@@ -140,15 +134,12 @@ void Force::newton_method( ){
     double jm[NUMCHANNELS][NUMCHANNELS];
     double jm_inv[NUMCHANNELS][NUMCHANNELS];
 
-
     //initial guess
     for(int i=0;i<NUMCHANNELS;i++){
         forces[i]=0;
         for(int j=0;j<NUMCHANNELS;j++){
-//            forces[i] += mat.coef_lin[j][i] * dvm_si[j];   //note: matrix is transposed on file
             forces[i] += mat.coef_lin[j][i] * (dvm_si[j] - dvm_si_zero[j]);   //note: matrix is transposed on file
         }
-//        forces[i] = forces[i] - zero[i];
     }
 
     unsigned int iter=0;
@@ -159,7 +150,6 @@ void Force::newton_method( ){
         for (int i=0;i<NUMCHANNELS;i++){
             for(int j=0;j<NUMCHANNELS;j++){
                 forces[i] -= jm_inv[i][j]*F[j];  // x_n+1 = x_n - J^-1 * F(x_n)
-//                forces[i] = (forces[i] - zero[i]) - jm_inv[i][j]*F[j];  // x_n+1 = x_n - J^-1 * F(x_n)
             }
         }
         iter++;
@@ -180,7 +170,6 @@ void Force::calc_function(double F[NUMCHANNELS])  //calculates THE function F(x)
                 k++;
             }
         }
-//        F[i] = F[i] - dvm_si[i];
         F[row] = F[row] - (dvm_si[row] - dvm_si_zero[row]);
     }
 }

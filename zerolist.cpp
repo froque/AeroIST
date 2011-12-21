@@ -6,11 +6,11 @@ ZeroList::ZeroList(QObject *parent) :
     Q_UNUSED(parent);
 }
 
-
 int ZeroList::rowCount ( const QModelIndex & parent ) const {
     Q_UNUSED(parent);
     return list.size();
 }
+
 QVariant ZeroList::data ( const QModelIndex & index, int role ) const{
     Q_UNUSED(index);
 
@@ -50,7 +50,6 @@ ZeroModel * ZeroList::at(QModelIndex index){
 
 void ZeroList::clear(void){
     while (list.size()>0){
-        qDebug() << "zero list" << list.size();
          deleteMeasure( index(0,0,QModelIndex()) );
     }
 }

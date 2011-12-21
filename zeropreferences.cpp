@@ -38,16 +38,10 @@ ZeroPreferences::ZeroPreferences(ZeroModel *measurement, QWidget *parent) :
 }
 
 
-ZeroPreferences::~ZeroPreferences()
-{
+ZeroPreferences::~ZeroPreferences(){
     delete ui;
 }
 
-//void ZeroPreferences::on_buttonBox_accepted(){
-
-//}
-
-//void ZeroPreferences::test_input(){
 void ZeroPreferences::accept(){
     if (ui->edit_name->text().size()==0){
         QMessageBox msgBox;
@@ -55,8 +49,6 @@ void ZeroPreferences::accept(){
         msgBox.exec();
         return ;
     }
-
-//    emit ZeroPreferences::accept();
 
     measurement->name = ui->edit_name->text();
     measurement->description = ui->plainTextEdit->toPlainText();

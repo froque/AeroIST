@@ -94,54 +94,51 @@ void MeasureThread::produce(){
     QEventLoop eloop;
     k = 1;
     if (!virtual_measures){
-//        if (motor->isReady() == false){
-//            emit message(tr("Motor is not ready. Try press the green button"));
-//        } else {
-            set_initial();
-            while(!m_stop) {
-                clear_m();
-                set_m();
-                read_m();
-                if (control_type == NONE){
-                    if (n != 0 && k>= n ){
-                        m_stop = true;
-                    }
-                } else {
-                    current = current + step;
-                    if ((start < end && current > end ) || (start > end && current < end)){
-                        m_stop = true;
-                    }
+        set_initial();
+        while(!m_stop) {
+            clear_m();
+            set_m();
+            read_m();
+            if (control_type == NONE){
+                if (n != 0 && k>= n ){
+                    m_stop = true;
                 }
-
-                k++;
-                emit MeasureDone(m);
-                eloop.processEvents(QEventLoop::AllEvents, 50);
+            } else {
+                current = current + step;
+                if ((start < end && current > end ) || (start > end && current < end)){
+                    m_stop = true;
+                }
             }
-            // cleanup
-            motor->set(0);
-//        }
+
+            k++;
+            emit MeasureDone(m);
+            eloop.processEvents(QEventLoop::AllEvents, 50);
+        }
+        // cleanup
+        motor->set(0);
+
     } else {
-            while(!m_stop) {
-                clear_m();
-                read_m_virtual();
-                set_m_virtual();
+        while(!m_stop) {
+            clear_m();
+            read_m_virtual();
+            set_m_virtual();
 
-                if (control_type == NONE){
-                    if (n != 0 && k>= n ){
-                        m_stop = true;
-                    }
-                } else {
-                    current = current + step;
-                    if ((start < end && current > end ) || (start > end && current < end)){
-                        m_stop = true;
-                    }
+            if (control_type == NONE){
+                if (n != 0 && k>= n ){
+                    m_stop = true;
                 }
-
-                k++;
-                emit MeasureDone(m);
-
-                eloop.processEvents(QEventLoop::AllEvents, 50);
+            } else {
+                current = current + step;
+                if ((start < end && current > end ) || (start > end && current < end)){
+                    m_stop = true;
+                }
             }
+
+            k++;
+            emit MeasureDone(m);
+
+            eloop.processEvents(QEventLoop::AllEvents, 50);
+        }
     }
     if (m_parent_thread != thread())
     {
@@ -177,6 +174,7 @@ void MeasureThread::set_initial(void){
         motor->set(this->start);
         break;
     }
+    Helper::msleep(settling_time*1000);
 }
 
 void MeasureThread::set_m(void){
@@ -207,7 +205,7 @@ void MeasureThread::read_m(void){
         alpha->read();
         beta->read();
         temperature->read();
-        motor->get();
+        motor->read();
         wind->read();
         m.alpha += alpha->angle;
         m.beta += beta->angle;
@@ -215,7 +213,6 @@ void MeasureThread::read_m(void){
         m.motor += motor->speed_actual;
         m.wind += wind->wind;
         for (int k=0; k < NUMCHANNELS; k++ ){
-//            m.force[k] += force->dvm_si[k];
             m.force[k] += force->forces[k];
         }
     }
@@ -276,8 +273,6 @@ void MeasureThread::read_m_virtual(void){
     m.wind = m.wind / average_number;
     Helper::msleep( 0.5 * average_number *  1000.0 * qrand() / RAND_MAX);
 }
-
-
 
 void MeasureThread::stop(){
     m_stop = true;

@@ -7,18 +7,13 @@
 #include "temperature.h"
 #include "motor.h"
 #include "wind.h"
-#if DEBUG
-
-#endif // DEBUG
 
 #include <QTime>
 #include <QElapsedTimer>
 #include "measure.h"
 #include "measurementsmodel.h"
 
-
-
-class MeasureThread : public QObject//: public QThread
+class MeasureThread : public QObject
 {
     Q_OBJECT
 public:
@@ -29,15 +24,14 @@ public:
 
 signals:
     void MeasureDone(measure m);
-//    void message(QString);
 
 public slots:
     void produce(void);
-//    void start_timer(void);
     void stop();
     void control_alpha(double);
     void control_beta(double);
     void control_motor(double);
+
 private:
     void set_m(void);
     void set_initial(void);
@@ -66,6 +60,7 @@ private:
 
     bool m_stop;
     QThread* m_parent_thread;
+    bool virtual_measures;
 
     // Variables
     Force *force;
@@ -74,7 +69,6 @@ private:
     Temperature *temperature;
     Motor *motor;
     Wind *wind;
-    bool virtual_measures;
 };
 
 #endif // MYTHREAD_H

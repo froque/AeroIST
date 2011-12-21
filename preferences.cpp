@@ -43,8 +43,7 @@ Preferences::Preferences(QWidget *parent) :
     ui->doubleSpinBox->setValue(settings.value(SETTINGS_DEFAULT_SETTLING_TIME).toDouble());
 }
 
-Preferences::~Preferences()
-{
+Preferences::~Preferences(){
     delete ui;
 }
 

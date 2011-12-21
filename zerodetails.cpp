@@ -39,7 +39,6 @@ ZeroDetails::ZeroDetails(ZeroModel *measurement, QWidget *parent) :
 
 }
 
-ZeroDetails::~ZeroDetails()
-{
+ZeroDetails::~ZeroDetails(){
     delete ui;
 }

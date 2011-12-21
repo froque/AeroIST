@@ -7,7 +7,6 @@ ZeroModel::ZeroModel(QObject *parent) :
     dvm_time=0;
     matrix=MIDDLE;
     average_number=0;
-
 }
 
 ZeroModel::ZeroModel(QDomElement root,QObject *parent) :
@@ -54,6 +53,10 @@ QVariant ZeroModel::data(const QModelIndex &index, int role) const{
 QVariant ZeroModel::headerData(int section, Qt::Orientation orientation, int role) const{
     if (role != Qt::DisplayRole)
         return QVariant();
+
+    if (orientation == Qt::Vertical){
+        return section+1;
+    }
 
     if (orientation == Qt::Horizontal) {
         switch (section) {
@@ -192,7 +195,6 @@ void ZeroModel::load_xml(QDomElement root){
         }
     }
 }
-
 
 bool ZeroModel::setData ( const QModelIndex & index, const QVariant & value, int role){
     if (!index.isValid()){

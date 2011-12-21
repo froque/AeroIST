@@ -14,9 +14,7 @@
 #include "common.h"
 #include "arduino-serial.h"
 
-
 #include <QSettings>
-
 
 Wind::Wind(){
     wind=0;
@@ -40,11 +38,9 @@ void Wind::read(void){
         if( serialport_write(arduinofd, buffer) == -1){
             perror("Wind writing");
         }
-        int result = serialport_read_until(arduinofd, buffer_read, '\n');
 
-//        if( result == -1){
-//            ;
-//        }
+        serialport_read_until(arduinofd, buffer_read, '\n');
+
         if (strncmp(buffer_aux,buffer_read,3)==0){
             strncpy(buffer_aux,buffer_read + 3,4);
             wind_raw = atoi(buffer_aux);
@@ -57,5 +53,4 @@ void Wind::read(void){
     // 1 mm H20 = 9.80665 Pa
 //    wind = wind_raw * ARDUINO_ANALOG_REF/1024.0 * WIND_SENSITIVITY * MMH2O_TO_PASCAL ;
     wind = wind_raw * ARDUINO_ANALOG_REF/1024.0 * WIND_SENSITIVITY ;
-//    qDebug() << wind_raw << wind;
 }

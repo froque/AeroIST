@@ -19,8 +19,6 @@ public:
     ~ZeroPreferences();
 
 private slots:
-//    void on_buttonBox_accepted();
-//    void test_input();
     void accept();
 
 private:

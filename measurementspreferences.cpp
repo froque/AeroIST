@@ -120,7 +120,6 @@ void MeasurementsPreferences::maxminstep_enabled(int id){
     case NONE:  ui->doubleSpinBoxStart->setEnabled(false);
         ui->doubleSpinBoxEnd->setEnabled(false);
         ui->doubleSpinBoxStep->setEnabled(false);
-        //                ui->doubleSpinBoxSettling->setEnabled(false);
         ui->spinBoxN->setEnabled(true);
         ui->doubleSpinBoxAlpha->setEnabled(true);
         ui->doubleSpinBoxBeta->setEnabled(true);

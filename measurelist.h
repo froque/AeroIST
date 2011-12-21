@@ -26,11 +26,10 @@ public:
     void save(QString fileName);
     void save_xml(QDomElement root);
     void load_xml(QDomElement root);
-//    void load(QString fileName);
     void clear(void);
+
 private:
     QList<MeasurementsModel*> list;
-//    QList<QAbstractTableModel*> list;
 };
 
 #endif // MEASURELIST_H

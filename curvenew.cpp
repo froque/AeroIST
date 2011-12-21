@@ -15,19 +15,11 @@ CurveNew::CurveNew(QwtPlot *plot, MeasureList *list, QWidget *parent) :
     ui->comboBox_y->setModel(list);
 }
 
-CurveNew::~CurveNew()
-{
+CurveNew::~CurveNew(){
     delete ui;
 }
 
-//QwtPlotCurve* CurveNew::get_curve(void){
-//    QwtPlotCurve *curve = new QwtPlotCurve(ui->lineEdit->text());
-//    curve->setSamples(x,y);
-//    return curve;
-//}
-
-void CurveNew::on_comboBox_x_currentIndexChanged(int index)
-{
+void CurveNew::on_comboBox_x_currentIndexChanged(int index){
     ui->listWidget_x->clear();
     model = list->at(index);
     for (int k=0;k< model->columnCount();k++){
@@ -36,8 +28,7 @@ void CurveNew::on_comboBox_x_currentIndexChanged(int index)
 
 }
 
-void CurveNew::on_comboBox_y_currentIndexChanged(int index)
-{
+void CurveNew::on_comboBox_y_currentIndexChanged(int index){
     ui->listWidget_y->clear();
     model = list->at(index);
     for (int k=0;k< model->columnCount();k++){

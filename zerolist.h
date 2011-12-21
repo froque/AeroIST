@@ -15,20 +15,14 @@ public:
     int	rowCount ( const QModelIndex & parent = QModelIndex() ) const ;
     QVariant	data ( const QModelIndex & index, int role = Qt::DisplayRole ) const;
 
-
     void newMeasure(ZeroModel * measure);
     void deleteMeasure(QModelIndex index);
     ZeroModel * at(int position);
     ZeroModel * at(QModelIndex index);
 
-//    void save(QString fileName);
-//    void load(QString fileName);
     void save_xml(QDomElement root);
     void load_xml(QDomElement root);
     void clear(void);
-signals:
-
-public slots:
 
 private:
     QList<ZeroModel*> list;

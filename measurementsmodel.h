@@ -18,7 +18,7 @@ class MeasurementsModel  : public QAbstractTableModel
 public:
     MeasurementsModel( QObject *parent=0);
     MeasurementsModel(QDomElement root,QObject *parent = 0);
-//    void load(QTextStream *in);
+
     void save(QTextStream *out);
     void save_csv(QTextStream *out,bool header);
     void save_xml(QDomElement root);
@@ -59,9 +59,6 @@ public:
     double zero[NFORCES];
     QString zero_name;
     int n;
-
-signals:
-//    void produceMeasure();
 
 public slots:
     void GetMeasure(measure m);

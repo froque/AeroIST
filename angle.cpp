@@ -12,14 +12,10 @@
 
 #include "botoneira.h"
 
-//extern "C" int init_arduino(const char *port);
-//extern "C" int set_relay(int fd, char relay , int command);
-
 
 Angle::Angle(){
     QSettings settings;
     arduinofd = init_arduino(settings.value(SETTINGS_ARDUINO_PATH).toString().toStdString().c_str());
-//    arduinofd = init_arduino(ARDUINOPATH);
 }
 
 Angle::~Angle(){
@@ -54,7 +50,6 @@ void Angle::set(double angle_dest){
             decrease(angle_dest);
         }
         read(); //update value
-//        qDebug() << fabs(angle_dest - angle) << angle;
     }
     read(); //update value
 }

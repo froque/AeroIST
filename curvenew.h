@@ -17,8 +17,6 @@ public:
     explicit CurveNew(QwtPlot *plot, MeasureList *list, QWidget *parent = 0);
     ~CurveNew();
 
-//    QwtPlotCurve* get_curve(void);
-
 public slots:
     void accept(void);
 

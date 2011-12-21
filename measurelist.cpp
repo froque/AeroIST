@@ -1,13 +1,11 @@
 #include "measurelist.h"
 
 
-MeasureList::MeasureList (QObject * parent ) : QAbstractListModel(parent)
-{
+MeasureList::MeasureList (QObject * parent ) : QAbstractListModel(parent){
     Q_UNUSED(parent);
 }
 
-int MeasureList::rowCount ( const QModelIndex & parent  ) const
-{
+int MeasureList::rowCount ( const QModelIndex & parent  ) const{
     Q_UNUSED(parent);
     return list.size();
 }
@@ -22,16 +20,13 @@ QVariant MeasureList::data ( const QModelIndex & index, int role ) const{
     return QVariant();
 }
 
-void MeasureList::newMeasure(MeasurementsModel * measure)
-{
+void MeasureList::newMeasure(MeasurementsModel * measure){
     beginInsertRows(QModelIndex(), list.size(), list.size());
     list.append(measure);
     endInsertRows();
 }
 
-void MeasureList::deleteMeasure(QModelIndex index)
-{
-//    MeasurementsModel *measurement;
+void MeasureList::deleteMeasure(QModelIndex index){
     beginRemoveRows(QModelIndex(),0,list.size());
     if (index.isValid()){
         delete list.takeAt(index.row());
@@ -71,22 +66,6 @@ void MeasureList::clear(void){
          deleteMeasure( index(0,0,QModelIndex()) );
     }
 }
-
-/*
-void MeasureList::load(QString fileName){
-    QFile file(fileName);
-    if (file.open(QFile::ReadOnly|QFile::Text)){
-        QTextStream in(&file);
-        MeasurementsModel *measurement;
-        while(in.atEnd() == false){
-
-            measurement = new MeasurementsModel();
-            measurement->load(&in);
-            newMeasure(measurement);
-        }
-    }
-    file.close();
-}*/
 
 void MeasureList::save_xml(QDomElement root){
     MeasurementsModel *measurement;
