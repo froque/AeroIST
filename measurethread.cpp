@@ -296,13 +296,19 @@ void MeasureThread::clear_m(void){
 }
 
 void MeasureThread::control_alpha(double angle){
-    alpha->set(angle);
+    if(virtual_measures==false){
+        alpha->set(angle);
+    }
 }
 
 void MeasureThread::control_beta(double angle){
-    beta->set(angle);
+    if(virtual_measures==false){
+        beta->set(angle);
+    }
 }
 
 void MeasureThread::control_motor(double speed){
-    motor->set(speed);
+    if(virtual_measures==false){
+        motor->set(speed);
+    }
 }
