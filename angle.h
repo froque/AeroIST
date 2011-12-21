@@ -10,9 +10,6 @@ public:
     void read(void);
     void set(double);
     double angle;
-    int digits;
-    int zero;
-    double anglemax;
 
 protected:
     virtual void convert(void) =0;
@@ -22,6 +19,10 @@ protected:
     char relay_decrease;
     int arduinofd;
     double precision;
+    int digits;
+    int zero;
+    double anglemax;
+
 private:
     int displays;
     void increase(double angle_dest);
