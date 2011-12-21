@@ -82,6 +82,16 @@ Force::~Force(){
     ibonl(g_id,0);
 }
 
+
+bool Force::isReady(void){
+    qDebug() << ibsta;
+//    if ((ibsta) & (1<<(ERR))){
+//        qDebug() << ibsta << ERR ;
+//        return false;
+//    }
+    return true;
+}
+
 // public function. Read from the dmm and returns the forces
 void Force::read(void){
     read_dvm();             // determines dvm

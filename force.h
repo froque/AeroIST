@@ -33,7 +33,7 @@ public:
     ~Force();
     void read(void);
     double forces[NUMCHANNELS];
-
+    bool isReady(void);
 
 private:
     int dvm_time;

@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <QSettings>
 #include <stdexcept>
+#include "helper.h"
 
 MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
     QObject(parent),
@@ -76,15 +77,26 @@ MeasureThread::~MeasureThread(){
     }
 }
 
+void MeasureThread::isReady(void){
+    if (!virtual_measures){
+        if (motor->isReady() == false){
+            throw std::runtime_error("Motor is not ready. Try press the green button");
+        }
+        if (force->isReady() == false){
+            throw std::runtime_error("Error with GPIB multimeter");
+        }
+    }
+}
+
 void MeasureThread::produce(){
     m_stop = false;
     timer.start();
     QEventLoop eloop;
     k = 1;
     if (!virtual_measures){
-        if (motor->isReady() == false){
-            emit message(tr("Motor is not ready. Try press the green button"));
-        } else {
+//        if (motor->isReady() == false){
+//            emit message(tr("Motor is not ready. Try press the green button"));
+//        } else {
             set_initial();
             while(!m_stop) {
                 clear_m();
@@ -107,7 +119,7 @@ void MeasureThread::produce(){
             }
             // cleanup
             motor->set(0);
-        }
+//        }
     } else {
             while(!m_stop) {
                 clear_m();

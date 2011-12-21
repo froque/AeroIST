@@ -8,7 +8,7 @@
 #include "motor.h"
 #include "wind.h"
 #if DEBUG
-#include <QThread>
+
 #endif // DEBUG
 
 #include <QTime>
@@ -17,19 +17,6 @@
 #include "measurementsmodel.h"
 
 
-#ifdef DEBUG
-class Helper: public QThread {
-public:
-        static void msleep(int ms)
-        {
-                QThread::msleep(ms);
-        }
-        static void sleep(int s)
-        {
-                QThread::sleep(s);
-        }
-};
-#endif //DEBUG
 
 class MeasureThread : public QObject//: public QThread
 {
@@ -38,9 +25,11 @@ public:
     explicit MeasureThread(MeasurementsModel *measurement, QObject *parent = 0);
     explicit MeasureThread(ZeroModel *measurement, QObject *parent = 0);
     ~MeasureThread();
+    void isReady(void);
+
 signals:
     void MeasureDone(measure m);
-    void message(QString);
+//    void message(QString);
 
 public slots:
     void produce(void);

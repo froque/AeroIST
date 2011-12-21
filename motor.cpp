@@ -5,11 +5,13 @@
 #include <fcntl.h>   /* File control definitions */
 #include <iostream>
 #include <stdexcept>
+#include <cmath>
 
 //#include <stdio.h>  // dlete later (printf)
 #include <QSettings>
 #include <QDebug>
 #include "common.h"
+#include "helper.h"
 #define SIMOREG_BUFLEN 8
 
 Motor::Motor(void){
@@ -117,23 +119,17 @@ void Motor::talk_to_simoreg(void){
 
 //    printf("SENDING:   stx:%02X lge:%02X adr:%02X net1:%02X%02X net2:%02X%02X bcc:%02X\n",stx,lge,adr,net1high,net1low,net2high,net2low,bcc);
 
-    for(unsigned int k=0;k<sizeof(buffer);k++)
-    {
-//        char c= buffer[k];
-//        if ( write(fd, &c, 1) <1){
+    for(unsigned int k=0;k<sizeof(buffer);k++){
         if ( write(fd, &buffer[k], 1) <1){
-            throw std::runtime_error("error on writing");
+            throw std::runtime_error("error on writing to SIMOREG");
         }
     }
-
 
     int bytesRead = read(fd,buffer2,SIMOREG_BUFLEN);
 
     if (bytesRead != SIMOREG_BUFLEN) {
         throw std::runtime_error("Error on reading from the SIMOREG serial port");
     }
-
-
 
     bcc=0;
     for( int k=0 ; k<bytesRead-1 ; k++) {
@@ -142,17 +138,14 @@ void Motor::talk_to_simoreg(void){
 
 //    printf("RECEIVING: stx:%02X lge:%02X adr:%02X net1:%02X %02X net2:%02X %02X bcc:%02X\n",buffer2[0],buffer2[1],buffer2[2],buffer2[3],buffer2[4],buffer2[5],buffer2[6],buffer2[7]);
 
-    if (bcc != buffer2[bytesRead-1]) {
+    if (bcc != buffer2[bytesRead-1]) {    
         printf("bcc that should be %02X\t\t - bcc that is %02X",bcc,buffer2[bytesRead-1]);
-        throw std::runtime_error("error on BCC");
+        throw std::runtime_error("error on BCC. Try the green button");
     }
-
-
 
     terminal37 = !(buffer2[4] & 11);
 
     speed_actual = convert_percentage(buffer2[5], buffer2[6]);
-
 }
 
 void Motor::get(){
@@ -167,17 +160,14 @@ void Motor::get(){
 
 void Motor::set(double speed){
     speed_setpoint = speed;
-
-    talk_to_simoreg();
+    do{
+        talk_to_simoreg();
+        qDebug() << speed_setpoint << speed_actual << speed_actual - speed_setpoint;
+        Helper::msleep(100);
+    } while ( fabs(speed_actual - speed_setpoint) > MOTOR_PRECISION);
 }
 
 bool Motor::isReady(void){
+    talk_to_simoreg();
     return terminal37;
-}
-
-// delete later
-void Motor::print(void){
-//    talk_to_simoreg();
-    std::cout << "actual speed: " << speed_actual << std::endl;
-    std::cout << "goal speed: " << speed_setpoint << std::endl;
 }

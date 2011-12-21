@@ -54,7 +54,8 @@ SOURCES += main.cpp \
     botoneira.cpp \
     arduino-serial.cpp \
     motor.cpp \
-    wind.cpp
+    wind.cpp \
+    helper.cpp
 
 HEADERS += aeroistwindow.h \
     measure.h \
@@ -77,7 +78,8 @@ HEADERS += aeroistwindow.h \
     botoneira.h \
     arduino-serial.h \
     motor.h \
-    wind.h
+    wind.h \
+    helper.h
 
 FORMS += aeroistwindow.ui \
     preferences.ui \

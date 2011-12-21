@@ -129,6 +129,15 @@ void AeroISTWindow::on_ThreadButton_clicked(){
         return ;
     }
 
+    try{
+        m_test->isReady();
+    }
+    catch ( const std::runtime_error & err ) {
+        message(tr("Error using devices: ") + err.what());
+        return ;
+    }
+
+
     if (!m_thread)
         m_thread = new QThread(0);
     if (m_test->thread() != m_thread)
@@ -144,7 +153,7 @@ void AeroISTWindow::on_ThreadButton_clicked(){
     connect(ui->ThreadButton, SIGNAL(clicked()), m_test, SLOT(stop()));
 //    connect(m_thread,SIGNAL(finished()),this,SLOT(cleanup()));
     connect(m_thread,SIGNAL(finished()),this,SLOT(ThreadButton_cleanup()));
-    connect(m_test,SIGNAL(message(QString)),this,SLOT(message(QString)));
+//    connect(m_test,SIGNAL(message(QString)),this,SLOT(message(QString)));
 
     // pass the values from comboboxes to the thread. only for free control
     connect(this,SIGNAL(set_alpha(double)),m_test,SLOT(control_alpha(double)));
@@ -591,6 +600,16 @@ void AeroISTWindow::on_actionNew_Zero_triggered(){
             return ;
         }
 
+        try{
+            m_test->isReady();
+        }
+        catch ( const std::runtime_error & err ) {
+            message(tr("Error using devices: ") + err.what());
+            zero_list->deleteMeasure(index);
+            return ;
+        }
+
+
         if (!m_thread)
             m_thread = new QThread(0);
         if (m_test->thread() != m_thread)
@@ -605,7 +624,7 @@ void AeroISTWindow::on_actionNew_Zero_triggered(){
         // stop connects
 //        connect(ui->ZeroButton, SIGNAL(clicked()), m_test, SLOT(stop()));
         //    connect(m_thread,SIGNAL(finished()),this,SLOT(cleanup()));
-        connect(m_test,SIGNAL(message(QString)),this,SLOT(message(QString)));
+//        connect(m_test,SIGNAL(message(QString)),this,SLOT(message(QString)));
         connect(m_thread,SIGNAL(finished()),this,SLOT(ZeroButton_cleanup()));
 
         thread_status = ZERO_RUNNING;
