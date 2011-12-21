@@ -1,8 +1,8 @@
 #ifndef AEROISTWINDOW_H
 #define AEROISTWINDOW_H
+
 #include <QtGui>
 #include <QMainWindow>
-//#include <QFileSystemModel>
 #include "measurementsmodel.h"
 #include "zeromodel.h"
 #include "measurethread.h"
@@ -10,7 +10,6 @@
 #include "zerolist.h"
 #include "preferences.h"
 #include "common.h"
-
 
 namespace Ui {
     class AeroISTWindow;
@@ -81,26 +80,18 @@ private slots:
     void on_doubleSpinBoxALpha_valueChanged(double arg1);
     void on_doubleSpinBoxBeta_valueChanged(double arg1);
 
-
-
 private:
-//    void start_loop( MeasurementsModel * measurement, MeasureThread *measureThread, const QObject *receiver, const char * slot);
-//    void stop_loop( MeasurementsModel * measurement, MeasureThread *measureThread, const QObject *receiver, const char * slot );
     void message(const QString &string);
     void load_settings(void);
     void save_settings(void);
     void save_xml(QString fileName);
-//    QSettings *settings;
+
     Ui::AeroISTWindow *ui;
-//    Preferences * preferences;
     MeasureList *measure_list;
     ZeroList *zero_list;
 
     MeasurementsModel *measurementThread;
     ZeroModel* ZeroThread;
-//    QThread producerThread;
-//    MeasureThread *producer;
-//    MeasureThread *Zproducer;
     ThreadStatus thread_status;
 
     MeasureThread *m_test;
@@ -109,7 +100,6 @@ private:
 
 protected:
     void closeEvent(QCloseEvent *event);
-
 };
 
 #endif // AEROISTWINDOW_H

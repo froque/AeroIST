@@ -38,14 +38,10 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
 //    ui->actionClear_Project->setIcon(QIcon::fromTheme("edit-clear"));
     ui->actionLoad_Project->setIcon(QIcon::fromTheme("document-open"));
     ui->actionSave_Project->setIcon(QIcon::fromTheme("document-save-as"));
-//    ui->actionPreferences->setIcon(QIcon::fromTheme(""));
-//    qDebug() << QIcon::themeName() << ui->toolBar->iconSize();
 
-    // Set the list model
+    // Set the models
     measure_list = new MeasureList();
     ui->listView->setModel(measure_list);
-
-//    zero_list = new MeasureList();
     zero_list = new ZeroList();
     ui->listViewZero->setModel(zero_list);
 
@@ -65,7 +61,6 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
 
     // load settings from .ini file
     load_settings();
-//    preferences = new Preferences(this);
 
     qRegisterMetaType<measure>("measure");
     thread_status = STOPPED;
@@ -73,9 +68,12 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
     m_thread = 0;
     m_test = 0;
 
+    // Plot legend
     QwtLegend *legend = new QwtLegend;
     legend->setItemMode(QwtLegend::CheckableItem);
     ui->qwtPlot->insertLegend(legend);
+
+    // set spinboxes range and step
     ui->doubleSpinBoxALpha->setRange(-ANGLEMAX_ALPHA,ANGLEMAX_ALPHA);
     ui->doubleSpinBoxALpha->setSingleStep(DEFAULT_ALPHA_STEP);
     ui->doubleSpinBoxALpha->setValue(0);
@@ -85,15 +83,11 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
     ui->doubleSpinBoxMotor->setRange(DEFAULT_MOTOR_MIN,DEFAULT_MOTOR_MAX);
     ui->doubleSpinBoxMotor->setSingleStep(DEFAULT_MOTOR_STEP);
     ui->doubleSpinBoxMotor->setValue(0);
-
-
 }
 
 AeroISTWindow::~AeroISTWindow()
 {
     save_settings();
-//    delete preferences;
-//    delete settings;
     delete ui;
     delete measure_list;
     delete zero_list;
@@ -151,9 +145,7 @@ void AeroISTWindow::on_ThreadButton_clicked(){
 
     // stop connects
     connect(ui->ThreadButton, SIGNAL(clicked()), m_test, SLOT(stop()));
-//    connect(m_thread,SIGNAL(finished()),this,SLOT(cleanup()));
     connect(m_thread,SIGNAL(finished()),this,SLOT(ThreadButton_cleanup()));
-//    connect(m_test,SIGNAL(message(QString)),this,SLOT(message(QString)));
 
     // pass the values from comboboxes to the thread. only for free control
     connect(this,SIGNAL(set_alpha(double)),m_test,SLOT(control_alpha(double)));
@@ -168,20 +160,15 @@ void AeroISTWindow::on_ThreadButton_clicked(){
         ui->doubleSpinBoxBeta->setEnabled(true);
         ui->doubleSpinBoxMotor->setEnabled(true);
     }
-//    try{
-        m_thread->start();
-//    }
-//    catch ( const std::runtime_error & err ) {
-//        message(tr("Error starting measurement: ") + err.what());
-//        return ;
-//    }
+
+    m_thread->start();
+
     thread_status = MEASURE_RUNNING;
     QString text(tr("Stop "));
     text.append( measurementThread->name);
     ui->ThreadButton->setText(text);
     return;
     }
-
 }
 
 void AeroISTWindow::ThreadButton_cleanup(){
@@ -195,6 +182,7 @@ void AeroISTWindow::ThreadButton_cleanup(){
         return;
     }
 }
+
 void AeroISTWindow::cleanup(){
     if (m_thread->isRunning()){
         qWarning() << "thread is running";
@@ -205,7 +193,6 @@ void AeroISTWindow::cleanup(){
     delete m_thread;
     m_thread = 0;
 }
-
 
 // export selected measurement to .csv
 void AeroISTWindow::on_actionExport_to_csv_triggered()
@@ -234,8 +221,7 @@ void AeroISTWindow::on_actionExport_to_csv_triggered()
 }
 
 // Save current plot to file based on extension
-void AeroISTWindow::on_actionExportPlot_triggered()
-{
+void AeroISTWindow::on_actionExportPlot_triggered(){
     QString fileName;
     QSettings settings;
     fileName = QFileDialog::getSaveFileName(this, tr("Export plot"), settings.value(SETTINGS_PROJECT_FOLDER).toString(), "" );
@@ -244,8 +230,7 @@ void AeroISTWindow::on_actionExportPlot_triggered()
     renderer->renderDocument(ui->qwtPlot,fileName,QSize(297,210),300);  //A4 size, 300 DPI
 }
 
-void AeroISTWindow::on_actionNew_Measure_triggered()
-{
+void AeroISTWindow::on_actionNew_Measure_triggered(){
     MeasurementsModel *measurement;
     measurement = new MeasurementsModel;
 
@@ -260,9 +245,7 @@ void AeroISTWindow::on_actionNew_Measure_triggered()
     delete meas_prefs;
 }
 
-
-void AeroISTWindow::on_actionDelete_Measure_triggered()
-{
+void AeroISTWindow::on_actionDelete_Measure_triggered(){
     QModelIndex index = ui->listView->currentIndex();
 
     if (measure_list->at(index) == measurementThread && thread_status == MEASURE_RUNNING){
@@ -280,7 +263,6 @@ void AeroISTWindow::on_actionDelete_Measure_triggered()
         ui->listView->setCurrentIndex(index);
     }
 }
-
 
 void AeroISTWindow::on_actionSave_Project_as_triggered(){
     if (thread_status != STOPPED){
@@ -324,9 +306,7 @@ void AeroISTWindow::save_xml(QString fileName){
     file.close();
 }
 
-
-void AeroISTWindow::on_actionLoad_Project_triggered()
-{
+void AeroISTWindow::on_actionLoad_Project_triggered(){
     if ( measure_list->rowCount() != 0){
         message(tr("There is data in the project"));
         return;
@@ -368,21 +348,17 @@ void AeroISTWindow::on_actionLoad_Project_triggered()
     measure_list->load_xml(root);
 }
 
-
-void AeroISTWindow::on_actionClear_Project_triggered()
-{
+void AeroISTWindow::on_actionClear_Project_triggered(){
     measure_list->clear();
     zero_list->clear();
     ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tab),tr("Table"));
 }
-
 
 // Open preferences dialog
 void AeroISTWindow::on_actionPreferences_triggered(){
     Preferences preferences(this);
     preferences.exec();
 }
-
 
 void AeroISTWindow::selectionChanged(const QModelIndex &current ,const QModelIndex &previous){
     Q_UNUSED(previous);
@@ -457,8 +433,6 @@ void AeroISTWindow::load_settings(void){
             action->setChecked(settings.value(SETTINGS_GUI_ACTIONCHECKABLE + action->objectName(),action->isChecked()).toBool());
         }
     }
-
-
 }
 
 void AeroISTWindow::save_settings(void){
@@ -470,7 +444,6 @@ void AeroISTWindow::save_settings(void){
     settings.setValue(SETTINGS_GUI_SPLITTERLISTS_STATE,ui->splitterLists->saveState());
     settings.setValue(SETTINGS_GUI_SPLITTERGLOBAL_STATE,ui->splitterGlobal->saveState());
     settings.setValue(SETTINGS_GUI_TABLECOLUMNSIZE,ui->tableView->horizontalHeader()->defaultSectionSize());
-
 
     QAction * action;
     QList<QAction*> actions;
@@ -528,8 +501,7 @@ void AeroISTWindow::on_actionDelete_Zero_triggered()
 }
 
 
-void AeroISTWindow::on_actionView_Zero_details_triggered()
-{
+void AeroISTWindow::on_actionView_Zero_details_triggered(){
     ZeroModel *zero;
     QModelIndex index = ui->listViewZero->currentIndex();
     if (index.isValid()){
@@ -553,10 +525,8 @@ void AeroISTWindow::on_actionNew_Zero_triggered(){
         return;
     }
     if(thread_status == STOPPED){
-//        qDebug() << "action new zero" << thread_status;
         ZeroPreferences *zero_prefs;
         ZeroThread = new ZeroModel;
-
 
         zero_prefs = new ZeroPreferences(ZeroThread, this);
         if (zero_prefs->exec() == QDialog::Rejected){
@@ -601,83 +571,18 @@ void AeroISTWindow::on_actionNew_Zero_triggered(){
         connect(m_test, SIGNAL(MeasureDone(measure)),ZeroThread, SLOT(GetMeasure(measure)));
 
         // stop connects
-//        connect(ui->ZeroButton, SIGNAL(clicked()), m_test, SLOT(stop()));
-        //    connect(m_thread,SIGNAL(finished()),this,SLOT(cleanup()));
-//        connect(m_test,SIGNAL(message(QString)),this,SLOT(message(QString)));
         connect(m_thread,SIGNAL(finished()),this,SLOT(ZeroButton_cleanup()));
 
         thread_status = ZERO_RUNNING;
-//        qDebug() << "action new zero after start" << thread_status;
-
-//        try{
-            m_thread->start();
-//        }
-//        catch ( const std::runtime_error & err ) {
-//            message(tr("Error starting measurement: ") + err.what());
-//            return ;
-//        }
-
-//        QString text(tr("Stop "));
-//        text.append( ZeroThread->name);
-//        ui->ZeroButton->setText(text);
-        return;
-    }
-
-}
-/*
-void AeroISTWindow::on_ZeroButton_clicked(){
-    if (thread_status != STOPPED && thread_status != ZERO_RUNNING){
-        message(tr("Thread busy"));
-        return;
-    }
-
-    if (m_thread && m_test){
-        return;
-    }
-
-    if(thread_status == STOPPED){
-        QModelIndex index = ui->listViewZero->currentIndex();
-        if (index.isValid() == false){
-            message(tr("index not valid"));
-            return;
-        }
-        ZeroThread = zero_list->at(index.row());         // get the index
-        if (ZeroThread->rowCount(QModelIndex()) !=0){
-            message(tr("Measure is not empty"));
-            return;
-        }
-        m_test = new MeasureThread(ZeroThread);
-
-        if (!m_thread)
-            m_thread = new QThread(0);
-        if (m_test->thread() != m_thread)
-            m_test->moveToThread(m_thread);
-
-        // start connects
-        connect(m_thread, SIGNAL(started()), m_test, SLOT(produce()));
-
-        // dump connect
-        connect(m_test, SIGNAL(MeasureDone(measure)),ZeroThread, SLOT(GetMeasure(measure)));
-
-        // stop connects
-        connect(ui->ZeroButton, SIGNAL(clicked()), m_test, SLOT(stop()));
-        //    connect(m_thread,SIGNAL(finished()),this,SLOT(cleanup()));
-        connect(m_thread,SIGNAL(finished()),this,SLOT(ZeroButton_cleanup()));
 
         m_thread->start();
-        thread_status = ZERO_RUNNING;
-        QString text(tr("Stop "));
-        text.append( ZeroThread->name);
-        ui->ZeroButton->setText(text);
         return;
     }
-
-}*/
+}
 
 void AeroISTWindow::ZeroButton_cleanup(){
     qDebug() << "zero button cleanup" << thread_status;
     if (thread_status == ZERO_RUNNING){
-//        ui->ZeroButton->setText(tr("Start"));
         thread_status = STOPPED;
         cleanup();
         return;
@@ -694,7 +599,6 @@ void AeroISTWindow::message(const QString &string){
 // On exit warn if thread is runing and don't close
 void AeroISTWindow::closeEvent(QCloseEvent *event){
     if (m_thread != 0 ) {
-//        message(tr("A thread is running. Stop it to quit"));
         QMessageBox mess;
         mess.setText(tr("A measurement is running"));
         mess.setInformativeText(tr("Do you really want to quit? Hardware may not be properly closed."));
@@ -721,29 +625,31 @@ void AeroISTWindow::on_actionNew_Curve_triggered(){
         return;
     }
 }
+
 void AeroISTWindow::on_actionDelete_Curve_triggered(){
     CurveDelete deletecurve(ui->qwtPlot);
     if(deletecurve.exec() == QDialog::Rejected){
         return;
     }
 }
+
 void AeroISTWindow::on_actionClear_Plot_triggered(){
     ui->qwtPlot->detachItems(QwtPlotItem::Rtti_PlotItem,true);
     ui->qwtPlot->replot();
 }
-// PLOT add, delete and clear - end
 
 // View widgets
 void AeroISTWindow::on_actionToolbar_toggled(bool arg1){
     ui->toolBar->setVisible(arg1);
 }
+
 void AeroISTWindow::on_actionMeasure_List_toggled(bool checked){
     ui->listView->setVisible(checked);
 }
+
 void AeroISTWindow::on_actionZero_List_toggled(bool arg1){
     ui->listViewZero->setVisible(arg1);
 }
-// View widgets - end
 
 void AeroISTWindow::on_doubleSpinBoxMotor_valueChanged(double arg1){
     emit set_motor(arg1);
