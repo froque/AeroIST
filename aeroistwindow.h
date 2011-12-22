@@ -22,6 +22,8 @@ public:
     explicit AeroISTWindow(QWidget *parent = 0);
     ~AeroISTWindow();
 
+    void load_xml(QString fileName);
+
 signals:
     void set_alpha(double);
     void set_beta(double);

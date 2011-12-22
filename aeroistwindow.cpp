@@ -317,8 +317,10 @@ void AeroISTWindow::on_actionLoad_Project_triggered(){
     if (fileName.isNull() || fileName.isEmpty()){
         return;
     }
+    load_xml(fileName);
+}
 
-    QDomDocument document;
+void AeroISTWindow::load_xml(QString fileName){
 
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly|QIODevice::Text)){
@@ -327,19 +329,23 @@ void AeroISTWindow::on_actionLoad_Project_triggered(){
     }
 
     QXmlSchema schema;
+    QSettings settings;
 
     schema.load( QUrl::fromLocalFile(settings.value(SETTINGS_SCHEMA_FILE,SETTINGS_SCHEMA_FILE_DEFAULT).toString()) );
     if (schema.isValid()){
         QXmlSchemaValidator validator( schema );
         if(!validator.validate(QUrl::fromLocalFile(fileName))){
             message(tr("Couldn't confirm xml file"));
+            return;
         }
     } else {
         message(tr("Couldn't confirm xml file"));
+        return;
     }
 
     project_filename = fileName;
 
+    QDomDocument document;
     document.setContent(&file);
     file.close();
     QDomElement root = document.firstChildElement();
