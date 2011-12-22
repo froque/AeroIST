@@ -26,6 +26,9 @@ int main(int argc, char *argv[])
     app.installTranslator(&myappTranslator);
 
     AeroISTWindow w;
+    if (app.arguments().size() == 2){
+        w.load_xml(app.arguments().at(1));
+    }
 
 #if SINGLE_SHARED
     //GUID : Generated once for your application
