@@ -10,6 +10,7 @@
 #include "zerolist.h"
 #include "preferences.h"
 #include "common.h"
+#include "qwt_plot_item.h"
 
 namespace Ui {
     class AeroISTWindow;
@@ -76,6 +77,7 @@ private slots:
     void on_actionNew_Curve_triggered();
     void on_actionClear_Plot_triggered();
     void on_actionDelete_Curve_triggered();
+    void plot_legend(QwtPlotItem* plotItem,bool on);
 
     // control spin boxes
     void on_doubleSpinBoxMotor_valueChanged(double arg1);

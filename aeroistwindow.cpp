@@ -72,6 +72,7 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
     QwtLegend *legend = new QwtLegend;
     legend->setItemMode(QwtLegend::CheckableItem);
     ui->qwtPlot->insertLegend(legend);
+    connect(ui->qwtPlot,SIGNAL(legendChecked(QwtPlotItem*,bool)),this,SLOT(plot_legend(QwtPlotItem*,bool)));
 
     // set spinboxes range and step
     ui->doubleSpinBoxALpha->setRange(-ANGLEMAX_ALPHA,ANGLEMAX_ALPHA);
@@ -637,6 +638,11 @@ void AeroISTWindow::on_actionDelete_Curve_triggered(){
     if(deletecurve.exec() == QDialog::Rejected){
         return;
     }
+}
+
+void AeroISTWindow::plot_legend(QwtPlotItem* plotItem,bool on){
+    plotItem->setVisible(!on);
+    ui->qwtPlot->replot();
 }
 
 void AeroISTWindow::on_actionClear_Plot_triggered(){

@@ -2,7 +2,8 @@
 #include "ui_newcurve.h"
 
 #include <QMessageBox>
-#include <qwt/qwt_plot_curve.h>
+#include <qwt_plot_curve.h>
+#include <QPushButton>
 
 CurveNew::CurveNew(QwtPlot *plot, MeasureList *list, QWidget *parent) :
     QDialog(parent),
@@ -13,6 +14,18 @@ CurveNew::CurveNew(QwtPlot *plot, MeasureList *list, QWidget *parent) :
     ui->setupUi(this);
     ui->comboBox_x->setModel(list);
     ui->comboBox_y->setModel(list);
+
+    ui->comboBoxStyle->addItem(tr("Solid Line"),Qt::SolidLine);
+    ui->comboBoxStyle->addItem(tr("Dash Line"),Qt::DashLine);
+    ui->comboBoxStyle->addItem(tr("Dot Line"),Qt::DotLine);
+    ui->comboBoxStyle->addItem(tr("Dash Dot Line"),Qt::DashDotLine);
+    ui->comboBoxStyle->addItem(tr("Dash Dot Dot Line"),Qt::DashDotDotLine);
+    ui->comboBoxStyle->addItem(tr("custom Dash Line"),Qt::CustomDashLine);
+    ui->comboBoxStyle->addItem(tr("No Pen"),Qt::NoPen);
+
+    ui->comboBoxColor->addItems(QColor::colorNames());
+    ui->comboBoxColor->setCurrentIndex(ui->comboBoxColor->findText("black"));
+
 }
 
 CurveNew::~CurveNew(){
@@ -42,6 +55,10 @@ void CurveNew::accept(){
         y = model->vector_data(ui->listWidget_y->currentIndex().row());
         QwtPlotCurve *curve = new QwtPlotCurve(ui->lineEdit->text());
         curve->setSamples(x,y);
+        QPen pen;
+        pen.setStyle((Qt::PenStyle)ui->comboBoxStyle->itemData(ui->comboBoxStyle->currentIndex()).toInt());
+        pen.setColor(ui->comboBoxColor->currentText());
+        curve->setPen(pen);
         curve->attach(plot);
         plot->replot();
         QDialog::accept();

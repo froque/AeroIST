@@ -87,8 +87,8 @@ FORMS += aeroistwindow.ui \
     measurementdetails.ui \
     zerodetails.ui \
     zeropreferences.ui \
-    newcurve.ui \
-    deleteplot.ui
+    deleteplot.ui \
+    curvenew.ui
 
 TRANSLATIONS = aeroist_en.ts\
                 aeroist_pt.ts
