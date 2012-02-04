@@ -62,7 +62,7 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
     // load settings from .ini file
     load_settings();
 
-    qRegisterMetaType<measure>("measure");
+    qRegisterMetaType<QHash<QString,double> >("QHash<QString,double>");
     thread_status = STOPPED;
 
     m_thread = 0;
@@ -72,6 +72,7 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
     QwtLegend *legend = new QwtLegend;
     legend->setItemMode(QwtLegend::CheckableItem);
     ui->qwtPlot->insertLegend(legend);
+//    ui->qwtPlot->enableAxis(QwtPlot::yRight);
     connect(ui->qwtPlot,SIGNAL(legendChecked(QwtPlotItem*,bool)),this,SLOT(plot_legend(QwtPlotItem*,bool)));
 
     // set spinboxes range and step
@@ -142,7 +143,8 @@ void AeroISTWindow::on_ThreadButton_clicked(){
     connect(m_thread, SIGNAL(started()), m_test, SLOT(produce()));
 
     // dump connect
-    connect(m_test, SIGNAL(MeasureDone(measure)),measurementThread, SLOT(GetMeasure(measure)));
+    connect(m_test,SIGNAL(MeasureDone(QHash<QString,double>)), measurementThread, SLOT(GetMeasure(QHash<QString,double>)));
+
 
     // stop connects
     connect(ui->ThreadButton, SIGNAL(clicked()), m_test, SLOT(stop()));
@@ -575,7 +577,7 @@ void AeroISTWindow::on_actionNew_Zero_triggered(){
         connect(m_thread, SIGNAL(started()), m_test, SLOT(produce()));
 
         // dump connect
-        connect(m_test, SIGNAL(MeasureDone(measure)),ZeroThread, SLOT(GetMeasure(measure)));
+        connect(m_test, SIGNAL(MeasureDone(QHash<QString,double>)),ZeroThread, SLOT(GetMeasure(QHash<QString,double>)));
 
         // stop connects
         connect(m_thread,SIGNAL(finished()),this,SLOT(ZeroButton_cleanup()));

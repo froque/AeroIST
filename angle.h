@@ -2,17 +2,24 @@
 #define ANGLE_H
 
 #include "common.h"
+#include "variable.h"
 
-class Angle {
+class Angle :public Variable{
 public:
     Angle();
     ~Angle();
     void read(void);
-    void set(double);
-    double angle;
+//    void set(double);
+
+    bool is_controlable() {return true;};
+    int get_num() {return 1;};
+    double get_value(int n) {Q_UNUSED(n); return angle;};
+    void set_value(int n ,double value);
+    virtual QString get_name(int n) = 0;
+    bool isReady(void) {return true;};
 
 protected:
-    virtual void convert(void) =0;
+    virtual void convert(void) = 0;
     double sensitivity;
     int fp;
     char relay_increase;
@@ -22,6 +29,7 @@ protected:
     int digits;
     int zero;
     double anglemax;
+    double angle;
 
 private:
     int displays;
@@ -32,6 +40,7 @@ private:
 class Beta: public Angle {
 public:
     Beta(void);
+    QString get_name(int n) {Q_UNUSED(n); return "Beta";};
 private:
     void convert(void);
 };
@@ -39,6 +48,7 @@ private:
 class Alpha: public Angle {
 public:
     Alpha(void);
+    QString get_name(int n) {Q_UNUSED(n); return "Alpha";};
 private:
     void convert(void);
 };

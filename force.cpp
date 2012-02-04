@@ -356,3 +356,15 @@ void Force::calc_jacobi(double force[],double jm[NUMCHANNELS][NUMCHANNELS]){
         }
     }
 }
+
+
+QString Force::get_name(int n) {
+    switch (n){
+        case 0: return "Fx"; break;
+        case 1: return "Fy"; break;
+        case 2: return "Fz"; break;
+        case 3: return "Mx"; break;
+        case 4: return "My"; break;
+        case 5: return "Mz"; break;
+    }
+}

@@ -23,7 +23,9 @@ Angle::~Angle(){
     close(arduinofd);
 }
 
-void Angle::set(double angle_dest){
+//void Angle::set(double angle_dest){
+void Angle::set_value(int n ,double angle_dest){
+    Q_UNUSED(n);
     //max
     if (angle_dest > anglemax){
         angle_dest = anglemax;

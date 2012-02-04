@@ -114,11 +114,13 @@ void MeasureThread::produce(){
             }
 
             k++;
-            emit MeasureDone(m);
+
+            emit MeasureDone(m_hash);
+
             eloop.processEvents(QEventLoop::AllEvents, 50);
         }
         // cleanup
-        motor->set(0);
+        motor->set_value(0,0);
 
     } else {
         while(!m_stop) {
@@ -138,7 +140,8 @@ void MeasureThread::produce(){
             }
 
             k++;
-            emit MeasureDone(m);
+
+            emit MeasureDone(m_hash);
 
             eloop.processEvents(QEventLoop::AllEvents, 50);
         }
@@ -157,24 +160,24 @@ double MeasureThread::GetRandomMeasurement(void){
 void MeasureThread::set_initial(void){
     switch (control_type){
     case NONE :
-        alpha->set(this->set_alpha);
-        beta->set(this->set_beta);
-        motor->set(this->set_motor);
+        alpha->set_value(0,this->set_alpha);
+        beta->set_value(0,this->set_beta);
+        motor->set_value(0,this->set_motor);
         break;
     case ALPHA:
-        alpha->set(this->start);
-        beta->set(this->set_beta);
-        motor->set(this->set_motor);
+        alpha->set_value(0,this->start);
+        beta->set_value(0,this->set_beta);
+        motor->set_value(0,this->set_motor);
         break;
     case BETA:
-        alpha->set(this->set_alpha);
-        beta->set(this->start);
-        motor->set(this->set_motor);
+        alpha->set_value(0,this->set_alpha);
+        beta->set_value(0,this->start);
+        motor->set_value(0,this->set_motor);
         break;
     case MOTOR:
-        alpha->set(this->set_alpha);
-        beta->set(this->set_beta);
-        motor->set(this->start);
+        alpha->set_value(0,this->set_alpha);
+        beta->set_value(0,this->set_beta);
+        motor->set_value(0,this->start);
         break;
     }
     Helper::msleep(settling_time*1000);
@@ -185,15 +188,15 @@ void MeasureThread::set_m(void){
     case NONE :
         break;
     case ALPHA:
-        alpha->set(current);
+        alpha->set_value(0,current);
         Helper::msleep(settling_time*1000);
         break;
     case BETA:
-        beta->set(current);
+        beta->set_value(0,current);
         Helper::msleep(settling_time*1000);
         break;
     case MOTOR:
-        motor->set(current);
+        motor->set_value(0,current);
         Helper::msleep(settling_time*1000);
         break;
     }
@@ -210,13 +213,20 @@ void MeasureThread::read_m(void){
         temperature->read();
         motor->read();
         wind->read();
-        m.alpha += alpha->angle;
-        m.beta += beta->angle;
-        m.temp += temperature->temp;
-        m.motor += motor->speed_actual;
-        m.wind += wind->wind;
-        for (int k=0; k < NUMCHANNELS; k++ ){
-            m.force[k] += force->forces[k];
+//        m.alpha += alpha->angle;
+//        m.beta += beta->angle;
+//        m.temp += temperature->temp;
+//        m.motor += motor->speed_actual;
+//        m.wind += wind->wind;
+        m.alpha += alpha->get_value(0);
+        m.beta += beta->get_value(0);
+        m.temp += temperature->get_value(0);
+        m.motor += motor->get_value(0);
+        m.wind += wind->get_value(0);
+
+        for (int k=0; k < force->get_num(); k++ ){
+//            m.force[k] += force->forces[k];
+            m.force[k] += force->get_value(k);
         }
     }
 
@@ -229,6 +239,16 @@ void MeasureThread::read_m(void){
     m.temp = m.temp / average_number;
     m.motor = m.motor / average_number;
     m.wind = m.wind / average_number;
+
+//    m_hash["tempo"] = m.tempo;
+//    m_hash[alpha->get_name(0)] = m.alpha;
+//    m_hash[beta->get_name(0)] = m.beta;
+//    m_hash[wind->get_name(0)] = m.wind;
+//    m_hash[temperature->get_name(0)] = m.temp;
+//    m_hash[motor->get_name(0)] = m.motor;
+//    for (int k=0; k< force->get_num(); k++){
+//        m_hash[force->get_name(0)] = m.force[k];
+//    }
 }
 
 void MeasureThread::set_m_virtual(void){
@@ -274,6 +294,23 @@ void MeasureThread::read_m_virtual(void){
     m.temp = m.temp / average_number;
     m.motor = m.motor / average_number;
     m.wind = m.wind / average_number;
+
+    m_hash["Time"] = m.tempo;
+    m_hash["Alpha"] = m.alpha;
+    m_hash["Beta"] = m.beta;
+    m_hash["Wind"] = m.wind;
+    m_hash["Temperature"] = m.temp;
+    m_hash["Motor"] = m.motor;
+    m_hash["Fx"] = m.force[0];
+    m_hash["Fy"] = m.force[1];
+    m_hash["Fz"] = m.force[2];
+    m_hash["Mx"] = m.force[3];
+    m_hash["My"] = m.force[4];
+    m_hash["Mz"] = m.force[5];
+
+    qDebug() << "time" << m.tempo;
+    qDebug() << "force" << m.force[0] << m.force[1] << m.force[2] << m.force[3] << m.force[4] << m.force[5] ;
+
     Helper::msleep( 0.5 * average_number *  1000.0 * qrand() / RAND_MAX);
 }
 
@@ -297,18 +334,18 @@ void MeasureThread::clear_m(void){
 
 void MeasureThread::control_alpha(double angle){
     if(virtual_measures==false){
-        alpha->set(angle);
+        alpha->set_value(0,angle);
     }
 }
 
 void MeasureThread::control_beta(double angle){
     if(virtual_measures==false){
-        beta->set(angle);
+        beta->set_value(0,angle);
     }
 }
 
 void MeasureThread::control_motor(double speed){
     if(virtual_measures==false){
-        motor->set(speed);
+        motor->set_value(0,speed);
     }
 }

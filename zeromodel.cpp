@@ -1,5 +1,7 @@
 #include "zeromodel.h"
 
+#include <QDebug>
+
 ZeroModel::ZeroModel(QObject *parent) :
     QAbstractTableModel(parent)
 {
@@ -82,11 +84,14 @@ QVariant ZeroModel::headerData(int section, Qt::Orientation orientation, int rol
     return QVariant();
 }
 
-void ZeroModel::GetMeasure(measure m){
+void ZeroModel::GetMeasure(QHash<QString,double> hash){
     beginInsertRows(QModelIndex(), force[0].size(), force[0].size());
-    for (int k=0;k<6;k++ ){
-        force[k].append(m.force[k]);
-    }
+    force[0].append(hash["Fx"]);
+    force[1].append(hash["Fy"]);
+    force[2].append(hash["Fz"]);
+    force[3].append(hash["Mx"]);
+    force[4].append(hash["My"]);
+    force[5].append(hash["Mz"]);
     endInsertRows();
 }
 

@@ -59,18 +59,34 @@ void MeasurementsModel::save_csv(QTextStream *out,bool header){
     }
 }
 
-void MeasurementsModel::GetMeasure(measure m){
+//void MeasurementsModel::GetMeasure(measure m){
+void MeasurementsModel::GetMeasure(QHash<QString,double> hash){
+//void MeasurementsModel::GetMeasure(QStringList,QList<double>){
     beginInsertRows(QModelIndex(), tempo.size(), tempo.size());
 
-    for (int k=0;k<6;k++ ){
-        force[k].append(m.force[k]);
-    }
-    alpha.append( m.alpha);
-    beta.append( m.beta );
-    motor.append( m.motor );
-    temp.append( m.temp );
-    tempo.append(m.tempo);
-    wind.append(m.wind);
+//    for (int k=0;k<6;k++ ){
+//        force[k].append(m.force[k]);
+//    }
+//    alpha.append( m.alpha);
+//    beta.append( m.beta );
+//    motor.append( m.motor );
+//    temp.append( m.temp );
+//    tempo.append(m.tempo);
+//    wind.append(m.wind);
+
+    force[0].append(hash["Fx"]);
+    force[1].append(hash["Fy"]);
+    force[2].append(hash["Fz"]);
+    force[3].append(hash["Mx"]);
+    force[4].append(hash["My"]);
+    force[5].append(hash["Mz"]);
+    alpha.append(hash["Alpha"]);
+    beta.append(hash["Beta"]);
+    wind.append(hash["Wind"]);
+    temp.append(hash["Temperature"]);
+    motor.append(hash["Motor"]);
+    tempo.append(hash["Time"]);
+
     endInsertRows();
 }
 

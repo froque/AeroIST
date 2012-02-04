@@ -52,4 +52,3 @@ void Temperature::read(void){
     // 100 ºC/V = 0,01 V/ºC
     temp = temp_raw * ARDUINO_ANALOG_REF * TEMPERATURE_SENSITIVITY /1024.0;
 }
-

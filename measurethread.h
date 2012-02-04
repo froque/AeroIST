@@ -12,6 +12,7 @@
 #include <QElapsedTimer>
 #include "measure.h"
 #include "measurementsmodel.h"
+#include "variable.h"
 
 class MeasureThread : public QObject
 {
@@ -23,7 +24,7 @@ public:
     void isReady(void);
 
 signals:
-    void MeasureDone(measure m);
+  void MeasureDone(QHash<QString,double>);
 
 public slots:
     void produce(void);
@@ -42,6 +43,8 @@ private:
     double GetRandomMeasurement(void);
     QElapsedTimer timer;
     measure m;
+    QHash<QString,double> m_hash;
+
     int average_number;
     double settling_time;
     double start;
@@ -62,12 +65,21 @@ private:
     bool virtual_measures;
 
     // Variables
-    Force *force;
-    Alpha *alpha;
-    Beta *beta;
-    Temperature *temperature;
-    Motor *motor;
-    Wind *wind;
+//    Force *force;
+//    Alpha *alpha;
+//    Beta *beta;
+//    Temperature *temperature;
+//    Motor *motor;
+//    Wind *wind;
+
+    Variable *force;
+    Variable *alpha;
+    Variable *beta;
+    Variable *temperature;
+    Variable *motor;
+    Variable *wind;
+
+//    QList<Variable*> variables;
 };
 
 #endif // MYTHREAD_H

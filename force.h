@@ -3,6 +3,7 @@
 
 #include "common.h"
 #include <QString>
+#include "variable.h"
 
 #define READBUFFER 12     /* L0 - short message */
 #define NUMCHANNELS 6
@@ -18,20 +19,28 @@ struct matrix		      /* abgespeicherte Kalibriermatrix */
 #pragma pack()
 
 
-class Force {
+class Force :public Variable{
 public:
     Force(matrix_t matrix, int dvm_time,double zero[NUMCHANNELS]);
     Force(matrix_t matrix, int dvm_time);
-    void initialize();
     ~Force();
     void read(void);
-    double forces[NUMCHANNELS];
+
+    bool is_controlable() {return false;};
+    int get_num() {return 6;};
+    double get_value(int n) {return forces[n];};
+    void set_value(int n ,double value) {Q_UNUSED(n);Q_UNUSED(value)};
+    QString get_name(int n) ;
+    bool isReady(void) {return true;};
+
+
 
 private:
     int dvm_time;
     matrix_t matrix;
     QString filename;
 
+    double forces[NUMCHANNELS];
     double dvm_si[NUMCHANNELS];
     double zero[NUMCHANNELS];
     double dvm_si_zero[NUMCHANNELS];
@@ -40,6 +49,8 @@ private:
     double nominal_load[NUMCHANNELS];
     struct matrix coe;
     struct matrix mat;
+
+    void initialize();
 
     double ascii2newton (char *buf);
     void read_dvm(void);

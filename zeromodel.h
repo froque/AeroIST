@@ -5,6 +5,8 @@
 #include <QVector>
 #include <QTextStream>
 #include <QDomElement>
+#include <QStringList>
+
 #include "measure.h"
 #include "common.h"
 
@@ -41,7 +43,7 @@ public:
     double set_motor;
 
 public slots:
-    void GetMeasure(measure m);
+    void GetMeasure(QHash<QString, double>);
 };
 
 #endif // ZEROMODEL_H

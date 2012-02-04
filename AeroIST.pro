@@ -79,7 +79,8 @@ HEADERS += aeroistwindow.h \
     arduino-serial.h \
     motor.h \
     wind.h \
-    helper.h
+    helper.h \
+    variable.h
 
 FORMS += aeroistwindow.ui \
     preferences.ui \

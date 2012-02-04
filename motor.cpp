@@ -144,7 +144,9 @@ void Motor::read(){
     talk_to_simoreg();
 }
 
-void Motor::set(double speed){
+//void Motor::set(double speed){
+void Motor::set_value(int n,double speed){
+    Q_UNUSED(n);
     speed_setpoint = speed;
     do{
         talk_to_simoreg();
@@ -155,4 +157,9 @@ void Motor::set(double speed){
 bool Motor::isReady(void){
     talk_to_simoreg();
     return terminal37;
+}
+
+double Motor::get_value(int n){
+    Q_UNUSED(n);
+    return speed_actual;
 }

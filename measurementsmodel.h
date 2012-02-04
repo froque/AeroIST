@@ -60,8 +60,8 @@ public:
     int n;
 
 public slots:
-    void GetMeasure(measure m);
-
+    void GetMeasure(QHash<QString,double> hash);
+//    void GetMeasure(QStringList,QList<double>);
 };
 
 #endif // MEASUREMENTS_H
