@@ -29,26 +29,21 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
     virtual_measures = settings.value(SETTINGS_VIRTUAL_MEASURES,false).toBool();
     settings.setValue(SETTINGS_VIRTUAL_MEASURES,virtual_measures);
     if (!virtual_measures){
-        force       = new Force(measurement->matrix,measurement->dvm_time,zero.force);
-        alpha       = new Alpha;
-        beta        = new Beta;
-        temperature = new Temperature;
-        motor       = new Motor;
-        wind        = new Wind;
+        variables.append(new Force(measurement->matrix,measurement->dvm_time,zero.force));
+        variables.append(new Alpha);
+        variables.append(new Beta);
+        variables.append(new Temperature);
+        variables.append(new Motor);
+        variables.append(new Wind);
+
     } else {
-        force       = new Virtual_Force;
-        alpha       = new Virtual_Alpha;
-        beta        = new Virtual_Beta;
-        temperature = new Virtual_Temperature;
-        motor       = new Virtual_Motor;
-        wind        = new Virtual_Wind;
+        variables.append(new Virtual_Force);
+        variables.append(new Virtual_Alpha);
+        variables.append(new Virtual_Beta);
+        variables.append(new Virtual_Temperature);
+        variables.append(new Virtual_Motor);
+        variables.append(new Virtual_Wind);
     }
-    variables.append(force);
-    variables.append(alpha);
-    variables.append(beta);
-    variables.append(temperature);
-    variables.append(motor);
-    variables.append(wind);
     switch(measurement->control_type){
     case NONE :
         control = "";
@@ -81,26 +76,21 @@ MeasureThread::MeasureThread(ZeroModel *measurement,QObject *parent) :
     settings.setValue(SETTINGS_VIRTUAL_MEASURES,virtual_measures);
 
     if (!virtual_measures){
-        force       = new Force(measurement->matrix,measurement->dvm_time);
-        alpha       = new Alpha;
-        beta        = new Beta;
-        temperature = new Temperature;
-        motor       = new Motor;
-        wind        = new Wind;
+        variables.append(new Force(measurement->matrix,measurement->dvm_time));
+        variables.append(new Alpha);
+        variables.append(new Beta);
+        variables.append(new Temperature);
+        variables.append(new Motor);
+        variables.append(new Wind);
+
     } else {
-        force       = new Virtual_Force;
-        alpha       = new Virtual_Alpha;
-        beta        = new Virtual_Beta;
-        temperature = new Virtual_Temperature;
-        motor       = new Virtual_Motor;
-        wind        = new Virtual_Wind;
+        variables.append(new Virtual_Force);
+        variables.append(new Virtual_Alpha);
+        variables.append(new Virtual_Beta);
+        variables.append(new Virtual_Temperature);
+        variables.append(new Virtual_Motor);
+        variables.append(new Virtual_Wind);
     }
-    variables.append(force);
-    variables.append(alpha);
-    variables.append(beta);
-    variables.append(temperature);
-    variables.append(motor);
-    variables.append(wind);
 
     settling_time = 0;
     start         = 0;

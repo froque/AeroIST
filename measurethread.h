@@ -60,13 +60,6 @@ private:
     bool virtual_measures;
 
     // Variables
-    Variable *force;
-    Variable *alpha;
-    Variable *beta;
-    Variable *temperature;
-    Variable *motor;
-    Variable *wind;
-
     QList<Variable*> variables;
 };
 
