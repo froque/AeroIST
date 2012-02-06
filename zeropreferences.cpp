@@ -59,5 +59,9 @@ void ZeroPreferences::accept(){
     measurement->set_beta = ui->doubleSpinBoxBeta->value();
     measurement->set_motor = ui->doubleSpinBoxMotor->value();
 
+    measurement->start_hash["Alpha"]  = ui->doubleSpinBoxAlpha->value();
+    measurement->start_hash["Beta"] = ui->doubleSpinBoxBeta->value();
+    measurement->start_hash["Wind"] = ui->doubleSpinBoxMotor->value();
+
     QDialog::accept();
 }

@@ -54,6 +54,8 @@ public:
     double set_alpha;
     double set_beta;
     double set_motor;
+    QHash<QString,double> start_hash;
+
     control_types_t control_type;
     double zero[NFORCES];
     QString zero_name;

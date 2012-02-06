@@ -107,6 +107,10 @@ void MeasurementsPreferences::accept(){
     measurement->set_beta = ui->doubleSpinBoxBeta->value();
     measurement->set_motor = ui->doubleSpinBoxMotor->value();
 
+    measurement->start_hash["Alpha"]  = ui->doubleSpinBoxAlpha->value();
+    measurement->start_hash["Beta"] = ui->doubleSpinBoxBeta->value();
+    measurement->start_hash["Wind"] = ui->doubleSpinBoxMotor->value();
+
     ZeroModel *zero = list->at(ui->combo_zero->currentIndex());
     for (int k=0; k < NFORCES; k++){
         measurement->zero[k] = zero->force[k].at(0);

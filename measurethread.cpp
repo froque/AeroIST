@@ -10,6 +10,7 @@
 
 MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
     QObject(parent),
+    start_hash(measurement->start_hash),
     average_number(measurement->average_number),
     settling_time(measurement->settling_time),
     start(measurement->start),
@@ -58,13 +59,11 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
         control = "Motor";
         break;
     }
-    start_hash["Alpha"] = measurement->set_alpha;
-    start_hash["Beta"] = measurement->set_beta;
-    start_hash["Motor"] = measurement->set_motor;
 }
 
 MeasureThread::MeasureThread(ZeroModel *measurement,QObject *parent) :
     QObject(parent),
+    start_hash(measurement->start_hash),
     average_number(measurement->average_number)
 {
     m_stop = false;
@@ -99,9 +98,6 @@ MeasureThread::MeasureThread(ZeroModel *measurement,QObject *parent) :
     current       = 0;
 
     control = "";
-    start_hash["Alpha"] = measurement->set_alpha;
-    start_hash["Beta"] = measurement->set_beta;
-    start_hash["Motor"] = measurement->set_motor;
 }
 
 MeasureThread::~MeasureThread(){

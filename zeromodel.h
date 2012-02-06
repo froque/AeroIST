@@ -41,6 +41,7 @@ public:
     double set_alpha;
     double set_beta;
     double set_motor;
+    QHash<QString,double> start_hash;
 
 public slots:
     void GetMeasure(QHash<QString, double>);
