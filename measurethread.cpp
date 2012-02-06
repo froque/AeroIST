@@ -17,6 +17,7 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
     end(measurement->end),
     step(measurement->step),
     current(measurement->start),
+    control(measurement->control),
     n(measurement->n)
 {
     m_stop = false;
@@ -44,20 +45,6 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
         variables.append(new Virtual_Temperature);
         variables.append(new Virtual_Motor);
         variables.append(new Virtual_Wind);
-    }
-    switch(measurement->control_type){
-    case NONE :
-        control = "";
-        break;
-    case ALPHA:
-        control = "Alpha";
-        break;
-    case BETA:
-        control = "Beta";
-        break;
-    case MOTOR:
-        control = "Motor";
-        break;
     }
 }
 

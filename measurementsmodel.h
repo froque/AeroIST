@@ -51,12 +51,12 @@ public:
     double start;
     double end;
     double step;
-    double set_alpha;
-    double set_beta;
-    double set_motor;
+    double set_alpha;//to be deleted
+    double set_beta;//to be deleted
+    double set_motor;//to be deleted
     QHash<QString,double> start_hash;
-
-    control_types_t control_type;
+    control_types_t control_type; //to be deleted
+    QString control;
     double zero[NFORCES];
     QString zero_name;
     int n;
