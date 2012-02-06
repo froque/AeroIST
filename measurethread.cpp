@@ -16,10 +16,6 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
     end(measurement->end),
     step(measurement->step),
     current(measurement->start),
-    set_alpha(measurement->set_alpha),
-    set_beta(measurement->set_beta),
-    set_motor(measurement->set_motor),
-    control_type(measurement->control_type),
     n(measurement->n)
 {
     m_stop = false;
@@ -53,21 +49,33 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
     variables.append(temperature);
     variables.append(motor);
     variables.append(wind);
-
+    switch(measurement->control_type){
+    case NONE :
+        control = "";
+        break;
+    case ALPHA:
+        control = "Alpha";
+        break;
+    case BETA:
+        control = "Beta";
+        break;
+    case MOTOR:
+        control = "Motor";
+        break;
+    }
+    start_hash["Alpha"] = measurement->set_alpha;
+    start_hash["Beta"] = measurement->set_beta;
+    start_hash["Motor"] = measurement->set_motor;
 }
 
 MeasureThread::MeasureThread(ZeroModel *measurement,QObject *parent) :
     QObject(parent),
-    average_number(measurement->average_number),
-    set_alpha(measurement->set_alpha),
-    set_beta(measurement->set_beta),
-    set_motor(measurement->set_motor)
+    average_number(measurement->average_number)
 {
     m_stop = false;
     m_parent_thread = thread();
     isZero = true;
     n=1;
-    control_type = NONE;
     QSettings settings;
     virtual_measures = settings.value(SETTINGS_VIRTUAL_MEASURES,false).toBool();
     settings.setValue(SETTINGS_VIRTUAL_MEASURES,virtual_measures);
@@ -99,6 +107,11 @@ MeasureThread::MeasureThread(ZeroModel *measurement,QObject *parent) :
     end           = 0;
     step          = 0;
     current       = 0;
+
+    control = "";
+    start_hash["Alpha"] = measurement->set_alpha;
+    start_hash["Beta"] = measurement->set_beta;
+    start_hash["Motor"] = measurement->set_motor;
 }
 
 MeasureThread::~MeasureThread(){
@@ -106,15 +119,11 @@ MeasureThread::~MeasureThread(){
 }
 
 void MeasureThread::isReady(void){
-//        if (motor->isReady() == false){
-//            throw std::runtime_error("Motor is not ready. Try press the green button");
-//        }
     Variable *variable;
     foreach (variable, variables) {
         if (variable->isReady() == false){
             throw std::runtime_error("Something is not ready.");
         }
-
     }
 }
 
@@ -125,8 +134,9 @@ void MeasureThread::produce(){
     set_initial();
     while(!m_stop) {
         set_m();
+        Helper::msleep(settling_time*1000);
         read_m();
-        if (control_type == NONE){
+        if(control == ""){
             if (n != 0 && k>= n ){
                 m_stop = true;
             }
@@ -142,7 +152,7 @@ void MeasureThread::produce(){
         eloop.processEvents(QEventLoop::AllEvents, 50);
     }
 
-    // cleanup
+    // set variables to final safe values
     Variable *variable;
     foreach (variable, variables) {
         if (variable->is_controlable() && variable->has_set_final()){
@@ -156,58 +166,36 @@ void MeasureThread::produce(){
     }
 }
 
-double MeasureThread::GetRandomMeasurement(void){
-    return 10.0 * qrand() / RAND_MAX;
-}
-
-void MeasureThread::set_initial(void){
-    switch (control_type){
-    case NONE :
-        alpha->set_value (0, this->set_alpha );
-        beta->set_value  (0, this->set_beta  );
-        motor->set_value (0, this->set_motor );
-        break;
-    case ALPHA:
-        alpha->set_value (0, this->start     );
-        beta->set_value  (0, this->set_beta  );
-        motor->set_value (0, this->set_motor );
-        break;
-    case BETA:
-        alpha->set_value (0, this->set_alpha );
-        beta->set_value  (0, this->start     );
-        motor->set_value (0, this->set_motor );
-        break;
-    case MOTOR:
-        alpha->set_value (0, this->set_alpha );
-        beta->set_value  (0, this->set_beta  );
-        motor->set_value (0, this->start     );
-        break;
+void MeasureThread::set_initial(){
+    Variable *var;
+    foreach (var, variables) {
+        if (var->is_controlable()){
+            for (int k = 0 ; k< var->get_num(); k++){
+                if(start_hash.contains(var->get_name(k))){
+                    var->set_value(k,start_hash[var->get_name(k)]);
+                }
+            }
+        }
     }
-    Helper::msleep(settling_time*1000);
 }
 
 void MeasureThread::set_m(void){
-    switch (control_type){
-    case NONE :
-        break;
-    case ALPHA:
-        alpha->set_value(0,current);
-        Helper::msleep(settling_time*1000);
-        break;
-    case BETA:
-        beta->set_value(0,current);
-        Helper::msleep(settling_time*1000);
-        break;
-    case MOTOR:
-        motor->set_value(0,current);
-        Helper::msleep(settling_time*1000);
-        break;
+    Variable *var;
+    foreach (var, variables) {
+        if (var->is_controlable()){
+            for (int k = 0 ; k< var->get_num(); k++){
+                if (control == var->get_name(k)){
+                    var->set_value(k,current);
+                    return ;
+                }
+            }
+        }
     }
 }
 
 void MeasureThread::read_m(void){
 
-    m.tempo = timer.elapsed()/1000.0;
+    double tempo = timer.elapsed()/1000.0;
 
     QHash<QString,double> value_h;
 
@@ -238,33 +226,13 @@ void MeasureThread::read_m(void){
      }
 
     m_hash = value_h;
-    m_hash["Time"] = m.tempo;
+    m_hash["Time"] = tempo;
 }
-
-//void MeasureThread::set_m_virtual(void){
-//    switch (control_type){
-//    case NONE :
-//        break;
-//    case ALPHA:
-//        m.alpha = current;
-//        Helper::msleep(settling_time*1000);
-//        break;
-//    case BETA:
-//        m.beta = current;
-//        Helper::msleep(settling_time*1000);
-//        break;
-//    case MOTOR:
-//        m.motor = current;
-//        Helper::msleep(settling_time*1000);
-//        break;
-//    }
-//}
 
 
 void MeasureThread::stop(){
     m_stop = true;
 }
-
 
 void MeasureThread::control_alpha(double angle){
     alpha->set_value(0,angle);

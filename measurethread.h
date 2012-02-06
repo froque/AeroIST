@@ -37,13 +37,11 @@ private:
     void set_m(void);
     void set_initial(void);
     void read_m(void);
-//    void set_m_virtual(void);
-//    void read_m_virtual(void);
-//    void clear_m(void);
-    double GetRandomMeasurement(void);
+
     QElapsedTimer timer;
-    measure m;
+
     QHash<QString,double> m_hash;
+    QHash<QString,double> start_hash;
 
     int average_number;
     double settling_time;
@@ -51,10 +49,9 @@ private:
     double end;
     double step;
     double current;
-    double set_alpha;
-    double set_beta;
-    double set_motor;
-    control_types_t control_type;
+
+    QString control;
+
     bool isZero;
     QString name;
     int n;
@@ -65,13 +62,6 @@ private:
     bool virtual_measures;
 
     // Variables
-//    Force *force;
-//    Alpha *alpha;
-//    Beta *beta;
-//    Temperature *temperature;
-//    Motor *motor;
-//    Wind *wind;
-
     Variable *force;
     Variable *alpha;
     Variable *beta;

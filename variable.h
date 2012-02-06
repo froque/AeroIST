@@ -39,49 +39,64 @@ public:
 //    virtual bool has_control() = 0;
 //    virtual void set_control(bool control) = 0;
 
+//    int get_index(QString name){
+//        for (int k = 0 ; k< get_num(); k++){
+//            if (name == get_name(k)){
+//                return k;
+//            }
+//        }
+//        return -1;
+//    }
 };
 
 class Virtual_Alpha: public Variable {
 public:
+    Virtual_Alpha(){ value=0; control_set=false;}
     bool is_controlable() {return true;}
     int get_num() {return 1;}
-    void read() {value = -10.0 * qrand() / RAND_MAX;}
+    void read() {if(control_set==false){ value = -10.0 * qrand() / RAND_MAX;}}
     double get_value(int n) {Q_UNUSED(n); return value;}
-    void set_value(int n ,double value) {Q_UNUSED(n);  this->value = value;}
+    void set_value(int n ,double value) {Q_UNUSED(n);  control_set=true; this->value = value;}
     QString get_name(int n) {Q_UNUSED(n); return "Alpha";}
+
     bool isReady(void) {return true;}
     bool has_set_final() {return is_controlable() && false;}
     void set_final() {}
 private:
     double value;
+    bool control_set;
 };
 class Virtual_Beta: public Variable {
 public:
+    Virtual_Beta () { value=0; control_set=false;}
     bool is_controlable() {return true;}
     int get_num() {return 1;}
-    void read() {value = -10.0 * qrand() / RAND_MAX;}
+    void read() {if(control_set==false){ value = -10.0 * qrand() / RAND_MAX;}}
     double get_value(int n) {Q_UNUSED(n); return value;}
-    void set_value(int n ,double value) {Q_UNUSED(n);  this->value = value;}
+    void set_value(int n ,double value) {Q_UNUSED(n);  control_set=true; this->value = value;}
     QString get_name(int n) {Q_UNUSED(n); return "Beta";}
     bool isReady(void) {return true;}
     bool has_set_final() {return is_controlable() && false;}
     void set_final() {}
 private:
     double value;
+    bool control_set;
 };
 class Virtual_Motor: public Variable {
 public:
+    Virtual_Motor () { value=0; control_set=false;}
     bool is_controlable() {return true;}
     int get_num() {return 1;}
-    void read() {value = -10.0 * qrand() / RAND_MAX;}
+    void read() {if(control_set==false){ value = -10.0 * qrand() / RAND_MAX;}}
     double get_value(int n) {Q_UNUSED(n); return value;}
-    void set_value(int n ,double value) {Q_UNUSED(n);  this->value = value;}
+    void set_value(int n ,double value) {Q_UNUSED(n);  control_set=true; this->value = value;}
     QString get_name(int n) {Q_UNUSED(n); return "Motor";}
     bool isReady(void) {return true;}
     bool has_set_final() {return is_controlable() && true;}
     void set_final() {set_value(0,0);}
 private:
     double value;
+    bool control_set;
 };
 class Virtual_Wind: public Variable {
 public:
