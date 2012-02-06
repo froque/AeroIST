@@ -16,7 +16,8 @@ public:
     double get_value(int n);
     void set_value(int n ,double value);
     QString get_name(int n){Q_UNUSED(n); return "Motor";};
-
+    bool has_set_final() {return true;}
+    void set_final() {set_value(0,0);}
 protected:
 
 private:

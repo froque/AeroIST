@@ -37,9 +37,9 @@ private:
     void set_m(void);
     void set_initial(void);
     void read_m(void);
-    void set_m_virtual(void);
-    void read_m_virtual(void);
-    void clear_m(void);
+//    void set_m_virtual(void);
+//    void read_m_virtual(void);
+//    void clear_m(void);
     double GetRandomMeasurement(void);
     QElapsedTimer timer;
     measure m;
@@ -79,7 +79,7 @@ private:
     Variable *motor;
     Variable *wind;
 
-//    QList<Variable*> variables;
+    QList<Variable*> variables;
 };
 
 #endif // MYTHREAD_H

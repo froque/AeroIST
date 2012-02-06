@@ -17,6 +17,8 @@ public:
     void set_value(int n ,double value);
     virtual QString get_name(int n) = 0;
     bool isReady(void) {return true;};
+    bool has_set_final() {return false;}
+    void set_final() {}
 
 protected:
     virtual void convert(void) = 0;

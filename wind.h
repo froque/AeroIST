@@ -16,7 +16,8 @@ public:
     void set_value(int n ,double value) {Q_UNUSED(n);Q_UNUSED(value)};
     QString get_name(int n) {Q_UNUSED(n);return "Wind";}
     bool isReady(void) {return true;};
-
+    bool has_set_final() {return false;}
+    void set_final() {}
 protected:
     int arduinofd;
 
