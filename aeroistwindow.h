@@ -26,9 +26,8 @@ public:
     void load_xml(QString fileName);
 
 signals:
-    void set_alpha(double);
-    void set_beta(double);
-    void set_motor(double);
+    void set_variable(QHash<QString,double>);
+
 public slots:
 
 private slots:

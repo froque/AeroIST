@@ -29,9 +29,7 @@ signals:
 public slots:
     void produce(void);
     void stop();
-    void control_alpha(double);
-    void control_beta(double);
-    void control_motor(double);
+    void manual_control(QHash<QString,double>);
 
 private:
     void set_m(void);

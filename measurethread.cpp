@@ -234,14 +234,15 @@ void MeasureThread::stop(){
     m_stop = true;
 }
 
-void MeasureThread::control_alpha(double angle){
-    alpha->set_value(0,angle);
-}
-
-void MeasureThread::control_beta(double angle){
-    beta->set_value(0,angle);
-}
-
-void MeasureThread::control_motor(double speed){
-    motor->set_value(0,speed);
+void MeasureThread::manual_control(QHash<QString, double> hash){
+    Variable *var;
+    foreach (var, variables) {
+        if (var->is_controlable()){
+            for (int k = 0 ; k< var->get_num(); k++){
+                if(hash.contains(var->get_name(k))){
+                    var->set_value(k,hash[var->get_name(k)]);
+                }
+            }
+        }
+    }
 }

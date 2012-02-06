@@ -151,9 +151,8 @@ void AeroISTWindow::on_ThreadButton_clicked(){
     connect(m_thread,SIGNAL(finished()),this,SLOT(ThreadButton_cleanup()));
 
     // pass the values from comboboxes to the thread. only for free control
-    connect(this,SIGNAL(set_alpha(double)),m_test,SLOT(control_alpha(double)));
-    connect(this,SIGNAL(set_beta(double)),m_test,SLOT(control_beta(double)));
-    connect(this,SIGNAL(set_motor(double)),m_test,SLOT(control_motor(double)));
+    connect(this,SIGNAL(set_variable(QHash<QString,double>)),m_test,SLOT(manual_control(QHash<QString,double>)));
+
     ui->doubleSpinBoxALpha->setValue( measurementThread->set_alpha);
     ui->doubleSpinBoxBeta->setValue(measurementThread->set_beta);
     ui->doubleSpinBoxMotor->setValue( measurementThread->set_motor);
@@ -666,15 +665,21 @@ void AeroISTWindow::on_actionZero_List_toggled(bool arg1){
 }
 
 void AeroISTWindow::on_doubleSpinBoxMotor_valueChanged(double arg1){
-    emit set_motor(arg1);
+    QHash<QString,double> hash;
+    hash["Motor"] = arg1;
+    emit set_variable(hash);
 }
 
 void AeroISTWindow::on_doubleSpinBoxALpha_valueChanged(double arg1){
-    emit set_alpha(arg1);
+    QHash<QString,double> hash;
+    hash["Alpha"] = arg1;
+    emit set_variable(hash);
 }
 
 void AeroISTWindow::on_doubleSpinBoxBeta_valueChanged(double arg1){
-    emit set_beta(arg1);
+    QHash<QString,double> hash;
+    hash["Beta"] = arg1;
+    emit set_variable(hash);
 }
 
 void AeroISTWindow::on_actionNames_in_Toolbar_toggled(bool arg1){
