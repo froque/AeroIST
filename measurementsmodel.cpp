@@ -69,7 +69,7 @@ void MeasurementsModel::save_csv(QTextStream *out,bool header){
 
 void MeasurementsModel::GetMeasure(QHash<QString,double> hash){
     VariableModel *var;
-    beginInsertRows(QModelIndex(), tempo.size(), tempo.size());
+    beginInsertRows(QModelIndex(), rowCount(), rowCount());
 
     foreach (var, variables) {
         for (int k=0; k< var->get_num(); k++){
@@ -78,19 +78,6 @@ void MeasurementsModel::GetMeasure(QHash<QString,double> hash){
             }
         }
     }
-
-    force[0].append(hash["Fx"]);
-    force[1].append(hash["Fy"]);
-    force[2].append(hash["Fz"]);
-    force[3].append(hash["Mx"]);
-    force[4].append(hash["My"]);
-    force[5].append(hash["Mz"]);
-    alpha.append(hash["Alpha"]);
-    beta.append(hash["Beta"]);
-    wind.append(hash["Wind"]);
-    temp.append(hash["Temperature"]);
-    motor.append(hash["Motor"]);
-    tempo.append(hash["Time"]);
 
     endInsertRows();
 }
@@ -177,32 +164,6 @@ QVector<double>  MeasurementsModel::vector_data(int index){
         }
     }
 
-//    switch (index) {
-//    case 0:
-//        return tempo;
-//    case 1:
-//        return force[0];
-//    case 2:
-//        return force[1];
-//    case 3:
-//        return force[2];
-//    case 4:
-//        return force[3];
-//    case 5:
-//        return force[4];
-//    case 6:
-//        return force[5];
-//    case 7:
-//        return alpha;
-//    case 8:
-//        return beta;
-//    case 9:
-//        return motor;
-//    case 10:
-//        return temp;
-//    case 11:
-//        return wind;
-//    }
     QVector<double> stupid_warning;
     return stupid_warning;
 }
@@ -410,34 +371,20 @@ bool MeasurementsModel::setData ( const QModelIndex & index, const QVariant & va
 
     if (role == Qt::EditRole) {
         int row = index.row();
-        if (force[0].size() < row ){
+        if (columnCount() < row){
             return false;
         }
-        switch (index.column()) {
-        case 0:
-            tempo.replace(row,value.toDouble());
-        case 1:
-            force[0].replace(row,value.toDouble());
-        case 2:
-            force[1].replace(row,value.toDouble());
-        case 3:
-            force[2].replace(row,value.toDouble());
-        case 4:
-            force[3].replace(row,value.toDouble());
-        case 5:
-            force[4].replace(row,value.toDouble());
-        case 6:
-            force[5].replace(row,value.toDouble());
-        case 7:
-            alpha.replace(row,value.toDouble());
-        case 8:
-            beta.replace(row,value.toDouble());
-        case 9:
-            motor.replace(row,value.toDouble());
-        case 10:
-            temp.replace(row,value.toDouble());
-        case 11:
-            wind.replace(row,value.toDouble());
+
+        VariableModel *var;
+        int upper = 0;
+        int lower = 0;
+        int column = index.column();
+        foreach (var, variables) {
+            lower = upper;
+            upper += var->get_num();
+            if ( column < upper){
+                var->set_value(column - lower,row,value.toDouble());
+            }
         }
     }
     return true;
@@ -445,18 +392,18 @@ bool MeasurementsModel::setData ( const QModelIndex & index, const QVariant & va
 
 bool MeasurementsModel::insertRows ( int row, int count, const QModelIndex & parent ){
     Q_UNUSED(parent)
-    if (row <0 || row > force[0].size()){
+
+    if (row < 0 || row > columnCount()){
         return false;
     }
-    tempo.insert(row,count,0);
-    for (int k=0; k< NVARS_ZERO; k++){
-        force[k].insert(row,count,0);
+
+    VariableModel *var;
+    foreach (var, variables) {
+        for (int k=0; k< var->get_num(); k++){
+            var->insert_value(k, row, count, 0);
+        }
     }
-    alpha.insert(row,count,0);
-    beta.insert(row,count,0);
-    motor.insert(row,count,0);
-    temp.insert(row,count,0);
-    wind.insert(row,count,0);
+
     return true;
 }
 bool MeasurementsModel::insertRow ( int row,  const QModelIndex & parent ){

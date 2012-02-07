@@ -27,13 +27,13 @@ public:
 
     QList<VariableModel*> variables;
 
-    QVector<double> tempo;
-    QVector<double> force[NFORCES];
-    QVector<double> alpha;
-    QVector<double> beta;
-    QVector<double> motor;
-    QVector<double> temp;
-    QVector<double> wind;   // change NVARS if you add another
+//    QVector<double> tempo;
+//    QVector<double> force[NFORCES];
+//    QVector<double> alpha;
+//    QVector<double> beta;
+//    QVector<double> motor;
+//    QVector<double> temp;
+//    QVector<double> wind;   // change NVARS if you add another
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
