@@ -13,10 +13,8 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
     start_hash(measurement->start_hash),
     average_number(measurement->average_number),
     settling_time(measurement->settling_time),
-    start(measurement->start),
     end(measurement->end),
     step(measurement->step),
-    current(measurement->start),
     control(measurement->control),
     n(measurement->n)
 {
@@ -46,6 +44,17 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
         variables.append(new Virtual_Motor);
         variables.append(new Virtual_Wind);
     }
+
+    VariableModel *var;
+    foreach (var, measurement->variables) {
+        for (int k=0; k< var->get_num(); k++){
+            if (control == var->get_name(k) && start_hash.contains(var->get_name(k))){
+                current = start_hash[var->get_name(k)];
+                break;
+            }
+        }
+    }
+
 }
 
 MeasureThread::MeasureThread(ZeroModel *measurement,QObject *parent) :
@@ -79,7 +88,6 @@ MeasureThread::MeasureThread(ZeroModel *measurement,QObject *parent) :
     }
 
     settling_time = 0;
-    start         = 0;
     end           = 0;
     step          = 0;
     current       = 0;
@@ -115,7 +123,7 @@ void MeasureThread::produce(){
             }
         } else {
             current = current + step;
-            if ((start < end && current > end ) || (start > end && current < end)){
+            if (( step > 0 && current > end) || (step < 0 && current < end)){
                 m_stop = true;
             }
         }

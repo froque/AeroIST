@@ -14,7 +14,6 @@
 <xs:element name="set_motor" type="xs:double" />
 <xs:element name="item" type="xs:double" />
 <xs:element name="settling_time" type="xs:int"/>
-<xs:element name="start" type="xs:double" />
 <xs:element name="end" type="xs:double" />
 <xs:element name="step" type="xs:double" />
 <xs:element name="control_type" type="xs:string"/>
@@ -95,7 +94,6 @@
               <xs:element ref="matrix"/>
               <xs:element ref="average_number"/>
               <xs:element ref="settling_time"/>
-              <xs:element ref="start"/>              
               <xs:element ref="end"/>              
               <xs:element ref="step"/>
               <xs:element name="start_values">

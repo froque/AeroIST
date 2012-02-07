@@ -44,7 +44,6 @@ public:
     matrix_t matrix;    // to be deleted
     int average_number;
     double settling_time;
-    double start;
     double end;
     double step;
     QHash<QString,double> start_hash;

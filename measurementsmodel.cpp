@@ -15,7 +15,6 @@ MeasurementsModel::MeasurementsModel(QObject *parent)
     matrix=MIDDLE;
     average_number=0;
     settling_time=0;
-    start=0;
     end=0;
     step=0;
     control="";
@@ -195,10 +194,6 @@ void MeasurementsModel::save_xml(QDomElement root ){
     settling_time.appendChild(root.ownerDocument().createTextNode(QString::number(this->settling_time)));
     root.appendChild(settling_time);
 
-    QDomElement start = root.ownerDocument().createElement(TAG_START);
-    start.appendChild(root.ownerDocument().createTextNode(QString::number(this->start)));
-    root.appendChild(start);
-
     QDomElement end = root.ownerDocument().createElement(TAG_END);
     end.appendChild(root.ownerDocument().createTextNode(QString::number(this->end)));
     root.appendChild(end);
@@ -302,10 +297,6 @@ void MeasurementsModel::load_xml(QDomElement root){
         }
         if (element.tagName() == TAG_CONTROL_TYPE){
             this->control = element.text();
-        }
-        if (element.tagName() == TAG_START){
-            this->start = element.text().toDouble();
-            continue;
         }
         if (element.tagName() == TAG_END){
             this->end = element.text().toDouble();

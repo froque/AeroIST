@@ -39,13 +39,27 @@ MeasurementsPreferences::MeasurementsPreferences(MeasurementsModel *measurement,
     ui->spinBoxAverage->setValue(settings.value(SETTINGS_DEFAULT_AVERAGE_NUMBER).toInt());
 
     ui->doubleSpinBoxSettling->setValue(settings.value(SETTINGS_DEFAULT_SETTLING_TIME).toDouble());
-
-    ui->doubleSpinBoxAlpha->setRange(-ANGLEMAX_ALPHA,ANGLEMAX_ALPHA);
-    ui->doubleSpinBoxAlpha->setSingleStep(DEFAULT_ALPHA_STEP);
-    ui->doubleSpinBoxBeta->setRange(-ANGLEMAX_BETA,ANGLEMAX_BETA);
-    ui->doubleSpinBoxBeta->setSingleStep(DEFAULT_BETA_STEP);
-    ui->doubleSpinBoxMotor->setRange(DEFAULT_MOTOR_MIN,DEFAULT_MOTOR_MAX);
-    ui->doubleSpinBoxMotor->setSingleStep(DEFAULT_MOTOR_STEP);
+    //Alpha
+    ui->doubleSpinBoxAlphaStart->setRange(-ANGLEMAX_ALPHA,ANGLEMAX_ALPHA);
+    ui->doubleSpinBoxAlphaStart->setSingleStep(DEFAULT_ALPHA_STEP);
+    ui->doubleSpinBoxAlphaEnd->setRange(-ANGLEMAX_ALPHA, ANGLEMAX_ALPHA);
+    ui->doubleSpinBoxAlphaEnd->setSingleStep(DEFAULT_ALPHA_STEP);
+    ui->doubleSpinBoxAlphaStep->setRange(-ANGLEMAX_ALPHA, ANGLEMAX_ALPHA);
+    ui->doubleSpinBoxAlphaStep->setSingleStep(DEFAULT_ALPHA_STEP);
+    //Beta
+    ui->doubleSpinBoxBetaStart->setRange(-ANGLEMAX_BETA,ANGLEMAX_BETA);
+    ui->doubleSpinBoxBetaStart->setSingleStep(DEFAULT_BETA_STEP);
+    ui->doubleSpinBoxBetaEnd->setRange(-ANGLEMAX_BETA,ANGLEMAX_BETA);
+    ui->doubleSpinBoxBetaEnd->setSingleStep(DEFAULT_BETA_STEP);
+    ui->doubleSpinBoxBetaStep->setRange(-ANGLEMAX_BETA,ANGLEMAX_BETA);
+    ui->doubleSpinBoxBetaStep->setSingleStep(DEFAULT_BETA_STEP);
+    //Motor
+    ui->doubleSpinBoxMotorStart->setRange(DEFAULT_MOTOR_MIN,DEFAULT_MOTOR_MAX);
+    ui->doubleSpinBoxMotorStart->setSingleStep(DEFAULT_MOTOR_STEP);
+    ui->doubleSpinBoxMotorEnd->setRange(DEFAULT_MOTOR_MIN,DEFAULT_MOTOR_MAX);
+    ui->doubleSpinBoxMotorEnd->setSingleStep(DEFAULT_MOTOR_STEP);
+    ui->doubleSpinBoxMotorStep->setRange(DEFAULT_MOTOR_MIN,DEFAULT_MOTOR_MAX);
+    ui->doubleSpinBoxMotorStep->setSingleStep(DEFAULT_MOTOR_STEP);
 
     ui->controlGroup->setId(ui->radioButtonNone,NONE);
     ui->controlGroup->setId(ui->radioButtonAlpha,ALPHA);
@@ -76,19 +90,49 @@ void MeasurementsPreferences::accept(){
         msgBox.exec();
         return ;
     }
-    if (ui->controlGroup->checkedId() !=NONE ){
-        double start,end,step;
+//    if (ui->controlGroup->checkedId() !=NONE ){
+//        double start,end,step;
 
-        start = ui->doubleSpinBoxStart->value();
-        end = ui->doubleSpinBoxEnd->value();
-        step = ui->doubleSpinBoxStep->value();
 
-        if( (start > end && step > 0 ) || fabs(end-start) < fabs(step) || step == 0  ){
-            QMessageBox msgBox;
-            msgBox.setText(tr("Wrong Minimum, Maximum and Step"));
-            msgBox.exec();
-            return ;
-        }
+//        start = ui->doubleSpinBoxStart->value();
+//        end = ui->doubleSpinBoxEnd->value();
+//        step = ui->doubleSpinBoxStep->value();
+
+//        if( (start > end && step > 0 ) || fabs(end-start) < fabs(step) || step == 0  ){
+//            QMessageBox msgBox;
+//            msgBox.setText(tr("Wrong Minimum, Maximum and Step"));
+//            msgBox.exec();
+//            return ;
+//        }
+//    }
+    double start,end,step;
+    switch (ui->controlGroup->checkedId()){
+    case 0:
+        measurement->control = ""; break;
+    case 1:
+        measurement->control = "Alpha";
+        start = ui->doubleSpinBoxAlphaStart->value();
+        end = ui->doubleSpinBoxAlphaEnd->value();
+        step = ui->doubleSpinBoxAlphaStep->value();
+        break;
+    case 2:
+        measurement->control = "Beta";
+        start = ui->doubleSpinBoxBetaStart->value();
+        end = ui->doubleSpinBoxBetaEnd->value();
+        step = ui->doubleSpinBoxBetaStep->value();
+        break;
+    case 3:
+        measurement->control = "Motor";
+        start = ui->doubleSpinBoxMotorStart->value();
+        end = ui->doubleSpinBoxMotorEnd->value();
+        step = ui->doubleSpinBoxMotorStep->value();
+        break;
+    }
+    if( (ui->controlGroup->checkedId() != 0 ) && ((start > end && step > 0 ) || fabs(end-start) < fabs(step) || step == 0 )){
+                QMessageBox msgBox;
+                msgBox.setText(tr("Wrong Minimum, Maximum and Step"));
+                msgBox.exec();
+                return ;
     }
 
     measurement->name = ui->edit_name->text();
@@ -97,23 +141,17 @@ void MeasurementsPreferences::accept(){
     measurement->dvm_time = ui->combo_dvm_time->itemData(ui->combo_dvm_time->currentIndex()).toInt();
     measurement->average_number = ui->spinBoxAverage->value();
     measurement->settling_time = ui->doubleSpinBoxSettling->value();
-    measurement->start = ui->doubleSpinBoxStart->value();
-    measurement->end = ui->doubleSpinBoxEnd->value();
-    measurement->step = ui->doubleSpinBoxStep->value();
-
-    switch (ui->controlGroup->checkedId()){
-    case 0: measurement->control = ""; break;
-    case 1: measurement->control = "Alpha"; break;
-    case 2: measurement->control = "Beta"; break;
-    case 3: measurement->control = "Motor"; break;
-    }
-
+//    measurement->start = ui->doubleSpinBoxStart->value();
+//    measurement->end = ui->doubleSpinBoxEnd->value();
+//    measurement->step = ui->doubleSpinBoxStep->value();
+    measurement->end = end;
+    measurement->step = step;
 
     measurement->n = ui->spinBoxN->value();
 
-    measurement->start_hash["Alpha"]  = ui->doubleSpinBoxAlpha->value();
-    measurement->start_hash["Beta"] = ui->doubleSpinBoxBeta->value();
-    measurement->start_hash["Motor"] = ui->doubleSpinBoxMotor->value();
+    measurement->start_hash["Alpha"]  = ui->doubleSpinBoxAlphaStart->value();
+    measurement->start_hash["Beta"] = ui->doubleSpinBoxBetaStart->value();
+    measurement->start_hash["Motor"] = ui->doubleSpinBoxMotorStart->value();
 
     ZeroModel *zero = list->at(ui->combo_zero->currentIndex());
     for (int k=0; k < NFORCES; k++){
@@ -124,54 +162,44 @@ void MeasurementsPreferences::accept(){
 }
 
 void MeasurementsPreferences::maxminstep_enabled(int id){
-    double start = 0 ,end = 0,step;
     switch (id){
-    case NONE:  ui->doubleSpinBoxStart->setEnabled(false);
-        ui->doubleSpinBoxEnd->setEnabled(false);
-        ui->doubleSpinBoxStep->setEnabled(false);
+    case NONE:
         ui->spinBoxN->setEnabled(true);
-        ui->doubleSpinBoxAlpha->setEnabled(true);
-        ui->doubleSpinBoxBeta->setEnabled(true);
-        ui->doubleSpinBoxMotor->setEnabled(true);
+        ui->doubleSpinBoxAlphaEnd->setEnabled(false);
+        ui->doubleSpinBoxAlphaStep->setEnabled(false);
+        ui->doubleSpinBoxBetaEnd->setEnabled(false);
+        ui->doubleSpinBoxBetaStep->setEnabled(false);
+        ui->doubleSpinBoxMotorEnd->setEnabled(false);
+        ui->doubleSpinBoxMotorStep->setEnabled(false);
         return;
     case ALPHA:
-        ui->doubleSpinBoxAlpha->setEnabled(false);
-        ui->doubleSpinBoxBeta->setEnabled(true);
-        ui->doubleSpinBoxMotor->setEnabled(true);
-        start = - ANGLEMAX_ALPHA;
-        end = ANGLEMAX_ALPHA;
-        step = DEFAULT_ALPHA_STEP;
-        break;
+        ui->spinBoxN->setEnabled(false);
+        ui->doubleSpinBoxAlphaEnd->setEnabled(true);
+        ui->doubleSpinBoxAlphaStep->setEnabled(true);
+        ui->doubleSpinBoxBetaEnd->setEnabled(false);
+        ui->doubleSpinBoxBetaStep->setEnabled(false);
+        ui->doubleSpinBoxMotorEnd->setEnabled(false);
+        ui->doubleSpinBoxMotorStep->setEnabled(false);
+        return;
     case BETA:
-        ui->doubleSpinBoxAlpha->setEnabled(true);
-        ui->doubleSpinBoxBeta->setEnabled(false);
-        ui->doubleSpinBoxMotor->setEnabled(true);
-        start = -ANGLEMAX_BETA;
-        end = ANGLEMAX_BETA;
-        step = DEFAULT_BETA_STEP;
-        break;
+        ui->spinBoxN->setEnabled(false);
+        ui->doubleSpinBoxAlphaEnd->setEnabled(false);
+        ui->doubleSpinBoxAlphaStep->setEnabled(false);
+        ui->doubleSpinBoxBetaEnd->setEnabled(true);
+        ui->doubleSpinBoxBetaStep->setEnabled(true);
+        ui->doubleSpinBoxMotorEnd->setEnabled(false);
+        ui->doubleSpinBoxMotorStep->setEnabled(false);
+        return;
     case MOTOR:
-        ui->doubleSpinBoxAlpha->setEnabled(true);
-        ui->doubleSpinBoxBeta->setEnabled(true);
-        ui->doubleSpinBoxMotor->setEnabled(false);
-        start = DEFAULT_MOTOR_MIN;
-        end = DEFAULT_MOTOR_MAX;
-        step = DEFAULT_MOTOR_STEP;
-        break;
+        ui->spinBoxN->setEnabled(false);
+        ui->doubleSpinBoxAlphaEnd->setEnabled(false);
+        ui->doubleSpinBoxAlphaStep->setEnabled(false);
+        ui->doubleSpinBoxBetaEnd->setEnabled(false);
+        ui->doubleSpinBoxBetaStep->setEnabled(false);
+        ui->doubleSpinBoxMotorEnd->setEnabled(true);
+        ui->doubleSpinBoxMotorStep->setEnabled(true);
+        return;
     }
-    ui->spinBoxN->setEnabled(false);
-    ui->doubleSpinBoxStart->setEnabled(true);
-    ui->doubleSpinBoxEnd->setEnabled(true);
-    ui->doubleSpinBoxStep->setEnabled(true);
-    ui->doubleSpinBoxStart->setRange(start,end);
-    ui->doubleSpinBoxStart->setSingleStep(step);
-    ui->doubleSpinBoxEnd->setRange(start,end);
-    ui->doubleSpinBoxEnd->setSingleStep(step);
-    ui->doubleSpinBoxStep->setRange(start,end);
-    ui->doubleSpinBoxStep->setSingleStep(step);
-    ui->doubleSpinBoxStart->setValue(start);
-    ui->doubleSpinBoxEnd->setValue(end);
-    ui->doubleSpinBoxStep->setValue(step);
 }
 
 void MeasurementsPreferences::on_combo_matrix_currentIndexChanged(int index){

@@ -33,56 +33,35 @@ MeasurementDetails::MeasurementDetails(MeasurementsModel *measurement, QWidget *
     ui->labelAverage->setText(QString::number(measurement->average_number));
     ui->labelZero->setText(measurement->zero_name);
 
+    ui->labelAlpha->setText(QString::number(measurement->start_hash["Alpha"]));
+    ui->labelBeta->setText(QString::number(measurement->start_hash["Beta"]));
+    ui->labelMotor->setText(QString::number(measurement->start_hash["Motor"]));
     if (measurement->control == ""){
         ui->labelControl->setText(tr("None"));
-        ui->labelViewStart->hide();
         ui->labelViewEnd->hide();
         ui->labelViewStep->hide();
         ui->labelViewSettling->hide();
-        ui->labelStart->hide();
         ui->labelEnd->hide();
         ui->labelStep->hide();
         ui->labelSettling->hide();
         ui->labelN->setText(QString::number( measurement->n));
-        ui->labelAlpha->setText(QString::number(measurement->start_hash["Alpha"]));
-        ui->labelBeta->setText(QString::number(measurement->start_hash["Beta"]));
-        ui->labelMotor->setText(QString::number(measurement->start_hash["Motor"]));
-    } else if (measurement->control == "Alpha") {
-        ui->labelControl->setText(tr("Alpha"));
-        ui->labelStart->setText(QString::number(measurement->start));
+    } else{
         ui->labelEnd->setText(QString::number(measurement->end));
         ui->labelStep->setText(QString::number(measurement->step));
         ui->labelSettling->setText(QString::number(measurement->settling_time));
         ui->labelN->hide();
         ui->labelViewN->hide();
-        ui->labelAlpha->hide();
-        ui->labelViewAlpha->hide();
-        ui->labelBeta->setText(QString::number(measurement->start_hash["Beta"]));
-        ui->labelMotor->setText(QString::number(measurement->start_hash["Motor"]));
-    } else if (measurement->control == "Beta") {
-        ui->labelControl->setText(tr("Beta"));
-        ui->labelStart->setText(QString::number(measurement->start));
-        ui->labelEnd->setText(QString::number(measurement->end));
-        ui->labelStep->setText(QString::number(measurement->step));
-        ui->labelSettling->setText(QString::number(measurement->settling_time));
-        ui->labelN->hide();
-        ui->labelViewN->hide();
-        ui->labelBeta->hide();
-        ui->labelViewBeta->hide();
-        ui->labelAlpha->setText(QString::number(measurement->start_hash["Alpha"]));
-        ui->labelMotor->setText(QString::number(measurement->start_hash["Motor"]));
-    } else if (measurement->control == "Motor") {
-        ui->labelControl->setText(tr("Motor"));
-        ui->labelStart->setText(QString::number(measurement->start));
-        ui->labelEnd->setText(QString::number(measurement->end));
-        ui->labelStep->setText(QString::number(measurement->step));
-        ui->labelSettling->setText(QString::number(measurement->settling_time));
-        ui->labelN->hide();
-        ui->labelViewN->hide();
-        ui->labelAlpha->setText(QString::number(measurement->start_hash["Alpha"]));
-        ui->labelBeta->setText(QString::number(measurement->start_hash["Beta"]));
-        ui->labelMotor->hide();
-        ui->labelViewMotor->hide();
+        ui->labelControl->setText(measurement->control);
+        if (measurement->control == "Alpha") {
+            ui->labelAlpha->hide();
+            ui->labelViewAlpha->hide();
+        } else if (measurement->control == "Beta") {
+            ui->labelBeta->hide();
+            ui->labelViewBeta->hide();
+        } else if (measurement->control == "Motor") {
+            ui->labelMotor->hide();
+            ui->labelViewMotor->hide();
+        }
     }
 
     this->adjustSize();
