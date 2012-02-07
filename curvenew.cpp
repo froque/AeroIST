@@ -53,6 +53,7 @@ void CurveNew::accept(){
     if (ui->listWidget_x->currentIndex().isValid() && ui->listWidget_y->currentIndex().isValid() && ui->lineEdit->text().isEmpty()!=true){
         x = model->vector_data(ui->listWidget_x->currentIndex().row());
         y = model->vector_data(ui->listWidget_y->currentIndex().row());
+        qDebug() << y;
         QwtPlotCurve *curve = new QwtPlotCurve(ui->lineEdit->text());
         curve->setSamples(x,y);
         QPen pen;
@@ -60,7 +61,7 @@ void CurveNew::accept(){
         pen.setColor(ui->comboBoxColor->currentText());
         curve->setPen(pen);
 
-        curve->setYAxis(QwtPlot::yRight);
+//        curve->setYAxis(QwtPlot::yRight);
         curve->attach(plot);
         plot->replot();
         QDialog::accept();
