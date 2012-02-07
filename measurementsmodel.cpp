@@ -26,19 +26,23 @@ MeasurementsModel::MeasurementsModel(QObject *parent)
     for (int k; k<NFORCES;k++ ){
         zero[0] = 0;
     }
-
-    variables.append(new TimeModel);
-    variables.append(new ForceModel);
-    variables.append(new AlphaModel);
-    variables.append(new BetaModel);
-    variables.append(new TemperatureModel);
-    variables.append(new MotorModel);
-    variables.append(new WindModel);
+    init();
 }
 MeasurementsModel::MeasurementsModel(QDomElement root, QObject *parent):
     QAbstractTableModel(parent)
 {
+    init();
     load_xml(root);
+}
+
+void MeasurementsModel::init(){
+    variables.append(new TimeModel);
+    variables.append(new ForceModel);
+    variables.append(new AlphaModel);
+    variables.append(new BetaModel);
+    variables.append(new MotorModel);
+    variables.append(new TemperatureModel);
+    variables.append(new WindModel);
 }
 
 void MeasurementsModel::save_csv(QTextStream *out,bool header){
@@ -275,24 +279,31 @@ void MeasurementsModel::load_xml(QDomElement root){
         element = node.toElement();
         if (element.tagName() == TAG_NAME){
             this->name = element.text();
+            continue;
         }
         if (element.tagName() == TAG_DESCRIPTION){
             this->description = element.text();
+            continue;
         }
         if (element.tagName() == TAG_DVM_TIME){
             this->dvm_time = element.text().toInt();
+            continue;
         }
         if (element.tagName() == TAG_AVERAGE_NUMBER){
             this->average_number = element.text().toInt();
+            continue;
         }
         if (element.tagName() == TAG_SET_ALPHA){
             this->set_alpha = element.text().toDouble();
+            continue;
         }
         if (element.tagName() == TAG_SET_BETA){
             this->set_beta = element.text().toDouble();
+            continue;
         }
         if (element.tagName() == TAG_SET_MOTOR){
             this->set_motor = element.text().toDouble();
+            continue;
         }
         if (element.tagName() == TAG_MATRIX){
             int m = element.text().toInt();
@@ -300,6 +311,7 @@ void MeasurementsModel::load_xml(QDomElement root){
             case FLOOR: this->matrix = FLOOR; break;
             case MIDDLE: this->matrix = MIDDLE; break;
             }
+            continue;
         }
         if (element.tagName() == TAG_CONTROL_TYPE){
             int m = element.text().toInt();
@@ -309,21 +321,27 @@ void MeasurementsModel::load_xml(QDomElement root){
             case BETA: this->control_type = BETA; break;
             case MOTOR: this->control_type = MOTOR; break;
             }
+            continue;
         }
         if (element.tagName() == TAG_START){
             this->start = element.text().toDouble();
+            continue;
         }
         if (element.tagName() == TAG_END){
             this->end = element.text().toDouble();
+            continue;
         }
         if (element.tagName() == TAG_STEP){
             this->step = element.text().toDouble();
+            continue;
         }
         if (element.tagName() == TAG_SETTLING_TIME){
             this->settling_time = element.text().toInt();
+            continue;
         }
         if (element.tagName() == TAG_N){
             this->n = element.text().toInt();
+            continue;
         }
 
         if (element.tagName() == TAG_DATA_ZERO){
@@ -345,11 +363,13 @@ void MeasurementsModel::load_xml(QDomElement root){
                     }
                 }
             }
+            continue;
         }
 
         if (element.tagName() == TAG_DATA){
             QDomNodeList items = element.childNodes();
             QDomElement item;
+
             for (int row = 0; row < items.count(); row++){
                 insertRow(rowCount());
                 item = items.at(row).toElement();
@@ -357,9 +377,10 @@ void MeasurementsModel::load_xml(QDomElement root){
                 QDomElement force;
                 for (int column = 0; column< forces.count(); column++ ){
                     force = forces.at(column).toElement();
-                    this->setData(this->index(row,column),force.text());
+                    this->setData(index(row,column),force.text());
                 }
             }
+            continue;
         }
     }
 }
@@ -371,7 +392,7 @@ bool MeasurementsModel::setData ( const QModelIndex & index, const QVariant & va
 
     if (role == Qt::EditRole) {
         int row = index.row();
-        if (columnCount() < row){
+        if (rowCount() < row){
             return false;
         }
 
@@ -384,16 +405,19 @@ bool MeasurementsModel::setData ( const QModelIndex & index, const QVariant & va
             upper += var->get_num();
             if ( column < upper){
                 var->set_value(column - lower,row,value.toDouble());
+                return true;
             }
         }
     }
+
     return true;
 }
 
 bool MeasurementsModel::insertRows ( int row, int count, const QModelIndex & parent ){
     Q_UNUSED(parent)
 
-    if (row < 0 || row > columnCount()){
+    int rowcount = rowCount();
+    if (row < 0 ){
         return false;
     }
 

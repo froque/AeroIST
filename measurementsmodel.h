@@ -67,6 +67,9 @@ public:
 
 public slots:
     void GetMeasure(QHash<QString,double> hash);
+
+private:
+    void init(void);
 };
 
 #endif // MEASUREMENTS_H

@@ -30,7 +30,7 @@ public:
     int get_size() {return force[0].size();}
     double get_value(int n,int row) {return force[n].value(row);}
     QVector<double> get_vector(int n) {return force[n];}
-    void set_value(int n ,int row, double value) { force[n].insert(row,value);}
+    void set_value(int n ,int row, double value) { force[n].replace(row,value);}
     void insert_value(int n, int row, int count, double value) {force[n].insert(row,count,value);}
     void append_value(int n, double value) { force[n].append(value);}
     QString get_name(int n){
@@ -55,7 +55,7 @@ public:
     int get_size() {return contents.size();}
     double get_value(int n,int row) {Q_UNUSED(n); return contents.value(row);}
     QVector<double> get_vector(int n) {Q_UNUSED(n); return contents;}
-    void set_value(int n ,int row, double value) {Q_UNUSED(n);  contents.insert(row,value);}
+    void set_value(int n ,int row, double value) {Q_UNUSED(n);  contents.replace(row,value);}
     void insert_value(int n, int row, int count, double value) {Q_UNUSED(n); contents.insert(row,count,value);}
     void append_value(int n, double value) {Q_UNUSED(n);  contents.append(value);}
     QString get_name(int n){Q_UNUSED(n);  return "Alpha"; }
@@ -83,7 +83,7 @@ public:
     int get_size() {return contents.size();}
     double get_value(int n,int row) {Q_UNUSED(n); return contents.value(row);}
     QVector<double> get_vector(int n) {Q_UNUSED(n); return contents;}
-    void set_value(int n ,int row, double value) {Q_UNUSED(n);  contents.insert(row,value);}
+    void set_value(int n ,int row, double value) {Q_UNUSED(n);  contents.replace(row,value);}
     void insert_value(int n, int row, int count, double value) {Q_UNUSED(n); contents.insert(row,count,value);}
     void append_value(int n, double value) {Q_UNUSED(n);  contents.append(value);}
     QString get_name(int n){Q_UNUSED(n);  return "Wind"; }
@@ -97,7 +97,7 @@ public:
     int get_size() {return contents.size();}
     double get_value(int n,int row) {Q_UNUSED(n); return contents.value(row);}
     QVector<double> get_vector(int n) {Q_UNUSED(n); return contents;}
-    void set_value(int n ,int row, double value) {Q_UNUSED(n);  contents.insert(row,value);}
+    void set_value(int n ,int row, double value) {Q_UNUSED(n);  contents.replace(row,value);}
     void insert_value(int n, int row, int count, double value) {Q_UNUSED(n); contents.insert(row,count,value);}
     void append_value(int n, double value) {Q_UNUSED(n);  contents.append(value);}
     QString get_name(int n){Q_UNUSED(n);  return "Motor"; }
@@ -112,7 +112,7 @@ public:
     int get_size() {return contents.size();}
     double get_value(int n,int row) {Q_UNUSED(n); return contents.value(row);}
     QVector<double> get_vector(int n) {Q_UNUSED(n); return contents;}
-    void set_value(int n ,int row, double value) {Q_UNUSED(n);  contents.insert(row,value);}
+    void set_value(int n ,int row, double value) {Q_UNUSED(n);  contents.replace(row,value);}
     void insert_value(int n, int row, int count, double value) {Q_UNUSED(n); contents.insert(row,count,value);}
     void append_value(int n, double value) {Q_UNUSED(n);  contents.append(value);}
     QString get_name(int n){Q_UNUSED(n);  return "Temperature"; }
@@ -126,7 +126,7 @@ public:
     int get_size() {return contents.size();}
     double get_value(int n,int row) {Q_UNUSED(n); return contents.value(row);}
     QVector<double> get_vector(int n) {Q_UNUSED(n); return contents;}
-    void set_value(int n ,int row, double value) {Q_UNUSED(n);  contents.insert(row,value);}
+    void set_value(int n ,int row, double value) {Q_UNUSED(n);  contents.replace(row,value);}
     void insert_value(int n, int row, int count, double value) {Q_UNUSED(n); contents.insert(row,count,value);}
     void append_value(int n, double value) {Q_UNUSED(n);  contents.append(value);}
     QString get_name(int n){Q_UNUSED(n);  return "Time"; }
