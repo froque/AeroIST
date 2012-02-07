@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-
 <!-- definition of simple elements -->
 <xs:element name="name" type="xs:string"/>
 <xs:element name="zero_name" type="xs:string"/>
@@ -10,19 +9,18 @@
 <xs:element name="dvm_time" type="xs:int"/>
 <xs:element name="matrix" type="xs:int"/>
 <xs:element name="average_number" type="xs:positiveInteger"/>
-<xs:element name="set_alpha" type="xs:double"/>
-<xs:element name="set_beta" type="xs:double"/>
-<xs:element name="set_motor" type="xs:double"/>
+<xs:element name="set_alpha" type="xs:double" />
+<xs:element name="set_beta" type="xs:double" />
+<xs:element name="set_motor" type="xs:double" />
 <xs:element name="item" type="xs:double" />
 <xs:element name="settling_time" type="xs:int"/>
 <xs:element name="start" type="xs:double" />
 <xs:element name="end" type="xs:double" />
 <xs:element name="step" type="xs:double" />
-<xs:element name="control_type" type="xs:int"/>
+<xs:element name="control_type" type="xs:string"/>
 <xs:element name="n" type="xs:int"/>
 <xs:element name="zero_id" type="xs:int"/>
   
-
 <xs:element name="Time" type="xs:double" />
 <xs:element name="Fx" type="xs:double" />
 <xs:element name="Fy" type="xs:double" />
@@ -35,6 +33,23 @@
 <xs:element name="Motor" type="xs:double" />
 <xs:element name="Temperature" type="xs:double" />
 <xs:element name="Wind" type="xs:double" />
+
+<xs:group name="variables">
+  <xs:sequence>
+    <xs:element ref="Time" minOccurs="0" />
+    <xs:element ref="Fx" minOccurs="0" />
+    <xs:element ref="Fy" minOccurs="0" />
+    <xs:element ref="Fz" minOccurs="0" />
+    <xs:element ref="Mx" minOccurs="0" />
+    <xs:element ref="My" minOccurs="0" />
+    <xs:element ref="Mz" minOccurs="0" />
+    <xs:element ref="Alpha" minOccurs="0" />
+    <xs:element ref="Beta" minOccurs="0" />
+    <xs:element ref="Motor" minOccurs="0" />
+    <xs:element ref="Temperature" minOccurs="0" />
+    <xs:element ref="Wind" minOccurs="0" />
+  </xs:sequence>
+</xs:group>
 
 <xs:element name="project">
   <xs:complexType>
@@ -83,9 +98,17 @@
               <xs:element ref="start"/>              
               <xs:element ref="end"/>              
               <xs:element ref="step"/>
-              <xs:element ref="set_alpha"/>
-              <xs:element ref="set_beta"/>
-              <xs:element ref="set_motor"/>
+              <xs:element name="start_values">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="item" >
+                      <xs:complexType>
+                        <xs:group ref="variables" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
               <xs:element ref="control_type"/>
               <xs:element ref="n"/>
               <xs:element name="data_zero" >
@@ -94,14 +117,7 @@
                     <xs:element ref="zero_name"/>
                     <xs:element name="item" maxOccurs="1" >
                       <xs:complexType>
-                        <xs:sequence>
-                          <xs:element ref="Fx"/>
-                          <xs:element ref="Fy"/>
-                          <xs:element ref="Fz"/>
-                          <xs:element ref="Mx"/>
-                          <xs:element ref="My"/>
-                          <xs:element ref="Mz"/>
-                        </xs:sequence>
+                        <xs:group ref="variables" />
                       </xs:complexType>
                     </xs:element>
                   </xs:sequence>
@@ -112,20 +128,7 @@
                   <xs:sequence>
                     <xs:element name="item" minOccurs="0" maxOccurs="unbounded" >
                       <xs:complexType>
-                        <xs:sequence>
-                          <xs:element ref="Time"/>
-                          <xs:element ref="Fx"/>
-                          <xs:element ref="Fy"/>
-                          <xs:element ref="Fz"/>
-                          <xs:element ref="Mx"/>
-                          <xs:element ref="My"/>
-                          <xs:element ref="Mz"/>
-                          <xs:element ref="Alpha"/>
-                          <xs:element ref="Beta"/>
-                          <xs:element ref="Motor"/>
-                          <xs:element ref="Temperature"/>
-                          <xs:element ref="Wind"/>
-                        </xs:sequence>
+                        <xs:group ref="variables" />
                       </xs:complexType>
                     </xs:element>
                   </xs:sequence>

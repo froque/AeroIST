@@ -71,11 +71,12 @@ enum ThreadStatus{
 #define TAG_DVM_TIME "dvm_time"
 #define TAG_MATRIX "matrix"
 #define TAG_AVERAGE_NUMBER "average_number"
-#define TAG_SET_ALPHA "set_alpha"
-#define TAG_SET_BETA "set_beta"
-#define TAG_SET_MOTOR "set_motor"
+#define TAG_SET_ALPHA "set_alpha"  // to be deleted
+#define TAG_SET_BETA "set_beta"     // to be deleted
+#define TAG_SET_MOTOR "set_motor"   // to be deleted
 #define TAG_DATA "data"
 #define TAG_SETTLING_TIME "settling_time"
+#define TAG_START_VALUES "start_values"
 #define TAG_START "start"
 #define TAG_END "end"
 #define TAG_STEP "step"

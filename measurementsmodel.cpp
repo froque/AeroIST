@@ -18,11 +18,8 @@ MeasurementsModel::MeasurementsModel(QObject *parent)
     start=0;
     end=0;
     step=0;
-    control_type = NONE;
+    control="";
     n = 0;
-    set_alpha = 0;
-    set_beta = 0;
-    set_motor = 0;
     for (int k; k<NFORCES;k++ ){
         zero[0] = 0;
     }
@@ -210,20 +207,21 @@ void MeasurementsModel::save_xml(QDomElement root ){
     step.appendChild(root.ownerDocument().createTextNode(QString::number(this->step)));
     root.appendChild(step);
 
-    QDomElement set_alpha = root.ownerDocument().createElement(TAG_SET_ALPHA);
-    set_alpha.appendChild(root.ownerDocument().createTextNode(QString::number(this->set_alpha)));
-    root.appendChild(set_alpha);
+    QDomElement start_hash_element = root.ownerDocument().createElement(TAG_START_VALUES);
+    root.appendChild(start_hash_element);
+    QDomElement item = root.ownerDocument().createElement(TAG_ITEM);
+    start_hash_element.appendChild(item);
 
-    QDomElement set_beta = root.ownerDocument().createElement(TAG_SET_BETA);
-    set_beta.appendChild(root.ownerDocument().createTextNode(QString::number(this->set_beta)));
-    root.appendChild(set_beta);
-
-    QDomElement set_motor = root.ownerDocument().createElement(TAG_SET_MOTOR);
-    set_motor.appendChild(root.ownerDocument().createTextNode(QString::number(this->set_motor)));
-    root.appendChild(set_motor);
-
+    QDomElement start_element;
+    QHashIterator<QString, double> i(start_hash);
+    while (i.hasNext()) {
+        i.next();
+        start_element = root.ownerDocument().createElement(i.key());
+        start_element.appendChild( root.ownerDocument().createTextNode(QString::number( i.value() ,'g',10)));
+        item.appendChild(start_element);
+    }
     QDomElement control_type = root.ownerDocument().createElement(TAG_CONTROL_TYPE);
-    control_type.appendChild(root.ownerDocument().createTextNode(QString::number(this->control_type)));
+    control_type.appendChild(root.ownerDocument().createTextNode(this->control));
     root.appendChild(control_type);
 
     QDomElement n = root.ownerDocument().createElement(TAG_N);
@@ -293,18 +291,7 @@ void MeasurementsModel::load_xml(QDomElement root){
             this->average_number = element.text().toInt();
             continue;
         }
-        if (element.tagName() == TAG_SET_ALPHA){
-            this->set_alpha = element.text().toDouble();
-            continue;
-        }
-        if (element.tagName() == TAG_SET_BETA){
-            this->set_beta = element.text().toDouble();
-            continue;
-        }
-        if (element.tagName() == TAG_SET_MOTOR){
-            this->set_motor = element.text().toDouble();
-            continue;
-        }
+
         if (element.tagName() == TAG_MATRIX){
             int m = element.text().toInt();
             switch (m){
@@ -314,14 +301,7 @@ void MeasurementsModel::load_xml(QDomElement root){
             continue;
         }
         if (element.tagName() == TAG_CONTROL_TYPE){
-            int m = element.text().toInt();
-            switch (m){
-            case NONE: this->control_type = NONE; break;
-            case ALPHA: this->control_type = ALPHA; break;
-            case BETA: this->control_type = BETA; break;
-            case MOTOR: this->control_type = MOTOR; break;
-            }
-            continue;
+            this->control = element.text();
         }
         if (element.tagName() == TAG_START){
             this->start = element.text().toDouble();
@@ -341,6 +321,25 @@ void MeasurementsModel::load_xml(QDomElement root){
         }
         if (element.tagName() == TAG_N){
             this->n = element.text().toInt();
+            continue;
+        }
+
+        if (element.tagName() == TAG_START_VALUES){
+            QDomNodeList items = element.childNodes();
+            QDomElement item;
+
+            for (int k = 0; k < items.count(); k++){
+                item = items.at(k).toElement();
+
+                if (item.tagName() == TAG_ITEM){
+                    QDomNodeList vars = item.childNodes();
+                    QDomElement var;
+                    for (int n = 0; n < vars.count(); n++ ){
+                        var = vars.at(n).toElement();
+                        start_hash[var.nodeName()] = var.text().toDouble();
+                    }
+                }
+            }
             continue;
         }
 
@@ -416,7 +415,6 @@ bool MeasurementsModel::setData ( const QModelIndex & index, const QVariant & va
 bool MeasurementsModel::insertRows ( int row, int count, const QModelIndex & parent ){
     Q_UNUSED(parent)
 
-    int rowcount = rowCount();
     if (row < 0 ){
         return false;
     }

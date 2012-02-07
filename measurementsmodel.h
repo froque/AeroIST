@@ -48,20 +48,16 @@ public:
     // metadata about the measurement
     QString name;
     QString description;
-    int dvm_time;
-    matrix_t matrix;
+    int dvm_time;       // to be deleted
+    matrix_t matrix;    // to be deleted
     int average_number;
     double settling_time;
     double start;
     double end;
     double step;
-    double set_alpha;//to be deleted
-    double set_beta;//to be deleted
-    double set_motor;//to be deleted
     QHash<QString,double> start_hash;
-    control_types_t control_type; //to be deleted
     QString control;
-    double zero[NFORCES];
+    double zero[NFORCES]; //to be deleted
     QString zero_name;
     int n;
 

@@ -153,11 +153,11 @@ void AeroISTWindow::on_ThreadButton_clicked(){
     // pass the values from comboboxes to the thread. only for free control
     connect(this,SIGNAL(set_variable(QHash<QString,double>)),m_test,SLOT(manual_control(QHash<QString,double>)));
 
-    ui->doubleSpinBoxALpha->setValue( measurementThread->set_alpha);
-    ui->doubleSpinBoxBeta->setValue(measurementThread->set_beta);
-    ui->doubleSpinBoxMotor->setValue( measurementThread->set_motor);
+    ui->doubleSpinBoxALpha->setValue(measurementThread->start_hash["Alpha"]);
+    ui->doubleSpinBoxBeta->setValue(measurementThread->start_hash["Beta"]);
+    ui->doubleSpinBoxMotor->setValue(measurementThread->start_hash["Motor"]);
 
-    if (measurementThread->control_type == NONE){
+    if (measurementThread->control == ""){
         ui->doubleSpinBoxALpha->setEnabled(true);
         ui->doubleSpinBoxBeta->setEnabled(true);
         ui->doubleSpinBoxMotor->setEnabled(true);
@@ -337,11 +337,11 @@ void AeroISTWindow::load_xml(QString fileName){
     if (schema.isValid()){
         QXmlSchemaValidator validator( schema );
         if(!validator.validate(QUrl::fromLocalFile(fileName))){
-            message(tr("Couldn't confirm xml file"));
-            return;
+            message(tr("Couldn't confirm xml file. Continuing without guaranty."));
+//            return;
         }
     } else {
-        message(tr("Couldn't confirm xml file"));
+        message(tr("Couldn't confirm schema file"));
         return;
     }
 

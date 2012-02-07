@@ -100,29 +100,16 @@ void MeasurementsPreferences::accept(){
     measurement->start = ui->doubleSpinBoxStart->value();
     measurement->end = ui->doubleSpinBoxEnd->value();
     measurement->step = ui->doubleSpinBoxStep->value();
-    measurement->control_type = (control_types_t) ui->controlGroup->checkedId();
 
-    switch(measurement->control_type){
-    case NONE :
-        measurement->control = "";
-        break;
-    case ALPHA:
-        measurement->control = "Alpha";
-        break;
-    case BETA:
-        measurement->control = "Beta";
-        break;
-    case MOTOR:
-        measurement->control = "Motor";
-        break;
+    switch (ui->controlGroup->checkedId()){
+    case 0: measurement->control = ""; break;
+    case 1: measurement->control = "Alpha"; break;
+    case 2: measurement->control = "Beta"; break;
+    case 3: measurement->control = "Motor"; break;
     }
 
 
     measurement->n = ui->spinBoxN->value();
-
-    measurement->set_alpha = ui->doubleSpinBoxAlpha->value();
-    measurement->set_beta = ui->doubleSpinBoxBeta->value();
-    measurement->set_motor = ui->doubleSpinBoxMotor->value();
 
     measurement->start_hash["Alpha"]  = ui->doubleSpinBoxAlpha->value();
     measurement->start_hash["Beta"] = ui->doubleSpinBoxBeta->value();
