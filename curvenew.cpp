@@ -59,6 +59,8 @@ void CurveNew::accept(){
         pen.setStyle((Qt::PenStyle)ui->comboBoxStyle->itemData(ui->comboBoxStyle->currentIndex()).toInt());
         pen.setColor(ui->comboBoxColor->currentText());
         curve->setPen(pen);
+
+        curve->setYAxis(QwtPlot::yRight);
         curve->attach(plot);
         plot->replot();
         QDialog::accept();

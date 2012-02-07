@@ -26,6 +26,14 @@ MeasurementsModel::MeasurementsModel(QObject *parent)
     for (int k; k<NFORCES;k++ ){
         zero[0] = 0;
     }
+
+    variables.append(new TimeModel);
+    variables.append(new ForceModel);
+    variables.append(new AlphaModel);
+    variables.append(new BetaModel);
+    variables.append(new TemperatureModel);
+    variables.append(new MotorModel);
+    variables.append(new WindModel);
 }
 MeasurementsModel::MeasurementsModel(QDomElement root, QObject *parent):
     QAbstractTableModel(parent)
@@ -59,20 +67,17 @@ void MeasurementsModel::save_csv(QTextStream *out,bool header){
     }
 }
 
-//void MeasurementsModel::GetMeasure(measure m){
 void MeasurementsModel::GetMeasure(QHash<QString,double> hash){
-//void MeasurementsModel::GetMeasure(QStringList,QList<double>){
+    VariableModel *var;
     beginInsertRows(QModelIndex(), tempo.size(), tempo.size());
 
-//    for (int k=0;k<6;k++ ){
-//        force[k].append(m.force[k]);
-//    }
-//    alpha.append( m.alpha);
-//    beta.append( m.beta );
-//    motor.append( m.motor );
-//    temp.append( m.temp );
-//    tempo.append(m.tempo);
-//    wind.append(m.wind);
+    foreach (var, variables) {
+        for (int k=0; k< var->get_num(); k++){
+            if(hash.contains(var->get_name(k))){
+                var->append_value(k,hash[var->get_name(k)]);
+            }
+        }
+    }
 
     force[0].append(hash["Fx"]);
     force[1].append(hash["Fy"]);
@@ -92,12 +97,21 @@ void MeasurementsModel::GetMeasure(QHash<QString,double> hash){
 
 int MeasurementsModel::columnCount(const QModelIndex &parent)  const{
     Q_UNUSED(parent);
-    return NVARS;
+    int size = 0;
+    VariableModel *var;
+    foreach (var, variables) {
+        size += var->get_num();
+    }
+    return size;
 }
 
 int MeasurementsModel::rowCount(const QModelIndex &parent ) const{
     Q_UNUSED(parent);
-    return force[0].size();
+    if (variables.isEmpty()){
+        return 0;
+    } else {
+        return variables.first()->get_size();
+    }
 }
 
 QVariant MeasurementsModel::data(const QModelIndex &index, int role) const{
@@ -107,31 +121,17 @@ QVariant MeasurementsModel::data(const QModelIndex &index, int role) const{
 
     if (role == Qt::DisplayRole) {
         int row = index.row();
-        switch (index.column()) {
-        case 0:
-            return tempo.value(row);
-        case 1:
-            return force[0].value(row);
-        case 2:
-            return force[1].value(row);
-        case 3:
-            return force[2].value(row);
-        case 4:
-            return force[3].value(row);
-        case 5:
-            return force[4].value(row);
-        case 6:
-            return force[5].value(row);
-        case 7:
-            return alpha.value(row);
-        case 8:
-            return beta.value(row);
-        case 9:
-            return motor.value(row);
-        case 10:
-            return temp.value(row);
-        case 11:
-            return wind.value(row);
+
+        VariableModel *var;
+        int upper = 0;
+        int lower = 0;
+        int column = index.column();
+        foreach (var, variables) {
+            lower = upper;
+            upper += var->get_num();
+            if ( column < upper){
+                return var->get_value( column- lower , row);
+            }
         }
     }
     return QVariant();
@@ -146,33 +146,17 @@ QVariant MeasurementsModel::headerData(int section, Qt::Orientation orientation,
     }
 
     if (orientation == Qt::Horizontal) {
-        switch (section) {
-        case 0:
-            return tr("Time");
-        case 1:
-            return tr("Fx");
-        case 2:
-            return tr("Fy");
-        case 3:
-            return tr("Fz");
-        case 4:
-            return tr("Mx");
-        case 5:
-            return tr("My");
-        case 6:
-            return tr("Mz");
-        case 7:
-            return tr("Alpha");
-        case 8:
-            return tr("Beta");
-        case 9:
-            return tr("Motor");
-        case 10:
-            return tr("Temperature");
-        case 11:
-            return tr("Wind");
-        default:
-            return QVariant();
+
+        VariableModel *var;
+        int upper = 0;
+        int lower = 0;
+        int column = section;
+        foreach (var, variables) {
+            lower = upper;
+            upper += var->get_num();
+            if ( column < upper){
+                return var->get_name( column- lower );
+            }
         }
     }
     return QVariant();
@@ -180,32 +164,45 @@ QVariant MeasurementsModel::headerData(int section, Qt::Orientation orientation,
 
 
 QVector<double>  MeasurementsModel::vector_data(int index){
-    switch (index) {
-    case 0:
-        return tempo;
-    case 1:
-        return force[0];
-    case 2:
-        return force[1];
-    case 3:
-        return force[2];
-    case 4:
-        return force[3];
-    case 5:
-        return force[4];
-    case 6:
-        return force[5];
-    case 7:
-        return alpha;
-    case 8:
-        return beta;
-    case 9:
-        return motor;
-    case 10:
-        return temp;
-    case 11:
-        return wind;
+
+    VariableModel *var;
+    int upper = 0;
+    int lower = 0;
+    int column = index;
+    foreach (var, variables) {
+        lower = upper;
+        upper += var->get_num();
+        if ( column < upper){
+            return var->get_vector(column - lower);
+        }
     }
+
+//    switch (index) {
+//    case 0:
+//        return tempo;
+//    case 1:
+//        return force[0];
+//    case 2:
+//        return force[1];
+//    case 3:
+//        return force[2];
+//    case 4:
+//        return force[3];
+//    case 5:
+//        return force[4];
+//    case 6:
+//        return force[5];
+//    case 7:
+//        return alpha;
+//    case 8:
+//        return beta;
+//    case 9:
+//        return motor;
+//    case 10:
+//        return temp;
+//    case 11:
+//        return wind;
+//    }
     QVector<double> stupid_warning;
     return stupid_warning;
 }

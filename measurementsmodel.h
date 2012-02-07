@@ -5,9 +5,11 @@
 #include <QAbstractTableModel>
 #include <QTextStream>
 
-#include "measure.h"
+#include "measure.h" // to be deleted later
 #include "common.h"
 #include "zeromodel.h"
+
+#include "variablemodel.h" //flip: should this be moved to .cpp?
 
 #define NVARS 12
 #define NFORCES 6
@@ -22,6 +24,8 @@ public:
     void save_csv(QTextStream *out,bool header);
     void save_xml(QDomElement root);
     void load_xml(QDomElement root);
+
+    QList<VariableModel*> variables;
 
     QVector<double> tempo;
     QVector<double> force[NFORCES];
@@ -63,7 +67,6 @@ public:
 
 public slots:
     void GetMeasure(QHash<QString,double> hash);
-//    void GetMeasure(QStringList,QList<double>);
 };
 
 #endif // MEASUREMENTS_H

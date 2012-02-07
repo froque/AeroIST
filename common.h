@@ -10,6 +10,7 @@
 
 #define AEROIST "AeroIST"
 
+// to be deleted later
 enum control_types_t{
     NONE=0,
     ALPHA,

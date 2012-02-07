@@ -130,8 +130,8 @@ class Virtual_Force: public Variable {
 public:
     bool is_controlable() {return false;}
     int get_num() {return 6;}
-    void read() {Helper::msleep(500); value = -10.0 * qrand() / RAND_MAX;}
-    double get_value(int n) {Q_UNUSED(n); return value;}
+    void read() {Helper::msleep(500); for (int k=0; k<6; k++) {value[k] = -10.0 * qrand() / RAND_MAX;}}
+    double get_value(int n) { return value[n];}
     void set_value(int n ,double value) {Q_UNUSED(n); Q_UNUSED(value);  }
     QString get_name(int n) {
         switch (n){
@@ -148,7 +148,7 @@ public:
     bool has_set_final() {return is_controlable() && false;}
     void set_final() {}
 private:
-    double value;
+    double value[6];
 };
 
 #endif // VARIABLE_H
