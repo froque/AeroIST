@@ -367,4 +367,5 @@ QString Force::get_name(int n) {
         case 4: return "My"; break;
         case 5: return "Mz"; break;
     }
+    return "";
 }
