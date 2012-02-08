@@ -31,10 +31,13 @@ enum ThreadStatus{
 
 
 #define DEFAULT_ALPHA_STEP  1
-#define DEFAULT_BETA_STEP   1
+#define DEFAULT_BETA_STEP   5
+#define DEFAULT_ALPHA_START 0
+#define DEFAULT_BETA_START  0
 
-#define DEFAULT_MOTOR_MIN    0
-#define DEFAULT_MOTOR_MAX    100 //Percentage
+#define MOTOR_MIN    0
+#define MOTOR_MAX    100 //Percentage
+#define MOTOR_MIN_STEP 1
 #define DEFAULT_MOTOR_STEP   1
 
 #define ANGLEZERO_ALPHA 730303.0
@@ -44,6 +47,8 @@ enum ThreadStatus{
 
 #define ANGLEMAX_ALPHA 30.0
 #define ANGLEMAX_BETA 180.0
+#define ANGLEMINSTEP_ALPHA 0.1
+#define ANGLEMINSTEP_BETA 0.2
 
 #define PRECISION_ALPHA 0.03
 #define PRECISION_BETA 0.05

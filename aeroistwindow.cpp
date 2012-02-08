@@ -82,7 +82,7 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
     ui->doubleSpinBoxBeta->setRange(-ANGLEMAX_BETA,ANGLEMAX_BETA);
     ui->doubleSpinBoxBeta->setSingleStep(DEFAULT_BETA_STEP);
     ui->doubleSpinBoxBeta->setValue(0);
-    ui->doubleSpinBoxMotor->setRange(DEFAULT_MOTOR_MIN,DEFAULT_MOTOR_MAX);
+    ui->doubleSpinBoxMotor->setRange(MOTOR_MIN,MOTOR_MAX);
     ui->doubleSpinBoxMotor->setSingleStep(DEFAULT_MOTOR_STEP);
     ui->doubleSpinBoxMotor->setValue(0);
 }

@@ -2,10 +2,12 @@
 #define MEASUREMENTSPREFERENCES_H
 
 #include <QDialog>
-#include <QSettings>
 #include "measurementsmodel.h"
 #include "zerolist.h"
 #include <QSortFilterProxyModel>
+#include <QDoubleSpinBox>
+#include <QButtonGroup>
+#include <QRadioButton>
 
 namespace Ui {
     class MeasurementsPreferences;
@@ -21,7 +23,7 @@ public:
 
 private slots:
     void accept(void);
-    void maxminstep_enabled(int id);
+    void maxminstep_enabled(QAbstractButton* button);
     void on_combo_matrix_currentIndexChanged(int index);
 
 private:
@@ -29,6 +31,13 @@ private:
     MeasurementsModel *measurement;
     ZeroList *list;
     QSortFilterProxyModel *proxyfilter;
+    QButtonGroup *group;
+    QSpinBox *spin_iterations;
+    QRadioButton *radio_none;
+    QList<QDoubleSpinBox*> list_start;
+    QList<QDoubleSpinBox*> list_end;
+    QList<QDoubleSpinBox*> list_step;
+    QList<QRadioButton*> list_radio;
 };
 
 #endif // MEASUREMENTSPREFERENCES_H

@@ -4,6 +4,13 @@
 #include "QDebug"
 #include "QMessageBox"
 #include <cmath>
+#include <QSettings>
+
+#define COL_RADIO 1
+#define COL_START 2
+#define COL_END   3
+#define COL_STEP  4
+
 
 MeasurementsPreferences::MeasurementsPreferences(MeasurementsModel *measurement, ZeroList *list, QWidget *parent) :
     QDialog(parent),
@@ -37,36 +44,67 @@ MeasurementsPreferences::MeasurementsPreferences(MeasurementsModel *measurement,
     ui->combo_dvm_time->setCurrentIndex(index);
 
     ui->spinBoxAverage->setValue(settings.value(SETTINGS_DEFAULT_AVERAGE_NUMBER).toInt());
-
     ui->doubleSpinBoxSettling->setValue(settings.value(SETTINGS_DEFAULT_SETTLING_TIME).toDouble());
-    //Alpha
-    ui->doubleSpinBoxAlphaStart->setRange(-ANGLEMAX_ALPHA,ANGLEMAX_ALPHA);
-    ui->doubleSpinBoxAlphaStart->setSingleStep(DEFAULT_ALPHA_STEP);
-    ui->doubleSpinBoxAlphaEnd->setRange(-ANGLEMAX_ALPHA, ANGLEMAX_ALPHA);
-    ui->doubleSpinBoxAlphaEnd->setSingleStep(DEFAULT_ALPHA_STEP);
-    ui->doubleSpinBoxAlphaStep->setRange(-ANGLEMAX_ALPHA, ANGLEMAX_ALPHA);
-    ui->doubleSpinBoxAlphaStep->setSingleStep(DEFAULT_ALPHA_STEP);
-    //Beta
-    ui->doubleSpinBoxBetaStart->setRange(-ANGLEMAX_BETA,ANGLEMAX_BETA);
-    ui->doubleSpinBoxBetaStart->setSingleStep(DEFAULT_BETA_STEP);
-    ui->doubleSpinBoxBetaEnd->setRange(-ANGLEMAX_BETA,ANGLEMAX_BETA);
-    ui->doubleSpinBoxBetaEnd->setSingleStep(DEFAULT_BETA_STEP);
-    ui->doubleSpinBoxBetaStep->setRange(-ANGLEMAX_BETA,ANGLEMAX_BETA);
-    ui->doubleSpinBoxBetaStep->setSingleStep(DEFAULT_BETA_STEP);
-    //Motor
-    ui->doubleSpinBoxMotorStart->setRange(DEFAULT_MOTOR_MIN,DEFAULT_MOTOR_MAX);
-    ui->doubleSpinBoxMotorStart->setSingleStep(DEFAULT_MOTOR_STEP);
-    ui->doubleSpinBoxMotorEnd->setRange(DEFAULT_MOTOR_MIN,DEFAULT_MOTOR_MAX);
-    ui->doubleSpinBoxMotorEnd->setSingleStep(DEFAULT_MOTOR_STEP);
-    ui->doubleSpinBoxMotorStep->setRange(DEFAULT_MOTOR_MIN,DEFAULT_MOTOR_MAX);
-    ui->doubleSpinBoxMotorStep->setSingleStep(DEFAULT_MOTOR_STEP);
 
-    ui->controlGroup->setId(ui->radioButtonNone,NONE);
-    ui->controlGroup->setId(ui->radioButtonAlpha,ALPHA);
-    ui->controlGroup->setId(ui->radioButtonBeta,BETA);
-    ui->controlGroup->setId(ui->radioButtonMotor,MOTOR);
+    QGridLayout *layout = new QGridLayout;
+    QLabel *label;
+    QRadioButton *radio;
+    QDoubleSpinBox *spin;
+    VariableModel *var;
+    int row = 0;
 
-    connect(ui->controlGroup, SIGNAL(buttonClicked(int)),this,SLOT(maxminstep_enabled(int)));
+    group = new QButtonGroup(ui->widget);
+    radio_none = new QRadioButton(tr("None"),ui->widget);
+    radio_none->setChecked(true);
+    layout->addWidget(radio_none,row,COL_RADIO);
+    group->addButton(radio_none);
+    label = new QLabel(trUtf8("Nº of iterations"),ui->widget);
+    layout->addWidget(label,row,COL_START);          // not really a start spinbox, but just to be pretty
+    spin_iterations = new QSpinBox(ui->widget);
+    spin_iterations->setRange(0,1000);
+    layout->addWidget(spin_iterations,row,COL_END);
+    row++;
+    label = new QLabel (tr("Start"));
+    layout->addWidget(label,row,COL_START);
+    label = new QLabel (tr("End"));
+    layout->addWidget(label,row,COL_END);
+    label = new QLabel (tr("Step"));
+    layout->addWidget(label,row,COL_STEP);
+    row++;
+    foreach (var, measurement->variables) {
+        if (var->is_controlable()){
+            for (int k=0; k< var->get_num(); k++){
+                radio = new QRadioButton(var->get_name(k).append(" (").append(var->get_units(k)).append(")"),ui->widget);
+                radio->setObjectName(var->get_name(k));
+                list_radio.append(radio);
+                layout->addWidget(radio, row, COL_RADIO);
+                group->addButton(radio,row);
+                spin = new QDoubleSpinBox(ui->widget);
+                spin->setRange(var->get_lower_bound(k),var->get_upper_bound(k));
+                spin->setSingleStep(var->get_default_step(k));
+                spin->setValue(var->get_default_start(k));
+                list_start.append(spin);
+                layout->addWidget(spin,row,COL_START);
+                spin = new QDoubleSpinBox(ui->widget);
+                spin->setRange(var->get_lower_bound(k),var->get_upper_bound(k));
+                spin->setSingleStep(var->get_default_step(k));
+                spin->setValue(var->get_upper_bound(k));
+                list_end.append(spin);
+                layout->addWidget(spin,row,COL_END);
+                spin = new QDoubleSpinBox(ui->widget);
+                spin->setRange(var->get_smaller_step(k),var->get_upper_bound(k) - var->get_lower_bound(k));
+                spin->setSingleStep(var->get_default_step(k));
+                spin->setValue(var->get_default_step(k));
+                list_step.append(spin);
+                layout->addWidget(spin,row,COL_STEP);
+                row++;
+            }
+        }
+    }
+    ui->widget->setLayout(layout);
+    ui->widget->adjustSize();
+
+    connect(group, SIGNAL(buttonClicked(QAbstractButton*)),this,SLOT(maxminstep_enabled(QAbstractButton*)));
     ui->edit_name->setFocus();
     adjustSize();
 }
@@ -90,49 +128,20 @@ void MeasurementsPreferences::accept(){
         msgBox.exec();
         return ;
     }
-//    if (ui->controlGroup->checkedId() !=NONE ){
-//        double start,end,step;
 
-
-//        start = ui->doubleSpinBoxStart->value();
-//        end = ui->doubleSpinBoxEnd->value();
-//        step = ui->doubleSpinBoxStep->value();
-
-//        if( (start > end && step > 0 ) || fabs(end-start) < fabs(step) || step == 0  ){
-//            QMessageBox msgBox;
-//            msgBox.setText(tr("Wrong Minimum, Maximum and Step"));
-//            msgBox.exec();
-//            return ;
-//        }
-//    }
-    double start,end,step;
-    switch (ui->controlGroup->checkedId()){
-    case 0:
-        measurement->control = ""; break;
-    case 1:
-        measurement->control = "Alpha";
-        start = ui->doubleSpinBoxAlphaStart->value();
-        end = ui->doubleSpinBoxAlphaEnd->value();
-        step = ui->doubleSpinBoxAlphaStep->value();
-        break;
-    case 2:
-        measurement->control = "Beta";
-        start = ui->doubleSpinBoxBetaStart->value();
-        end = ui->doubleSpinBoxBetaEnd->value();
-        step = ui->doubleSpinBoxBetaStep->value();
-        break;
-    case 3:
-        measurement->control = "Motor";
-        start = ui->doubleSpinBoxMotorStart->value();
-        end = ui->doubleSpinBoxMotorEnd->value();
-        step = ui->doubleSpinBoxMotorStep->value();
-        break;
-    }
-    if( (ui->controlGroup->checkedId() != 0 ) && ((start > end && step > 0 ) || fabs(end-start) < fabs(step) || step == 0 )){
-                QMessageBox msgBox;
-                msgBox.setText(tr("Wrong Minimum, Maximum and Step"));
-                msgBox.exec();
-                return ;
+    double start = 0, end = 0,step = 0;
+    // what is the desired control?
+    if (group->checkedButton() == radio_none){
+        measurement->control = "";
+    } else {
+        measurement->control = group->checkedButton()->objectName();
+        int k = list_radio.indexOf( qobject_cast<QRadioButton*>(group->checkedButton()));
+        start = list_start.value(k)->value();
+        end = list_end.value(k)->value();
+        step = list_step.value(k)->value();
+        if( start > end ){
+            step = -step;
+        }
     }
 
     measurement->name = ui->edit_name->text();
@@ -141,17 +150,14 @@ void MeasurementsPreferences::accept(){
     measurement->dvm_time = ui->combo_dvm_time->itemData(ui->combo_dvm_time->currentIndex()).toInt();
     measurement->average_number = ui->spinBoxAverage->value();
     measurement->settling_time = ui->doubleSpinBoxSettling->value();
-//    measurement->start = ui->doubleSpinBoxStart->value();
-//    measurement->end = ui->doubleSpinBoxEnd->value();
-//    measurement->step = ui->doubleSpinBoxStep->value();
+
     measurement->end = end;
     measurement->step = step;
 
-    measurement->n = ui->spinBoxN->value();
-
-    measurement->start_hash["Alpha"]  = ui->doubleSpinBoxAlphaStart->value();
-    measurement->start_hash["Beta"] = ui->doubleSpinBoxBetaStart->value();
-    measurement->start_hash["Motor"] = ui->doubleSpinBoxMotorStart->value();
+    measurement->n = spin_iterations->value();
+    for (int k=0; k<list_radio.size(); k++){
+        measurement->start_hash[list_radio.value(k)->objectName()] = list_start.value(k)->value();
+    }
 
     ZeroModel *zero = list->at(ui->combo_zero->currentIndex());
     for (int k=0; k < NFORCES; k++){
@@ -161,44 +167,21 @@ void MeasurementsPreferences::accept(){
     QDialog::accept();
 }
 
-void MeasurementsPreferences::maxminstep_enabled(int id){
-    switch (id){
-    case NONE:
-        ui->spinBoxN->setEnabled(true);
-        ui->doubleSpinBoxAlphaEnd->setEnabled(false);
-        ui->doubleSpinBoxAlphaStep->setEnabled(false);
-        ui->doubleSpinBoxBetaEnd->setEnabled(false);
-        ui->doubleSpinBoxBetaStep->setEnabled(false);
-        ui->doubleSpinBoxMotorEnd->setEnabled(false);
-        ui->doubleSpinBoxMotorStep->setEnabled(false);
-        return;
-    case ALPHA:
-        ui->spinBoxN->setEnabled(false);
-        ui->doubleSpinBoxAlphaEnd->setEnabled(true);
-        ui->doubleSpinBoxAlphaStep->setEnabled(true);
-        ui->doubleSpinBoxBetaEnd->setEnabled(false);
-        ui->doubleSpinBoxBetaStep->setEnabled(false);
-        ui->doubleSpinBoxMotorEnd->setEnabled(false);
-        ui->doubleSpinBoxMotorStep->setEnabled(false);
-        return;
-    case BETA:
-        ui->spinBoxN->setEnabled(false);
-        ui->doubleSpinBoxAlphaEnd->setEnabled(false);
-        ui->doubleSpinBoxAlphaStep->setEnabled(false);
-        ui->doubleSpinBoxBetaEnd->setEnabled(true);
-        ui->doubleSpinBoxBetaStep->setEnabled(true);
-        ui->doubleSpinBoxMotorEnd->setEnabled(false);
-        ui->doubleSpinBoxMotorStep->setEnabled(false);
-        return;
-    case MOTOR:
-        ui->spinBoxN->setEnabled(false);
-        ui->doubleSpinBoxAlphaEnd->setEnabled(false);
-        ui->doubleSpinBoxAlphaStep->setEnabled(false);
-        ui->doubleSpinBoxBetaEnd->setEnabled(false);
-        ui->doubleSpinBoxBetaStep->setEnabled(false);
-        ui->doubleSpinBoxMotorEnd->setEnabled(true);
-        ui->doubleSpinBoxMotorStep->setEnabled(true);
-        return;
+void MeasurementsPreferences::maxminstep_enabled(QAbstractButton* button) {
+    QDoubleSpinBox *spin;
+    foreach (spin, list_end) {
+        spin->setEnabled(false);
+    }
+    foreach (spin, list_step) {
+        spin->setEnabled(false);
+    }
+    if (button == radio_none){
+        spin_iterations->setEnabled(true);
+    } else {
+        spin_iterations->setEnabled(false);
+        int row = list_radio.indexOf( qobject_cast<QRadioButton*>(button));
+        list_end.value(row)->setEnabled(true);
+        list_step.value(row)->setEnabled(true);
     }
 }
 
