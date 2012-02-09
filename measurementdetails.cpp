@@ -9,6 +9,10 @@ MeasurementDetails::MeasurementDetails(MeasurementsModel *measurement, QWidget *
 
     ui->labelName->setText( measurement->name);
     ui->labelDescription->setText(measurement->description);
+    ui->labelSettling->setText(QString::number(measurement->settling_time));
+    ui->labelAverage->setText(QString::number(measurement->average_number));
+    ui->labelZero->setText(measurement->zero_name);
+
     switch (measurement->matrix){
     case MIDDLE:
         ui->labelMatrix->setText(tr("Middle")); break;
@@ -30,45 +34,42 @@ MeasurementDetails::MeasurementDetails(MeasurementsModel *measurement, QWidget *
     case 6:
         ui->labelMultimeter->setText(tr("10 s")); break;
     }
-    ui->labelAverage->setText(QString::number(measurement->average_number));
-    ui->labelZero->setText(measurement->zero_name);
 
-    ui->labelAlpha->setText(QString::number(measurement->start_hash["Alpha"]));
-    ui->labelBeta->setText(QString::number(measurement->start_hash["Beta"]));
-    ui->labelMotor->setText(QString::number(measurement->start_hash["Motor"]));
+    QLabel *label;
+    VariableModel *var;
+    int row;
+    row = ui->verticalLayout->indexOf(ui->widget);
+    foreach (var, measurement->variables) {
+        if(var->is_controlable()){
+            for (int k=0; k<var->get_num(); k++){
+                label = new QLabel(var->get_name(k).append(" (").append(var->get_units(k)).append(")"),ui->widget);
+                ui->verticalLayout->insertWidget(row,label);
+                label = new QLabel(QString::number( measurement->start_hash[var->get_name(k)]),ui->widget);
+                ui->verticalLayout_2->insertWidget(row,label);
+
+                row++;
+            }
+        }
+    }
+
     if (measurement->control == ""){
         ui->labelControl->setText(tr("None"));
         ui->labelViewEnd->hide();
         ui->labelViewStep->hide();
-        ui->labelViewSettling->hide();
         ui->labelEnd->hide();
         ui->labelStep->hide();
-        ui->labelSettling->hide();
         ui->labelN->setText(QString::number( measurement->n));
     } else{
+        ui->labelControl->setText(measurement->control);
         ui->labelEnd->setText(QString::number(measurement->end));
         ui->labelStep->setText(QString::number(measurement->step));
-        ui->labelSettling->setText(QString::number(measurement->settling_time));
         ui->labelN->hide();
         ui->labelViewN->hide();
-        ui->labelControl->setText(measurement->control);
-        if (measurement->control == "Alpha") {
-            ui->labelAlpha->hide();
-            ui->labelViewAlpha->hide();
-        } else if (measurement->control == "Beta") {
-            ui->labelBeta->hide();
-            ui->labelViewBeta->hide();
-        } else if (measurement->control == "Motor") {
-            ui->labelMotor->hide();
-            ui->labelViewMotor->hide();
-        }
     }
 
     this->adjustSize();
-
 }
 
-MeasurementDetails::~MeasurementDetails()
-{
+MeasurementDetails::~MeasurementDetails(){
     delete ui;
 }
