@@ -50,7 +50,7 @@ MeasurementsPreferences::MeasurementsPreferences(MeasurementsModel *measurement,
     QLabel *label;
     QRadioButton *radio;
     QDoubleSpinBox *spin;
-    VariableModel *var;
+
     int row = 0;
 
     group = new QButtonGroup(ui->widget);
@@ -71,30 +71,30 @@ MeasurementsPreferences::MeasurementsPreferences(MeasurementsModel *measurement,
     label = new QLabel (tr("Step"));
     layout->addWidget(label,row,COL_STEP);
     row++;
-    foreach (var, measurement->variables) {
-        if (var->is_controlable()){
-            for (int k=0; k< var->get_num(); k++){
-                radio = new QRadioButton(var->get_name(k).append(" (").append(var->get_units(k)).append(")"),ui->widget);
-                radio->setObjectName(var->get_name(k));
+    foreach (VariableModel *var, measurement->variables) {
+        if (var->meta->is_controlable()){
+            for (int k=0; k< var->meta->get_num(); k++){
+                radio = new QRadioButton(var->meta->get_name(k).append(" (").append(var->meta->get_units(k)).append(")"),ui->widget);
+                radio->setObjectName(var->meta->get_name(k));
                 list_radio.append(radio);
                 layout->addWidget(radio, row, COL_RADIO);
                 group->addButton(radio,row);
                 spin = new QDoubleSpinBox(ui->widget);
-                spin->setRange(var->get_lower_bound(k),var->get_upper_bound(k));
-                spin->setSingleStep(var->get_default_step(k));
-                spin->setValue(var->get_default_start(k));
+                spin->setRange(var->meta->get_lower_bound(k),var->meta->get_upper_bound(k));
+                spin->setSingleStep(var->meta->get_default_step(k));
+                spin->setValue(var->meta->get_default_start(k));
                 list_start.append(spin);
                 layout->addWidget(spin,row,COL_START);
                 spin = new QDoubleSpinBox(ui->widget);
-                spin->setRange(var->get_lower_bound(k),var->get_upper_bound(k));
-                spin->setSingleStep(var->get_default_step(k));
-                spin->setValue(var->get_upper_bound(k));
+                spin->setRange(var->meta->get_lower_bound(k),var->meta->get_upper_bound(k));
+                spin->setSingleStep(var->meta->get_default_step(k));
+                spin->setValue(var->meta->get_upper_bound(k));
                 list_end.append(spin);
                 layout->addWidget(spin,row,COL_END);
                 spin = new QDoubleSpinBox(ui->widget);
-                spin->setRange(var->get_smaller_step(k),var->get_upper_bound(k) - var->get_lower_bound(k));
-                spin->setSingleStep(var->get_default_step(k));
-                spin->setValue(var->get_default_step(k));
+                spin->setRange(var->meta->get_smaller_step(k),var->meta->get_upper_bound(k) - var->meta->get_lower_bound(k));
+                spin->setSingleStep(var->meta->get_default_step(k));
+                spin->setValue(var->meta->get_default_step(k));
                 list_step.append(spin);
                 layout->addWidget(spin,row,COL_STEP);
                 row++;

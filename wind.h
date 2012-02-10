@@ -3,7 +3,7 @@
 
 #include "variable.h"
 
-class Wind: public Variable
+class Wind: public VariableMeta
 {
 public:
     Wind();

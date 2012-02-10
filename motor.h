@@ -3,7 +3,7 @@
 
 #include "variable.h"
 
-class Motor : public Variable {
+class Motor : public VariableMeta {
 public:
     Motor(void);
     ~Motor(void);

@@ -9,7 +9,7 @@
 #include "common.h"
 #include "zeromodel.h"
 
-#include "variablemodel.h" //flip: should this be moved to .cpp?
+#include "variable.h" //flip: should this be moved to .cpp?
 
 #define NVARS 12
 #define NFORCES 6

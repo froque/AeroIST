@@ -2,7 +2,7 @@
 #include <QStringList>
 #include "measurementsmodel.h"
 
-
+#include "virtualvariables.h"
 #ifdef DEBUG
 #include "QDebug"
 #endif // DEBUG
@@ -32,13 +32,13 @@ MeasurementsModel::MeasurementsModel(QDomElement root, QObject *parent):
 }
 
 void MeasurementsModel::init(){
-    variables.append(new TimeModel);
-    variables.append(new ForceModel);
-    variables.append(new AlphaModel);
-    variables.append(new BetaModel);
-    variables.append(new MotorModel);
-    variables.append(new TemperatureModel);
-    variables.append(new WindModel);
+    variables.append(new Virtual_TimeModel);
+    variables.append(new Virtual_ForceModel);
+    variables.append(new Virtual_AlphaModel);
+    variables.append(new Virtual_BetaModel);
+    variables.append(new Virtual_MotorModel);
+    variables.append(new Virtual_TemperatureModel);
+    variables.append(new Virtual_WindModel);
 }
 
 void MeasurementsModel::save_csv(QTextStream *out,bool header){
@@ -68,13 +68,13 @@ void MeasurementsModel::save_csv(QTextStream *out,bool header){
 }
 
 void MeasurementsModel::GetMeasure(QHash<QString,double> hash){
-    VariableModel *var;
+
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
 
-    foreach (var, variables) {
-        for (int k=0; k< var->get_num(); k++){
-            if(hash.contains(var->get_name(k))){
-                var->append_value(k,hash[var->get_name(k)]);
+    foreach (VariableModel *var, variables) {
+        for (int k=0; k< var->meta->get_num(); k++){
+            if(hash.contains(var->meta->get_name(k))){
+                var->append_value(k,hash[var->meta->get_name(k)]);
             }
         }
     }
@@ -85,9 +85,8 @@ void MeasurementsModel::GetMeasure(QHash<QString,double> hash){
 int MeasurementsModel::columnCount(const QModelIndex &parent)  const{
     Q_UNUSED(parent);
     int size = 0;
-    VariableModel *var;
-    foreach (var, variables) {
-        size += var->get_num();
+    foreach (VariableModel *var, variables) {
+        size += var->meta->get_num();
     }
     return size;
 }
@@ -109,13 +108,13 @@ QVariant MeasurementsModel::data(const QModelIndex &index, int role) const{
     if (role == Qt::DisplayRole) {
         int row = index.row();
 
-        VariableModel *var;
+
         int upper = 0;
         int lower = 0;
         int column = index.column();
-        foreach (var, variables) {
+        foreach (VariableModel *var, variables) {
             lower = upper;
-            upper += var->get_num();
+            upper += var->meta->get_num();
             if ( column < upper){
                 return var->get_value( column- lower , row);
             }
@@ -134,15 +133,15 @@ QVariant MeasurementsModel::headerData(int section, Qt::Orientation orientation,
 
     if (orientation == Qt::Horizontal) {
 
-        VariableModel *var;
+
         int upper = 0;
         int lower = 0;
         int column = section;
-        foreach (var, variables) {
+        foreach (VariableModel *var, variables) {
             lower = upper;
-            upper += var->get_num();
+            upper += var->meta->get_num();
             if ( column < upper){
-                return var->get_name( column- lower );
+                return var->meta->get_name( column- lower );
             }
         }
     }
@@ -152,13 +151,13 @@ QVariant MeasurementsModel::headerData(int section, Qt::Orientation orientation,
 
 QVector<double>  MeasurementsModel::vector_data(int index){
 
-    VariableModel *var;
+
     int upper = 0;
     int lower = 0;
     int column = index;
-    foreach (var, variables) {
+    foreach (VariableModel *var, variables) {
         lower = upper;
-        upper += var->get_num();
+        upper += var->meta->get_num();
         if ( column < upper){
             return var->get_vector(column - lower);
         }
@@ -386,13 +385,13 @@ bool MeasurementsModel::setData ( const QModelIndex & index, const QVariant & va
             return false;
         }
 
-        VariableModel *var;
+
         int upper = 0;
         int lower = 0;
         int column = index.column();
-        foreach (var, variables) {
+        foreach (VariableModel *var, variables) {
             lower = upper;
-            upper += var->get_num();
+            upper += var->meta->get_num();
             if ( column < upper){
                 var->set_value(column - lower,row,value.toDouble());
                 return true;
@@ -410,9 +409,8 @@ bool MeasurementsModel::insertRows ( int row, int count, const QModelIndex & par
         return false;
     }
 
-    VariableModel *var;
-    foreach (var, variables) {
-        for (int k=0; k< var->get_num(); k++){
+    foreach (VariableModel *var, variables) {
+        for (int k=0; k< var->meta->get_num(); k++){
             var->insert_value(k, row, count, 0);
         }
     }

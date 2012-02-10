@@ -3,7 +3,7 @@
 
 #include "variable.h"
 
-class Temperature : public Variable{
+class Temperature : public VariableMeta{
 public:
     Temperature();
     ~Temperature();

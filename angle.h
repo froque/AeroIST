@@ -4,7 +4,7 @@
 #include "common.h"
 #include "variable.h"
 
-class Angle :public Variable{
+class Angle :public VariableMeta{
 public:
     Angle();
     ~Angle();

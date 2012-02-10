@@ -59,7 +59,7 @@ private:
     bool virtual_measures;
 
     // Variables
-    QList<Variable*> variables;
+    QList<VariableHardware*> variables;
 };
 
 #endif // MYTHREAD_H

@@ -19,7 +19,7 @@ struct matrix		      /* abgespeicherte Kalibriermatrix */
 #pragma pack()
 
 
-class Force :public Variable{
+class Force :public VariableMeta{
 public:
     Force(matrix_t matrix, int dvm_time,double zero[NUMCHANNELS]);
     Force(matrix_t matrix, int dvm_time);

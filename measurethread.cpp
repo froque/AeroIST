@@ -8,6 +8,8 @@
 #include <stdexcept>
 #include "helper.h"
 
+#include "virtualvariables.h"
+
 MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
     QObject(parent),
     start_hash(measurement->start_hash),
@@ -29,27 +31,27 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
     virtual_measures = settings.value(SETTINGS_VIRTUAL_MEASURES,false).toBool();
     settings.setValue(SETTINGS_VIRTUAL_MEASURES,virtual_measures);
     if (!virtual_measures){
-        variables.append(new Force(measurement->matrix,measurement->dvm_time,zero.force));
-        variables.append(new Alpha);
-        variables.append(new Beta);
-        variables.append(new Temperature);
-        variables.append(new Motor);
-        variables.append(new Wind);
+//        variables.append(new Force(measurement->matrix,measurement->dvm_time,zero.force));
+//        variables.append(new Alpha);
+//        variables.append(new Beta);
+//        variables.append(new Temperature);
+//        variables.append(new Motor);
+//        variables.append(new Wind);
 
     } else {
-        variables.append(new Virtual_Force);
-        variables.append(new Virtual_Alpha);
-        variables.append(new Virtual_Beta);
-        variables.append(new Virtual_Temperature);
-        variables.append(new Virtual_Motor);
-        variables.append(new Virtual_Wind);
+        variables.append(new Virtual_ForceHardware);
+        variables.append(new Virtual_AlphaHardware);
+        variables.append(new Virtual_BetaHardware);
+        variables.append(new Virtual_TemperatureHardware);
+        variables.append(new Virtual_MotorHardware);
+        variables.append(new Virtual_WindHardware);
     }
 
-    VariableModel *var;
-    foreach (var, measurement->variables) {
-        for (int k=0; k< var->get_num(); k++){
-            if (control == var->get_name(k) && start_hash.contains(var->get_name(k))){
-                current = start_hash[var->get_name(k)];
+
+    foreach (VariableModel *model, measurement->variables) {
+        for (int k=0; k< model->meta->get_num(); k++){
+            if (control == model->meta->get_name(k) && start_hash.contains(model->meta->get_name(k))){
+                current = start_hash[model->meta->get_name(k)];
                 break;
             }
         }
@@ -71,20 +73,20 @@ MeasureThread::MeasureThread(ZeroModel *measurement,QObject *parent) :
     settings.setValue(SETTINGS_VIRTUAL_MEASURES,virtual_measures);
 
     if (!virtual_measures){
-        variables.append(new Force(measurement->matrix,measurement->dvm_time));
-        variables.append(new Alpha);
-        variables.append(new Beta);
-        variables.append(new Temperature);
-        variables.append(new Motor);
-        variables.append(new Wind);
+//        variables.append(new Force(measurement->matrix,measurement->dvm_time));
+//        variables.append(new Alpha);
+//        variables.append(new Beta);
+//        variables.append(new Temperature);
+//        variables.append(new Motor);
+//        variables.append(new Wind);
 
     } else {
-        variables.append(new Virtual_Force);
-        variables.append(new Virtual_Alpha);
-        variables.append(new Virtual_Beta);
-        variables.append(new Virtual_Temperature);
-        variables.append(new Virtual_Motor);
-        variables.append(new Virtual_Wind);
+        variables.append(new Virtual_ForceHardware);
+        variables.append(new Virtual_AlphaHardware);
+        variables.append(new Virtual_BetaHardware);
+        variables.append(new Virtual_TemperatureHardware);
+        variables.append(new Virtual_MotorHardware);
+        variables.append(new Virtual_WindHardware);
     }
 
     settling_time = 0;
@@ -100,7 +102,7 @@ MeasureThread::~MeasureThread(){
 }
 
 void MeasureThread::isReady(void){
-    Variable *variable;
+    VariableHardware *variable;
     foreach (variable, variables) {
         if (variable->isReady() == false){
             throw std::runtime_error("Something is not ready.");
@@ -134,10 +136,11 @@ void MeasureThread::produce(){
     }
 
     // set variables to final safe values
-    Variable *variable;
-    foreach (variable, variables) {
-        if (variable->is_controlable() && variable->has_set_final()){
-            variable->set_final();
+
+    foreach (VariableHardware *hardware, variables) {
+        VariableMeta *var = hardware->meta;
+        if (var->is_controlable() && hardware->has_set_final()){
+            hardware->set_final();
         }
     }
 
@@ -148,12 +151,12 @@ void MeasureThread::produce(){
 }
 
 void MeasureThread::set_initial(){
-    Variable *var;
-    foreach (var, variables) {
-        if (var->is_controlable()){
-            for (int k = 0 ; k< var->get_num(); k++){
-                if(start_hash.contains(var->get_name(k))){
-                    var->set_value(k,start_hash[var->get_name(k)]);
+
+    foreach (VariableHardware *var, variables) {
+        if (var->meta->is_controlable()){
+            for (int k = 0 ; k< var->meta->get_num(); k++){
+                if(start_hash.contains(var->meta->get_name(k))){
+                    var->set_value(k,start_hash[var->meta->get_name(k)]);
                 }
             }
         }
@@ -161,11 +164,11 @@ void MeasureThread::set_initial(){
 }
 
 void MeasureThread::set_m(void){
-    Variable *var;
+    VariableHardware *var;
     foreach (var, variables) {
-        if (var->is_controlable()){
-            for (int k = 0 ; k< var->get_num(); k++){
-                if (control == var->get_name(k)){
+        if (var->meta->is_controlable()){
+            for (int k = 0 ; k< var->meta->get_num(); k++){
+                if (control == var->meta->get_name(k)){
                     var->set_value(k,current);
                     return ;
                 }
@@ -180,21 +183,21 @@ void MeasureThread::read_m(void){
 
     QHash<QString,double> value_h;
 
-    Variable *variable;
+
     // clear values
-    foreach (variable, variables) {
-        for (int k=0 ; k< variable->get_num(); k++){
-            value_h[variable->get_name(k)] = 0;
+    foreach (VariableHardware *var, variables) {
+        for (int k=0 ; k< var->meta->get_num(); k++){
+            value_h[var->meta->get_name(k)] = 0;
         }
     }
 
     for (int n=0;n < average_number; n++){
-        foreach (variable, variables) {
-            variable->read();
+        foreach (VariableHardware *var, variables) {
+            var->read();
 
             // get the result and add it
-            for (int k=0 ; k< variable->get_num(); k++){
-                value_h[variable->get_name(k)] += variable->get_value(k);
+            for (int k=0 ; k< var->meta->get_num(); k++){
+                value_h[var->meta->get_name(k)] += var->get_value(k);
             }
         }
     }
@@ -216,12 +219,12 @@ void MeasureThread::stop(){
 }
 
 void MeasureThread::manual_control(QHash<QString, double> hash){
-    Variable *var;
-    foreach (var, variables) {
-        if (var->is_controlable()){
-            for (int k = 0 ; k< var->get_num(); k++){
-                if(hash.contains(var->get_name(k))){
-                    var->set_value(k,hash[var->get_name(k)]);
+
+    foreach (VariableHardware *var, variables) {
+        if (var->meta->is_controlable()){
+            for (int k = 0 ; k< var->meta->get_num(); k++){
+                if(hash.contains(var->meta->get_name(k))){
+                    var->set_value(k,hash[var->meta->get_name(k)]);
                 }
             }
         }
