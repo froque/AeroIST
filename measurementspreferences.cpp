@@ -171,8 +171,18 @@ void MeasurementsPreferences::accept(){
     }
 
     ZeroModel *zero = list->at(ui->combo_zero->currentIndex());
-    for (int k=0; k < NFORCES; k++){
-        measurement->zero[k] = zero->force[k].at(0);
+    QVector<double> vector;
+    foreach (VariableModel *zero_var, zero->variables) {
+        foreach (VariableModel *var, measurement->variables) {
+            if(var->meta->has_zero()){
+                if (var->meta->get_general_name() == zero_var->meta->get_general_name()){
+                    for(int k=0; k< zero_var->meta->get_num(); k++){
+                        vector.append(zero_var->get_value(k,0));
+                    }
+                    var->set_zero(vector);
+                }
+            }
+        }
     }
     measurement->zero_name = zero->name;
     QDialog::accept();

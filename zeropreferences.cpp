@@ -27,12 +27,38 @@ ZeroPreferences::ZeroPreferences(ZeroModel *measurement, QWidget *parent) :
     ui->combo_dvm_time->setCurrentIndex(index);
 
     ui->spinBoxAverage->setValue(settings.value(SETTINGS_DEFAULT_AVERAGE_NUMBER).toInt());
-    ui->doubleSpinBoxAlpha->setRange(-ANGLEMAX_ALPHA,ANGLEMAX_ALPHA);
-    ui->doubleSpinBoxAlpha->setSingleStep(DEFAULT_ALPHA_STEP);
-    ui->doubleSpinBoxBeta->setRange(-ANGLEMAX_BETA,ANGLEMAX_BETA);
-    ui->doubleSpinBoxBeta->setSingleStep(DEFAULT_BETA_STEP);
-    ui->doubleSpinBoxMotor->setRange(MOTOR_MIN,MOTOR_MAX);
-    ui->doubleSpinBoxMotor->setSingleStep(DEFAULT_MOTOR_STEP);
+    int num_controls = 0;
+    foreach (VariableModel *var, measurement->variables) {
+        if (var->meta->is_controlable()){
+            for (int k=0; k< var->meta->get_num(); k++){
+                num_controls++;
+            }
+        }
+    }
+
+    if(num_controls > 0){
+        QLabel *label;
+        QDoubleSpinBox *spin;
+        ui->gridLayout->removeWidget(ui->buttonBox);
+        int row = 7;
+        foreach (VariableModel *var, measurement->variables) {
+            if (var->meta->is_controlable()){
+                for (int k=0; k< var->meta->get_num(); k++){
+                    label = new QLabel (var->meta->get_name(k).append(" (").append(var->meta->get_units(k)).append(")"));
+                    ui->gridLayout->addWidget(label,row,0);
+                    spin = new QDoubleSpinBox(ui->widget);
+                    spin->setRange(var->meta->get_lower_bound(k),var->meta->get_upper_bound(k));
+                    spin->setSingleStep(var->meta->get_default_step(k));
+                    spin->setValue(var->meta->get_default_start(k));
+                    spin->setObjectName(var->meta->get_name(k));
+                    list_start.append(spin);
+                    ui->gridLayout->addWidget(spin,row,1);
+                    row++;
+                }
+            }
+        }
+        ui->gridLayout->addWidget(ui->buttonBox,row,1);
+    }
     ui->edit_name->setFocus();
     adjustSize();
 }
@@ -55,13 +81,11 @@ void ZeroPreferences::accept(){
     measurement->matrix = (matrix_t) ui->combo_matrix->currentIndex();
     measurement->dvm_time = ui->combo_dvm_time->itemData(ui->combo_dvm_time->currentIndex()).toInt();
     measurement->average_number = ui->spinBoxAverage->value();
-    measurement->set_alpha = ui->doubleSpinBoxAlpha->value();
-    measurement->set_beta = ui->doubleSpinBoxBeta->value();
-    measurement->set_motor = ui->doubleSpinBoxMotor->value();
 
-    measurement->start_hash["Alpha"]  = ui->doubleSpinBoxAlpha->value();
-    measurement->start_hash["Beta"] = ui->doubleSpinBoxBeta->value();
-    measurement->start_hash["Motor"] = ui->doubleSpinBoxMotor->value();
+    for (int k=0; k<list_start.size(); k++){
+        measurement->start_hash[list_start.value(k)->objectName()] = list_start.value(k)->value();
+    }
+
 
     QDialog::accept();
 }

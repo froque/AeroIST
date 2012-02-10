@@ -10,7 +10,7 @@
 
 #include <QTime>
 #include <QElapsedTimer>
-#include "measure.h"
+
 #include "measurementsmodel.h"
 #include "variable.h"
 
@@ -52,7 +52,6 @@ private:
     bool isZero;
     QString name;
     int n;
-    measure zero;
 
     bool m_stop;
     QThread* m_parent_thread;

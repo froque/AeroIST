@@ -14,6 +14,7 @@ class Virtual_ForceMeta: public VariableMeta{
 public:
 //    ~Virtual_Force(){};
     bool is_controlable() {return false;}
+    bool has_zero() {return true;}
     int get_num() {return 6;}
     QString get_general_name(){ return "Forces";}
     QString get_name(int n){
@@ -93,8 +94,6 @@ private:
     QLineEdit *edit;
     QComboBox *combo_matrix;
 };
-
-
 class Virtual_ForceModel : public VariableModel {
 public:
     Virtual_ForceModel(){meta = new Virtual_ForceMeta;}
@@ -104,28 +103,33 @@ public:
     void set_value(int n ,int row, double value) { force[n].replace(row,value);}
     void insert_value(int n, int row, int count, double value) {force[n].insert(row,count,value);}
     void append_value(int n, double value) { force[n].append(value);}
+    void set_zero(QVector<double> zero) {this->zero = zero;}
+    QVector<double> get_zero() {return zero;}
 private:
     QVector<double> force[6];
+    QVector<double> zero;
 };
 
 class Virtual_ForceHardware: public VariableHardware {
 public:
     Virtual_ForceHardware(){meta = new Virtual_ForceMeta;}
-    void read() {Helper::msleep(500); for (int k=0; k<6; k++) {value[k] = -10.0 * qrand() / RAND_MAX;}}
+    void read() {Helper::msleep(500); for (int k=0; k<6; k++) {value[k] = ( 1.1 * (k+1) * qrand() / RAND_MAX )- zero.value(k);}}
     double get_value(int n) { return value[n];}
     void set_value(int n ,double value) {Q_UNUSED(n); Q_UNUSED(value);  }
     bool isReady(void) {return true;}
     bool has_set_final() {return meta->is_controlable() && false;}
-//    bool has_set_final() {return false;}
     void set_final() {}
+    void set_zero(QVector<double> zero) {this->zero = zero; qDebug() << this->zero;}
 private:
     double value[6];
+    QVector<double> zero;
 };
 
 
 class Virtual_AlphaMeta : public VariableMeta {
 public:
     bool is_controlable() {return true;}
+    bool has_zero() {return false;}
     int get_num() {return 1;}
     QString get_general_name(){ return "Alpha";}
     QString get_name(int n){Q_UNUSED(n);  return "Alpha"; }
@@ -171,6 +175,8 @@ public:
     void set_value(int n ,int row, double value) {Q_UNUSED(n);  contents.replace(row,value);}
     void insert_value(int n, int row, int count, double value) {Q_UNUSED(n); contents.insert(row,count,value);}
     void append_value(int n, double value) {Q_UNUSED(n);  contents.append(value);}
+    void set_zero(QVector<double> zero) {Q_UNUSED(zero);}
+    QVector<double> get_zero() {return QVector<double>();}
 private:
     QVector<double> contents;
 };
@@ -183,6 +189,7 @@ public:
     bool isReady(void) {return true;}
     bool has_set_final() {return meta->is_controlable() && false;}
     void set_final() {}
+    void set_zero(QVector<double> zero) {Q_UNUSED(zero);}
 private:
     double value;
     bool control_set;
@@ -193,6 +200,7 @@ private:
 class Virtual_BetaMeta: public VariableMeta{
 public:
     bool is_controlable() {return true;}
+    bool has_zero() {return false;}
     int get_num() {return 1;}
     QString get_general_name(){ return "Beta";}
     QString get_name(int n){Q_UNUSED(n);  return "Beta"; }
@@ -236,6 +244,8 @@ public:
     void set_value(int n ,int row, double value) {Q_UNUSED(n);  contents.insert(row,value);}
     void insert_value(int n, int row, int count, double value) {Q_UNUSED(n); contents.insert(row,count,value);}
     void append_value(int n, double value) {Q_UNUSED(n);  contents.append(value);}
+    void set_zero(QVector<double> zero) {Q_UNUSED(zero);}
+    QVector<double> get_zero() {return QVector<double> ();}
 private:
     QVector<double> contents;
 };
@@ -248,6 +258,7 @@ public:
     bool isReady(void) {return true;}
     bool has_set_final() {return meta->is_controlable() && false;}
     void set_final() {}
+    void set_zero(QVector<double> zero) {Q_UNUSED(zero);}
 private:
     double value;
     bool control_set;
@@ -257,6 +268,7 @@ private:
 class Virtual_WindMeta : public VariableMeta {
 public:
     bool is_controlable() {return false;}
+    bool has_zero() {return false;}
     int get_num() {return 1;}
     QString get_general_name(){ return "Wind";}
     QString get_name(int n){Q_UNUSED(n);  return "Wind"; }
@@ -283,6 +295,8 @@ public:
     void set_value(int n ,int row, double value) {Q_UNUSED(n);  contents.replace(row,value);}
     void insert_value(int n, int row, int count, double value) {Q_UNUSED(n); contents.insert(row,count,value);}
     void append_value(int n, double value) {Q_UNUSED(n);  contents.append(value);}
+    void set_zero(QVector<double> zero) {Q_UNUSED(zero);}
+    QVector<double> get_zero() {return QVector<double>();}
 private:
     QVector<double> contents;
 };
@@ -295,12 +309,14 @@ public:
     bool isReady(void) {return true;}
     bool has_set_final() {return meta->is_controlable() && false;}
     void set_final() {}
+    void set_zero(QVector<double> zero) {Q_UNUSED(zero);}
 private:
     double value;
 };
 class Virtual_MotorMeta : public VariableMeta {
 public:
     bool is_controlable() {return true;}
+    bool has_zero() {return false;}
     int get_num() {return 1;}
     QString get_general_name(){ return "Motor";}
     QString get_name(int n){Q_UNUSED(n);  return "Motor"; }
@@ -357,6 +373,8 @@ public:
     void set_value(int n ,int row, double value) {Q_UNUSED(n);  contents.replace(row,value);}
     void insert_value(int n, int row, int count, double value) {Q_UNUSED(n); contents.insert(row,count,value);}
     void append_value(int n, double value) {Q_UNUSED(n);  contents.append(value);}
+    void set_zero(QVector<double> zero) {Q_UNUSED(zero);}
+    QVector<double> get_zero() {return QVector<double>();}
 private:
     QVector<double> contents;
 };
@@ -370,6 +388,7 @@ public:
     bool isReady(void) {return true;}
     bool has_set_final() {return meta->is_controlable() && true;}
     void set_final() {set_value(0,0);}
+    void set_zero(QVector<double> zero) {Q_UNUSED(zero);}
 private:
     double value;
     bool control_set;
@@ -379,6 +398,7 @@ private:
 class Virtual_TemperatureMeta: public VariableMeta {
 public:
     bool is_controlable() {return false;}
+    bool has_zero() {return false;}
     int get_num() {return 1;}
     QString get_general_name(){ return "Temperature";}
     QString get_name(int n){Q_UNUSED(n);  return "Temperature"; }
@@ -405,6 +425,8 @@ public:
     void set_value(int n ,int row, double value) {Q_UNUSED(n);  contents.replace(row,value);}
     void insert_value(int n, int row, int count, double value) {Q_UNUSED(n); contents.insert(row,count,value);}
     void append_value(int n, double value) {Q_UNUSED(n);  contents.append(value);}
+    void set_zero(QVector<double> zero) {Q_UNUSED(zero);}
+    QVector<double> get_zero() {return QVector<double>();}
 private:
     QVector<double> contents;
 };
@@ -417,6 +439,7 @@ public:
     bool isReady(void) {return true;}
     bool has_set_final() {return meta->is_controlable() && false;}
     void set_final() {}
+    void set_zero(QVector<double> zero) {Q_UNUSED(zero);}
 private:
     double value;
 };
@@ -425,6 +448,7 @@ private:
 class Virtual_TimeMeta: public VariableMeta {
 public:
     bool is_controlable() {return false;}
+    bool has_zero() {return false;}
     int get_num() {return 1;}
     QString get_general_name(){ return "Time";}
     QString get_name(int n){Q_UNUSED(n);  return "Time"; }
@@ -454,8 +478,11 @@ public:
     void set_value(int n ,int row, double value) {Q_UNUSED(n);  contents.replace(row,value);}
     void insert_value(int n, int row, int count, double value) {Q_UNUSED(n); contents.insert(row,count,value);}
     void append_value(int n, double value) {Q_UNUSED(n);  contents.append(value);}
+    void set_zero(QVector<double> zero) {Q_UNUSED(zero);}
+    QVector<double> get_zero() {return QVector<double>();}
 private:
     QVector<double> contents;
+    QVector<double> zero;
 };
 
 

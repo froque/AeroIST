@@ -19,11 +19,9 @@ MeasurementsModel::MeasurementsModel(QObject *parent)
     step=0;
     control="";
     n = 0;
-    for (int k; k<NFORCES;k++ ){
-        zero[0] = 0;
-    }
     init();
 }
+
 MeasurementsModel::MeasurementsModel(QDomElement root, QObject *parent):
     QAbstractTableModel(parent)
 {
@@ -107,8 +105,6 @@ QVariant MeasurementsModel::data(const QModelIndex &index, int role) const{
 
     if (role == Qt::DisplayRole) {
         int row = index.row();
-
-
         int upper = 0;
         int lower = 0;
         int column = index.column();
@@ -132,8 +128,6 @@ QVariant MeasurementsModel::headerData(int section, Qt::Orientation orientation,
     }
 
     if (orientation == Qt::Horizontal) {
-
-
         int upper = 0;
         int lower = 0;
         int column = section;
@@ -150,8 +144,6 @@ QVariant MeasurementsModel::headerData(int section, Qt::Orientation orientation,
 
 
 QVector<double>  MeasurementsModel::vector_data(int index){
-
-
     int upper = 0;
     int lower = 0;
     int column = index;
@@ -166,7 +158,6 @@ QVector<double>  MeasurementsModel::vector_data(int index){
     QVector<double> stupid_warning;
     return stupid_warning;
 }
-
 
 void MeasurementsModel::save_xml(QDomElement root ){
     QDomElement name = root.ownerDocument().createElement(TAG_NAME);
@@ -236,13 +227,17 @@ void MeasurementsModel::save_xml(QDomElement root ){
 
     element = root.ownerDocument().createElement(TAG_ITEM);
     data_zero.appendChild(element);
-    for (int column =0; column < NFORCES; column++){
-        tag_header = this->headerData(column+1,Qt::Horizontal).toString().simplified();
-        tag_header.replace(" ","_");
-        force = root.ownerDocument().createElement(tag_header);
-        data = QString::number(zero[column],'g',10);
-        force.appendChild( root.ownerDocument().createTextNode(data));
-        element.appendChild(force);
+    foreach (VariableModel *var, variables) {
+        if (var->meta->has_zero()){
+            for (int k=0 ; k<var->meta->get_num(); k++){
+                tag_header = var->meta->get_name(k).simplified();
+                tag_header.replace(" ","_");
+                force = root.ownerDocument().createElement(tag_header);
+                data = QString::number( var->get_zero().value(k) ,'g',10);
+                force.appendChild( root.ownerDocument().createTextNode(data));
+                element.appendChild(force);
+            }
+        }
     }
 
     QDomElement data_element = root.ownerDocument().createElement(TAG_DATA);
@@ -346,9 +341,22 @@ void MeasurementsModel::load_xml(QDomElement root){
                 if (item.tagName() == TAG_ITEM){
                     QDomNodeList forces = item.childNodes();
                     QDomElement force;
-                    for (int column = 0; column< forces.count(); column++ ){
-                        force = forces.at(column).toElement();
-                        zero[column] = force.text().toDouble();
+                    QString tag;
+                    foreach (VariableModel *var, variables) {
+                        if(var->meta->has_zero()){
+                            QVector<double> vector;
+                            for (int k=0; k< var->meta->get_num(); k++){
+                                for (int column = 0; column< forces.count(); column++ ){
+                                    force = forces.at(column).toElement();
+                                    tag = force.tagName();
+                                    if (tag == var->meta->get_name(k)){
+                                        vector.append(force.text().toDouble());
+                                        continue;
+                                    }
+                                }
+                            }
+                            var->set_zero(vector);
+                        }
                     }
                 }
             }
@@ -385,7 +393,6 @@ bool MeasurementsModel::setData ( const QModelIndex & index, const QVariant & va
             return false;
         }
 
-
         int upper = 0;
         int lower = 0;
         int column = index.column();
@@ -398,7 +405,6 @@ bool MeasurementsModel::setData ( const QModelIndex & index, const QVariant & va
             }
         }
     }
-
     return true;
 }
 

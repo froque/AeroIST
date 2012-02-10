@@ -24,9 +24,6 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
     m_parent_thread = thread();
     isZero = false;
 
-    for (int k=0; k< NUMCHANNELS;k++){
-        zero.force[k] = measurement->zero[k];
-    }
     QSettings settings;
     virtual_measures = settings.value(SETTINGS_VIRTUAL_MEASURES,false).toBool();
     settings.setValue(SETTINGS_VIRTUAL_MEASURES,virtual_measures);
@@ -37,7 +34,6 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
 //        variables.append(new Temperature);
 //        variables.append(new Motor);
 //        variables.append(new Wind);
-
     } else {
         variables.append(new Virtual_ForceHardware);
         variables.append(new Virtual_AlphaHardware);
@@ -47,6 +43,16 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
         variables.append(new Virtual_WindHardware);
     }
 
+    // set zero to each variable
+    foreach (VariableHardware *hard_var, variables) {
+        foreach (VariableModel *var, measurement->variables) {
+            if(var->meta->has_zero()){
+                if (var->meta->get_general_name() == hard_var->meta->get_general_name()){
+                    hard_var->set_zero(var->get_zero());
+                }
+            }
+        }
+    }
 
     foreach (VariableModel *model, measurement->variables) {
         for (int k=0; k< model->meta->get_num(); k++){

@@ -12,15 +12,13 @@
 // index starts at 0
 // a controlable variable maybe set to a safe value in the final
 
-// SUBTRACTION ?
 // raw ?
-//    virtual bool has_zero() = 0; ??
-//    virtual void set_zero(int n) = 0; ??
 
 class VariableMeta {
 public:
     virtual ~VariableMeta() {};
     virtual bool is_controlable() = 0;
+    virtual bool has_zero() = 0;
     virtual int get_num() = 0;
     virtual QString get_general_name() = 0;
     virtual QString get_name(int n) = 0;
@@ -50,6 +48,8 @@ public:
     virtual void insert_value(int n, int row, int count, double value) = 0;
     virtual void append_value(int n, double value) = 0;
     VariableMeta *meta;
+    virtual void set_zero(QVector<double> zero) = 0;
+    virtual QVector<double> get_zero() = 0;
 };
 
 class VariableHardware{
@@ -62,6 +62,7 @@ public:
     virtual bool has_set_final() = 0;
     virtual void set_final() = 0;
     VariableMeta *meta;
+    virtual void set_zero(QVector<double> zero) = 0;
 };
 
 

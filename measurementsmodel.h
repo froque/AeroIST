@@ -5,14 +5,13 @@
 #include <QAbstractTableModel>
 #include <QTextStream>
 
-#include "measure.h" // to be deleted later
+
 #include "common.h"
 #include "zeromodel.h"
 
 #include "variable.h" //flip: should this be moved to .cpp?
 
-#define NVARS 12
-#define NFORCES 6
+
 class MeasurementsModel  : public QAbstractTableModel
 {
     Q_OBJECT
@@ -48,7 +47,6 @@ public:
     double step;
     QHash<QString,double> start_hash;
     QString control;
-    double zero[NFORCES]; //to be deleted
     QString zero_name;
     int n;
 

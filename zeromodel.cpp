@@ -1,6 +1,8 @@
 #include "zeromodel.h"
 
 #include <QDebug>
+#include "virtualvariables.h"
+
 
 ZeroModel::ZeroModel(QObject *parent) :
     QAbstractTableModel(parent)
@@ -9,25 +11,44 @@ ZeroModel::ZeroModel(QObject *parent) :
     dvm_time=0;
     matrix=MIDDLE;
     average_number=0;
-    set_alpha = 0;
-    set_beta = 0;
-    set_motor = 0;
+    init();
 }
 
 ZeroModel::ZeroModel(QDomElement root,QObject *parent) :
     QAbstractTableModel(parent)
 {
+    init();
     load_xml(root);
+}
+
+void ZeroModel::init(){
+    variables.append(new Virtual_TimeModel);
+    variables.append(new Virtual_ForceModel);
+    variables.append(new Virtual_AlphaModel);
+    variables.append(new Virtual_BetaModel);
+    variables.append(new Virtual_MotorModel);
+    variables.append(new Virtual_TemperatureModel);
+    variables.append(new Virtual_WindModel);
 }
 
 int ZeroModel::rowCount(const QModelIndex &parent) const{
     Q_UNUSED(parent);
-    return force[0].size();
+    if (variables.isEmpty()){
+        return 0;
+    } else {
+        return variables.first()->get_size();
+    }
 }
 
 int ZeroModel::columnCount(const QModelIndex &parent) const{
     Q_UNUSED(parent);
-    return NVARS_ZERO;
+    int size = 0;
+    foreach (VariableModel *var, variables) {
+        if (var->meta->has_zero()){
+            size += var->meta->get_num();
+        }
+    }
+    return size;
 }
 
 QVariant ZeroModel::data(const QModelIndex &index, int role) const{
@@ -37,19 +58,16 @@ QVariant ZeroModel::data(const QModelIndex &index, int role) const{
 
     if (role == Qt::DisplayRole) {
         int row = index.row();
-        switch (index.column()) {
-            case 0:
-                return force[0].value(row);
-            case 1:
-                return force[1].value(row);
-            case 2:
-                return force[2].value(row);
-            case 3:
-                return force[3].value(row);
-            case 4:
-                return force[4].value(row);
-            case 5:
-                return force[5].value(row);
+        int upper = 0,lower = 0;
+        int column = index.column();
+        foreach (VariableModel *var, variables) {
+            if(var->meta->has_zero()){
+                lower = upper;
+                upper += var->meta->get_num();
+                if ( column < upper){
+                    return var->get_value( column- lower , row);
+                }
+            }
         }
     }
     return QVariant();
@@ -62,36 +80,31 @@ QVariant ZeroModel::headerData(int section, Qt::Orientation orientation, int rol
     if (orientation == Qt::Vertical){
         return section+1;
     }
-
     if (orientation == Qt::Horizontal) {
-        switch (section) {
-            case 0:
-                return tr("Fx");
-            case 1:
-                return tr("Fy");
-            case 2:
-                return tr("Fz");
-            case 3:
-                return tr("Mx");
-            case 4:
-                return tr("My");
-            case 5:
-                return tr("Mz");
-            default:
-                return QVariant();
+        int upper = 0, lower = 0;
+        int column = section;
+        foreach (VariableModel *var, variables) {
+            if (var->meta->has_zero()){
+                lower = upper;
+                upper += var->meta->get_num();
+                if ( column < upper){
+                    return var->meta->get_name( column- lower );
+                }
+            }
         }
     }
     return QVariant();
 }
 
 void ZeroModel::GetMeasure(QHash<QString,double> hash){
-    beginInsertRows(QModelIndex(), force[0].size(), force[0].size());
-    force[0].append(hash["Fx"]);
-    force[1].append(hash["Fy"]);
-    force[2].append(hash["Fz"]);
-    force[3].append(hash["Mx"]);
-    force[4].append(hash["My"]);
-    force[5].append(hash["Mz"]);
+    beginInsertRows(QModelIndex(), rowCount(),rowCount());
+    foreach (VariableModel *var, variables) {
+        for (int k=0; k< var->meta->get_num(); k++){
+            if(hash.contains(var->meta->get_name(k))){
+                var->append_value(k,hash[var->meta->get_name(k)]);
+            }
+        }
+    }
     endInsertRows();
 }
 
@@ -116,17 +129,19 @@ void ZeroModel::save_xml(QDomElement root){
     average_number.appendChild(root.ownerDocument().createTextNode(QString::number(this->average_number)));
     root.appendChild(average_number);
 
-    QDomElement set_alpha = root.ownerDocument().createElement(TAG_SET_ALPHA);
-    set_alpha.appendChild(root.ownerDocument().createTextNode(QString::number(this->set_alpha)));
-    root.appendChild(set_alpha);
+    QDomElement start_hash_element = root.ownerDocument().createElement(TAG_START_VALUES);
+    root.appendChild(start_hash_element);
+    QDomElement item = root.ownerDocument().createElement(TAG_ITEM);
+    start_hash_element.appendChild(item);
 
-    QDomElement set_beta = root.ownerDocument().createElement(TAG_SET_BETA);
-    set_beta.appendChild(root.ownerDocument().createTextNode(QString::number(this->set_beta)));
-    root.appendChild(set_beta);
-
-    QDomElement set_motor = root.ownerDocument().createElement(TAG_SET_MOTOR);
-    set_motor.appendChild(root.ownerDocument().createTextNode(QString::number(this->set_motor)));
-    root.appendChild(set_motor);
+    QDomElement start_element;
+    QHashIterator<QString, double> i(start_hash);
+    while (i.hasNext()) {
+        i.next();
+        start_element = root.ownerDocument().createElement(i.key());
+        start_element.appendChild( root.ownerDocument().createTextNode(QString::number( i.value() ,'g',10)));
+        item.appendChild(start_element);
+    }
 
     QDomElement data_element = root.ownerDocument().createElement(TAG_DATA);
     root.appendChild(data_element);
@@ -160,24 +175,37 @@ void ZeroModel::load_xml(QDomElement root){
         element = node.toElement();
         if (element.tagName() == TAG_NAME){
             this->name = element.text();
+            continue;
         }
         if (element.tagName() == TAG_DESCRIPTION){
             this->description = element.text();
+            continue;
         }
         if (element.tagName() == TAG_DVM_TIME){
             this->dvm_time = element.text().toInt();
+            continue;
         }
         if (element.tagName() == TAG_AVERAGE_NUMBER){
             this->average_number = element.text().toInt();
+            continue;
         }
-        if (element.tagName() == TAG_SET_ALPHA){
-            this->set_alpha = element.text().toDouble();
-        }
-        if (element.tagName() == TAG_SET_BETA){
-            this->set_beta = element.text().toDouble();
-        }
-        if (element.tagName() == TAG_SET_MOTOR){
-            this->set_motor = element.text().toDouble();
+        if (element.tagName() == TAG_START_VALUES){
+            QDomNodeList items = element.childNodes();
+            QDomElement item;
+
+            for (int k = 0; k < items.count(); k++){
+                item = items.at(k).toElement();
+
+                if (item.tagName() == TAG_ITEM){
+                    QDomNodeList vars = item.childNodes();
+                    QDomElement var;
+                    for (int n = 0; n < vars.count(); n++ ){
+                        var = vars.at(n).toElement();
+                        start_hash[var.nodeName()] = var.text().toDouble();
+                    }
+                }
+            }
+            continue;
         }
         if (element.tagName() == TAG_MATRIX){
             int m = element.text().toInt();
@@ -185,6 +213,7 @@ void ZeroModel::load_xml(QDomElement root){
             case FLOOR: this->matrix = FLOOR; break;
             case MIDDLE: this->matrix = MIDDLE; break;
             }
+            continue;
         }
 
         if (element.tagName() == TAG_DATA){
@@ -200,6 +229,7 @@ void ZeroModel::load_xml(QDomElement root){
                     this->setData(this->index(row,column),force.text());
                 }
             }
+            continue;
         }
     }
 }
@@ -208,25 +238,22 @@ bool ZeroModel::setData ( const QModelIndex & index, const QVariant & value, int
     if (!index.isValid()){
         return false;
     }
-
     if (role == Qt::EditRole) {
         int row = index.row();
-        if (force[0].size() < row ){
+        if (rowCount() < row ){
             return false;
         }
-        switch (index.column()) {
-        case 0:
-            force[0].replace(row,value.toDouble());
-        case 1:
-            force[1].replace(row,value.toDouble());
-        case 2:
-            force[2].replace(row,value.toDouble());
-        case 3:
-            force[3].replace(row,value.toDouble());
-        case 4:
-            force[4].replace(row,value.toDouble());
-        case 5:
-            force[5].replace(row,value.toDouble());
+        int upper = 0, lower = 0;
+        int column = index.column();
+        foreach (VariableModel *var, variables) {
+            if (var->meta->has_zero()){
+                lower = upper;
+                upper += var->meta->get_num();
+                if ( column < upper){
+                    var->set_value(column - lower,row,value.toDouble());
+                    return true;
+                }
+            }
         }
     }
     return true;
@@ -234,11 +261,14 @@ bool ZeroModel::setData ( const QModelIndex & index, const QVariant & value, int
 
 bool ZeroModel::insertRows ( int row, int count, const QModelIndex & parent ){
     Q_UNUSED(parent)
-    if (row <0 || row > force[0].size()){
+    if (row < 0 ){
         return false;
     }
-    for (int k=0; k< NVARS_ZERO; k++){
-        force[k].insert(row,count,-1);
+
+    foreach (VariableModel *var, variables) {
+        for (int k=0; k< var->meta->get_num(); k++){
+            var->insert_value(k, row, count, 0);
+        }
     }
     return true;
 }

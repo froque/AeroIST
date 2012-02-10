@@ -10,14 +10,6 @@
 
 #define AEROIST "AeroIST"
 
-// to be deleted later
-enum control_types_t{
-    NONE=0,
-    ALPHA,
-    BETA,
-    MOTOR
-};
-
 enum matrix_t{
     MIDDLE=0,
     FLOOR
@@ -76,9 +68,6 @@ enum ThreadStatus{
 #define TAG_DVM_TIME "dvm_time"
 #define TAG_MATRIX "matrix"
 #define TAG_AVERAGE_NUMBER "average_number"
-#define TAG_SET_ALPHA "set_alpha"  // to be deleted
-#define TAG_SET_BETA "set_beta"     // to be deleted
-#define TAG_SET_MOTOR "set_motor"   // to be deleted
 #define TAG_DATA "data"
 #define TAG_SETTLING_TIME "settling_time"
 #define TAG_START_VALUES "start_values"

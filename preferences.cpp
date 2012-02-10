@@ -63,7 +63,7 @@ void Preferences::on_toolButton_clicked(){
     ui->edit_project->setText(directory);
 }
 
-// to be deleted
+// to be deleted - arduino
 void Preferences::on_toolButton_5_clicked(){
     QString file;
     file = QFileDialog::getOpenFileName(this, tr("Choose device"),"/dev", "");

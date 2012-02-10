@@ -58,7 +58,6 @@ SOURCES += main.cpp \
     helper.cpp
 
 HEADERS += aeroistwindow.h \
-    measure.h \
     measurementsmodel.h \
     measurethread.h \
     preferences.h \

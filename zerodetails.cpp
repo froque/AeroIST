@@ -32,11 +32,22 @@ ZeroDetails::ZeroDetails(ZeroModel *measurement, QWidget *parent) :
     }
     ui->labelAverage->setText(QString::number(measurement->average_number));
     ui->labelDescription->setText(measurement->description);
-    ui->labelAlpha->setText(QString::number(measurement->set_alpha));
-    ui->labelBeta->setText(QString::number(measurement->set_beta));
-    ui->labelMotor->setText(QString::number(measurement->set_motor));
-    this->adjustSize();
 
+    QLabel *label;
+    int row = ui->verticalLayout->indexOf(ui->widget);
+    foreach (VariableModel *var, measurement->variables) {
+        if(var->meta->is_controlable()){
+            for (int k=0; k<var->meta->get_num(); k++){
+                label = new QLabel(var->meta->get_name(k).append(" (").append(var->meta->get_units(k)).append(")"));
+                ui->verticalLayout->insertWidget(row,label);
+                label = new QLabel(QString::number( measurement->start_hash[var->meta->get_name(k)]));
+                ui->verticalLayout_2->insertWidget(row,label);
+
+                row++;
+            }
+        }
+    }
+    this->adjustSize();
 }
 
 ZeroDetails::~ZeroDetails(){

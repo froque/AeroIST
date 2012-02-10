@@ -9,9 +9,6 @@
 <xs:element name="dvm_time" type="xs:int"/>
 <xs:element name="matrix" type="xs:int"/>
 <xs:element name="average_number" type="xs:positiveInteger"/>
-<xs:element name="set_alpha" type="xs:double" />
-<xs:element name="set_beta" type="xs:double" />
-<xs:element name="set_motor" type="xs:double" />
 <xs:element name="item" type="xs:double" />
 <xs:element name="settling_time" type="xs:int"/>
 <xs:element name="end" type="xs:double" />
@@ -61,9 +58,17 @@
               <xs:element ref="dvm_time"/>
               <xs:element ref="matrix"/>
               <xs:element ref="average_number"/>
-              <xs:element ref="set_alpha"/>
-              <xs:element ref="set_beta"/>
-              <xs:element ref="set_motor"/>
+              <xs:element name="start_values">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="item" >
+                      <xs:complexType>
+                        <xs:group ref="variables" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
               <xs:element name="data">
                 <xs:complexType>
                   <xs:sequence>

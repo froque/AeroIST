@@ -5,6 +5,7 @@
 #include <QSettings>
 #include "zeromodel.h"
 #include "zerolist.h"
+#include <QDoubleSpinBox>
 
 namespace Ui {
     class ZeroPreferences;
@@ -24,6 +25,7 @@ private slots:
 private:
     Ui::ZeroPreferences *ui;
     ZeroModel *measurement;
+    QList<QDoubleSpinBox*> list_start;
 };
 
 #endif // ZEROPREFERENCES_H

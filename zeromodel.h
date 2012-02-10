@@ -7,10 +7,9 @@
 #include <QDomElement>
 #include <QStringList>
 
-#include "measure.h"
-#include "common.h"
 
-#define NVARS_ZERO 6
+#include "common.h"
+#include "variable.h"
 
 class ZeroModel : public QAbstractTableModel
 {
@@ -22,7 +21,7 @@ public:
     void load_xml(QDomElement root);
     void save_xml(QDomElement root);
 
-    QVector<double> force[NVARS_ZERO];
+    QList<VariableModel*> variables;
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
@@ -35,16 +34,15 @@ public:
     // metadata about the measurement
     QString name;
     QString description;
-    int dvm_time;
-    matrix_t matrix;
+    int dvm_time;  //to be deleted later
+    matrix_t matrix; //to be deleted later
     int average_number;
-    double set_alpha;
-    double set_beta;
-    double set_motor;
     QHash<QString,double> start_hash;
 
 public slots:
     void GetMeasure(QHash<QString, double>);
+private:
+    void init(void);
 };
 
 #endif // ZEROMODEL_H
