@@ -18,6 +18,7 @@
 #include "zerodetails.h"
 #include "curvenew.h"
 #include "curvedelete.h"
+#include "virtualvariables.h"
 
 #ifdef DEBUG
 #include <QDebug>
@@ -76,15 +77,36 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
     connect(ui->qwtPlot,SIGNAL(legendChecked(QwtPlotItem*,bool)),this,SLOT(plot_legend(QwtPlotItem*,bool)));
 
     // set spinboxes range and step
-    ui->doubleSpinBoxALpha->setRange(-ANGLEMAX_ALPHA,ANGLEMAX_ALPHA);
-    ui->doubleSpinBoxALpha->setSingleStep(DEFAULT_ALPHA_STEP);
-    ui->doubleSpinBoxALpha->setValue(0);
-    ui->doubleSpinBoxBeta->setRange(-ANGLEMAX_BETA,ANGLEMAX_BETA);
-    ui->doubleSpinBoxBeta->setSingleStep(DEFAULT_BETA_STEP);
-    ui->doubleSpinBoxBeta->setValue(0);
-    ui->doubleSpinBoxMotor->setRange(MOTOR_MIN,MOTOR_MAX);
-    ui->doubleSpinBoxMotor->setSingleStep(DEFAULT_MOTOR_STEP);
-    ui->doubleSpinBoxMotor->setValue(0);
+    QList<VariableMeta*> variables;
+    variables.append(new Virtual_TimeMeta);
+    variables.append(new Virtual_Force);
+    variables.append(new Virtual_AlphaMeta);
+    variables.append(new Virtual_BetaMeta);
+    variables.append(new Virtual_MotorMeta);
+    variables.append(new Virtual_TemperatureMeta);
+    variables.append(new Virtual_WindMeta);
+
+    QDoubleSpinBox *spin;
+    QLabel *label;
+    int column = ui->horizontalLayout_2->indexOf(ui->ManualButton);
+    foreach (VariableMeta *var, variables) {
+        if(var->is_controlable()){
+            for (int k=0; k< var->get_num(); k++){
+                label = new QLabel(var->get_name(k).append(" (").append(var->get_units(k).append(")")));
+                ui->horizontalLayout_2->insertWidget( column,label);
+                column++;
+                spin = new QDoubleSpinBox;
+                spin->setRange(var->get_lower_bound(k), var->get_upper_bound(k));
+                spin->setSingleStep(var->get_default_step(k));
+                spin->setEnabled(false);
+                spin->setObjectName(var->get_name(k));
+                list_spins.append(spin);
+                ui->horizontalLayout_2->insertWidget( column,spin);
+                column ++;
+            }
+        }
+    }
+    ui->ManualButton->setEnabled(false);
 }
 
 AeroISTWindow::~AeroISTWindow()
@@ -153,14 +175,15 @@ void AeroISTWindow::on_ThreadButton_clicked(){
     // pass the values from comboboxes to the thread. only for free control
     connect(this,SIGNAL(set_variable(QHash<QString,double>)),m_test,SLOT(manual_control(QHash<QString,double>)));
 
-    ui->doubleSpinBoxALpha->setValue(measurementThread->start_hash["Alpha"]);
-    ui->doubleSpinBoxBeta->setValue(measurementThread->start_hash["Beta"]);
-    ui->doubleSpinBoxMotor->setValue(measurementThread->start_hash["Motor"]);
 
     if (measurementThread->control == ""){
-        ui->doubleSpinBoxALpha->setEnabled(true);
-        ui->doubleSpinBoxBeta->setEnabled(true);
-        ui->doubleSpinBoxMotor->setEnabled(true);
+        ui->ManualButton->setEnabled(true);
+        foreach (QDoubleSpinBox *spin, list_spins) {
+            spin->setEnabled(true);
+            spin->setValue(measurementThread->start_hash[spin->objectName()]);
+        }
+
+
     }
 
     m_thread->start();
@@ -177,9 +200,10 @@ void AeroISTWindow::ThreadButton_cleanup(){
     if (thread_status == MEASURE_RUNNING){
         ui->ThreadButton->setText(tr("Start"));
         thread_status = STOPPED;
-        ui->doubleSpinBoxALpha->setEnabled(false);
-        ui->doubleSpinBoxBeta->setEnabled(false);
-        ui->doubleSpinBoxMotor->setEnabled(false);
+        ui->ManualButton->setEnabled(false);
+        foreach (QDoubleSpinBox *spin, list_spins) {
+            spin->setEnabled(false);
+        }
         cleanup();
         return;
     }
@@ -664,24 +688,6 @@ void AeroISTWindow::on_actionZero_List_toggled(bool arg1){
     ui->listViewZero->setVisible(arg1);
 }
 
-void AeroISTWindow::on_doubleSpinBoxMotor_valueChanged(double arg1){
-    QHash<QString,double> hash;
-    hash["Motor"] = arg1;
-    emit set_variable(hash);
-}
-
-void AeroISTWindow::on_doubleSpinBoxALpha_valueChanged(double arg1){
-    QHash<QString,double> hash;
-    hash["Alpha"] = arg1;
-    emit set_variable(hash);
-}
-
-void AeroISTWindow::on_doubleSpinBoxBeta_valueChanged(double arg1){
-    QHash<QString,double> hash;
-    hash["Beta"] = arg1;
-    emit set_variable(hash);
-}
-
 void AeroISTWindow::on_actionNames_in_Toolbar_toggled(bool arg1){
     if(arg1){
         ui->toolBar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
@@ -692,4 +698,12 @@ void AeroISTWindow::on_actionNames_in_Toolbar_toggled(bool arg1){
 
 void AeroISTWindow::on_actionLine_numbers_in_table_toggled(bool arg1){
     ui->tableView->verticalHeader()->setVisible(arg1);
+}
+
+void AeroISTWindow::on_ManualButton_clicked(){
+    QHash<QString,double> hash;
+    foreach (QDoubleSpinBox *spin, list_spins) {
+        hash[spin->objectName()] = spin->value();
+    }
+    emit set_variable(hash);
 }

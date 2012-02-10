@@ -79,9 +79,7 @@ private slots:
     void plot_legend(QwtPlotItem* plotItem,bool on);
 
     // control spin boxes
-    void on_doubleSpinBoxMotor_valueChanged(double arg1);
-    void on_doubleSpinBoxALpha_valueChanged(double arg1);
-    void on_doubleSpinBoxBeta_valueChanged(double arg1);
+    void on_ManualButton_clicked();
 
 private:
     void message(const QString &string);
@@ -100,6 +98,8 @@ private:
     MeasureThread *m_test;
     QThread *m_thread;
     QString project_filename;
+
+    QList<QDoubleSpinBox*> list_spins;
 
 protected:
     void closeEvent(QCloseEvent *event);

@@ -40,56 +40,16 @@
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="labelAlpha">
+       <widget class="Line" name="line">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="ManualButton">
         <property name="text">
-         <string>Alpha</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QDoubleSpinBox" name="doubleSpinBoxALpha">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="keyboardTracking">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="labelBeta">
-        <property name="text">
-         <string>Beta</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QDoubleSpinBox" name="doubleSpinBoxBeta">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="keyboardTracking">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="labelWind">
-        <property name="text">
-         <string>Motor</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QDoubleSpinBox" name="doubleSpinBoxMotor">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="keyboardTracking">
-         <bool>false</bool>
-        </property>
-        <property name="maximum">
-         <double>100.000000000000000</double>
+         <string>Set Manual</string>
         </property>
        </widget>
       </item>
@@ -490,9 +450,6 @@
   <tabstop>tabWidget</tabstop>
   <tabstop>tableView</tabstop>
   <tabstop>ThreadButton</tabstop>
-  <tabstop>doubleSpinBoxALpha</tabstop>
-  <tabstop>doubleSpinBoxBeta</tabstop>
-  <tabstop>doubleSpinBoxMotor</tabstop>
  </tabstops>
  <resources/>
  <connections/>
