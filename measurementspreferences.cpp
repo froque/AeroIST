@@ -63,14 +63,25 @@ MeasurementsPreferences::MeasurementsPreferences(MeasurementsModel *measurement,
     spin_iterations = new QSpinBox(ui->widget);
     spin_iterations->setRange(0,1000);
     layout->addWidget(spin_iterations,row,COL_END);
-    row++;
-    label = new QLabel (tr("Start"));
-    layout->addWidget(label,row,COL_START);
-    label = new QLabel (tr("End"));
-    layout->addWidget(label,row,COL_END);
-    label = new QLabel (tr("Step"));
-    layout->addWidget(label,row,COL_STEP);
-    row++;
+
+    int num_controls = 0;
+    foreach (VariableModel *var, measurement->variables) {
+        if (var->meta->is_controlable()){
+            for (int k=0; k< var->meta->get_num(); k++){
+                num_controls++;
+            }
+        }
+    }
+    if (num_controls > 0){
+        row++;
+        label = new QLabel (tr("Start"));
+        layout->addWidget(label,row,COL_START);
+        label = new QLabel (tr("End"));
+        layout->addWidget(label,row,COL_END);
+        label = new QLabel (tr("Step"));
+        layout->addWidget(label,row,COL_STEP);
+        row++;
+    }
     foreach (VariableModel *var, measurement->variables) {
         if (var->meta->is_controlable()){
             for (int k=0; k< var->meta->get_num(); k++){
