@@ -8,6 +8,9 @@
 #include <QDebug>
 #endif //DEBUG
 
+
+#include "virtualvariables.h"
+
 Preferences::Preferences(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Preferences)
@@ -15,32 +18,23 @@ Preferences::Preferences(QWidget *parent) :
     ui->setupUi(this);
     QSettings settings;
 
-    ui->edit_alpha->setText(        settings.value(SETTINGS_ALPHA_PATH).toString() );
-    ui->edit_beta->setText(         settings.value(SETTINGS_BETA_PATH).toString() );
-    ui->edit_motor->setText(        settings.value(SETTINGS_MOTOR_PATH).toString() );
-    ui->edit_arduino->setText(      settings.value(SETTINGS_ARDUINO_PATH ).toString() );
-    ui->edit_multimetro->setText(   settings.value(SETTINGS_MULTIMETER_PATH).toString() );
+    ui->edit_arduino->setText(      settings.value(SETTINGS_ARDUINO_PATH ).toString() );// to be deleted
     ui->edit_project->setText(settings.value(SETTINGS_PROJECT_FOLDER).toString());
-
-    ui->combo_matrix->clear();
-    ui->combo_matrix->addItem(tr("middle"), MIDDLE);
-    ui->combo_matrix->addItem(tr("floor"),  FLOOR);
-
-    int index = ui->combo_matrix->findData(settings.value(SETTINGS_DEFAULT_MATRIX).toInt());
-    ui->combo_matrix->setCurrentIndex(index);
-
-    ui->combo_dvm_time->addItem(tr("50 ms"),    1);
-    ui->combo_dvm_time->addItem(tr("100 ms"),   2);
-    ui->combo_dvm_time->addItem(tr("500 ms"),   3);
-    ui->combo_dvm_time->addItem(tr("1 s"),      4);
-    ui->combo_dvm_time->addItem(tr("5 s"),      5);
-    ui->combo_dvm_time->addItem(tr("10 s"),     6);
-
-    index = ui->combo_dvm_time->findData(settings.value(SETTINGS_DEFAULT_DVM_TIME).toInt());
-    ui->combo_dvm_time->setCurrentIndex(index);
-
     ui->spinBox->setValue(settings.value(SETTINGS_DEFAULT_AVERAGE_NUMBER).toInt());
     ui->doubleSpinBox->setValue(settings.value(SETTINGS_DEFAULT_SETTLING_TIME).toDouble());
+
+    variables.append(new Virtual_TimeGUI);
+    variables.append(new Virtual_ForceGUI);
+    variables.append(new Virtual_AlphaGUI);
+    variables.append(new Virtual_BetaGUI);
+    variables.append(new Virtual_WindGUI);
+    variables.append(new Virtual_MotorGUI);
+    variables.append(new Virtual_TemperatureGUI);
+    foreach (VariableGUI *var, variables) {
+        if(var->is_configurable()){
+            ui->tabWidget->addTab(var->get_config_widget(),var->meta->get_general_name());
+        }
+    }
 }
 
 Preferences::~Preferences(){
@@ -49,22 +43,18 @@ Preferences::~Preferences(){
 
 void Preferences::on_buttonBox_accepted(){
     QSettings settings;
-    settings.setValue(SETTINGS_ALPHA_PATH,        ui->edit_alpha->text());
-    settings.setValue(SETTINGS_BETA_PATH,         ui->edit_beta->text());
-    settings.setValue(SETTINGS_ARDUINO_PATH,      ui->edit_arduino->text());
-    settings.setValue(SETTINGS_MOTOR_PATH,        ui->edit_motor->text());
-    settings.setValue(SETTINGS_MULTIMETER_PATH,   ui->edit_multimetro->text());
+    settings.setValue(SETTINGS_ARDUINO_PATH,      ui->edit_arduino->text());  // to be deleted
 
-    int index = ui->combo_matrix->currentIndex();
-    settings.setValue(SETTINGS_DEFAULT_MATRIX, ui->combo_matrix->itemData(index).toInt());
-
-    index = ui->combo_dvm_time->currentIndex();
-    settings.setValue(SETTINGS_DEFAULT_DVM_TIME, ui->combo_dvm_time->itemData(index).toInt());
+    foreach (VariableGUI *var, variables) {
+        if(var->is_configurable()){
+            var->accept_config();
+        }
+    }
 
     settings.setValue(SETTINGS_DEFAULT_AVERAGE_NUMBER, ui->spinBox->value());
     settings.setValue(SETTINGS_DEFAULT_SETTLING_TIME,ui->doubleSpinBox->value());
     settings.setValue(SETTINGS_PROJECT_FOLDER,ui->edit_project->text());
-
+    adjustSize();
 }
 
 void Preferences::on_toolButton_clicked(){
@@ -73,24 +63,7 @@ void Preferences::on_toolButton_clicked(){
     ui->edit_project->setText(directory);
 }
 
-void Preferences::on_toolButton_2_clicked(){
-    QString file;
-    file = QFileDialog::getOpenFileName(this, tr("Choose device"),"/dev", "");
-    ui->edit_alpha->setText(file);
-}
-
-void Preferences::on_toolButton_3_clicked(){
-    QString file;
-    file = QFileDialog::getOpenFileName(this, tr("Choose device"),"/dev", "");
-    ui->edit_beta->setText(file);
-}
-
-void Preferences::on_toolButton_4_clicked(){
-    QString file;
-    file = QFileDialog::getOpenFileName(this, tr("Choose device"),"/dev", "");
-    ui->edit_motor->setText(file);
-}
-
+// to be deleted
 void Preferences::on_toolButton_5_clicked(){
     QString file;
     file = QFileDialog::getOpenFileName(this, tr("Choose device"),"/dev", "");

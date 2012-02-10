@@ -23,6 +23,7 @@ public:
     virtual ~VariableMeta() {};
     virtual bool is_controlable() = 0;
     virtual int get_num() = 0;
+    virtual QString get_general_name() = 0;
     virtual QString get_name(int n) = 0;
     virtual QString get_units(int n) = 0;
     virtual double get_lower_bound(int n) = 0;
@@ -30,6 +31,14 @@ public:
     virtual double get_smaller_step(int n) = 0;
     virtual double get_default_step(int n) = 0;
     virtual double get_default_start(int n) = 0;
+};
+
+class VariableGUI {
+public:
+    virtual QWidget* get_config_widget() = 0;
+    virtual bool accept_config() = 0;
+    virtual bool is_configurable() = 0;
+    VariableMeta *meta;
 };
 
 class VariableModel{

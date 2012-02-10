@@ -79,7 +79,7 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
     // set spinboxes range and step
     QList<VariableMeta*> variables;
     variables.append(new Virtual_TimeMeta);
-    variables.append(new Virtual_Force);
+    variables.append(new Virtual_ForceMeta);
     variables.append(new Virtual_AlphaMeta);
     variables.append(new Virtual_BetaMeta);
     variables.append(new Virtual_MotorMeta);

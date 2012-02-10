@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>464</width>
-    <height>295</height>
+    <height>229</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -41,162 +41,66 @@
      <property name="currentIndex">
       <number>0</number>
      </property>
-     <widget class="QWidget" name="general">
-      <attribute name="title">
-       <string>Devices</string>
-      </attribute>
-      <layout class="QGridLayout" name="gridLayout_2">
-       <item row="0" column="0">
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>Alpha device path</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QLineEdit" name="edit_alpha"/>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_2">
-         <property name="text">
-          <string>Beta device path</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QLineEdit" name="edit_beta"/>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label_3">
-         <property name="text">
-          <string>Motor device path</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QLineEdit" name="edit_motor"/>
-       </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="label_4">
-         <property name="text">
-          <string>Arduino path</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <widget class="QLineEdit" name="edit_arduino"/>
-       </item>
-       <item row="4" column="0">
-        <widget class="QLabel" name="label_5">
-         <property name="text">
-          <string>Multimeter</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1" colspan="2">
-        <widget class="QLineEdit" name="edit_multimetro"/>
-       </item>
-       <item row="5" column="0">
-        <widget class="QLabel" name="label_10">
-         <property name="text">
-          <string>Project folder</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="1">
-        <widget class="QLineEdit" name="edit_project"/>
-       </item>
-       <item row="5" column="2">
-        <widget class="QToolButton" name="toolButton">
-         <property name="text">
-          <string>...</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="2">
-        <widget class="QToolButton" name="toolButton_2">
-         <property name="text">
-          <string>...</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="2">
-        <widget class="QToolButton" name="toolButton_3">
-         <property name="text">
-          <string>...</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="2">
-        <widget class="QToolButton" name="toolButton_4">
-         <property name="text">
-          <string>...</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="2">
-        <widget class="QToolButton" name="toolButton_5">
-         <property name="text">
-          <string>...</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
      <widget class="QWidget" name="defaults">
       <attribute name="title">
        <string>Defaults</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_3">
+      <layout class="QGridLayout" name="gridLayout_2">
        <item row="0" column="0">
-        <widget class="QLabel" name="label_6">
-         <property name="text">
-          <string>Default test type</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QComboBox" name="combo_matrix">
-         <property name="toolTip">
-          <string>The type of test being made. Either in  midle section or bottom of the section</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_7">
-         <property name="text">
-          <string>Default multimeter time</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QComboBox" name="combo_dvm_time">
-         <property name="currentIndex">
-          <number>-1</number>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
         <widget class="QLabel" name="label_8">
          <property name="text">
           <string>Default average measures</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="1">
-        <widget class="QSpinBox" name="spinBox">
-         <property name="minimum">
-          <number>1</number>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <widget class="QDoubleSpinBox" name="doubleSpinBox"/>
-       </item>
-       <item row="3" column="0">
+       <item row="1" column="0">
         <widget class="QLabel" name="label_9">
          <property name="text">
           <string>Default settling time ( s )</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2" colspan="2">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox"/>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>Arduino path</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="2">
+        <widget class="QLineEdit" name="edit_arduino"/>
+       </item>
+       <item row="2" column="3">
+        <widget class="QToolButton" name="toolButton_5">
+         <property name="text">
+          <string>...</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0" colspan="2">
+        <widget class="QLabel" name="label_10">
+         <property name="text">
+          <string>Project folder</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="2">
+        <widget class="QLineEdit" name="edit_project"/>
+       </item>
+       <item row="3" column="3">
+        <widget class="QToolButton" name="toolButton">
+         <property name="text">
+          <string>...</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2" colspan="2">
+        <widget class="QSpinBox" name="spinBox">
+         <property name="minimum">
+          <number>1</number>
          </property>
         </widget>
        </item>
@@ -206,6 +110,16 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>spinBox</tabstop>
+  <tabstop>doubleSpinBox</tabstop>
+  <tabstop>edit_arduino</tabstop>
+  <tabstop>toolButton_5</tabstop>
+  <tabstop>edit_project</tabstop>
+  <tabstop>toolButton</tabstop>
+  <tabstop>buttonBox</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
