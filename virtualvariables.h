@@ -7,6 +7,7 @@
 #include <QtGui>
 #include <QFileDialog>
 
+#include "helper.h" //for mleep
 #include "common.h"
 
 class Virtual_ForceMeta: public VariableMeta{

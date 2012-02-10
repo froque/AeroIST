@@ -2,8 +2,7 @@
 #define VARIABLE_H
 
 #include <QString>
-#include <cstdlib> // for RAND_MAX
-#include "helper.h" //for mleep
+#include <QWidget>
 
 // N variables
 // maybe be contrallable
