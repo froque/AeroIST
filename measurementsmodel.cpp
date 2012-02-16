@@ -2,10 +2,13 @@
 #include <QStringList>
 #include "measurementsmodel.h"
 
-#include "virtualvariables.h"
 #ifdef DEBUG
 #include "QDebug"
 #endif // DEBUG
+
+#include <QDir>
+#include <QCoreApplication>
+#include <QPluginLoader>
 
 MeasurementsModel::MeasurementsModel(QObject *parent)
     : QAbstractTableModel(parent)
@@ -30,13 +33,19 @@ MeasurementsModel::MeasurementsModel(QDomElement root, QObject *parent):
 }
 
 void MeasurementsModel::init(){
-    variables.append(new Virtual_TimeModel);
-    variables.append(new Virtual_ForceModel);
-    variables.append(new Virtual_AlphaModel);
-    variables.append(new Virtual_BetaModel);
-    variables.append(new Virtual_MotorModel);
-    variables.append(new Virtual_TemperatureModel);
-    variables.append(new Virtual_WindModel);
+    Factory *factory;
+    QDir pluginsDir = QDir(qApp->applicationDirPath());
+    pluginsDir.cd("plugins");
+    foreach (QString fileName, pluginsDir.entryList(QDir::Files)) {
+        QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
+        factory = qobject_cast<Factory*>( loader.instance());
+        if(factory){
+            qDebug() << fileName << "it is a factory";
+            variables.append( factory->CreateVariableModel());
+        } else  {
+            qDebug() << "it is not";
+        }
+    }
 }
 
 void MeasurementsModel::save_csv(QTextStream *out,bool header){

@@ -79,8 +79,7 @@ HEADERS += aeroistwindow.h \
     motor.h \
     wind.h \
     helper.h \
-    variable.h \
-    virtualvariables.h
+    variable.h
 
 FORMS += aeroistwindow.ui \
     preferences.ui \

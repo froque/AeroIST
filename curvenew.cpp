@@ -1,5 +1,5 @@
 #include "curvenew.h"
-#include "ui_newcurve.h"
+#include "ui_curvenew.h"
 
 #include <QMessageBox>
 #include <qwt_plot_curve.h>

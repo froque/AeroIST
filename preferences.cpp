@@ -8,8 +8,8 @@
 #include <QDebug>
 #endif //DEBUG
 
-
-#include "virtualvariables.h"
+#include <QPluginLoader>
+#include "variable.h"
 
 Preferences::Preferences(QWidget *parent) :
     QDialog(parent),
@@ -23,13 +23,20 @@ Preferences::Preferences(QWidget *parent) :
     ui->spinBox->setValue(settings.value(SETTINGS_DEFAULT_AVERAGE_NUMBER).toInt());
     ui->doubleSpinBox->setValue(settings.value(SETTINGS_DEFAULT_SETTLING_TIME).toDouble());
 
-    variables.append(new Virtual_TimeGUI);
-    variables.append(new Virtual_ForceGUI);
-    variables.append(new Virtual_AlphaGUI);
-    variables.append(new Virtual_BetaGUI);
-    variables.append(new Virtual_WindGUI);
-    variables.append(new Virtual_MotorGUI);
-    variables.append(new Virtual_TemperatureGUI);
+
+    Factory *factory;
+    QDir pluginsDir = QDir(qApp->applicationDirPath());
+    pluginsDir.cd("plugins");
+    foreach (QString fileName, pluginsDir.entryList(QDir::Files)) {
+        QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
+        factory = qobject_cast<Factory*>( loader.instance());
+        if(factory){
+            qDebug() << "preferences" << fileName << "it is a factory";
+            variables.append( factory->CreateVariableGUI());
+        } else  {
+            qDebug() << "preferences" << fileName << "it is not";
+        }
+    }
     foreach (VariableGUI *var, variables) {
         if(var->is_configurable()){
             ui->tabWidget->addTab(var->get_config_widget(),var->meta->get_general_name());

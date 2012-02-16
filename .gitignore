@@ -1,5 +1,5 @@
-AeroIST.pro.user
-Makefile
+*.pro.user
+*Makefile*
 build/
 moc/
 objs/

@@ -18,7 +18,6 @@
 #include "zerodetails.h"
 #include "curvenew.h"
 #include "curvedelete.h"
-#include "virtualvariables.h"
 
 #ifdef DEBUG
 #include <QDebug>
@@ -78,13 +77,20 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
 
     // set spinboxes range and step
     QList<VariableMeta*> variables;
-    variables.append(new Virtual_TimeMeta);
-    variables.append(new Virtual_ForceMeta);
-    variables.append(new Virtual_AlphaMeta);
-    variables.append(new Virtual_BetaMeta);
-    variables.append(new Virtual_MotorMeta);
-    variables.append(new Virtual_TemperatureMeta);
-    variables.append(new Virtual_WindMeta);
+    Factory *factory;
+    QDir pluginsDir = QDir(qApp->applicationDirPath());
+    pluginsDir.cd("plugins");
+    foreach (QString fileName, pluginsDir.entryList(QDir::Files)) {
+        QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
+        factory = qobject_cast<Factory*>( loader.instance());
+        if(factory){
+//            qDebug() << "aeroistwindow" <<  fileName << "it is a factory";
+            variables.append( factory->CreateVariableMeta());
+        } else  {
+            qDebug() << "aeroistwindow" << fileName <<  "it is not";
+        }
+    }
+
 
     QDoubleSpinBox *spin;
     QLabel *label;

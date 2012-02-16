@@ -8,7 +8,9 @@
 #include <stdexcept>
 #include "helper.h"
 
-#include "virtualvariables.h"
+#include <QDir>
+#include <QCoreApplication>
+#include <QPluginLoader>
 
 MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
     QObject(parent),
@@ -35,12 +37,24 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
 //        variables.append(new Motor);
 //        variables.append(new Wind);
     } else {
-        variables.append(new Virtual_ForceHardware);
-        variables.append(new Virtual_AlphaHardware);
-        variables.append(new Virtual_BetaHardware);
-        variables.append(new Virtual_TemperatureHardware);
-        variables.append(new Virtual_MotorHardware);
-        variables.append(new Virtual_WindHardware);
+        Factory *factory;
+        QDir pluginsDir = QDir(qApp->applicationDirPath());
+        pluginsDir.cd("plugins");
+        foreach (QString fileName, pluginsDir.entryList(QDir::Files)) {
+            QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
+            factory = qobject_cast<Factory*>( loader.instance());
+            if(factory){
+                qDebug() << "thread" << fileName << "it is a factory";
+                VariableHardware *var = factory->CreateVariableHardware();
+                if (var != NULL){
+                    variables.append(var );
+                } else {
+                    qDebug() << "not a hardware var";
+                }
+            } else  {
+                qDebug() << "thread" << fileName << "it is not";
+            }
+        }
     }
 
     // set zero to each variable
@@ -87,12 +101,24 @@ MeasureThread::MeasureThread(ZeroModel *measurement,QObject *parent) :
 //        variables.append(new Wind);
 
     } else {
-        variables.append(new Virtual_ForceHardware);
-        variables.append(new Virtual_AlphaHardware);
-        variables.append(new Virtual_BetaHardware);
-        variables.append(new Virtual_TemperatureHardware);
-        variables.append(new Virtual_MotorHardware);
-        variables.append(new Virtual_WindHardware);
+        Factory *factory;
+        QDir pluginsDir = QDir(qApp->applicationDirPath());
+        pluginsDir.cd("plugins");
+        foreach (QString fileName, pluginsDir.entryList(QDir::Files)) {
+            QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
+            factory = qobject_cast<Factory*>( loader.instance());
+            if(factory){
+                qDebug() << "thread" << fileName << "it is a factory";
+                VariableHardware *var = factory->CreateVariableHardware();
+                if (var != NULL){
+                    variables.append(var );
+                } else {
+                    qDebug() << "not a hardware var";
+                }
+            } else  {
+                qDebug() << "thread" << fileName << "it is not";
+            }
+        }
     }
 
     settling_time = 0;

@@ -1,8 +1,9 @@
 #include "zeromodel.h"
 
 #include <QDebug>
-#include "virtualvariables.h"
-
+#include <QDir>
+#include <QCoreApplication>
+#include <QPluginLoader>
 
 ZeroModel::ZeroModel(QObject *parent) :
     QAbstractTableModel(parent)
@@ -22,13 +23,19 @@ ZeroModel::ZeroModel(QDomElement root,QObject *parent) :
 }
 
 void ZeroModel::init(){
-    variables.append(new Virtual_TimeModel);
-    variables.append(new Virtual_ForceModel);
-    variables.append(new Virtual_AlphaModel);
-    variables.append(new Virtual_BetaModel);
-    variables.append(new Virtual_MotorModel);
-    variables.append(new Virtual_TemperatureModel);
-    variables.append(new Virtual_WindModel);
+    Factory *factory;
+    QDir pluginsDir = QDir(qApp->applicationDirPath());
+    pluginsDir.cd("plugins");
+    foreach (QString fileName, pluginsDir.entryList(QDir::Files)) {
+        QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
+        factory = qobject_cast<Factory*>( loader.instance());
+        if(factory){
+            qDebug() << "zeromodel" << fileName << "it is a factory";
+            variables.append( factory->CreateVariableModel());
+        } else  {
+            qDebug() << "zeromodel" << fileName << "it is not";
+        }
+    }
 }
 
 int ZeroModel::rowCount(const QModelIndex &parent) const{

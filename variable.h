@@ -65,5 +65,16 @@ public:
     virtual void set_zero(QVector<double> zero) = 0;
 };
 
+class Factory {
+public:
+    virtual VariableMeta* CreateVariableMeta() = 0;
+    virtual VariableGUI* CreateVariableGUI() = 0;
+    virtual VariableModel* CreateVariableModel() = 0;
+    virtual VariableHardware* CreateVariableHardware() = 0;
+};
+
+QT_BEGIN_NAMESPACE
+Q_DECLARE_INTERFACE(Factory, "pt.ist.utl.aeroist.factory/1.1")
+QT_END_NAMESPACE
 
 #endif // VARIABLE_H
