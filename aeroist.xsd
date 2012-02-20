@@ -55,8 +55,14 @@
           <xs:sequence>
               <xs:element ref="name"/>
               <xs:element ref="description"/>
-              <xs:element ref="dvm_time"/>
-              <xs:element ref="matrix"/>
+              <xs:element name="options">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element ref="dvm_time"/>
+                    <xs:element ref="matrix"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
               <xs:element ref="average_number"/>
               <xs:element name="start_values">
                 <xs:complexType>
@@ -95,8 +101,14 @@
           <xs:sequence>
               <xs:element ref="name"/>
               <xs:element ref="description"/>
-              <xs:element ref="dvm_time"/>
-              <xs:element ref="matrix"/>
+              <xs:element name="options">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element ref="dvm_time"/>
+                    <xs:element ref="matrix"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
               <xs:element ref="average_number"/>
               <xs:element ref="settling_time"/>
               <xs:element ref="end"/>              

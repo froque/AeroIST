@@ -28,7 +28,7 @@ private slots:
 
 private:
     Ui::Preferences *ui;
-    QList<VariableGUI*> variables;
+    QList<VariablePreferences*> variables;
 };
 
 #endif // PREFERENCES_H

@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QWidget>
+#include <QDomElement>
 
 // N variables
 // maybe be contrallable
@@ -30,9 +31,9 @@ public:
     virtual double get_default_start(int n) = 0;
 };
 
-class VariableGUI {
+class VariablePreferences {
 public:
-    virtual QWidget* get_config_widget() = 0;
+    virtual QWidget* get_widget() = 0;
     virtual bool accept_config() = 0;
     virtual bool is_configurable() = 0;
     VariableMeta *meta;
@@ -50,6 +51,12 @@ public:
     VariableMeta *meta;
     virtual void set_zero(QVector<double> zero) = 0;
     virtual QVector<double> get_zero() = 0;
+    virtual QWidget* view_get_widget() = 0;
+    virtual QWidget* measurement_get_widget() = 0;
+    virtual bool measurement_accept_config(VariableModel *m) = 0;
+    virtual bool measurement_is_configurable() = 0;
+    virtual void save_xml(QDomElement root) = 0;
+    virtual void load_xml(QDomElement root) = 0;
 };
 
 class VariableHardware{
@@ -68,9 +75,9 @@ public:
 class Factory {
 public:
     virtual VariableMeta* CreateVariableMeta() = 0;
-    virtual VariableGUI* CreateVariableGUI() = 0;
+    virtual VariablePreferences* CreateVariableGUI() = 0;
     virtual VariableModel* CreateVariableModel() = 0;
-    virtual VariableHardware* CreateVariableHardware() = 0;
+    virtual VariableHardware* CreateVariableHardware(VariableModel* v) = 0;
 };
 
 QT_BEGIN_NAMESPACE

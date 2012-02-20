@@ -14,8 +14,6 @@ MeasurementsModel::MeasurementsModel(QObject *parent)
     : QAbstractTableModel(parent)
 {
     name="";
-    dvm_time=0;
-    matrix=MIDDLE;
     average_number=0;
     settling_time=0;
     end=0;
@@ -40,10 +38,7 @@ void MeasurementsModel::init(){
         QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
         factory = qobject_cast<Factory*>( loader.instance());
         if(factory){
-            qDebug() << fileName << "it is a factory";
             variables.append( factory->CreateVariableModel());
-        } else  {
-            qDebug() << "it is not";
         }
     }
 }
@@ -177,13 +172,11 @@ void MeasurementsModel::save_xml(QDomElement root ){
     description.appendChild(root.ownerDocument().createTextNode(this->description));
     root.appendChild(description);
 
-    QDomElement dvm_time = root.ownerDocument().createElement(TAG_DVM_TIME);
-    dvm_time.appendChild(root.ownerDocument().createTextNode(QString::number(this->dvm_time)));
-    root.appendChild(dvm_time);
-
-    QDomElement matrix = root.ownerDocument().createElement(TAG_MATRIX);
-    matrix.appendChild(root.ownerDocument().createTextNode(QString::number(this->matrix)));
-    root.appendChild(matrix);
+    QDomElement options = root.ownerDocument().createElement(TAG_OPTIONS);
+    root.appendChild(options);
+    foreach (VariableModel *var, variables) {
+        var->save_xml(options);
+    }
 
     QDomElement average_number = root.ownerDocument().createElement(TAG_AVERAGE_NUMBER);
     average_number.appendChild(root.ownerDocument().createTextNode(QString::number(this->average_number)));
@@ -281,21 +274,14 @@ void MeasurementsModel::load_xml(QDomElement root){
             this->description = element.text();
             continue;
         }
-        if (element.tagName() == TAG_DVM_TIME){
-            this->dvm_time = element.text().toInt();
+        if (element.tagName() == TAG_OPTIONS){
+            foreach (VariableModel *var, variables) {
+                var->load_xml(element);
+            }
             continue;
         }
         if (element.tagName() == TAG_AVERAGE_NUMBER){
             this->average_number = element.text().toInt();
-            continue;
-        }
-
-        if (element.tagName() == TAG_MATRIX){
-            int m = element.text().toInt();
-            switch (m){
-            case FLOOR: this->matrix = FLOOR; break;
-            case MIDDLE: this->matrix = MIDDLE; break;
-            }
             continue;
         }
         if (element.tagName() == TAG_CONTROL_TYPE){

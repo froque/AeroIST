@@ -39,8 +39,6 @@ public:
     // metadata about the measurement
     QString name;
     QString description;
-    int dvm_time;       // to be deleted
-    matrix_t matrix;    // to be deleted
     int average_number;
     double settling_time;
     double end;

@@ -84,13 +84,9 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
         QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
         factory = qobject_cast<Factory*>( loader.instance());
         if(factory){
-//            qDebug() << "aeroistwindow" <<  fileName << "it is a factory";
             variables.append( factory->CreateVariableMeta());
-        } else  {
-            qDebug() << "aeroistwindow" << fileName <<  "it is not";
         }
     }
-
 
     QDoubleSpinBox *spin;
     QLabel *label;

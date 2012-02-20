@@ -34,8 +34,6 @@ public:
     // metadata about the measurement
     QString name;
     QString description;
-    int dvm_time;  //to be deleted later
-    matrix_t matrix; //to be deleted later
     int average_number;
     QHash<QString,double> start_hash;
 

@@ -82,6 +82,7 @@ enum ThreadStatus{
 #define TAG_MEASURE "measurement"
 #define TAG_ITEM "item"
 #define TAG_PROJECT "project"
+#define TAG_OPTIONS "options"
 
 #define SETTINGS_VIRTUAL_MEASURES "virtual_measures"
 #define SETTINGS_PROJECT_FOLDER "project_folder"

@@ -31,15 +31,12 @@ Preferences::Preferences(QWidget *parent) :
         QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
         factory = qobject_cast<Factory*>( loader.instance());
         if(factory){
-            qDebug() << "preferences" << fileName << "it is a factory";
             variables.append( factory->CreateVariableGUI());
-        } else  {
-            qDebug() << "preferences" << fileName << "it is not";
         }
     }
-    foreach (VariableGUI *var, variables) {
+    foreach (VariablePreferences *var, variables) {
         if(var->is_configurable()){
-            ui->tabWidget->addTab(var->get_config_widget(),var->meta->get_general_name());
+            ui->tabWidget->addTab(var->get_widget(),var->meta->get_general_name());
         }
     }
 }
@@ -52,7 +49,7 @@ void Preferences::on_buttonBox_accepted(){
     QSettings settings;
     settings.setValue(SETTINGS_ARDUINO_PATH,      ui->edit_arduino->text());  // to be deleted
 
-    foreach (VariableGUI *var, variables) {
+    foreach (VariablePreferences *var, variables) {
         if(var->is_configurable()){
             var->accept_config();
         }

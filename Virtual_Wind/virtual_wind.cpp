@@ -14,13 +14,10 @@ double Virtual_WindMeta::get_default_step(int n) {Q_UNUSED(n); return 0;}
 double Virtual_WindMeta::get_default_start(int n) {Q_UNUSED(n); return 0;}
 
 
-
-
 Virtual_WindGUI::Virtual_WindGUI() {meta = new Virtual_WindMeta();}
-QWidget* Virtual_WindGUI::get_config_widget() {return NULL;}
+QWidget* Virtual_WindGUI::get_widget() {return NULL;}
 bool Virtual_WindGUI::accept_config() {return true;}
 bool Virtual_WindGUI::is_configurable() {return true;}
-
 
 
 Virtual_WindModel::Virtual_WindModel(){meta = new Virtual_WindMeta;}
@@ -32,7 +29,12 @@ void Virtual_WindModel::insert_value(int n, int row, int count, double value) {Q
 void Virtual_WindModel::append_value(int n, double value) {Q_UNUSED(n);  contents.append(value);}
 void Virtual_WindModel::set_zero(QVector<double> zero) {Q_UNUSED(zero);}
 QVector<double> Virtual_WindModel::get_zero() {return QVector<double>();}
-
+QWidget* Virtual_WindModel::view_get_widget(){ return NULL;}
+QWidget* Virtual_WindModel::measurement_get_widget(){return NULL;}
+bool Virtual_WindModel::measurement_accept_config(VariableModel *m){Q_UNUSED(m); return true;}
+bool Virtual_WindModel::measurement_is_configurable(){return false;}
+void Virtual_WindModel::save_xml(QDomElement root){Q_UNUSED(root);}
+void Virtual_WindModel::load_xml(QDomElement root){Q_UNUSED(root);}
 
 
 Virtual_WindHardware::Virtual_WindHardware() {meta = new Virtual_WindMeta;}
@@ -47,9 +49,9 @@ void Virtual_WindHardware::set_zero(QVector<double> zero) {Q_UNUSED(zero);}
 
 
 VariableMeta* WindFactory::CreateVariableMeta() { return new Virtual_WindMeta;}
-VariableGUI* WindFactory::CreateVariableGUI() { return new Virtual_WindGUI;}
+VariablePreferences* WindFactory::CreateVariableGUI() { return new Virtual_WindGUI;}
 VariableModel* WindFactory::CreateVariableModel() { return new Virtual_WindModel;}
-VariableHardware* WindFactory::CreateVariableHardware() { return new Virtual_WindHardware;}
+VariableHardware* WindFactory::CreateVariableHardware(VariableModel *v) { Q_UNUSED(v); return new Virtual_WindHardware;}
 
 
 Q_EXPORT_PLUGIN2(virtual_wind, WindFactory);

@@ -22,29 +22,17 @@ MeasurementsPreferences::MeasurementsPreferences(MeasurementsModel *measurement,
 
     QSettings settings;
 
-    proxyfilter = new QSortFilterProxyModel(this);
-    proxyfilter->setSourceModel(list);
-    proxyfilter->setFilterRole(Qt::UserRole);
-    proxyfilter->setFilterCaseSensitivity(Qt::CaseInsensitive);
-    ui->combo_zero->setModel(proxyfilter);
-
-    ui->combo_matrix->clear();
-    ui->combo_matrix->addItem(tr("middle"),MIDDLE);
-    ui->combo_matrix->addItem(tr("floor"),FLOOR);
-    int index = ui->combo_matrix->findData(settings.value(SETTINGS_DEFAULT_MATRIX).toInt());
-    ui->combo_matrix->setCurrentIndex(index);
-
-    ui->combo_dvm_time->addItem(tr("50 ms"),1);
-    ui->combo_dvm_time->addItem(tr("100 ms"),2);
-    ui->combo_dvm_time->addItem(tr("500 ms"),3);
-    ui->combo_dvm_time->addItem(tr("1 s"),4);
-    ui->combo_dvm_time->addItem(tr("5 s"),5);
-    ui->combo_dvm_time->addItem(tr("10 s"),6);
-    index = ui->combo_dvm_time->findData(settings.value(SETTINGS_DEFAULT_DVM_TIME).toInt());
-    ui->combo_dvm_time->setCurrentIndex(index);
+    ui->combo_zero->setModel(list);
 
     ui->spinBoxAverage->setValue(settings.value(SETTINGS_DEFAULT_AVERAGE_NUMBER).toInt());
     ui->doubleSpinBoxSettling->setValue(settings.value(SETTINGS_DEFAULT_SETTLING_TIME).toDouble());
+
+    foreach (VariableModel *var, measurement->variables) {
+        if(var->measurement_is_configurable()){
+            ui->gridLayout_2->addWidget(var->measurement_get_widget());
+//            row++;
+        }
+    }
 
     QGridLayout *layout = new QGridLayout;
     QLabel *label;
@@ -67,9 +55,7 @@ MeasurementsPreferences::MeasurementsPreferences(MeasurementsModel *measurement,
     int num_controls = 0;
     foreach (VariableModel *var, measurement->variables) {
         if (var->meta->is_controlable()){
-            for (int k=0; k< var->meta->get_num(); k++){
-                num_controls++;
-            }
+            num_controls += var->meta->get_num();
         }
     }
     if (num_controls > 0){
@@ -123,7 +109,6 @@ MeasurementsPreferences::MeasurementsPreferences(MeasurementsModel *measurement,
 
 MeasurementsPreferences::~MeasurementsPreferences(){
     delete ui;
-    delete proxyfilter;
 }
 
 void MeasurementsPreferences::accept(){
@@ -155,10 +140,19 @@ void MeasurementsPreferences::accept(){
         }
     }
 
+    ZeroModel *zero = list->at(ui->combo_zero->currentIndex());
+    foreach (VariableModel *zero_var, zero->variables) {
+        foreach (VariableModel *var, measurement->variables) {
+            if (var->meta->get_general_name() == zero_var->meta->get_general_name()){
+                if(var->measurement_accept_config(zero_var) == false){
+                    return;
+                }
+            }
+        }
+    }
+
     measurement->name = ui->edit_name->text();
     measurement->description = ui->plainTextEdit->toPlainText();
-    measurement->matrix = (matrix_t) ui->combo_matrix->currentText().toInt();
-    measurement->dvm_time = ui->combo_dvm_time->itemData(ui->combo_dvm_time->currentIndex()).toInt();
     measurement->average_number = ui->spinBoxAverage->value();
     measurement->settling_time = ui->doubleSpinBoxSettling->value();
 
@@ -170,14 +164,14 @@ void MeasurementsPreferences::accept(){
         measurement->start_hash[list_radio.value(k)->objectName()] = list_start.value(k)->value();
     }
 
-    ZeroModel *zero = list->at(ui->combo_zero->currentIndex());
+    zero = list->at(ui->combo_zero->currentIndex());
     QVector<double> vector;
     foreach (VariableModel *zero_var, zero->variables) {
         foreach (VariableModel *var, measurement->variables) {
             if(var->meta->has_zero()){
                 if (var->meta->get_general_name() == zero_var->meta->get_general_name()){
                     for(int k=0; k< zero_var->meta->get_num(); k++){
-                        vector.append(zero_var->get_value(k,0));
+                        vector.append(zero_var->get_value(k,0)); // fixme: this zero is not very elegant
                     }
                     var->set_zero(vector);
                 }
@@ -204,8 +198,4 @@ void MeasurementsPreferences::maxminstep_enabled(QAbstractButton* button) {
         list_end.value(row)->setEnabled(true);
         list_step.value(row)->setEnabled(true);
     }
-}
-
-void MeasurementsPreferences::on_combo_matrix_currentIndexChanged(int index){
-    proxyfilter->setFilterFixedString(QString::number(index));
 }

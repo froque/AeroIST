@@ -15,7 +15,7 @@ double Virtual_AlphaMeta::get_default_start(int n) {Q_UNUSED(n); return DEFAULT_
 
 
 Virtual_AlphaGUI::Virtual_AlphaGUI() {meta = new Virtual_AlphaMeta();}
-QWidget* Virtual_AlphaGUI::get_config_widget() {
+QWidget* Virtual_AlphaGUI::get_widget() {
     QWidget *widget = new QWidget;
     QGridLayout *layout = new QGridLayout;
     QSettings settings;
@@ -34,7 +34,6 @@ bool Virtual_AlphaGUI::accept_config() {
 }
 bool Virtual_AlphaGUI::is_configurable() {return true;}
 
-
 Virtual_AlphaModel::Virtual_AlphaModel(){meta = new Virtual_AlphaMeta;}
 int Virtual_AlphaModel::get_size() {return contents.size();}
 double Virtual_AlphaModel::get_value(int n,int row) {Q_UNUSED(n); return contents.value(row);}
@@ -44,6 +43,13 @@ void Virtual_AlphaModel::insert_value(int n, int row, int count, double value) {
 void Virtual_AlphaModel::append_value(int n, double value) {Q_UNUSED(n);  contents.append(value);}
 void Virtual_AlphaModel::set_zero(QVector<double> zero) {Q_UNUSED(zero);}
 QVector<double> Virtual_AlphaModel::get_zero() {return QVector<double>();}
+QWidget* Virtual_AlphaModel::view_get_widget(){ return NULL;}
+QWidget* Virtual_AlphaModel::measurement_get_widget(){return NULL;}
+bool Virtual_AlphaModel::measurement_accept_config(VariableModel *m){Q_UNUSED(m); return true;}
+
+bool Virtual_AlphaModel::measurement_is_configurable(){return false;}
+void Virtual_AlphaModel::save_xml(QDomElement root){Q_UNUSED(root);}
+void Virtual_AlphaModel::load_xml(QDomElement root){Q_UNUSED(root);}
 
 
 Virtual_AlphaHardware::Virtual_AlphaHardware(){meta = new Virtual_AlphaMeta; value=0; control_set=false;}
@@ -57,8 +63,8 @@ void Virtual_AlphaHardware::set_zero(QVector<double> zero) {Q_UNUSED(zero);}
 
 
 VariableMeta* AlphaFactory::CreateVariableMeta() { return new Virtual_AlphaMeta;}
-VariableGUI* AlphaFactory::CreateVariableGUI() { return new Virtual_AlphaGUI;}
+VariablePreferences* AlphaFactory::CreateVariableGUI() { return new Virtual_AlphaGUI;}
 VariableModel* AlphaFactory::CreateVariableModel() { return new Virtual_AlphaModel;}
-VariableHardware* AlphaFactory::CreateVariableHardware() { return new Virtual_AlphaHardware;}
+VariableHardware* AlphaFactory::CreateVariableHardware(VariableModel *v) {Q_UNUSED(v); return new Virtual_AlphaHardware;}
 
 Q_EXPORT_PLUGIN2(virtual_alpha, AlphaFactory);

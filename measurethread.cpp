@@ -29,33 +29,8 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
     QSettings settings;
     virtual_measures = settings.value(SETTINGS_VIRTUAL_MEASURES,false).toBool();
     settings.setValue(SETTINGS_VIRTUAL_MEASURES,virtual_measures);
-    if (!virtual_measures){
-//        variables.append(new Force(measurement->matrix,measurement->dvm_time,zero.force));
-//        variables.append(new Alpha);
-//        variables.append(new Beta);
-//        variables.append(new Temperature);
-//        variables.append(new Motor);
-//        variables.append(new Wind);
-    } else {
-        Factory *factory;
-        QDir pluginsDir = QDir(qApp->applicationDirPath());
-        pluginsDir.cd("plugins");
-        foreach (QString fileName, pluginsDir.entryList(QDir::Files)) {
-            QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
-            factory = qobject_cast<Factory*>( loader.instance());
-            if(factory){
-                qDebug() << "thread" << fileName << "it is a factory";
-                VariableHardware *var = factory->CreateVariableHardware();
-                if (var != NULL){
-                    variables.append(var );
-                } else {
-                    qDebug() << "not a hardware var";
-                }
-            } else  {
-                qDebug() << "thread" << fileName << "it is not";
-            }
-        }
-    }
+
+    init(measurement->variables);
 
     // set zero to each variable
     foreach (VariableHardware *hard_var, variables) {
@@ -92,34 +67,7 @@ MeasureThread::MeasureThread(ZeroModel *measurement,QObject *parent) :
     virtual_measures = settings.value(SETTINGS_VIRTUAL_MEASURES,false).toBool();
     settings.setValue(SETTINGS_VIRTUAL_MEASURES,virtual_measures);
 
-    if (!virtual_measures){
-//        variables.append(new Force(measurement->matrix,measurement->dvm_time));
-//        variables.append(new Alpha);
-//        variables.append(new Beta);
-//        variables.append(new Temperature);
-//        variables.append(new Motor);
-//        variables.append(new Wind);
-
-    } else {
-        Factory *factory;
-        QDir pluginsDir = QDir(qApp->applicationDirPath());
-        pluginsDir.cd("plugins");
-        foreach (QString fileName, pluginsDir.entryList(QDir::Files)) {
-            QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
-            factory = qobject_cast<Factory*>( loader.instance());
-            if(factory){
-                qDebug() << "thread" << fileName << "it is a factory";
-                VariableHardware *var = factory->CreateVariableHardware();
-                if (var != NULL){
-                    variables.append(var );
-                } else {
-                    qDebug() << "not a hardware var";
-                }
-            } else  {
-                qDebug() << "thread" << fileName << "it is not";
-            }
-        }
-    }
+    init(measurement->variables);
 
     settling_time = 0;
     end           = 0;
@@ -127,6 +75,27 @@ MeasureThread::MeasureThread(ZeroModel *measurement,QObject *parent) :
     current       = 0;
 
     control = "";
+}
+
+void MeasureThread::init(QList<VariableModel*> list){
+    Factory *factory;
+    QDir pluginsDir = QDir(qApp->applicationDirPath());
+    pluginsDir.cd("plugins");
+    foreach (QString fileName, pluginsDir.entryList(QDir::Files)) {
+        QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
+        factory = qobject_cast<Factory*>( loader.instance());
+        if(factory){
+            VariableMeta *meta = factory->CreateVariableMeta();
+            foreach (VariableModel *model, list) {
+                if (meta->get_general_name() == model->meta->get_general_name()){
+                    VariableHardware *hardware = factory->CreateVariableHardware(model);
+                    if (hardware != NULL){
+                        variables.append(hardware );
+                    }
+                }
+            }
+        }
+    }
 }
 
 MeasureThread::~MeasureThread(){

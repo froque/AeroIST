@@ -21,10 +21,10 @@ public:
     double get_default_step(int n);
     double get_default_start(int n);
 };
-class Virtual_TemperatureGUI: public VariableGUI {
+class Virtual_TemperatureGUI: public VariablePreferences {
 public:
     Virtual_TemperatureGUI();
-    QWidget* get_config_widget();
+    QWidget* get_widget();
     bool accept_config();
     bool is_configurable();
 };
@@ -39,6 +39,13 @@ public:
     void append_value(int n, double value);
     void set_zero(QVector<double> zero);
     QVector<double> get_zero();
+    QWidget* view_get_widget();
+    QWidget* measurement_get_widget();
+    bool measurement_accept_config(VariableModel *m);
+    bool measurement_is_configurable();
+    void save_xml(QDomElement root);
+    void load_xml(QDomElement root);
+    bool compare(VariableModel *m);
 private:
     QVector<double> contents;
 };
@@ -61,10 +68,9 @@ class TemperatureFactory: public QObject,public Factory {
     Q_INTERFACES(Factory)
 public:
     VariableMeta* CreateVariableMeta();
-    VariableGUI* CreateVariableGUI();
+    VariablePreferences* CreateVariableGUI();
     VariableModel* CreateVariableModel();
-    VariableHardware* CreateVariableHardware();
+    VariableHardware* CreateVariableHardware(VariableModel *v);
 };
-
 
 #endif // VIRTUAL_TEMPERATURE_H

@@ -1,7 +1,5 @@
 #include "virtual_motor.h"
 
-
-
 bool Virtual_MotorMeta::is_controlable() {return true;}
 bool Virtual_MotorMeta::has_zero() {return false;}
 int Virtual_MotorMeta::get_num() {return 1;}
@@ -14,10 +12,8 @@ double Virtual_MotorMeta::get_smaller_step(int n) {Q_UNUSED(n); return MOTOR_MIN
 double Virtual_MotorMeta::get_default_step(int n) {Q_UNUSED(n); return DEFAULT_MOTOR_STEP;}
 double Virtual_MotorMeta::get_default_start(int n) {Q_UNUSED(n); return 0;}
 
-
-
 Virtual_MotorGUI::Virtual_MotorGUI() {meta = new Virtual_MotorMeta();}
-QWidget* Virtual_MotorGUI::get_config_widget() {
+QWidget* Virtual_MotorGUI::get_widget() {
     QWidget *widget = new QWidget;
     QGridLayout *layout = new QGridLayout;
     QSettings settings;
@@ -44,9 +40,6 @@ void Virtual_MotorGUI::button_slot(){
     edit_motor->setText(QFileDialog::getOpenFileName(NULL, tr("Choose device"),"/dev", ""));
 }
 
-
-
-
 Virtual_MotorModel::Virtual_MotorModel(){meta = new Virtual_MotorMeta;}
 int Virtual_MotorModel::get_size() {return contents.size();}
 double Virtual_MotorModel::get_value(int n,int row) {Q_UNUSED(n); return contents.value(row);}
@@ -56,6 +49,12 @@ void Virtual_MotorModel::insert_value(int n, int row, int count, double value) {
 void Virtual_MotorModel::append_value(int n, double value) {Q_UNUSED(n);  contents.append(value);}
 void Virtual_MotorModel::set_zero(QVector<double> zero) {Q_UNUSED(zero);}
 QVector<double> Virtual_MotorModel::get_zero() {return QVector<double>();}
+QWidget* Virtual_MotorModel::view_get_widget(){ return NULL;}
+QWidget* Virtual_MotorModel::measurement_get_widget(){return NULL;}
+bool Virtual_MotorModel::measurement_accept_config(VariableModel *m){Q_UNUSED(m); return true;}
+bool Virtual_MotorModel::measurement_is_configurable(){return false;}
+void Virtual_MotorModel::save_xml(QDomElement root){Q_UNUSED(root);}
+void Virtual_MotorModel::load_xml(QDomElement root){Q_UNUSED(root);}
 
 
 Virtual_MotorHardware::Virtual_MotorHardware () {meta = new Virtual_MotorMeta; value=0; control_set=false;}
@@ -70,9 +69,8 @@ void Virtual_MotorHardware::set_zero(QVector<double> zero) {Q_UNUSED(zero);}
 
 
 VariableMeta* MotorFactory::CreateVariableMeta() { return new Virtual_MotorMeta;}
-VariableGUI* MotorFactory::CreateVariableGUI() { return new Virtual_MotorGUI;}
+VariablePreferences* MotorFactory::CreateVariableGUI() { return new Virtual_MotorGUI;}
 VariableModel* MotorFactory::CreateVariableModel() { return new Virtual_MotorModel;}
-VariableHardware* MotorFactory::CreateVariableHardware() { return new Virtual_MotorHardware;}
-
+VariableHardware* MotorFactory::CreateVariableHardware(VariableModel *v) {Q_UNUSED(v); return new Virtual_MotorHardware;}
 
 Q_EXPORT_PLUGIN2(virtual_motor, MotorFactory);

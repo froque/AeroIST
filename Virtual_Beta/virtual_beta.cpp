@@ -14,7 +14,7 @@ double Virtual_BetaMeta::get_default_start(int n) {Q_UNUSED(n); return DEFAULT_B
 
 
 Virtual_BetaGUI::Virtual_BetaGUI() {meta = new Virtual_BetaMeta();}
-QWidget* Virtual_BetaGUI::get_config_widget() {
+QWidget* Virtual_BetaGUI::get_widget() {
     QWidget *widget = new QWidget;
     QGridLayout *layout = new QGridLayout;
     QSettings settings;
@@ -43,7 +43,12 @@ void Virtual_BetaModel::insert_value(int n, int row, int count, double value) {Q
 void Virtual_BetaModel::append_value(int n, double value) {Q_UNUSED(n);  contents.append(value);}
 void Virtual_BetaModel::set_zero(QVector<double> zero) {Q_UNUSED(zero);}
 QVector<double> Virtual_BetaModel::get_zero() {return QVector<double> ();}
-
+QWidget* Virtual_BetaModel::view_get_widget(){ return NULL;}
+QWidget* Virtual_BetaModel::measurement_get_widget(){return NULL;}
+bool Virtual_BetaModel::measurement_accept_config(VariableModel *m){Q_UNUSED(m); return true;}
+bool Virtual_BetaModel::measurement_is_configurable(){return false;}
+void Virtual_BetaModel::save_xml(QDomElement root){Q_UNUSED(root);}
+void Virtual_BetaModel::load_xml(QDomElement root){Q_UNUSED(root);}
 
 
 Virtual_BetaHardware::Virtual_BetaHardware () {meta = new Virtual_BetaMeta; value=0; control_set=false;}
@@ -57,10 +62,8 @@ void Virtual_BetaHardware::set_zero(QVector<double> zero) {Q_UNUSED(zero);}
 
 
 VariableMeta* BetaFactory::CreateVariableMeta() { return new Virtual_BetaMeta;}
-VariableGUI* BetaFactory::CreateVariableGUI() { return new Virtual_BetaGUI;}
+VariablePreferences* BetaFactory::CreateVariableGUI() { return new Virtual_BetaGUI;}
 VariableModel* BetaFactory::CreateVariableModel() { return new Virtual_BetaModel;}
-VariableHardware* BetaFactory::CreateVariableHardware() { return new Virtual_BetaHardware;}
-
-
+VariableHardware* BetaFactory::CreateVariableHardware(VariableModel *v) {Q_UNUSED(v); return new Virtual_BetaHardware;}
 
 Q_EXPORT_PLUGIN2(virtual_beta, BetaFactory);

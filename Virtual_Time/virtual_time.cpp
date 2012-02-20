@@ -1,7 +1,5 @@
 #include "virtual_time.h"
 
-
-
 bool Virtual_TimeMeta::is_controlable() {return false;}
 bool Virtual_TimeMeta::has_zero() {return false;}
 int Virtual_TimeMeta::get_num() {return 1;}
@@ -15,11 +13,8 @@ double Virtual_TimeMeta::get_default_step(int n) {Q_UNUSED(n); return 0;}
 double Virtual_TimeMeta::get_default_start(int n) {Q_UNUSED(n); return 0;}
 
 
-
-
 Virtual_TimeGUI::Virtual_TimeGUI() {meta = new Virtual_TimeMeta();}
-QWidget* Virtual_TimeGUI::get_config_widget() {return NULL;}
-
+QWidget* Virtual_TimeGUI::get_widget() {return NULL;}
 bool Virtual_TimeGUI::accept_config() {return true;}
 bool Virtual_TimeGUI::is_configurable() {return false;}
 
@@ -33,13 +28,18 @@ void Virtual_TimeModel::insert_value(int n, int row, int count, double value) {Q
 void Virtual_TimeModel::append_value(int n, double value) {Q_UNUSED(n);  contents.append(value);}
 void Virtual_TimeModel::set_zero(QVector<double> zero) {Q_UNUSED(zero);}
 QVector<double> Virtual_TimeModel::get_zero() {return QVector<double>();}
-
+QWidget* Virtual_TimeModel::view_get_widget(){ return NULL;}
+QWidget* Virtual_TimeModel::measurement_get_widget(){return NULL;}
+bool Virtual_TimeModel::measurement_accept_config(VariableModel *m){Q_UNUSED(m); return true;}
+bool Virtual_TimeModel::measurement_is_configurable(){return false;}
+void Virtual_TimeModel::save_xml(QDomElement root){Q_UNUSED(root);}
+void Virtual_TimeModel::load_xml(QDomElement root){Q_UNUSED(root);}
 
 VariableMeta* TimeFactory::CreateVariableMeta() { return new Virtual_TimeMeta;}
-VariableGUI* TimeFactory::CreateVariableGUI() { return new Virtual_TimeGUI;}
+VariablePreferences* TimeFactory::CreateVariableGUI() { return new Virtual_TimeGUI;}
 VariableModel* TimeFactory::CreateVariableModel() { return new Virtual_TimeModel;}
 //    VariableHardware* CreateVariableHardware() { return new Virtual_TimeHardware;}
-VariableHardware* TimeFactory::CreateVariableHardware() { return NULL;}
+VariableHardware* TimeFactory::CreateVariableHardware(VariableModel *v) { Q_UNUSED(v); return NULL;}
 
 
 

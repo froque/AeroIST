@@ -1,7 +1,5 @@
 #include "virtual_temperature.h"
 
-
-
 bool Virtual_TemperatureMeta::is_controlable() {return false;}
 bool Virtual_TemperatureMeta::has_zero() {return false;}
 int Virtual_TemperatureMeta::get_num() {return 1;}
@@ -15,9 +13,8 @@ double Virtual_TemperatureMeta::get_default_step(int n) {Q_UNUSED(n); return 0;}
 double Virtual_TemperatureMeta::get_default_start(int n) {Q_UNUSED(n); return 0;}
 
 
-
 Virtual_TemperatureGUI::Virtual_TemperatureGUI() {meta = new Virtual_TemperatureMeta();}
-QWidget* Virtual_TemperatureGUI::get_config_widget() {return NULL;}
+QWidget* Virtual_TemperatureGUI::get_widget() {return NULL;}
 bool Virtual_TemperatureGUI::accept_config() {return true;}
 bool Virtual_TemperatureGUI::is_configurable() {return false;}
 
@@ -31,8 +28,12 @@ void Virtual_TemperatureModel::insert_value(int n, int row, int count, double va
 void Virtual_TemperatureModel::append_value(int n, double value) {Q_UNUSED(n);  contents.append(value);}
 void Virtual_TemperatureModel::set_zero(QVector<double> zero) {Q_UNUSED(zero);}
 QVector<double> Virtual_TemperatureModel::get_zero() {return QVector<double>();}
-
-
+QWidget* Virtual_TemperatureModel::view_get_widget(){ return NULL;}
+QWidget* Virtual_TemperatureModel::measurement_get_widget(){return NULL;}
+bool Virtual_TemperatureModel::measurement_accept_config(VariableModel *m){Q_UNUSED(m); return true;}
+bool Virtual_TemperatureModel::measurement_is_configurable(){return false;}
+void Virtual_TemperatureModel::save_xml(QDomElement root){Q_UNUSED(root);}
+void Virtual_TemperatureModel::load_xml(QDomElement root){Q_UNUSED(root);}
 
 Virtual_TemperatureHardware::Virtual_TemperatureHardware() {meta = new Virtual_TemperatureMeta;}
 void Virtual_TemperatureHardware::read() { value = -10.0 * qrand() / RAND_MAX;}
@@ -46,9 +47,8 @@ void Virtual_TemperatureHardware::set_zero(QVector<double> zero) {Q_UNUSED(zero)
 
 
 VariableMeta* TemperatureFactory::CreateVariableMeta() { return new Virtual_TemperatureMeta;}
-VariableGUI* TemperatureFactory::CreateVariableGUI() { return new Virtual_TemperatureGUI;}
+VariablePreferences* TemperatureFactory::CreateVariableGUI() { return new Virtual_TemperatureGUI;}
 VariableModel* TemperatureFactory::CreateVariableModel() { return new Virtual_TemperatureModel;}
-VariableHardware* TemperatureFactory::CreateVariableHardware() { return new Virtual_TemperatureHardware;}
-
+VariableHardware* TemperatureFactory::CreateVariableHardware(VariableModel *v) { Q_UNUSED(v); return new Virtual_TemperatureHardware;}
 
 Q_EXPORT_PLUGIN2(virtual_temperature, TemperatureFactory);

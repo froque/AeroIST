@@ -22,16 +22,13 @@ public:
     double get_default_start(int n);
 };
 
-class Virtual_MotorGUI : public QObject,public VariableGUI {
+class Virtual_MotorGUI : public QObject,public VariablePreferences {
     Q_OBJECT
 public:
     Virtual_MotorGUI();
-    QWidget* get_config_widget() ;
-
+    QWidget* get_widget() ;
     bool accept_config() ;
-
     bool is_configurable();
-
 private slots:
     void button_slot();
 private:
@@ -51,6 +48,12 @@ public:
     void append_value(int n, double value);
     void set_zero(QVector<double> zero);
     QVector<double> get_zero();
+    QWidget* view_get_widget();
+    QWidget* measurement_get_widget();
+    bool measurement_accept_config(VariableModel *m);
+    bool measurement_is_configurable();
+    void save_xml(QDomElement root);
+    void load_xml(QDomElement root);
 private:
     QVector<double> contents;
 };
@@ -74,10 +77,9 @@ class MotorFactory: public QObject,public Factory {
     Q_INTERFACES(Factory)
 public:
     VariableMeta* CreateVariableMeta();
-    VariableGUI* CreateVariableGUI();
+    VariablePreferences* CreateVariableGUI();
     VariableModel* CreateVariableModel();
-    VariableHardware* CreateVariableHardware();
+    VariableHardware* CreateVariableHardware(VariableModel *v);
 };
-
 
 #endif // VIRTUAL_MOTOR_H

@@ -4,7 +4,6 @@
 #include <QDialog>
 #include "measurementsmodel.h"
 #include "zerolist.h"
-#include <QSortFilterProxyModel>
 #include <QDoubleSpinBox>
 #include <QButtonGroup>
 #include <QRadioButton>
@@ -24,13 +23,11 @@ public:
 private slots:
     void accept(void);
     void maxminstep_enabled(QAbstractButton* button);
-    void on_combo_matrix_currentIndexChanged(int index);
 
 private:
     Ui::MeasurementsPreferences *ui;
     MeasurementsModel *measurement;
     ZeroList *list;
-    QSortFilterProxyModel *proxyfilter;
     QButtonGroup *group;
     QSpinBox *spin_iterations;
     QRadioButton *radio_none;
