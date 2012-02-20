@@ -2,8 +2,6 @@
 #define VIRTUAL_MOTOR_H
 
 #include "../variable.h"
-#include "../common.h"
-#include "../helper.h"
 #include <QString>
 #include <QtGui>
 

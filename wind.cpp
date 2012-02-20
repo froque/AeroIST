@@ -16,6 +16,9 @@
 
 #include <QSettings>
 
+#define WIND_SENSITIVITY 3.98
+#define MMH2O_TO_PASCAL 9.80665
+
 Wind::Wind(){
     wind=0;
     wind_raw=0;

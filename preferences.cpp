@@ -4,9 +4,6 @@
 #include "common.h"
 #include <QDir>
 #include <QFileDialog>
-#ifdef DEBUG
-#include <QDebug>
-#endif //DEBUG
 
 #include <QPluginLoader>
 #include "variable.h"

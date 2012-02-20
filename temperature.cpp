@@ -16,6 +16,8 @@
 
 #include <QSettings>
 
+#define TEMPERATURE_SENSITIVITY 100.0
+
 Temperature::Temperature(){
     temp=0;
     temp_raw=0;

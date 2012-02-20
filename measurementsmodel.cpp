@@ -2,10 +2,6 @@
 #include <QStringList>
 #include "measurementsmodel.h"
 
-#ifdef DEBUG
-#include "QDebug"
-#endif // DEBUG
-
 #include <QDir>
 #include <QCoreApplication>
 #include <QPluginLoader>

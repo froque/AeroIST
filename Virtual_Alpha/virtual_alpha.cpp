@@ -1,5 +1,16 @@
 #include "virtual_alpha.h"
 
+#define DEFAULT_ALPHA_STEP  1
+#define DEFAULT_ALPHA_START 0
+#define ANGLEZERO_ALPHA 730303.0
+#define ANGLESENSITIVITY_ALPHA 0.0000009007
+#define ANGLEMAX_ALPHA 30.0
+#define ANGLEMINSTEP_ALPHA 0.1
+#define PRECISION_ALPHA 0.03
+
+#define SETTINGS_ALPHA_PATH "alpha_path"
+#define SETTINGS_ALPHA_PATH_DEFAULT "/dev/angle_alpha"
+
 
 bool Virtual_AlphaMeta::is_controlable() {return true;}
 bool Virtual_AlphaMeta::has_zero() {return false;}

@@ -1,7 +1,7 @@
 #include "zeropreferences.h"
 #include "ui_zeropreferences.h"
 
-#include "QDebug"
+
 #include "QMessageBox"
 
 #include <QDir>

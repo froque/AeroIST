@@ -8,10 +8,21 @@
 #include <cmath>
 
 #include <QSettings>
-#include <QDebug>
 #include "common.h"
 #include "helper.h"
 #define SIMOREG_BUFLEN 8
+#define MOTOR_FULLSPEED 16384.0 // 100% according to manual
+#define MOTOR_FULLPERCENTAGE 100.0
+#define MOTOR_PRECISION 2           // in percentage
+
+#define MOTOR_MIN    0
+#define MOTOR_MAX    100 //Percentage
+#define MOTOR_MIN_STEP 1
+#define DEFAULT_MOTOR_STEP   1
+
+#define SETTINGS_MOTOR_PATH "motor_path"
+#define SETTINGS_MOTOR_PATH_DEFAULT "/dev/ttyS0"
+
 
 Motor::Motor(void){
 

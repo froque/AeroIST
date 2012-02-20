@@ -1,9 +1,6 @@
 #include "measurethread.h"
 
-#include <cstdlib> // for RAND_MAX
-
 #include <QEventLoop>
-#include <QDebug>
 #include <QSettings>
 #include <stdexcept>
 #include "helper.h"

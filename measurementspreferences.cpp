@@ -1,7 +1,6 @@
 #include "measurementspreferences.h"
 #include "ui_measurementspreferences.h"
 
-#include "QDebug"
 #include "QMessageBox"
 #include <cmath>
 #include <QSettings>

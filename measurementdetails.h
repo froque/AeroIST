@@ -5,10 +5,6 @@
 #include "measurementsmodel.h"
 #include "common.h"
 
-#ifdef DEBUG
-#include <QDebug>
-#endif //DEBUG
-
 namespace Ui {
     class MeasurementDetails;
 }

@@ -1,5 +1,17 @@
 #include "virtual_force.h"
 
+#define SETTINGS_DEFAULT_MATRIX "default_matrix"
+#define SETTINGS_DEFAULT_DVM_TIME "default_dvm_time"
+#define SETTINGS_FORCES_MATRIX_FLOOR "forces/matrix_floor"
+#define SETTINGS_FORCES_MATRIX_FLOOR_DEFAULT "matrix 1.coe"
+#define SETTINGS_FORCES_MATRIX_MIDDLE "forces/matrix_middle"
+#define SETTINGS_FORCES_MATRIX_MIDDLE_DEFAULT "matrix 2.coe"
+#define SETTINGS_MULTIMETER_PATH "multimeter_path"
+#define SETTINGS_MULTIMETER_PATH_DEFAULT "voltmeter"
+
+#define TAG_DVM_TIME "dvm_time"
+#define TAG_MATRIX "matrix"
+
 bool Virtual_ForceMeta::is_controlable() {return false;}
 bool Virtual_ForceMeta::has_zero() {return true;}
 int Virtual_ForceMeta::get_num() {return 6;}

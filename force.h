@@ -5,9 +5,14 @@
 #include <QString>
 #include "variable.h"
 
-#define READBUFFER 12     /* L0 - short message */
+
 #define NUMCHANNELS 6
 #define ANZ_QUA_ELE 21
+
+enum matrix_t{
+    MIDDLE=0,
+    FLOOR
+};
 
 
 #pragma pack(1)

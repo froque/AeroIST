@@ -1,5 +1,18 @@
 #include "virtual_beta.h"
 
+#define DEFAULT_BETA_STEP   5
+#define DEFAULT_BETA_START  0
+#define ANGLEZERO_BETA 80751.0
+#define ANGLESENSITIVITY_BETA 0.00211000
+#define ANGLEMAX_BETA 180.0
+#define ANGLEMINSTEP_BETA 0.2
+#define PRECISION_BETA 0.05
+
+
+#define SETTINGS_BETA_PATH "beta_path"
+#define SETTINGS_BETA_PATH_DEFAULT "/dev/angle_beta"
+
+
 bool Virtual_BetaMeta::is_controlable() {return true;}
 bool Virtual_BetaMeta::has_zero() {return false;}
 int Virtual_BetaMeta::get_num() {return 1;}

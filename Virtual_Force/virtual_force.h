@@ -1,17 +1,15 @@
 #ifndef VIRTUAL_FORCE_H
 #define VIRTUAL_FORCE_H
 
-//#include "Virtual_Force_global.h"
-
-//class VIRTUAL_FORCESHARED_EXPORT Virtual_Force {
-//public:
-//    Virtual_Force();
-//};
 #include "../variable.h"
-#include "../common.h"
-
 #include <QString>
 #include <QtGui>
+
+enum matrix_t{
+    MIDDLE=0,
+    FLOOR
+};
+
 
 class Virtual_ForceMeta: public VariableMeta{
 public:

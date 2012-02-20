@@ -1,5 +1,14 @@
 #include "virtual_motor.h"
 
+#define MOTOR_MIN    0
+#define MOTOR_MAX    100 //Percentage
+#define MOTOR_MIN_STEP 1
+#define DEFAULT_MOTOR_STEP   1
+
+#define SETTINGS_MOTOR_PATH "motor_path"
+#define SETTINGS_MOTOR_PATH_DEFAULT "/dev/ttyS0"
+
+
 bool Virtual_MotorMeta::is_controlable() {return true;}
 bool Virtual_MotorMeta::has_zero() {return false;}
 int Virtual_MotorMeta::get_num() {return 1;}

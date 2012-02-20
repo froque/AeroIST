@@ -9,6 +9,23 @@
 #include <QSettings>
 #include <stdexcept>
 
+#define GRAVITY 9.81      /* m/s^2 */
+#define SENSITIVITY 2.0   /* mV/V  */
+#define VCC 12            /* V     */
+#define MAX_ITER 10
+#define TOLERANCE 1e-5
+#define READBUFFER 12     /* L0 - short message */
+
+#define SETTINGS_DEFAULT_MATRIX "default_matrix"
+#define SETTINGS_DEFAULT_DVM_TIME "default_dvm_time"
+#define SETTINGS_FORCES_MATRIX_FLOOR "forces/matrix_floor"
+#define SETTINGS_FORCES_MATRIX_FLOOR_DEFAULT "matrix 1.coe"
+#define SETTINGS_FORCES_MATRIX_MIDDLE "forces/matrix_middle"
+#define SETTINGS_FORCES_MATRIX_MIDDLE_DEFAULT "matrix 2.coe"
+#define SETTINGS_MULTIMETER_PATH "multimeter_path"
+#define SETTINGS_MULTIMETER_PATH_DEFAULT "voltmeter"
+
+
 void invert(int n,double coe_matrix[6][6],double matrix[6][6]);
 
 // initialize the class

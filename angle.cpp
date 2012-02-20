@@ -12,6 +12,31 @@
 
 #include "botoneira.h"
 
+#define COMMAND_ON 1
+#define COMMAND_OFF 0
+
+
+#define DEFAULT_ALPHA_STEP  1
+#define DEFAULT_ALPHA_START 0
+#define ANGLEZERO_ALPHA 730303.0
+#define ANGLESENSITIVITY_ALPHA 0.0000009007
+#define ANGLEMAX_ALPHA 30.0
+#define ANGLEMINSTEP_ALPHA 0.1
+#define PRECISION_ALPHA 0.03
+
+#define SETTINGS_ALPHA_PATH "alpha_path"
+#define SETTINGS_ALPHA_PATH_DEFAULT "/dev/angle_alpha"
+
+#define DEFAULT_BETA_STEP   5
+#define DEFAULT_BETA_START  0
+#define ANGLEZERO_BETA 80751.0
+#define ANGLESENSITIVITY_BETA 0.00211000
+#define ANGLEMAX_BETA 180.0
+#define ANGLEMINSTEP_BETA 0.2
+#define PRECISION_BETA 0.05
+
+#define SETTINGS_BETA_PATH "beta_path"
+#define SETTINGS_BETA_PATH_DEFAULT "/dev/angle_beta"
 
 Angle::Angle(){
     QSettings settings;
