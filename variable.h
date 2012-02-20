@@ -33,6 +33,7 @@ public:
 
 class VariablePreferences {
 public:
+    virtual ~VariablePreferences(){};
     virtual QWidget* get_widget() = 0;
     virtual bool accept_config() = 0;
     virtual bool is_configurable() = 0;
@@ -74,6 +75,7 @@ public:
 
 class Factory {
 public:
+    virtual ~Factory() {}
     virtual VariableMeta* CreateVariableMeta() = 0;
     virtual VariablePreferences* CreateVariableGUI() = 0;
     virtual VariableModel* CreateVariableModel() = 0;
