@@ -220,7 +220,16 @@ void ZeroModel::load_xml(QDomElement root){
                 QDomElement force;
                 for (int column = 0; column< forces.count(); column++ ){
                     force = forces.at(column).toElement();
-                    this->setData(this->index(row,column),force.text());
+                    QString tagname = force.tagName();
+                    QString tag_header;
+                    for (int k=0; k< columnCount(); k++){
+                        tag_header = this->headerData(k,Qt::Horizontal).toString().simplified();
+                        tag_header.replace(" ","_");
+                        if (tagname == tag_header){
+                            this->setData(index(row,k),force.text());
+                            break;
+                        }
+                    }
                 }
             }
             continue;
