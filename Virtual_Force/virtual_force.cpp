@@ -12,11 +12,11 @@
 #define TAG_DVM_TIME "dvm_time"
 #define TAG_MATRIX "matrix"
 
-bool Virtual_ForceMeta::is_controlable() {return false;}
-bool Virtual_ForceMeta::has_zero() {return true;}
-int Virtual_ForceMeta::get_num() {return 6;}
-QString Virtual_ForceMeta::get_general_name(){ return "Forces";}
-QString Virtual_ForceMeta::get_name(int n){
+bool ForceMeta::is_controlable() {return false;}
+bool ForceMeta::has_zero() {return true;}
+int ForceMeta::get_num() {return 6;}
+QString ForceMeta::get_general_name(){ return "Forces";}
+QString ForceMeta::get_name(int n){
     switch (n){
     case 0: return "Fx"; break;
     case 1: return "Fy"; break;
@@ -27,7 +27,7 @@ QString Virtual_ForceMeta::get_name(int n){
     }
     return "";
 }
-QString Virtual_ForceMeta::get_units(int n) {
+QString ForceMeta::get_units(int n) {
     switch (n){
     case 0:
     case 1:
@@ -40,15 +40,15 @@ QString Virtual_ForceMeta::get_units(int n) {
     }
     return "";
 }
-double Virtual_ForceMeta::get_lower_bound(int n) {Q_UNUSED(n); return 0;}
-double Virtual_ForceMeta::get_upper_bound(int n) {Q_UNUSED(n); return 0;}
-double Virtual_ForceMeta::get_smaller_step(int n) {Q_UNUSED(n); return 0;}
-double Virtual_ForceMeta::get_default_step(int n) {Q_UNUSED(n); return 0;}
-double Virtual_ForceMeta::get_default_start(int n) {Q_UNUSED(n); return 0;}
+double ForceMeta::get_lower_bound(int n) {Q_UNUSED(n); return 0;}
+double ForceMeta::get_upper_bound(int n) {Q_UNUSED(n); return 0;}
+double ForceMeta::get_smaller_step(int n) {Q_UNUSED(n); return 0;}
+double ForceMeta::get_default_step(int n) {Q_UNUSED(n); return 0;}
+double ForceMeta::get_default_start(int n) {Q_UNUSED(n); return 0;}
 
 
-Virtual_ForceGUI::Virtual_ForceGUI(){meta = new Virtual_ForceMeta;}
-QWidget* Virtual_ForceGUI::get_widget() {
+ForcePreferences::ForcePreferences(){meta = new ForceMeta;}
+QWidget* ForcePreferences::get_widget() {
     QWidget *widget = new QWidget;
     QGridLayout *layout = new QGridLayout;
     QSettings settings;
@@ -76,7 +76,7 @@ QWidget* Virtual_ForceGUI::get_widget() {
     widget->setLayout(layout);
     return widget;
 }
-bool Virtual_ForceGUI::accept_config() {
+bool ForcePreferences::accept_config() {
     QSettings settings;
     int index = combo_time->currentIndex();
     settings.setValue(SETTINGS_DEFAULT_DVM_TIME, combo_time->itemData(index).toInt());
@@ -85,19 +85,19 @@ bool Virtual_ForceGUI::accept_config() {
     settings.setValue(SETTINGS_DEFAULT_MATRIX, combo_matrix->itemData(index).toInt());
     return true;
 }
-bool Virtual_ForceGUI::is_configurable() {return true;}
+bool ForcePreferences::is_configurable() {return true;}
 
 
-Virtual_ForceModel::Virtual_ForceModel(){meta = new Virtual_ForceMeta;}
-int Virtual_ForceModel::get_size() {return force[0].size();}
-double Virtual_ForceModel::get_value(int n,int row) {return force[n].value(row);}
-QVector<double> Virtual_ForceModel::get_vector(int n) {return force[n];}
-void Virtual_ForceModel::set_value(int n ,int row, double value) { force[n].replace(row,value);}
-void Virtual_ForceModel::insert_value(int n, int row, int count, double value) {force[n].insert(row,count,value);}
-void Virtual_ForceModel::append_value(int n, double value) { force[n].append(value);}
-void Virtual_ForceModel::set_zero(QVector<double> zero) {this->zero = zero;}
-QVector<double> Virtual_ForceModel::get_zero() {return zero;}
-QWidget* Virtual_ForceModel::view_get_widget(){
+ForceModel::ForceModel(){meta = new ForceMeta;}
+int ForceModel::get_size() {return force[0].size();}
+double ForceModel::get_value(int n,int row) {return force[n].value(row);}
+QVector<double> ForceModel::get_vector(int n) {return force[n];}
+void ForceModel::set_value(int n ,int row, double value) { force[n].replace(row,value);}
+void ForceModel::insert_value(int n, int row, int count, double value) {force[n].insert(row,count,value);}
+void ForceModel::append_value(int n, double value) { force[n].append(value);}
+void ForceModel::set_zero(QVector<double> zero) {this->zero = zero;}
+QVector<double> ForceModel::get_zero() {return zero;}
+QWidget* ForceModel::view_get_widget(){
     QWidget *widget = new QWidget;
     QGridLayout *layout = new QGridLayout;
     layout->addWidget(new QLabel(QObject::tr("Multimeter time")),0,0);
@@ -128,7 +128,7 @@ QWidget* Virtual_ForceModel::view_get_widget(){
     widget->setLayout(layout);
     return widget;
 }
-QWidget* Virtual_ForceModel::measurement_get_widget(){
+QWidget* ForceModel::measurement_get_widget(){
     QWidget *widget = new QWidget;
     QGridLayout *layout = new QGridLayout;
     QSettings settings;
@@ -153,18 +153,18 @@ QWidget* Virtual_ForceModel::measurement_get_widget(){
     widget->setLayout(layout);
     return widget;
 }
-bool Virtual_ForceModel::measurement_accept_config(VariableModel *m){
+bool ForceModel::measurement_accept_config(VariableModel *m){
     dvm_time = combo_time->itemData(combo_time->currentIndex()).toInt();
     matrix = (matrix_t) combo_matrix->currentIndex();
     if (m != NULL){
-        if (matrix != dynamic_cast<Virtual_ForceModel*>(m)->matrix){
+        if (matrix != dynamic_cast<ForceModel*>(m)->matrix){
             return false;
         }
     }
     return true;
 }
-bool Virtual_ForceModel::measurement_is_configurable(){return true;}
-void Virtual_ForceModel::save_xml(QDomElement root){
+bool ForceModel::measurement_is_configurable(){return true;}
+void ForceModel::save_xml(QDomElement root){
     QDomElement dvm_time = root.ownerDocument().createElement(TAG_DVM_TIME);
     dvm_time.appendChild(root.ownerDocument().createTextNode(QString::number(this->dvm_time)));
     root.appendChild(dvm_time);
@@ -173,7 +173,7 @@ void Virtual_ForceModel::save_xml(QDomElement root){
     matrix.appendChild(root.ownerDocument().createTextNode(QString::number(this->matrix)));
     root.appendChild(matrix);
 }
-void Virtual_ForceModel::load_xml(QDomElement root){
+void ForceModel::load_xml(QDomElement root){
     QDomNodeList nodelist = root.childNodes();
     QDomNode node;
     QDomElement element;
@@ -198,22 +198,22 @@ void Virtual_ForceModel::load_xml(QDomElement root){
 }
 
 
-Virtual_ForceHardware::Virtual_ForceHardware(VariableModel* v){
-    meta = new Virtual_ForceMeta;
-    dvm_time = dynamic_cast<Virtual_ForceModel*>(v)->dvm_time;
-    matrix = dynamic_cast<Virtual_ForceModel*>(v)->matrix;
+ForceHardware::ForceHardware(VariableModel* v){
+    meta = new ForceMeta;
+    dvm_time = dynamic_cast<ForceModel*>(v)->dvm_time;
+    matrix = dynamic_cast<ForceModel*>(v)->matrix;
 }
-void Virtual_ForceHardware::read() { for (int k=0; k<6; k++) {value[k] = ( 1.1 * (k+1) * qrand() / RAND_MAX )- zero.value(k);}}
-double Virtual_ForceHardware::get_value(int n) { return value[n];}
-void Virtual_ForceHardware::set_value(int n ,double value) {Q_UNUSED(n); Q_UNUSED(value);  }
-bool Virtual_ForceHardware::isReady(void) {return true;}
-bool Virtual_ForceHardware::has_set_final() {return meta->is_controlable() && false;}
-void Virtual_ForceHardware::set_final() {}
-void Virtual_ForceHardware::set_zero(QVector<double> zero) {this->zero = zero; qDebug() << this->zero;}
+void ForceHardware::read() { for (int k=0; k<6; k++) {value[k] = ( 1.1 * (k+1) * qrand() / RAND_MAX )- zero.value(k);}}
+double ForceHardware::get_value(int n) { return value[n];}
+void ForceHardware::set_value(int n ,double value) {Q_UNUSED(n); Q_UNUSED(value);  }
+bool ForceHardware::isReady(void) {return true;}
+bool ForceHardware::has_set_final() {return meta->is_controlable() && false;}
+void ForceHardware::set_final() {}
+void ForceHardware::set_zero(QVector<double> zero) {this->zero = zero; qDebug() << this->zero;}
 
-VariableMeta* ForceFactory::CreateVariableMeta() { return new Virtual_ForceMeta;}
-VariablePreferences* ForceFactory::CreateVariableGUI() { return new Virtual_ForceGUI;}
-VariableModel* ForceFactory::CreateVariableModel() { return new Virtual_ForceModel;}
-VariableHardware* ForceFactory::CreateVariableHardware(VariableModel *v) { return new Virtual_ForceHardware(v);}
+VariableMeta* ForceFactory::CreateVariableMeta() { return new ForceMeta;}
+VariablePreferences* ForceFactory::CreateVariableGUI() { return new ForcePreferences;}
+VariableModel* ForceFactory::CreateVariableModel() { return new ForceModel;}
+VariableHardware* ForceFactory::CreateVariableHardware(VariableModel *v) { return new ForceHardware(v);}
 
-Q_EXPORT_PLUGIN2(virtual_force, ForceFactory);
+Q_EXPORT_PLUGIN2(force, ForceFactory);

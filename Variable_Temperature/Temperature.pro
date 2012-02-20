@@ -3,15 +3,15 @@ QT       += xml
 
 CONFIG         += plugin
 CONFIG         += debug_and_release
-TARGET          = $$qtLibraryTarget(time)
+TARGET          = $$qtLibraryTarget(temperature)
 
 TEMPLATE = lib
 
 OBJECTS_DIR   = objs
 MOC_DIR       = moc
-DESTDIR       = ../build/plugins_virtual
+DESTDIR       = ../build/plugins_real
 
-SOURCES       += virtual_time.cpp
+SOURCES       += temperature.cpp
 
-HEADERS       += virtual_time.h
+HEADERS       += temperature.h
 

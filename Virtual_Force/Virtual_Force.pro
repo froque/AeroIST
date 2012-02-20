@@ -3,13 +3,13 @@ QT       += xml
 
 CONFIG         += plugin
 CONFIG         += debug_and_release
-TARGET          = $$qtLibraryTarget(virtual_force)
+TARGET          = $$qtLibraryTarget(force)
 
 TEMPLATE = lib
 
 OBJECTS_DIR   = objs
 MOC_DIR       = moc
-DESTDIR       = ../build/plugins
+DESTDIR       = ../build/plugins_virtual
 
 SOURCES       += virtual_force.cpp
 

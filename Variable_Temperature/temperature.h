@@ -1,11 +1,11 @@
-#ifndef VIRTUAL_WIND_H
-#define VIRTUAL_WIND_H
+#ifndef TEMPERATURE_H
+#define TEMPERATURE_H
 
 #include "../variable.h"
 #include <QString>
 #include <QtGui>
 
-class WindMeta : public VariableMeta {
+class TemperatureMeta: public VariableMeta {
 public:
     bool is_controlable();
     bool has_zero();
@@ -19,16 +19,16 @@ public:
     double get_default_step(int n);
     double get_default_start(int n);
 };
-class WindPreferences: public VariablePreferences {
+class TemperaturePreferences: public VariablePreferences {
 public:
-    WindPreferences();
+    TemperaturePreferences();
     QWidget* get_widget();
     bool accept_config();
     bool is_configurable();
 };
-class WindModel : public VariableModel {
+class TemperatureModel: public VariableModel {
 public:
-    WindModel();
+    TemperatureModel();
     int get_size();
     double get_value(int n,int row);
     QVector<double> get_vector(int n);
@@ -47,9 +47,10 @@ public:
 private:
     QVector<double> contents;
 };
-class WindHardware: public VariableHardware {
+class TemperatureHardware: public VariableHardware {
 public:
-    WindHardware();
+    TemperatureHardware();
+    ~TemperatureHardware();
     void read();
     double get_value(int n);
     void set_value(int n ,double value);
@@ -58,9 +59,12 @@ public:
     void set_final();
     void set_zero(QVector<double> zero);
 private:
-    double value;
+    int arduinofd;
+    int temp_raw;
+    double temp;
 };
-class WindFactory: public QObject,public Factory {
+
+class TemperatureFactory: public QObject,public Factory {
     Q_OBJECT
     Q_INTERFACES(Factory)
 public:
@@ -70,5 +74,4 @@ public:
     VariableHardware* CreateVariableHardware(VariableModel *v);
 };
 
-
-#endif // VIRTUAL_WIND_H
+#endif // TEMPERATURE_H

@@ -48,13 +48,6 @@ SOURCES += main.cpp \
     zeropreferences.cpp \
     curvenew.cpp \
     curvedelete.cpp \
-    force.cpp \
-    angle.cpp \
-    temperature.cpp \
-    botoneira.cpp \
-    arduino-serial.cpp \
-    motor.cpp \
-    wind.cpp \
     helper.cpp
 
 HEADERS += aeroistwindow.h \
@@ -71,13 +64,6 @@ HEADERS += aeroistwindow.h \
     zeropreferences.h \
     curvenew.h \
     curvedelete.h \
-    force.h \
-    angle.h \
-    temperature.h \
-    botoneira.h \
-    arduino-serial.h \
-    motor.h \
-    wind.h \
     helper.h \
     variable.h
 

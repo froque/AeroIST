@@ -2,11 +2,6 @@
 #define MYTHREAD_H
 
 #include "common.h"
-#include "force.h"
-#include "angle.h"
-#include "temperature.h"
-#include "motor.h"
-#include "wind.h"
 
 #include <QTime>
 #include <QElapsedTimer>
@@ -56,7 +51,7 @@ private:
 
     bool m_stop;
     QThread* m_parent_thread;
-    bool virtual_measures;
+//    bool virtual_measures;
 
     // Variables
     QList<VariableHardware*> variables;

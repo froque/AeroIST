@@ -9,9 +9,9 @@ TEMPLATE = lib
 
 OBJECTS_DIR   = objs
 MOC_DIR       = moc
-DESTDIR       = ../build/plugins_virtual
+DESTDIR       = ../build/plugins_real
 
-SOURCES       += virtual_time.cpp
+SOURCES       += time.cpp
 
-HEADERS       += virtual_time.h
+HEADERS       += time.h
 

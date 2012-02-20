@@ -5,7 +5,7 @@
 #include <QString>
 #include <QtGui>
 
-class Virtual_TemperatureMeta: public VariableMeta {
+class TemperatureMeta: public VariableMeta {
 public:
     bool is_controlable();
     bool has_zero();
@@ -19,16 +19,16 @@ public:
     double get_default_step(int n);
     double get_default_start(int n);
 };
-class Virtual_TemperatureGUI: public VariablePreferences {
+class TemperaturePreferences: public VariablePreferences {
 public:
-    Virtual_TemperatureGUI();
+    TemperaturePreferences();
     QWidget* get_widget();
     bool accept_config();
     bool is_configurable();
 };
-class Virtual_TemperatureModel: public VariableModel {
+class TemperatureModel: public VariableModel {
 public:
-    Virtual_TemperatureModel();
+    TemperatureModel();
     int get_size();
     double get_value(int n,int row);
     QVector<double> get_vector(int n);
@@ -47,9 +47,9 @@ public:
 private:
     QVector<double> contents;
 };
-class Virtual_TemperatureHardware: public VariableHardware {
+class TemperatureHardware: public VariableHardware {
 public:
-    Virtual_TemperatureHardware();
+    TemperatureHardware();
     void read();
     double get_value(int n);
     void set_value(int n ,double value);

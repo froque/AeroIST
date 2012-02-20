@@ -6,7 +6,7 @@
 #include <QtGui>
 
 
-class Virtual_BetaMeta: public VariableMeta{
+class BetaMeta: public VariableMeta{
 public:
     bool is_controlable();
     bool has_zero();
@@ -20,9 +20,9 @@ public:
     double get_default_step(int n);
     double get_default_start(int n);
 };
-class Virtual_BetaGUI: public VariablePreferences {
+class BetaPreferences: public VariablePreferences {
 public:
-    Virtual_BetaGUI();
+    BetaPreferences();
     QWidget* get_widget();
 
     bool accept_config();
@@ -30,9 +30,9 @@ public:
 private:
     QLineEdit *edit_beta;
 };
-class Virtual_BetaModel : public VariableModel {
+class BetaModel : public VariableModel {
 public:
-    Virtual_BetaModel();
+    BetaModel();
     int get_size();
     double get_value(int n,int row);
     QVector<double> get_vector(int n);
@@ -50,9 +50,9 @@ public:
 private:
     QVector<double> contents;
 };
-class Virtual_BetaHardware: public VariableHardware {
+class BetaHardware: public VariableHardware {
 public:
-    Virtual_BetaHardware ();
+    BetaHardware ();
     void read();
     double get_value(int n);
     void set_value(int n ,double value);

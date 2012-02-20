@@ -6,7 +6,7 @@
 #include <QtGui>
 
 
-class Virtual_AlphaMeta : public VariableMeta {
+class AlphaMeta : public VariableMeta {
 public:
     bool is_controlable();
     bool has_zero();
@@ -21,9 +21,9 @@ public:
     double get_default_start(int n);
 };
 
-class Virtual_AlphaGUI: public VariablePreferences {
+class AlphaPreferences: public VariablePreferences {
 public:
-    Virtual_AlphaGUI();
+    AlphaPreferences();
     QWidget* get_widget();
     bool accept_config();
     bool is_configurable();
@@ -31,9 +31,9 @@ private:
     QLineEdit *edit_alpha;
 };
 
-class Virtual_AlphaModel : public VariableModel {
+class AlphaModel : public VariableModel {
 public:
-    Virtual_AlphaModel();
+    AlphaModel();
     int get_size();
     double get_value(int n,int row);
     QVector<double> get_vector(int n);
@@ -51,9 +51,9 @@ public:
 private:
     QVector<double> contents;
 };
-class Virtual_AlphaHardware: public VariableHardware {
+class AlphaHardware: public VariableHardware {
 public:
-    Virtual_AlphaHardware();
+    AlphaHardware();
     void read();
     double get_value(int n);
     void set_value(int n ,double value);

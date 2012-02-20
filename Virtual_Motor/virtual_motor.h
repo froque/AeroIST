@@ -5,7 +5,7 @@
 #include <QString>
 #include <QtGui>
 
-class Virtual_MotorMeta : public VariableMeta {
+class MotorMeta : public VariableMeta {
 public:
     bool is_controlable();
     bool has_zero();
@@ -20,10 +20,10 @@ public:
     double get_default_start(int n);
 };
 
-class Virtual_MotorGUI : public QObject,public VariablePreferences {
+class MotorPreferences : public QObject,public VariablePreferences {
     Q_OBJECT
 public:
-    Virtual_MotorGUI();
+    MotorPreferences();
     QWidget* get_widget() ;
     bool accept_config() ;
     bool is_configurable();
@@ -35,9 +35,9 @@ private:
 };
 
 
-class Virtual_MotorModel : public VariableModel {
+class MotorModel : public VariableModel {
 public:
-    Virtual_MotorModel();
+    MotorModel();
     int get_size();
     double get_value(int n,int row);
     QVector<double> get_vector(int n);
@@ -55,9 +55,9 @@ public:
 private:
     QVector<double> contents;
 };
-class Virtual_MotorHardware: public VariableHardware {
+class MotorHardware: public VariableHardware {
 public:
-    Virtual_MotorHardware ();
+    MotorHardware ();
     void read();
     double get_value(int n);
     void set_value(int n ,double value);

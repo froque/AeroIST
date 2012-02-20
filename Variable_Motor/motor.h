@@ -1,11 +1,11 @@
-#ifndef VIRTUAL_WIND_H
-#define VIRTUAL_WIND_H
+#ifndef MOTOR_H
+#define MOTOR_H
 
 #include "../variable.h"
 #include <QString>
 #include <QtGui>
 
-class WindMeta : public VariableMeta {
+class MotorMeta : public VariableMeta {
 public:
     bool is_controlable();
     bool has_zero();
@@ -19,16 +19,25 @@ public:
     double get_default_step(int n);
     double get_default_start(int n);
 };
-class WindPreferences: public VariablePreferences {
+
+class MotorPreferences : public QObject,public VariablePreferences {
+    Q_OBJECT
 public:
-    WindPreferences();
-    QWidget* get_widget();
-    bool accept_config();
+    MotorPreferences();
+    QWidget* get_widget() ;
+    bool accept_config() ;
     bool is_configurable();
+private slots:
+    void button_slot();
+private:
+    QLineEdit *edit_motor;
+    QToolButton *button;
 };
-class WindModel : public VariableModel {
+
+
+class MotorModel : public VariableModel {
 public:
-    WindModel();
+    MotorModel();
     int get_size();
     double get_value(int n,int row);
     QVector<double> get_vector(int n);
@@ -43,13 +52,13 @@ public:
     bool measurement_is_configurable();
     void save_xml(QDomElement root);
     void load_xml(QDomElement root);
-    bool compare(VariableModel *m);
 private:
     QVector<double> contents;
 };
-class WindHardware: public VariableHardware {
+class MotorHardware: public VariableHardware {
 public:
-    WindHardware();
+    MotorHardware ();
+    ~MotorHardware ();
     void read();
     double get_value(int n);
     void set_value(int n ,double value);
@@ -58,9 +67,17 @@ public:
     void set_final();
     void set_zero(QVector<double> zero);
 private:
-    double value;
+    double speed_setpoint;
+    double speed_actual;
+
+    int fd;
+    void convert_velocity(double percentage, unsigned char *nethigh, unsigned char *netlow);
+    double convert_percentage(unsigned char nethigh, unsigned char netlow);
+    void talk_to_simoreg(void);
+
+    bool terminal37;
 };
-class WindFactory: public QObject,public Factory {
+class MotorFactory: public QObject,public Factory {
     Q_OBJECT
     Q_INTERFACES(Factory)
 public:
@@ -70,5 +87,4 @@ public:
     VariableHardware* CreateVariableHardware(VariableModel *v);
 };
 
-
-#endif // VIRTUAL_WIND_H
+#endif // MOTOR_H

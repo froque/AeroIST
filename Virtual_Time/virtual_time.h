@@ -5,7 +5,7 @@
 #include <QString>
 #include <QtGui>
 
-class Virtual_TimeMeta: public VariableMeta {
+class TimeMeta: public VariableMeta {
 public:
     bool is_controlable();
     bool has_zero();
@@ -19,18 +19,18 @@ public:
     double get_default_step(int n);
     double get_default_start(int n);
 };
-class Virtual_TimeGUI: public VariablePreferences {
+class TimePreferences: public VariablePreferences {
 public:
-    Virtual_TimeGUI();
+    TimePreferences();
     QWidget* get_widget();
     bool accept_config();
     bool is_configurable();
 private:
     QLineEdit *edit_beta;
 };
-class Virtual_TimeModel: public VariableModel {
+class TimeModel: public VariableModel {
 public:
-    Virtual_TimeModel();
+    TimeModel();
     int get_size();
     double get_value(int n,int row);
     QVector<double> get_vector(int n);

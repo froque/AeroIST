@@ -1,14 +1,25 @@
-#ifndef VIRTUAL_FORCE_H
-#define VIRTUAL_FORCE_H
+#ifndef FORCE_H
+#define FORCE_H
 
 #include "../variable.h"
 #include <QString>
 #include <QtGui>
 
+#define NUMCHANNELS 6
+#define ANZ_QUA_ELE 21
+
 enum matrix_t{
     MIDDLE=0,
     FLOOR
 };
+
+#pragma pack(1)
+struct matrix		      /* abgespeicherte Kalibriermatrix */
+{
+        double coef_lin[NUMCHANNELS][NUMCHANNELS];
+        double coef_qua [ANZ_QUA_ELE][NUMCHANNELS];
+} ;
+#pragma pack()
 
 
 class ForceMeta: public VariableMeta{
@@ -67,6 +78,7 @@ private:
 class ForceHardware: public VariableHardware {
 public:
     ForceHardware(VariableModel* v);
+    ~ForceHardware();
     void read();
     double get_value(int n);
     void set_value(int n ,double value);
@@ -75,10 +87,34 @@ public:
     void set_final() ;
     void set_zero(QVector<double> zero);
 private:
-    double value[6];
     QVector<double> zero;
     int dvm_time;
     matrix_t matrix;
+    QString filename;
+
+    double forces[NUMCHANNELS];
+    double dvm_si[NUMCHANNELS];
+//    double zero[NUMCHANNELS];
+    double dvm_si_zero[NUMCHANNELS];
+    double dvm[NUMCHANNELS];
+
+    double nominal_load[NUMCHANNELS];
+    struct matrix coe;
+    struct matrix mat;
+
+    void initialize();
+
+    double ascii2newton (char *buf);
+    void read_dvm(void);
+    void convert_dvm();
+
+    void calc_jacobi(double force[],double jm[NUMCHANNELS][NUMCHANNELS]);
+    void calc_function(double F[NUMCHANNELS]);
+    bool check_tolerance(double F[NUMCHANNELS]);
+    void newton_method();
+
+    int g_id;
+    int k;
 };
 class ForceFactory: public QObject,public Factory {
     Q_OBJECT
@@ -90,4 +126,4 @@ public:
     VariableHardware* CreateVariableHardware(VariableModel *v);
 };
 
-#endif // VIRTUAL_FORCE_H
+#endif // FORCE_H

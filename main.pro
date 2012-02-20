@@ -7,6 +7,18 @@ TEMPLATE = subdirs
 
 
 SUBDIRS += \
+    AeroIST.pro
+
+SUBDIRS += \
+    Variable_Force/Force.pro\
+    Variable_Alpha/Alpha.pro\
+    Variable_Beta/Beta.pro\
+    Variable_Motor/Motor.pro\
+    Variable_Temperature/Temperature.pro\
+    Variable_Wind/Wind.pro\
+    Variable_Time/Time.pro
+
+SUBDIRS += \
     Virtual_Force\
     Virtual_Alpha\
     Virtual_Beta\
@@ -14,4 +26,3 @@ SUBDIRS += \
     Virtual_Temperature\
     Virtual_Wind\
     Virtual_Time\
-    AeroIST.pro

@@ -1,5 +1,5 @@
-#ifndef VIRTUAL_WIND_H
-#define VIRTUAL_WIND_H
+#ifndef WIND_H
+#define WIND_H
 
 #include "../variable.h"
 #include <QString>
@@ -50,6 +50,7 @@ private:
 class WindHardware: public VariableHardware {
 public:
     WindHardware();
+    ~WindHardware();
     void read();
     double get_value(int n);
     void set_value(int n ,double value);
@@ -58,7 +59,9 @@ public:
     void set_final();
     void set_zero(QVector<double> zero);
 private:
-    double value;
+    int arduinofd;
+    int wind_raw;
+    double wind;
 };
 class WindFactory: public QObject,public Factory {
     Q_OBJECT
@@ -71,4 +74,4 @@ public:
 };
 
 
-#endif // VIRTUAL_WIND_H
+#endif // WIND_H

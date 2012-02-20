@@ -12,21 +12,21 @@
 #define SETTINGS_ALPHA_PATH_DEFAULT "/dev/angle_alpha"
 
 
-bool Virtual_AlphaMeta::is_controlable() {return true;}
-bool Virtual_AlphaMeta::has_zero() {return false;}
-int Virtual_AlphaMeta::get_num() {return 1;}
-QString Virtual_AlphaMeta::get_general_name(){ return "Alpha";}
-QString Virtual_AlphaMeta::get_name(int n){Q_UNUSED(n);  return "Alpha"; }
-QString Virtual_AlphaMeta::get_units(int n) { Q_UNUSED(n); return QString::fromUtf8("°"); }
-double Virtual_AlphaMeta::get_lower_bound(int n) {Q_UNUSED(n); return -ANGLEMAX_ALPHA;}
-double Virtual_AlphaMeta::get_upper_bound(int n) {Q_UNUSED(n); return ANGLEMAX_ALPHA;}
-double Virtual_AlphaMeta::get_smaller_step(int n) {Q_UNUSED(n); return ANGLEMINSTEP_ALPHA;}
-double Virtual_AlphaMeta::get_default_step(int n) {Q_UNUSED(n); return DEFAULT_ALPHA_STEP;}
-double Virtual_AlphaMeta::get_default_start(int n) {Q_UNUSED(n); return DEFAULT_ALPHA_START;}
+bool AlphaMeta::is_controlable() {return true;}
+bool AlphaMeta::has_zero() {return false;}
+int AlphaMeta::get_num() {return 1;}
+QString AlphaMeta::get_general_name(){ return "Alpha";}
+QString AlphaMeta::get_name(int n){Q_UNUSED(n);  return "Alpha"; }
+QString AlphaMeta::get_units(int n) { Q_UNUSED(n); return QString::fromUtf8("°"); }
+double AlphaMeta::get_lower_bound(int n) {Q_UNUSED(n); return -ANGLEMAX_ALPHA;}
+double AlphaMeta::get_upper_bound(int n) {Q_UNUSED(n); return ANGLEMAX_ALPHA;}
+double AlphaMeta::get_smaller_step(int n) {Q_UNUSED(n); return ANGLEMINSTEP_ALPHA;}
+double AlphaMeta::get_default_step(int n) {Q_UNUSED(n); return DEFAULT_ALPHA_STEP;}
+double AlphaMeta::get_default_start(int n) {Q_UNUSED(n); return DEFAULT_ALPHA_START;}
 
 
-Virtual_AlphaGUI::Virtual_AlphaGUI() {meta = new Virtual_AlphaMeta();}
-QWidget* Virtual_AlphaGUI::get_widget() {
+AlphaPreferences::AlphaPreferences() {meta = new AlphaMeta();}
+QWidget* AlphaPreferences::get_widget() {
     QWidget *widget = new QWidget;
     QGridLayout *layout = new QGridLayout;
     QSettings settings;
@@ -38,44 +38,44 @@ QWidget* Virtual_AlphaGUI::get_widget() {
     return widget;
 }
 
-bool Virtual_AlphaGUI::accept_config() {
+bool AlphaPreferences::accept_config() {
     QSettings settings;
     settings.setValue(SETTINGS_ALPHA_PATH, edit_alpha->text());
     return true;
 }
-bool Virtual_AlphaGUI::is_configurable() {return true;}
+bool AlphaPreferences::is_configurable() {return true;}
 
-Virtual_AlphaModel::Virtual_AlphaModel(){meta = new Virtual_AlphaMeta;}
-int Virtual_AlphaModel::get_size() {return contents.size();}
-double Virtual_AlphaModel::get_value(int n,int row) {Q_UNUSED(n); return contents.value(row);}
-QVector<double> Virtual_AlphaModel::get_vector(int n) {Q_UNUSED(n); return contents;}
-void Virtual_AlphaModel::set_value(int n ,int row, double value) {Q_UNUSED(n);  contents.replace(row,value);}
-void Virtual_AlphaModel::insert_value(int n, int row, int count, double value) {Q_UNUSED(n); contents.insert(row,count,value);}
-void Virtual_AlphaModel::append_value(int n, double value) {Q_UNUSED(n);  contents.append(value);}
-void Virtual_AlphaModel::set_zero(QVector<double> zero) {Q_UNUSED(zero);}
-QVector<double> Virtual_AlphaModel::get_zero() {return QVector<double>();}
-QWidget* Virtual_AlphaModel::view_get_widget(){ return NULL;}
-QWidget* Virtual_AlphaModel::measurement_get_widget(){return NULL;}
-bool Virtual_AlphaModel::measurement_accept_config(VariableModel *m){Q_UNUSED(m); return true;}
+AlphaModel::AlphaModel(){meta = new AlphaMeta;}
+int AlphaModel::get_size() {return contents.size();}
+double AlphaModel::get_value(int n,int row) {Q_UNUSED(n); return contents.value(row);}
+QVector<double> AlphaModel::get_vector(int n) {Q_UNUSED(n); return contents;}
+void AlphaModel::set_value(int n ,int row, double value) {Q_UNUSED(n);  contents.replace(row,value);}
+void AlphaModel::insert_value(int n, int row, int count, double value) {Q_UNUSED(n); contents.insert(row,count,value);}
+void AlphaModel::append_value(int n, double value) {Q_UNUSED(n);  contents.append(value);}
+void AlphaModel::set_zero(QVector<double> zero) {Q_UNUSED(zero);}
+QVector<double> AlphaModel::get_zero() {return QVector<double>();}
+QWidget* AlphaModel::view_get_widget(){ return NULL;}
+QWidget* AlphaModel::measurement_get_widget(){return NULL;}
+bool AlphaModel::measurement_accept_config(VariableModel *m){Q_UNUSED(m); return true;}
 
-bool Virtual_AlphaModel::measurement_is_configurable(){return false;}
-void Virtual_AlphaModel::save_xml(QDomElement root){Q_UNUSED(root);}
-void Virtual_AlphaModel::load_xml(QDomElement root){Q_UNUSED(root);}
-
-
-Virtual_AlphaHardware::Virtual_AlphaHardware(){meta = new Virtual_AlphaMeta; value=0; control_set=false;}
-void Virtual_AlphaHardware::read() {if(control_set==false){ value = -10.0 * qrand() / RAND_MAX;}}
-double Virtual_AlphaHardware::get_value(int n) {Q_UNUSED(n); return value;}
-void Virtual_AlphaHardware::set_value(int n ,double value) {Q_UNUSED(n);  control_set=true; this->value = value;}
-bool Virtual_AlphaHardware::isReady(void) {return true;}
-bool Virtual_AlphaHardware::has_set_final() {return meta->is_controlable() && false;}
-void Virtual_AlphaHardware::set_final() {}
-void Virtual_AlphaHardware::set_zero(QVector<double> zero) {Q_UNUSED(zero);}
+bool AlphaModel::measurement_is_configurable(){return false;}
+void AlphaModel::save_xml(QDomElement root){Q_UNUSED(root);}
+void AlphaModel::load_xml(QDomElement root){Q_UNUSED(root);}
 
 
-VariableMeta* AlphaFactory::CreateVariableMeta() { return new Virtual_AlphaMeta;}
-VariablePreferences* AlphaFactory::CreateVariableGUI() { return new Virtual_AlphaGUI;}
-VariableModel* AlphaFactory::CreateVariableModel() { return new Virtual_AlphaModel;}
-VariableHardware* AlphaFactory::CreateVariableHardware(VariableModel *v) {Q_UNUSED(v); return new Virtual_AlphaHardware;}
+AlphaHardware::AlphaHardware(){meta = new AlphaMeta; value=0; control_set=false;}
+void AlphaHardware::read() {if(control_set==false){ value = -10.0 * qrand() / RAND_MAX;}}
+double AlphaHardware::get_value(int n) {Q_UNUSED(n); return value;}
+void AlphaHardware::set_value(int n ,double value) {Q_UNUSED(n);  control_set=true; this->value = value;}
+bool AlphaHardware::isReady(void) {return true;}
+bool AlphaHardware::has_set_final() {return meta->is_controlable() && false;}
+void AlphaHardware::set_final() {}
+void AlphaHardware::set_zero(QVector<double> zero) {Q_UNUSED(zero);}
 
-Q_EXPORT_PLUGIN2(virtual_alpha, AlphaFactory);
+
+VariableMeta* AlphaFactory::CreateVariableMeta() { return new AlphaMeta;}
+VariablePreferences* AlphaFactory::CreateVariableGUI() { return new AlphaPreferences;}
+VariableModel* AlphaFactory::CreateVariableModel() { return new AlphaModel;}
+VariableHardware* AlphaFactory::CreateVariableHardware(VariableModel *v) {Q_UNUSED(v); return new AlphaHardware;}
+
+Q_EXPORT_PLUGIN2(alpha, AlphaFactory);

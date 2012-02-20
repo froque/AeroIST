@@ -23,9 +23,9 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
     m_parent_thread = thread();
     isZero = false;
 
-    QSettings settings;
-    virtual_measures = settings.value(SETTINGS_VIRTUAL_MEASURES,false).toBool();
-    settings.setValue(SETTINGS_VIRTUAL_MEASURES,virtual_measures);
+//    QSettings settings;
+//    virtual_measures = settings.value(SETTINGS_VIRTUAL_MEASURES,false).toBool();
+//    settings.setValue(SETTINGS_VIRTUAL_MEASURES,virtual_measures);
 
     init(measurement->variables);
 
@@ -60,9 +60,9 @@ MeasureThread::MeasureThread(ZeroModel *measurement,QObject *parent) :
     m_parent_thread = thread();
     isZero = true;
     n=1;
-    QSettings settings;
-    virtual_measures = settings.value(SETTINGS_VIRTUAL_MEASURES,false).toBool();
-    settings.setValue(SETTINGS_VIRTUAL_MEASURES,virtual_measures);
+//    QSettings settings;
+//    virtual_measures = settings.value(SETTINGS_VIRTUAL_MEASURES,false).toBool();
+//    settings.setValue(SETTINGS_VIRTUAL_MEASURES,virtual_measures);
 
     init(measurement->variables);
 
