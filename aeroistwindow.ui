@@ -161,7 +161,7 @@
    </property>
    <widget class="QMenu" name="menuProject">
     <property name="title">
-     <string>Project</string>
+     <string>&amp;Project</string>
     </property>
     <addaction name="actionLoad_Project"/>
     <addaction name="actionSave_Project"/>
@@ -178,20 +178,20 @@
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
-     <string>Edit</string>
+     <string>&amp;Edit</string>
     </property>
     <addaction name="actionPreferences"/>
    </widget>
    <widget class="QMenu" name="menuExport">
     <property name="title">
-     <string>Export</string>
+     <string>E&amp;xport</string>
     </property>
     <addaction name="actionExport_to_csv"/>
     <addaction name="actionExportPlot"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
-     <string>View</string>
+     <string>&amp;View</string>
     </property>
     <addaction name="actionToolbar"/>
     <addaction name="actionNames_in_Toolbar"/>
@@ -201,7 +201,7 @@
    </widget>
    <widget class="QMenu" name="menuPlot">
     <property name="title">
-     <string>Plot</string>
+     <string>&amp;Plot</string>
     </property>
     <addaction name="actionNew_Curve"/>
     <addaction name="actionDelete_Curve"/>
