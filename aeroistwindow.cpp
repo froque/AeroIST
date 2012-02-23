@@ -180,7 +180,13 @@ void AeroISTWindow::on_ThreadButton_clicked(){
         ui->ManualButton->setEnabled(true);
         foreach (QDoubleSpinBox *spin, list_spins) {
             spin->setEnabled(true);
-            spin->setValue(measurementThread->start_hash[spin->objectName()]);
+            foreach (VariableModel * var, measurementThread->variables) {
+                for(int k=0; k<var->meta->get_num(); k++){
+                    if(var->meta->get_name(k) == spin->objectName()){
+                        spin->setValue(var->start.at(k));
+                    }
+                }
+            }
         }
 
 

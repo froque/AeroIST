@@ -35,7 +35,6 @@ private:
     QElapsedTimer timer;
 
     QHash<QString,double> m_hash;
-    QHash<QString,double> start_hash;
 
     int average_number;
     double settling_time;

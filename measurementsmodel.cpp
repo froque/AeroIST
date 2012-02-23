@@ -196,13 +196,16 @@ void MeasurementsModel::save_xml(QDomElement root ){
     start_hash_element.appendChild(item);
 
     QDomElement start_element;
-    QHashIterator<QString, double> i(start_hash);
-    while (i.hasNext()) {
-        i.next();
-        start_element = root.ownerDocument().createElement(i.key());
-        start_element.appendChild( root.ownerDocument().createTextNode(QString::number( i.value() ,'g',10)));
-        item.appendChild(start_element);
+    foreach (VariableModel *var, variables) {
+        if (var->meta->is_controlable()){
+            for (int k = 0; k< var->meta->get_num(); k++){
+                start_element = root.ownerDocument().createElement(var->meta->get_name(k));
+                start_element.appendChild( root.ownerDocument().createTextNode(QString::number( var->start.at(k) ,'g',10)));
+            }
+        }
     }
+
+
     QDomElement control_type = root.ownerDocument().createElement(TAG_CONTROL_TYPE);
     control_type.appendChild(root.ownerDocument().createTextNode(this->control));
     root.appendChild(control_type);
@@ -311,8 +314,19 @@ void MeasurementsModel::load_xml(QDomElement root){
                     QDomNodeList vars = item.childNodes();
                     QDomElement var;
                     for (int n = 0; n < vars.count(); n++ ){
-                        var = vars.at(n).toElement();
-                        start_hash[var.nodeName()] = var.text().toDouble();
+                        QDomNodeList node_vars = item.childNodes();
+                        QDomElement node_var;
+                        for (int n = 0; n < node_vars.count(); n++ ){
+                            node_var = node_vars.at(n).toElement();
+                            foreach (VariableModel *var, variables) {
+                                var->start = QVector<double>(var->meta->get_num());
+                                for (int n=0; n<var->meta->get_num(); n++){
+                                    if (node_var.nodeName() == var->meta->get_name(n)){
+                                        var->start[n] = node_var.text().toDouble();
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }

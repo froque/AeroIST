@@ -35,7 +35,6 @@ public:
     QString name;
     QString description;
     int average_number;
-    QHash<QString,double> start_hash;
 
 public slots:
     void GetMeasure(QHash<QString, double>);

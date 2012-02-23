@@ -58,6 +58,7 @@ public:
     virtual bool measurement_is_configurable() = 0;
     virtual void save_xml(QDomElement root) = 0;
     virtual void load_xml(QDomElement root) = 0;
+    QVector<double> start;
 };
 
 class VariableHardware{
@@ -71,6 +72,7 @@ public:
     virtual void set_final() = 0;
     VariableMeta *meta;
     virtual void set_zero(QVector<double> zero) = 0;
+    QVector<double> start;
 };
 
 class Factory {
@@ -83,7 +85,7 @@ public:
 };
 
 QT_BEGIN_NAMESPACE
-Q_DECLARE_INTERFACE(Factory, "pt.ist.utl.aeroist.factory/1.1")
+Q_DECLARE_INTERFACE(Factory, "pt.ist.utl.aeroist.factory/1.2")
 QT_END_NAMESPACE
 
 #endif // VARIABLE_H

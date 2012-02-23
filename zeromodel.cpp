@@ -132,15 +132,16 @@ void ZeroModel::save_xml(QDomElement root){
     root.appendChild(start_hash_element);
     QDomElement item = root.ownerDocument().createElement(TAG_ITEM);
     start_hash_element.appendChild(item);
-
     QDomElement start_element;
-    QHashIterator<QString, double> i(start_hash);
-    while (i.hasNext()) {
-        i.next();
-        start_element = root.ownerDocument().createElement(i.key());
-        start_element.appendChild( root.ownerDocument().createTextNode(QString::number( i.value() ,'g',10)));
-        item.appendChild(start_element);
+    foreach (VariableModel *var, variables) {
+        if (var->meta->is_controlable()){
+            for (int k = 0; k< var->meta->get_num(); k++){
+                start_element = root.ownerDocument().createElement(var->meta->get_name(k));
+                start_element.appendChild( root.ownerDocument().createTextNode(QString::number( var->start.at(k) ,'g',10)));
+            }
+        }
     }
+
 
     QDomElement data_element = root.ownerDocument().createElement(TAG_DATA);
     root.appendChild(data_element);
@@ -194,16 +195,21 @@ void ZeroModel::load_xml(QDomElement root){
         if (element.tagName() == TAG_START_VALUES){
             QDomNodeList items = element.childNodes();
             QDomElement item;
-
             for (int k = 0; k < items.count(); k++){
                 item = items.at(k).toElement();
-
                 if (item.tagName() == TAG_ITEM){
-                    QDomNodeList vars = item.childNodes();
-                    QDomElement var;
-                    for (int n = 0; n < vars.count(); n++ ){
-                        var = vars.at(n).toElement();
-                        start_hash[var.nodeName()] = var.text().toDouble();
+                    QDomNodeList node_vars = item.childNodes();
+                    QDomElement node_var;
+                    for (int n = 0; n < node_vars.count(); n++ ){
+                        node_var = node_vars.at(n).toElement();
+                        foreach (VariableModel *var, variables) {
+                            var->start = QVector<double>(var->meta->get_num());
+                            for (int n=0; n<var->meta->get_num(); n++){
+                                if (node_var.nodeName() == var->meta->get_name(n)){
+                                    var->start[n] = node_var.text().toDouble();
+                                }
+                            }
+                        }
                     }
                 }
             }

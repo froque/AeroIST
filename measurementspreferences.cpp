@@ -159,8 +159,18 @@ void MeasurementsPreferences::accept(){
     measurement->step = step;
 
     measurement->n = spin_iterations->value();
-    for (int k=0; k<list_radio.size(); k++){
-        measurement->start_hash[list_radio.value(k)->objectName()] = list_start.value(k)->value();
+
+    foreach (VariableModel *var, measurement->variables) {
+        if (var->meta->is_controlable()){
+            var->start = QVector<double>(var->meta->get_num());
+            for (int l=0; l<list_start.size(); l++){
+                for (int k=0; k< var->meta->get_num(); k++){
+                    if(var->meta->get_name(k) == list_radio.value(l)->objectName()){
+                        var->start[k] = list_start.value(l)->value();
+                    }
+                }
+            }
+        }
     }
 
     zero = list->at(ui->combo_zero->currentIndex());

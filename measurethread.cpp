@@ -11,7 +11,6 @@
 
 MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
     QObject(parent),
-    start_hash(measurement->start_hash),
     average_number(measurement->average_number),
     settling_time(measurement->settling_time),
     end(measurement->end),
@@ -42,9 +41,8 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
 
     foreach (VariableModel *model, measurement->variables) {
         for (int k=0; k< model->meta->get_num(); k++){
-            if (control == model->meta->get_name(k) && start_hash.contains(model->meta->get_name(k))){
-                current = start_hash[model->meta->get_name(k)];
-                break;
+            if (control == model->meta->get_name(k)){
+                current = model->start.value(k);
             }
         }
     }
@@ -53,7 +51,6 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
 
 MeasureThread::MeasureThread(ZeroModel *measurement,QObject *parent) :
     QObject(parent),
-    start_hash(measurement->start_hash),
     average_number(measurement->average_number)
 {
     m_stop = false;
@@ -89,6 +86,15 @@ void MeasureThread::init(QList<VariableModel*> list){
                     if (hardware != NULL){
                         variables.append(hardware );
                     }
+                }
+            }
+        }
+    }
+    foreach (VariableHardware *hard_var, variables) {
+        foreach (VariableModel *var, list) {
+            if(var->meta->is_controlable()){
+                if (var->meta->get_general_name() == hard_var->meta->get_general_name()){
+                    hard_var->start = var->start;
                 }
             }
         }
@@ -153,9 +159,7 @@ void MeasureThread::set_initial(){
     foreach (VariableHardware *var, variables) {
         if (var->meta->is_controlable()){
             for (int k = 0 ; k< var->meta->get_num(); k++){
-                if(start_hash.contains(var->meta->get_name(k))){
-                    var->set_value(k,start_hash[var->meta->get_name(k)]);
-                }
+                var->set_value(k,var->start.value(k));
             }
         }
     }

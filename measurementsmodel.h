@@ -43,7 +43,6 @@ public:
     double settling_time;
     double end;
     double step;
-    QHash<QString,double> start_hash;
     QString control;
     QString zero_name;
     int n;

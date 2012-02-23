@@ -85,8 +85,18 @@ void ZeroPreferences::accept(){
     measurement->description = ui->plainTextEdit->toPlainText();
     measurement->average_number = ui->spinBoxAverage->value();
 
-    for (int k=0; k<list_start.size(); k++){
-        measurement->start_hash[list_start.value(k)->objectName()] = list_start.value(k)->value();
+    foreach (VariableModel *var, measurement->variables) {
+        for (int l=0; l<list_start.size(); l++){
+            if (var->meta->is_controlable()){
+                var->start = QVector<double>(var->meta->get_num());
+                for (int k=0; k< var->meta->get_num(); k++){
+                    if(var->meta->get_name(k) == list_start.value(l)->objectName()){
+                        var->start[k] = list_start.value(l)->value();
+                    }
+                }
+            }
+        }
     }
+
     QDialog::accept();
 }
