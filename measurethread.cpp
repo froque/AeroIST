@@ -80,11 +80,14 @@ void MeasureThread::init(QList<VariableModel*> list){
         factory = qobject_cast<Factory*>( loader.instance());
         if(factory){
             VariableMeta *meta = factory->CreateVariableMeta();
-            foreach (VariableModel *model, list) {
-                if (meta->get_general_name() == model->meta->get_general_name()){
-                    VariableHardware *hardware = factory->CreateVariableHardware(model);
-                    if (hardware != NULL){
-                        variables.append(hardware );
+            if (meta != NULL){
+                foreach (VariableModel *model, list) {
+                    if (meta->get_general_name() == model->meta->get_general_name()){
+                        VariableHardware *hardware = factory->CreateVariableHardware(model);
+                        if (hardware != NULL){
+                            variables.append(hardware );
+                            break;
+                        }
                     }
                 }
             }

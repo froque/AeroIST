@@ -9,7 +9,7 @@
 #include "common.h"
 #include "zeromodel.h"
 
-#include "variable.h" //flip: should this be moved to .cpp?
+#include "variable.h"
 
 
 class MeasurementsModel  : public QAbstractTableModel

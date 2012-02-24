@@ -15,11 +15,9 @@ Preferences::Preferences(QWidget *parent) :
     ui->setupUi(this);
     QSettings settings;
 
-    ui->edit_arduino->setText(      settings.value(SETTINGS_ARDUINO_PATH ).toString() );// to be deleted
     ui->edit_project->setText(settings.value(SETTINGS_PROJECT_FOLDER).toString());
     ui->spinBox->setValue(settings.value(SETTINGS_DEFAULT_AVERAGE_NUMBER).toInt());
     ui->doubleSpinBox->setValue(settings.value(SETTINGS_DEFAULT_SETTLING_TIME).toDouble());
-
 
     Factory *factory;
     QDir pluginsDir = QDir(qApp->applicationDirPath());
@@ -28,7 +26,10 @@ Preferences::Preferences(QWidget *parent) :
         QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
         factory = qobject_cast<Factory*>( loader.instance());
         if(factory){
-            variables.append( factory->CreateVariableGUI());
+            VariablePreferences * pref = factory->CreateVariableGUI();
+            if (pref != NULL){
+                variables.append( pref);
+            }
         }
     }
     foreach (VariablePreferences *var, variables) {
@@ -44,7 +45,6 @@ Preferences::~Preferences(){
 
 void Preferences::on_buttonBox_accepted(){
     QSettings settings;
-    settings.setValue(SETTINGS_ARDUINO_PATH,      ui->edit_arduino->text());  // to be deleted
 
     foreach (VariablePreferences *var, variables) {
         if(var->is_configurable()){
@@ -62,11 +62,4 @@ void Preferences::on_toolButton_clicked(){
     QString directory;
     directory = QFileDialog::getExistingDirectory(this,tr("Choose Directory"),QDir::homePath(), QFileDialog::ShowDirsOnly);
     ui->edit_project->setText(directory);
-}
-
-// to be deleted - arduino
-void Preferences::on_toolButton_5_clicked(){
-    QString file;
-    file = QFileDialog::getOpenFileName(this, tr("Choose device"),"/dev", "");
-    ui->edit_arduino->setText(file);
 }

@@ -27,7 +27,10 @@ void ZeroModel::init(){
         QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
         factory = qobject_cast<Factory*>( loader.instance());
         if(factory){
-            variables.append( factory->CreateVariableModel());
+            VariableModel *model = factory->CreateVariableModel();
+            if (model != NULL){
+                variables.append( model);
+            }
         }
     }
 }

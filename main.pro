@@ -26,3 +26,5 @@ SUBDIRS += \
     Virtual_Temperature\
     Virtual_Wind\
     Virtual_Time\
+
+SUBDIRS += arduino/Arduino.pro

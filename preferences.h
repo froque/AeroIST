@@ -21,10 +21,6 @@ public:
 private slots:
     void on_buttonBox_accepted();
     void on_toolButton_clicked();
-//    void on_toolButton_2_clicked();
-//    void on_toolButton_3_clicked();
-//    void on_toolButton_4_clicked();
-    void on_toolButton_5_clicked();
 
 private:
     Ui::Preferences *ui;

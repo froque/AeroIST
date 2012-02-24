@@ -82,7 +82,10 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
         QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
         factory = qobject_cast<Factory*>( loader.instance());
         if(factory){
-            variables.append( factory->CreateVariableMeta());
+            VariableMeta *meta = factory->CreateVariableMeta();
+            if (meta != NULL){
+                variables.append(meta);
+            }
         }
     }
 
@@ -188,8 +191,6 @@ void AeroISTWindow::on_ThreadButton_clicked(){
                 }
             }
         }
-
-
     }
 
     m_thread->start();
@@ -431,7 +432,6 @@ void AeroISTWindow::load_settings(void){
     QSettings settings;
 
     // necessary settings
-    settings.setValue(SETTINGS_ARDUINO_PATH, settings.value(SETTINGS_ARDUINO_PATH,SETTINGS_ARDUINO_PATH_DEFAULT));
     settings.setValue(SETTINGS_PROJECT_FOLDER,settings.value(SETTINGS_PROJECT_FOLDER,QDir::homePath()).toString());
     settings.setValue(SETTINGS_DEFAULT_AVERAGE_NUMBER,settings.value(SETTINGS_DEFAULT_AVERAGE_NUMBER,1));
     settings.setValue(SETTINGS_DEFAULT_SETTLING_TIME,settings.value(SETTINGS_DEFAULT_SETTLING_TIME,0));

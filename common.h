@@ -14,8 +14,6 @@ enum ThreadStatus{
     ZERO_RUNNING
 };
 
-#define ARDUINO_ANALOG_REF 5.0
-
 #define TAG_NAME "name"
 #define TAG_DESCRIPTION "description"
 #define TAG_AVERAGE_NUMBER "average_number"
@@ -49,8 +47,5 @@ enum ThreadStatus{
 #define SETTINGS_GUI_ACTIONCHECKABLE "gui/actioncheckable/"
 #define SETTINGS_DEFAULT_AVERAGE_NUMBER "default_average_number"
 #define SETTINGS_DEFAULT_SETTLING_TIME "default_settling_time"
-
-#define SETTINGS_ARDUINO_PATH "arduino_path"
-#define SETTINGS_ARDUINO_PATH_DEFAULT "/dev/ttyUSB0"
 
 #endif // COMMON_H
