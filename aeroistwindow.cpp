@@ -192,6 +192,12 @@ void AeroISTWindow::on_ThreadButton_clicked(){
             }
         }
     }
+    if ( (measurementThread->control == "" && measurementThread->n >0) || measurementThread->control != ""){
+        if(ui->progressBar->isVisible()){
+            ui->progressBar->setEnabled(true);
+            connect(m_test, SIGNAL(progress(int)),ui->progressBar,SLOT(setValue(int)));
+        }
+    }
 
     m_thread->start();
 
@@ -208,6 +214,7 @@ void AeroISTWindow::ThreadButton_cleanup(){
         ui->ThreadButton->setText(tr("Start"));
         thread_status = STOPPED;
         ui->ManualButton->setEnabled(false);
+        ui->progressBar->setEnabled(false);
         foreach (QDoubleSpinBox *spin, list_spins) {
             spin->setEnabled(false);
         }

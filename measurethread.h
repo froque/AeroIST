@@ -20,6 +20,7 @@ public:
 
 signals:
   void MeasureDone(QHash<QString,double>);
+  void progress(int);
 
 public slots:
     void produce(void);
@@ -40,6 +41,7 @@ private:
     double settling_time;
     double end;
     double step;
+    double start;
     double current;
 
     QString control;

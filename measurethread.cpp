@@ -43,6 +43,7 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
         for (int k=0; k< model->meta->get_num(); k++){
             if (control == model->meta->get_name(k)){
                 current = model->start.value(k);
+                start = current;
             }
         }
     }
@@ -127,13 +128,20 @@ void MeasureThread::produce(){
         Helper::msleep(settling_time*1000);
         read_m();
         if(control == ""){
-            if (n != 0 && k>= n ){
-                m_stop = true;
+            if (n != 0 ){
+                double perc = ((k*1.0)/(n*1.0)) *100;
+                emit progress( (int) perc);
+                if ( k>= n ){
+                    m_stop = true;
+                }
             }
         } else {
             current = current + step;
+            double perc = ((current - start) *1.0)/((end - start)*1.0) *100;
+            emit progress( (int) perc);
             if (( step > 0 && current > end) || (step < 0 && current < end)){
                 m_stop = true;
+                emit progress( 100 ); // the step may not be adjusted to finish with 100%
             }
         }
 
