@@ -28,7 +28,7 @@ QWidget* MotorPreferences::get_widget() {
     QSettings settings;
     layout->addWidget(new QLabel(QObject::tr("Motor device path")),0,0);
     edit_motor = new QLineEdit;
-    edit_motor->setText(settings.value(SETTINGS_MOTOR_PATH).toString());
+    edit_motor->setText(settings.value(SETTINGS_MOTOR_PATH,SETTINGS_MOTOR_PATH_DEFAULT).toString());
     layout->addWidget(edit_motor,0,1);
     button = new QToolButton;
     QObject::connect(button,SIGNAL(clicked()),this,SLOT(button_slot()));

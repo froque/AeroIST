@@ -689,10 +689,12 @@ void AeroISTWindow::on_actionToolbar_toggled(bool arg1){
 
 void AeroISTWindow::on_actionMeasure_List_toggled(bool checked){
     ui->listView->setVisible(checked);
+    ui->labelMeasureList->setVisible(checked);
 }
 
 void AeroISTWindow::on_actionReference_List_toggled(bool arg1){
     ui->listViewReference->setVisible(arg1);
+    ui->labelReferenceList->setVisible(arg1);
 }
 
 void AeroISTWindow::on_actionNames_in_Toolbar_toggled(bool arg1){
