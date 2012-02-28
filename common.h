@@ -11,7 +11,7 @@
 enum ThreadStatus{
     STOPPED,
     MEASURE_RUNNING,
-    ZERO_RUNNING
+    REFERENCE_RUNNING
 };
 
 #define TAG_NAME "name"
@@ -25,9 +25,9 @@ enum ThreadStatus{
 #define TAG_STEP "step"
 #define TAG_CONTROL_TYPE "control_type"
 #define TAG_N "n"
-#define TAG_DATA_ZERO "data_zero"
-#define TAG_ZERO "zero"
-#define TAG_ZERO_NAME "zero_name"
+#define TAG_DATA_REFERENCE "data_reference"
+#define TAG_REFERENCE "reference"
+#define TAG_REFERENCE_NAME "reference_name"
 #define TAG_MEASURE "measurement"
 #define TAG_ITEM "item"
 #define TAG_PROJECT "project"

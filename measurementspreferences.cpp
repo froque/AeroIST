@@ -11,7 +11,7 @@
 #define COL_STEP  4
 
 
-MeasurementsPreferences::MeasurementsPreferences(MeasurementsModel *measurement, ZeroList *list, QWidget *parent) :
+MeasurementsPreferences::MeasurementsPreferences(MeasurementsModel *measurement, ReferenceList *list, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::MeasurementsPreferences),
     measurement(measurement),
@@ -119,7 +119,7 @@ void MeasurementsPreferences::accept(){
     }
     if (  ui->combo_zero->model()->rowCount(QModelIndex()) == 0){
         QMessageBox msgBox;
-        msgBox.setText(tr("No zeros. Create on first"));
+        msgBox.setText(tr("No References. Create on first"));
         msgBox.exec();
         return ;
     }
@@ -139,11 +139,11 @@ void MeasurementsPreferences::accept(){
         }
     }
 
-    ZeroModel *zero = list->at(ui->combo_zero->currentIndex());
-    foreach (VariableModel *zero_var, zero->variables) {
+    ReferenceModel *ref = list->at(ui->combo_zero->currentIndex());
+    foreach (VariableModel *ref_var, ref->variables) {
         foreach (VariableModel *var, measurement->variables) {
-            if (var->meta->get_general_name() == zero_var->meta->get_general_name()){
-                if(var->measurement_accept_config(zero_var) == false){
+            if (var->meta->get_general_name() == ref_var->meta->get_general_name()){
+                if(var->measurement_accept_config(ref_var) == false){
                     return;
                 }
             }
@@ -173,21 +173,21 @@ void MeasurementsPreferences::accept(){
         }
     }
 
-    zero = list->at(ui->combo_zero->currentIndex());
+    ref = list->at(ui->combo_zero->currentIndex());
     QVector<double> vector;
-    foreach (VariableModel *zero_var, zero->variables) {
+    foreach (VariableModel *ref_var, ref->variables) {
         foreach (VariableModel *var, measurement->variables) {
             if(var->meta->has_zero()){
-                if (var->meta->get_general_name() == zero_var->meta->get_general_name()){
-                    for(int k=0; k< zero_var->meta->get_num(); k++){
-                        vector.append(zero_var->get_value(k,0)); // fixme: this zero is not very elegant
+                if (var->meta->get_general_name() == ref_var->meta->get_general_name()){
+                    for(int k=0; k< ref_var->meta->get_num(); k++){
+                        vector.append(ref_var->get_value(k,0)); // fixme: this zero is not very elegant
                     }
                     var->set_zero(vector);
                 }
             }
         }
     }
-    measurement->zero_name = zero->name;
+    measurement->ref_name = ref->name;
     QDialog::accept();
 }
 

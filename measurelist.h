@@ -4,7 +4,7 @@
 #include <QtCore>
 #include "measurementsmodel.h"
 #include "common.h"
-#include "zeromodel.h"
+#include "referencemodel.h"
 
 
 class MeasureList : public QAbstractListModel

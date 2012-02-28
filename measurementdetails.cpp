@@ -11,7 +11,7 @@ MeasurementDetails::MeasurementDetails(MeasurementsModel *measurement, QWidget *
     ui->labelDescription->setText(measurement->description);
     ui->labelSettling->setText(QString::number(measurement->settling_time));
     ui->labelAverage->setText(QString::number(measurement->average_number));
-    ui->labelZero->setText(measurement->zero_name);
+    ui->labelReference->setText(measurement->ref_name);
 
     int row = ui->verticalLayout->indexOf(ui->widget);
 

@@ -222,11 +222,11 @@ void MeasurementsModel::save_xml(QDomElement root ){
     QString data;
     QDomElement element;
 
-    QDomElement data_zero = root.ownerDocument().createElement(TAG_DATA_ZERO);
+    QDomElement data_zero = root.ownerDocument().createElement(TAG_DATA_REFERENCE);
     root.appendChild(data_zero);
 
-    name = root.ownerDocument().createElement(TAG_ZERO_NAME);
-    name.appendChild(root.ownerDocument().createTextNode(this->zero_name));
+    name = root.ownerDocument().createElement(TAG_REFERENCE_NAME);
+    name.appendChild(root.ownerDocument().createTextNode(this->ref_name));
     data_zero.appendChild(name);
 
     element = root.ownerDocument().createElement(TAG_ITEM);
@@ -336,15 +336,15 @@ void MeasurementsModel::load_xml(QDomElement root){
             continue;
         }
 
-        if (element.tagName() == TAG_DATA_ZERO){
+        if (element.tagName() == TAG_DATA_REFERENCE){
             QDomNodeList items = element.childNodes();
             QDomElement item;
 
             for (int row = 0; row < items.count(); row++){
                 item = items.at(row).toElement();
 
-                if (item.tagName() == TAG_ZERO_NAME){
-                    this->zero_name = item.text();
+                if (item.tagName() == TAG_REFERENCE_NAME){
+                    this->ref_name = item.text();
                 }
                 if (item.tagName() == TAG_ITEM){
                     QDomNodeList forces = item.childNodes();

@@ -42,13 +42,13 @@ SOURCES += main.cpp \
     measurelist.cpp \
     measurementspreferences.cpp \
     measurementdetails.cpp \
-    zeromodel.cpp \
-    zerolist.cpp \
-    zerodetails.cpp \
-    zeropreferences.cpp \
     curvenew.cpp \
     curvedelete.cpp \
-    helper.cpp
+    helper.cpp \
+    referencedetails.cpp \
+    referencelist.cpp \
+    referencemodel.cpp \
+    referencepreferences.cpp
 
 HEADERS += aeroistwindow.h \
     measurementsmodel.h \
@@ -58,23 +58,23 @@ HEADERS += aeroistwindow.h \
     measurementspreferences.h \
     common.h \
     measurementdetails.h \
-    zeromodel.h \
-    zerolist.h \
-    zerodetails.h \
-    zeropreferences.h \
     curvenew.h \
     curvedelete.h \
     helper.h \
-    variable.h
+    variable.h \
+    referencedetails.h \
+    referencelist.h \
+    referencemodel.h \
+    referencepreferences.h
 
 FORMS += aeroistwindow.ui \
     preferences.ui \
     measurementspreferences.ui \
     measurementdetails.ui \
-    zerodetails.ui \
-    zeropreferences.ui \
     deleteplot.ui \
-    curvenew.ui
+    curvenew.ui \
+    referencedetails.ui \
+    referencepreferences.ui
 
 TRANSLATIONS = aeroist_en.ts\
                 aeroist_pt.ts

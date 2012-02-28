@@ -3,7 +3,7 @@
 
 <!-- definition of simple elements -->
 <xs:element name="name" type="xs:string"/>
-<xs:element name="zero_name" type="xs:string"/>
+<xs:element name="reference_name" type="xs:string"/>
 <xs:element name="description" type="xs:string"/>
 <xs:element name="id" type="xs:int"/>
 <xs:element name="dvm_time" type="xs:int"/>
@@ -15,7 +15,7 @@
 <xs:element name="step" type="xs:double" />
 <xs:element name="control_type" type="xs:string"/>
 <xs:element name="n" type="xs:int"/>
-<xs:element name="zero_id" type="xs:int"/>
+
   
 <xs:element name="Time" type="xs:double" />
 <xs:element name="Fx" type="xs:double" />
@@ -50,7 +50,7 @@
 <xs:element name="project">
   <xs:complexType>
     <xs:sequence>
-      <xs:element name="zero" minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="reference" minOccurs="0" maxOccurs="unbounded">
         <xs:complexType>
           <xs:sequence>
               <xs:element ref="name"/>
@@ -126,10 +126,10 @@
               </xs:element>
               <xs:element ref="control_type"/>
               <xs:element ref="n"/>
-              <xs:element name="data_zero" >
+              <xs:element name="data_reference" >
                 <xs:complexType>
                   <xs:sequence>
-                    <xs:element ref="zero_name"/>
+                    <xs:element ref="reference_name"/>
                     <xs:element name="item" maxOccurs="1" >
                       <xs:complexType>
                         <xs:group ref="variables" />

@@ -7,7 +7,7 @@
 
 
 #include "common.h"
-#include "zeromodel.h"
+#include "referencemodel.h"
 
 #include "variable.h"
 
@@ -44,7 +44,7 @@ public:
     double end;
     double step;
     QString control;
-    QString zero_name;
+    QString ref_name;
     int n;
 
 public slots:

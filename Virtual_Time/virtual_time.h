@@ -48,7 +48,6 @@ public:
     bool compare(VariableModel *m);
 private:
     QVector<double> contents;
-    QVector<double> zero;
 };
 class TimeFactory: public QObject,public Factory {
     Q_OBJECT

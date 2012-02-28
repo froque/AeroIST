@@ -1,17 +1,17 @@
-#include "zerolist.h"
+#include "referencelist.h"
 
-ZeroList::ZeroList(QObject *parent) :
+ReferenceList::ReferenceList(QObject *parent) :
     QAbstractListModel(parent)
 {
     Q_UNUSED(parent);
 }
 
-int ZeroList::rowCount ( const QModelIndex & parent ) const {
+int ReferenceList::rowCount ( const QModelIndex & parent ) const {
     Q_UNUSED(parent);
     return list.size();
 }
 
-QVariant ZeroList::data ( const QModelIndex & index, int role ) const{
+QVariant ReferenceList::data ( const QModelIndex & index, int role ) const{
     Q_UNUSED(index);
 
     if (role == Qt::DisplayRole){
@@ -20,13 +20,13 @@ QVariant ZeroList::data ( const QModelIndex & index, int role ) const{
     return QVariant();
 }
 
-void ZeroList::newMeasure(ZeroModel * measure){
+void ReferenceList::newMeasure(ReferenceModel * measure){
     beginInsertRows(QModelIndex(), list.size(), list.size());
     list.append(measure);
     endInsertRows();
 }
 
-void ZeroList::deleteMeasure(QModelIndex index){
+void ReferenceList::deleteMeasure(QModelIndex index){
     beginRemoveRows(QModelIndex(),index.row(),index.row());
     if (index.isValid()){
         delete list.takeAt(index.row());
@@ -34,42 +34,42 @@ void ZeroList::deleteMeasure(QModelIndex index){
     endRemoveRows();
 }
 
-ZeroModel * ZeroList::at(int position){
+ReferenceModel * ReferenceList::at(int position){
     return list.value(position);
 }
 
-ZeroModel * ZeroList::at(QModelIndex index){
+ReferenceModel * ReferenceList::at(QModelIndex index){
     if (index.isValid()){
         return list.value(index.row());
     }
     return NULL;
 }
 
-void ZeroList::clear(void){
+void ReferenceList::clear(void){
     while (list.size()>0){
          deleteMeasure( index(0,0,QModelIndex()) );
     }
 }
 
-void ZeroList::save_xml(QDomElement root){
-    ZeroModel *zero;
+void ReferenceList::save_xml(QDomElement root){
+    ReferenceModel *ref;
     for (int k=0; k<rowCount(); k++){
-        zero = list.at(k);
-        QDomElement zero_element = root.ownerDocument().createElement(TAG_ZERO);
-        root.appendChild(zero_element);
+        ref = list.at(k);
+        QDomElement ref_element = root.ownerDocument().createElement(TAG_REFERENCE);
+        root.appendChild(ref_element);
 
-        zero->save_xml(zero_element);
+        ref->save_xml(ref_element);
     }
 }
-void ZeroList::load_xml(QDomElement root){
-    QDomNodeList nodeslist = root.elementsByTagName(TAG_ZERO);
+void ReferenceList::load_xml(QDomElement root){
+    QDomNodeList nodeslist = root.elementsByTagName(TAG_REFERENCE);
     QDomNode node;
     QDomElement element;
-    ZeroModel *zero;
+    ReferenceModel *ref;
     for (int k=0; k<nodeslist.count(); k++){
         node = nodeslist.at(k);
         element = node.toElement();
-        zero =  new ZeroModel(element);
-        newMeasure(zero);
+        ref =  new ReferenceModel(element);
+        newMeasure(ref);
     }
 }

@@ -3,7 +3,7 @@
 
 #include <QDialog>
 #include "measurementsmodel.h"
-#include "zerolist.h"
+#include "referencelist.h"
 #include <QDoubleSpinBox>
 #include <QButtonGroup>
 #include <QRadioButton>
@@ -17,7 +17,7 @@ class MeasurementsPreferences : public QDialog
     Q_OBJECT
 
 public:
-    MeasurementsPreferences(MeasurementsModel *measurement, ZeroList *list,QWidget *parent = 0);
+    MeasurementsPreferences(MeasurementsModel *measurement, ReferenceList *list,QWidget *parent = 0);
     ~MeasurementsPreferences();
 
 private slots:
@@ -27,7 +27,7 @@ private slots:
 private:
     Ui::MeasurementsPreferences *ui;
     MeasurementsModel *measurement;
-    ZeroList *list;
+    ReferenceList *list;
     QButtonGroup *group;
     QSpinBox *spin_iterations;
     QRadioButton *radio_none;

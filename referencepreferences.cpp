@@ -1,5 +1,5 @@
-#include "zeropreferences.h"
-#include "ui_zeropreferences.h"
+#include "referencepreferences.h"
+#include "ui_referencepreferences.h"
 
 
 #include "QMessageBox"
@@ -8,9 +8,9 @@
 #include <QCoreApplication>
 #include <QPluginLoader>
 
-ZeroPreferences::ZeroPreferences(ZeroModel *measurement, QWidget *parent) :
+ReferencePreferences::ReferencePreferences(ReferenceModel *measurement, QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::ZeroPreferences),
+    ui(new Ui::ReferencePreferences),
     measurement(measurement)
 {
     ui->setupUi(this);
@@ -61,11 +61,11 @@ ZeroPreferences::ZeroPreferences(ZeroModel *measurement, QWidget *parent) :
     adjustSize();
 }
 
-ZeroPreferences::~ZeroPreferences(){
+ReferencePreferences::~ReferencePreferences(){
     delete ui;
 }
 
-void ZeroPreferences::accept(){
+void ReferencePreferences::accept(){
     if (ui->edit_name->text().size()==0){
         QMessageBox msgBox;
         msgBox.setText(tr("Name is empty"));

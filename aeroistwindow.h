@@ -4,10 +4,10 @@
 #include <QtGui>
 #include <QMainWindow>
 #include "measurementsmodel.h"
-#include "zeromodel.h"
+#include "referencemodel.h"
 #include "measurethread.h"
 #include "measurelist.h"
-#include "zerolist.h"
+#include "referencelist.h"
 #include "preferences.h"
 #include "common.h"
 #include "qwt_plot_item.h"
@@ -35,8 +35,7 @@ private slots:
     void on_ThreadButton_clicked();
     void ThreadButton_cleanup();
     void cleanup();
-//    void on_ZeroButton_clicked();
-    void ZeroButton_cleanup();
+    void ReferenceButton_cleanup();
 
     // export actions. to be improved!
     void on_actionPreferences_triggered();
@@ -57,20 +56,20 @@ private slots:
     // View actions
     void on_actionToolbar_toggled(bool arg1);
     void on_actionMeasure_List_toggled(bool checked);
-    void on_actionZero_List_toggled(bool arg1);
+    void on_actionReference_List_toggled(bool arg1);
     void on_actionNames_in_Toolbar_toggled(bool arg1);
     void on_actionLine_numbers_in_table_toggled(bool arg1);
 
     // listviews and table
     void on_listView_activated(const QModelIndex &index);
-    void on_listViewZero_activated(const QModelIndex &index);
+    void on_listViewReference_activated(const QModelIndex &index);
     void selectionChanged(const QModelIndex &current,const QModelIndex &previous);
-    void ZeroSelectionChanged(const QModelIndex &current,const QModelIndex &previous);
+    void ReferenceSelectionChanged(const QModelIndex &current,const QModelIndex &previous);
 
-    // Zero actions
-    void on_actionNew_Zero_triggered();
-    void on_actionDelete_Zero_triggered();
-    void on_actionView_Zero_details_triggered();
+    // References actions
+    void on_actionNew_Reference_triggered();
+    void on_actionDelete_Reference_triggered();
+    void on_actionView_Reference_details_triggered();
 
     // PLOT
     void on_actionNew_Curve_triggered();
@@ -89,10 +88,10 @@ private:
 
     Ui::AeroISTWindow *ui;
     MeasureList *measure_list;
-    ZeroList *zero_list;
+    ReferenceList *reference_list;
 
     MeasurementsModel *measurementThread;
-    ZeroModel* ZeroThread;
+    ReferenceModel* referenceThread;
     ThreadStatus thread_status;
 
     MeasureThread *m_test;

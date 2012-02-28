@@ -1,5 +1,5 @@
-#ifndef ZEROMODEL_H
-#define ZEROMODEL_H
+#ifndef REFERENCEMODEL_H
+#define REFERENCEMODEL_H
 
 #include <QAbstractTableModel>
 #include <QVector>
@@ -11,12 +11,12 @@
 #include "common.h"
 #include "variable.h"
 
-class ZeroModel : public QAbstractTableModel
+class ReferenceModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    explicit ZeroModel(QObject *parent = 0);
-    explicit ZeroModel(QDomElement root,QObject *parent = 0);
+    explicit ReferenceModel(QObject *parent = 0);
+    explicit ReferenceModel(QDomElement root,QObject *parent = 0);
 
     void load_xml(QDomElement root);
     void save_xml(QDomElement root);
@@ -42,7 +42,7 @@ private:
     void init(void);
 };
 
-#endif // ZEROMODEL_H
+#endif // REFERENCEMODEL_H
 
 
 

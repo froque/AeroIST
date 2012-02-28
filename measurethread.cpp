@@ -20,7 +20,7 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
 {
     m_stop = false;
     m_parent_thread = thread();
-    isZero = false;
+
 
 //    QSettings settings;
 //    virtual_measures = settings.value(SETTINGS_VIRTUAL_MEASURES,false).toBool();
@@ -28,7 +28,7 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
 
     init(measurement->variables);
 
-    // set zero to each variable
+    // set references/zeros to each variable
     foreach (VariableHardware *hard_var, variables) {
         foreach (VariableModel *var, measurement->variables) {
             if(var->meta->has_zero()){
@@ -50,14 +50,13 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
 
 }
 
-MeasureThread::MeasureThread(ZeroModel *measurement,QObject *parent) :
+MeasureThread::MeasureThread(ReferenceModel *measurement,QObject *parent) :
     QObject(parent),
     average_number(measurement->average_number)
 {
     m_stop = false;
     m_parent_thread = thread();
-    isZero = true;
-    n=1;
+        n=1;
 //    QSettings settings;
 //    virtual_measures = settings.value(SETTINGS_VIRTUAL_MEASURES,false).toBool();
 //    settings.setValue(SETTINGS_VIRTUAL_MEASURES,virtual_measures);

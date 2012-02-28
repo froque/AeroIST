@@ -1,31 +1,31 @@
-#ifndef ZEROLIST_H
-#define ZEROLIST_H
+#ifndef REFERENCELIST_H
+#define REFERENCELIST_H
 
 #include <QAbstractListModel>
 #include "common.h"
-#include "zeromodel.h"
+#include "referencemodel.h"
 #include "QDomElement"
 
-class ZeroList : public QAbstractListModel
+class ReferenceList : public QAbstractListModel
 {
     Q_OBJECT
 public:
-    explicit ZeroList(QObject *parent = 0);
+    explicit ReferenceList(QObject *parent = 0);
 
     int	rowCount ( const QModelIndex & parent = QModelIndex() ) const ;
     QVariant	data ( const QModelIndex & index, int role = Qt::DisplayRole ) const;
 
-    void newMeasure(ZeroModel * measure);
+    void newMeasure(ReferenceModel * measure);
     void deleteMeasure(QModelIndex index);
-    ZeroModel * at(int position);
-    ZeroModel * at(QModelIndex index);
+    ReferenceModel * at(int position);
+    ReferenceModel * at(QModelIndex index);
 
     void save_xml(QDomElement root);
     void load_xml(QDomElement root);
     void clear(void);
 
 private:
-    QList<ZeroModel*> list;
+    QList<ReferenceModel*> list;
 };
 
-#endif // ZEROLIST_H
+#endif // REFERENCELIST_H

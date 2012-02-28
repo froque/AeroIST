@@ -13,9 +13,9 @@
 #include <QXmlSchemaValidator>
 
 #include "measurementspreferences.h"
-#include "zeropreferences.h"
+#include "referencepreferences.h"
 #include "measurementdetails.h"
-#include "zerodetails.h"
+#include "referencedetails.h"
 #include "curvenew.h"
 #include "curvedelete.h"
 
@@ -40,8 +40,8 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
     // Set the models
     measure_list = new MeasureList();
     ui->listView->setModel(measure_list);
-    zero_list = new ZeroList();
-    ui->listViewZero->setModel(zero_list);
+    reference_list = new ReferenceList();
+    ui->listViewReference->setModel(reference_list);
 
     // listview personalization. It couldn't be done from the .ui file
     QItemSelectionModel *selection = ui->listView->selectionModel();
@@ -51,11 +51,11 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
     ui->listView->insertAction(0,ui->actionDelete_Measure);
     ui->listView->insertAction(0,ui->actionExport_to_csv);
 
-    selection = ui->listViewZero->selectionModel();
-    connect(selection,SIGNAL(currentChanged(QModelIndex,QModelIndex)),this,SLOT(ZeroSelectionChanged(QModelIndex,QModelIndex)));
-    ui->listViewZero->setContextMenuPolicy(Qt::ActionsContextMenu);
-    ui->listViewZero->insertAction(0,ui->actionView_Zero_details);
-    ui->listViewZero->insertAction(0,ui->actionDelete_Zero);
+    selection = ui->listViewReference->selectionModel();
+    connect(selection,SIGNAL(currentChanged(QModelIndex,QModelIndex)),this,SLOT(ReferenceSelectionChanged(QModelIndex,QModelIndex)));
+    ui->listViewReference->setContextMenuPolicy(Qt::ActionsContextMenu);
+    ui->listViewReference->insertAction(0,ui->actionView_Reference_details);
+    ui->listViewReference->insertAction(0,ui->actionDelete_Reference);
 
     // load settings from .ini file
     load_settings();
@@ -117,7 +117,7 @@ AeroISTWindow::~AeroISTWindow()
     save_settings();
     delete ui;
     delete measure_list;
-    delete zero_list;
+    delete reference_list;
 }
 
 void AeroISTWindow::on_ThreadButton_clicked(){
@@ -274,7 +274,7 @@ void AeroISTWindow::on_actionNew_Measure_triggered(){
     MeasurementsModel *measurement;
     measurement = new MeasurementsModel;
 
-    MeasurementsPreferences *meas_prefs = new MeasurementsPreferences( measurement, zero_list , this);
+    MeasurementsPreferences *meas_prefs = new MeasurementsPreferences( measurement, reference_list , this);
     if (meas_prefs->exec() == QDialog::Rejected ){
         delete measurement;
         delete meas_prefs;
@@ -331,7 +331,7 @@ void AeroISTWindow::save_xml(QString fileName){
     QDomElement root = document.createElement(TAG_PROJECT);
     document.appendChild(root);
 
-    zero_list->save_xml(root);
+    reference_list->save_xml(root);
     measure_list->save_xml(root);
 
     if(fileName.endsWith(".xml",Qt::CaseInsensitive) == false){
@@ -390,13 +390,13 @@ void AeroISTWindow::load_xml(QString fileName){
     file.close();
     QDomElement root = document.firstChildElement();
 
-    zero_list->load_xml(root);
+    reference_list->load_xml(root);
     measure_list->load_xml(root);
 }
 
 void AeroISTWindow::on_actionClear_Project_triggered(){
     measure_list->clear();
-    zero_list->clear();
+    reference_list->clear();
     ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tab),tr("Table"));
 }
 
@@ -419,14 +419,14 @@ void AeroISTWindow::selectionChanged(const QModelIndex &current ,const QModelInd
     }
 }
 
-void AeroISTWindow::ZeroSelectionChanged(const QModelIndex &current ,const QModelIndex &previous){
+void AeroISTWindow::ReferenceSelectionChanged(const QModelIndex &current ,const QModelIndex &previous){
     Q_UNUSED(previous);
     if (current.isValid()){
-        ui->actionDelete_Zero->setEnabled(true);
-        ui->actionView_Zero_details->setEnabled(true);
+        ui->actionDelete_Reference->setEnabled(true);
+        ui->actionView_Reference_details->setEnabled(true);
     } else {
-        ui->actionDelete_Zero->setEnabled(false);
-        ui->actionView_Zero_details->setEnabled(false);
+        ui->actionDelete_Reference->setEnabled(false);
+        ui->actionView_Reference_details->setEnabled(false);
     }
 }
 
@@ -519,72 +519,72 @@ void AeroISTWindow::on_actionView_Measure_details_triggered()
     }
 }
 
-void AeroISTWindow::on_actionDelete_Zero_triggered()
+void AeroISTWindow::on_actionDelete_Reference_triggered()
 {
-     QModelIndex index = ui->listViewZero->currentIndex();
-     if (zero_list->at(index) == ZeroThread && thread_status == ZERO_RUNNING){
+     QModelIndex index = ui->listViewReference->currentIndex();
+     if (reference_list->at(index) == referenceThread && thread_status == REFERENCE_RUNNING){
          message(tr("Measuring is being done. Stop it to delete"));
          return;
      }
 
      // if the to be deleted model is in the table, unset
-     if (zero_list->at(index) == ui->tableView->model()){
+     if (reference_list->at(index) == ui->tableView->model()){
          ui->tableView->setModel(NULL);
          ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tab),tr("Table"));
      }
-     zero_list->deleteMeasure(index);
+     reference_list->deleteMeasure(index);
 
-     if (index.isValid() && index.row() < zero_list->rowCount()){
-         ui->listViewZero->setCurrentIndex(index);
+     if (index.isValid() && index.row() < reference_list->rowCount()){
+         ui->listViewReference->setCurrentIndex(index);
      }
 }
 
 
-void AeroISTWindow::on_actionView_Zero_details_triggered(){
-    ZeroModel *zero;
-    QModelIndex index = ui->listViewZero->currentIndex();
+void AeroISTWindow::on_actionView_Reference_details_triggered(){
+    ReferenceModel *ref;
+    QModelIndex index = ui->listViewReference->currentIndex();
     if (index.isValid()){
-        zero = zero_list->at(index);
+        ref = reference_list->at(index);
 
-        ZeroDetails *details = new ZeroDetails(zero,this);
+        ReferenceDetails *details = new ReferenceDetails(ref,this);
 
         details->exec();
         delete details;
     }
 }
 
-void AeroISTWindow::on_listViewZero_activated(const QModelIndex &index){
-    ui->tableView->setModel( zero_list->at(index.row()));
-    ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tab),zero_list->at(index.row())->name);
+void AeroISTWindow::on_listViewReference_activated(const QModelIndex &index){
+    ui->tableView->setModel( reference_list->at(index.row()));
+    ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tab),reference_list->at(index.row())->name);
 }
 
-void AeroISTWindow::on_actionNew_Zero_triggered(){
+void AeroISTWindow::on_actionNew_Reference_triggered(){
     if (m_thread && m_test){
         message(tr("Thread busy"));
         return;
     }
     if(thread_status == STOPPED){
-        ZeroPreferences *zero_prefs;
-        ZeroThread = new ZeroModel;
+        ReferencePreferences *ref_prefs;
+        referenceThread = new ReferenceModel;
 
-        zero_prefs = new ZeroPreferences(ZeroThread, this);
-        if (zero_prefs->exec() == QDialog::Rejected){
-            delete zero_prefs;
-            delete ZeroThread;
+        ref_prefs = new ReferencePreferences(referenceThread, this);
+        if (ref_prefs->exec() == QDialog::Rejected){
+            delete ref_prefs;
+            delete referenceThread;
             return;
         }
-        delete zero_prefs;
-        zero_list->newMeasure(ZeroThread);
-        QModelIndex index = zero_list->index(zero_list->rowCount()-1,0);
-        ui->listViewZero->setCurrentIndex(index);
-        ui->tableView->setModel(ZeroThread);
+        delete ref_prefs;
+        reference_list->newMeasure(referenceThread);
+        QModelIndex index = reference_list->index(reference_list->rowCount()-1,0);
+        ui->listViewReference->setCurrentIndex(index);
+        ui->tableView->setModel(referenceThread);
 
         try {
-            m_test = new MeasureThread(ZeroThread);
+            m_test = new MeasureThread(referenceThread);
         }
         catch ( const std::runtime_error & err ) {
             message(tr("Error opening devices: ") + err.what());
-            zero_list->deleteMeasure(index);
+            reference_list->deleteMeasure(index);
             return ;
         }
 
@@ -593,7 +593,7 @@ void AeroISTWindow::on_actionNew_Zero_triggered(){
         }
         catch ( const std::runtime_error & err ) {
             message(tr("Error using devices: ") + err.what());
-            zero_list->deleteMeasure(index);
+            reference_list->deleteMeasure(index);
             return ;
         }
 
@@ -607,21 +607,21 @@ void AeroISTWindow::on_actionNew_Zero_triggered(){
         connect(m_thread, SIGNAL(started()), m_test, SLOT(produce()));
 
         // dump connect
-        connect(m_test, SIGNAL(MeasureDone(QHash<QString,double>)),ZeroThread, SLOT(GetMeasure(QHash<QString,double>)));
+        connect(m_test, SIGNAL(MeasureDone(QHash<QString,double>)),referenceThread, SLOT(GetMeasure(QHash<QString,double>)));
 
         // stop connects
-        connect(m_thread,SIGNAL(finished()),this,SLOT(ZeroButton_cleanup()));
+        connect(m_thread,SIGNAL(finished()),this,SLOT(ReferenceButton_cleanup()));
 
-        thread_status = ZERO_RUNNING;
+        thread_status = REFERENCE_RUNNING;
 
         m_thread->start();
         return;
     }
 }
 
-void AeroISTWindow::ZeroButton_cleanup(){
+void AeroISTWindow::ReferenceButton_cleanup(){
     qDebug() << "zero button cleanup" << thread_status;
-    if (thread_status == ZERO_RUNNING){
+    if (thread_status == REFERENCE_RUNNING){
         thread_status = STOPPED;
         cleanup();
         return;
@@ -691,8 +691,8 @@ void AeroISTWindow::on_actionMeasure_List_toggled(bool checked){
     ui->listView->setVisible(checked);
 }
 
-void AeroISTWindow::on_actionZero_List_toggled(bool arg1){
-    ui->listViewZero->setVisible(arg1);
+void AeroISTWindow::on_actionReference_List_toggled(bool arg1){
+    ui->listViewReference->setVisible(arg1);
 }
 
 void AeroISTWindow::on_actionNames_in_Toolbar_toggled(bool arg1){

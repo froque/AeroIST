@@ -31,9 +31,9 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="labelViewZero">
+      <widget class="QLabel" name="labelViewReference">
        <property name="text">
-        <string>Zero</string>
+        <string>Reference</string>
        </property>
       </widget>
      </item>
@@ -55,20 +55,6 @@
       <widget class="QLabel" name="labelViewSettling">
        <property name="text">
         <string>Settling Time</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="labelViewMatrix">
-       <property name="text">
-        <string>Test Type</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="labelViewMultimeter">
-       <property name="text">
-        <string>Multimeter Time</string>
        </property>
       </widget>
      </item>
@@ -115,7 +101,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="labelZero">
+      <widget class="QLabel" name="labelReference">
        <property name="text">
         <string/>
        </property>
@@ -137,20 +123,6 @@
      </item>
      <item>
       <widget class="QLabel" name="labelSettling">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="labelMatrix">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="labelMultimeter">
        <property name="text">
         <string/>
        </property>

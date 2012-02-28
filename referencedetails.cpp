@@ -1,9 +1,9 @@
-#include "zerodetails.h"
-#include "ui_zerodetails.h"
+#include "referencedetails.h"
+#include "ui_referencedetails.h"
 
-ZeroDetails::ZeroDetails(ZeroModel *measurement, QWidget *parent) :
+ReferenceDetails::ReferenceDetails(ReferenceModel *measurement, QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::ZeroDetails)
+    ui(new Ui::ReferenceDetails)
 {
     ui->setupUi(this);
 
@@ -38,6 +38,6 @@ ZeroDetails::ZeroDetails(ZeroModel *measurement, QWidget *parent) :
     this->adjustSize();
 }
 
-ZeroDetails::~ZeroDetails(){
+ReferenceDetails::~ReferenceDetails(){
     delete ui;
 }

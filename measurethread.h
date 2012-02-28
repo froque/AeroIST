@@ -14,7 +14,7 @@ class MeasureThread : public QObject
     Q_OBJECT
 public:
     explicit MeasureThread(MeasurementsModel *measurement, QObject *parent = 0);
-    explicit MeasureThread(ZeroModel *measurement, QObject *parent = 0);
+    explicit MeasureThread(ReferenceModel *measurement, QObject *parent = 0);
     ~MeasureThread();
     void isReady(void);
 
@@ -46,7 +46,6 @@ private:
 
     QString control;
 
-    bool isZero;
     QString name;
     int n;
 

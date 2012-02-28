@@ -1,10 +1,10 @@
-#include "zeromodel.h"
+#include "referencemodel.h"
 
 #include <QDir>
 #include <QCoreApplication>
 #include <QPluginLoader>
 
-ZeroModel::ZeroModel(QObject *parent) :
+ReferenceModel::ReferenceModel(QObject *parent) :
     QAbstractTableModel(parent)
 {
     name="";
@@ -12,14 +12,14 @@ ZeroModel::ZeroModel(QObject *parent) :
     init();
 }
 
-ZeroModel::ZeroModel(QDomElement root,QObject *parent) :
+ReferenceModel::ReferenceModel(QDomElement root,QObject *parent) :
     QAbstractTableModel(parent)
 {
     init();
     load_xml(root);
 }
 
-void ZeroModel::init(){
+void ReferenceModel::init(){
     Factory *factory;
     QDir pluginsDir = QDir(qApp->applicationDirPath());
     pluginsDir.cd("plugins");
@@ -35,7 +35,7 @@ void ZeroModel::init(){
     }
 }
 
-int ZeroModel::rowCount(const QModelIndex &parent) const{
+int ReferenceModel::rowCount(const QModelIndex &parent) const{
     Q_UNUSED(parent);
     if (variables.isEmpty()){
         return 0;
@@ -44,7 +44,7 @@ int ZeroModel::rowCount(const QModelIndex &parent) const{
     }
 }
 
-int ZeroModel::columnCount(const QModelIndex &parent) const{
+int ReferenceModel::columnCount(const QModelIndex &parent) const{
     Q_UNUSED(parent);
     int size = 0;
     foreach (VariableModel *var, variables) {
@@ -55,7 +55,7 @@ int ZeroModel::columnCount(const QModelIndex &parent) const{
     return size;
 }
 
-QVariant ZeroModel::data(const QModelIndex &index, int role) const{
+QVariant ReferenceModel::data(const QModelIndex &index, int role) const{
     if (!index.isValid()){
         return QVariant();
     }
@@ -77,7 +77,7 @@ QVariant ZeroModel::data(const QModelIndex &index, int role) const{
     return QVariant();
 }
 
-QVariant ZeroModel::headerData(int section, Qt::Orientation orientation, int role) const{
+QVariant ReferenceModel::headerData(int section, Qt::Orientation orientation, int role) const{
     if (role != Qt::DisplayRole)
         return QVariant();
 
@@ -100,7 +100,7 @@ QVariant ZeroModel::headerData(int section, Qt::Orientation orientation, int rol
     return QVariant();
 }
 
-void ZeroModel::GetMeasure(QHash<QString,double> hash){
+void ReferenceModel::GetMeasure(QHash<QString,double> hash){
     beginInsertRows(QModelIndex(), rowCount(),rowCount());
     foreach (VariableModel *var, variables) {
         for (int k=0; k< var->meta->get_num(); k++){
@@ -112,7 +112,7 @@ void ZeroModel::GetMeasure(QHash<QString,double> hash){
     endInsertRows();
 }
 
-void ZeroModel::save_xml(QDomElement root){
+void ReferenceModel::save_xml(QDomElement root){
     QDomElement name = root.ownerDocument().createElement(TAG_NAME);
     name.appendChild(root.ownerDocument().createTextNode(this->name));
     root.appendChild(name);
@@ -168,7 +168,7 @@ void ZeroModel::save_xml(QDomElement root){
     }
 }
 
-void ZeroModel::load_xml(QDomElement root){
+void ReferenceModel::load_xml(QDomElement root){
 
     QDomNodeList nodelist = root.childNodes();
     QDomNode node;
@@ -245,7 +245,7 @@ void ZeroModel::load_xml(QDomElement root){
     }
 }
 
-bool ZeroModel::setData ( const QModelIndex & index, const QVariant & value, int role){
+bool ReferenceModel::setData ( const QModelIndex & index, const QVariant & value, int role){
     if (!index.isValid()){
         return false;
     }
@@ -270,7 +270,7 @@ bool ZeroModel::setData ( const QModelIndex & index, const QVariant & value, int
     return true;
 }
 
-bool ZeroModel::insertRows ( int row, int count, const QModelIndex & parent ){
+bool ReferenceModel::insertRows ( int row, int count, const QModelIndex & parent ){
     Q_UNUSED(parent)
     if (row < 0 ){
         return false;
@@ -283,6 +283,6 @@ bool ZeroModel::insertRows ( int row, int count, const QModelIndex & parent ){
     }
     return true;
 }
-bool ZeroModel::insertRow ( int row,  const QModelIndex & parent ){
+bool ReferenceModel::insertRow ( int row,  const QModelIndex & parent ){
     return insertRows(row,1,parent);
 }

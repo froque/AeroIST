@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ZeroPreferences</class>
- <widget class="QDialog" name="ZeroPreferences">
+ <class>ReferencePreferences</class>
+ <widget class="QDialog" name="ReferencePreferences">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -17,7 +17,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>References</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
@@ -90,7 +90,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>ZeroPreferences</receiver>
+   <receiver>ReferencePreferences</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -106,7 +106,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>ZeroPreferences</receiver>
+   <receiver>ReferencePreferences</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">

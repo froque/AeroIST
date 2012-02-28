@@ -110,7 +110,7 @@
          <enum>Qt::ActionsContextMenu</enum>
         </property>
        </widget>
-       <widget class="QListView" name="listViewZero"/>
+       <widget class="QListView" name="listViewReference"/>
       </widget>
       <widget class="QTabWidget" name="tabWidget">
        <property name="sizePolicy">
@@ -182,9 +182,9 @@
     <addaction name="actionDelete_Measure"/>
     <addaction name="actionView_Measure_details"/>
     <addaction name="separator"/>
-    <addaction name="actionNew_Zero"/>
-    <addaction name="actionDelete_Zero"/>
-    <addaction name="actionView_Zero_details"/>
+    <addaction name="actionNew_Reference"/>
+    <addaction name="actionDelete_Reference"/>
+    <addaction name="actionView_Reference_details"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
@@ -206,7 +206,7 @@
     <addaction name="actionToolbar"/>
     <addaction name="actionNames_in_Toolbar"/>
     <addaction name="actionMeasure_List"/>
-    <addaction name="actionZero_List"/>
+    <addaction name="actionReference_List"/>
     <addaction name="actionLine_numbers_in_table"/>
    </widget>
    <widget class="QMenu" name="menuPlot">
@@ -243,9 +243,9 @@
    <addaction name="actionDelete_Measure"/>
    <addaction name="actionView_Measure_details"/>
    <addaction name="separator"/>
-   <addaction name="actionNew_Zero"/>
-   <addaction name="actionDelete_Zero"/>
-   <addaction name="actionView_Zero_details"/>
+   <addaction name="actionNew_Reference"/>
+   <addaction name="actionDelete_Reference"/>
+   <addaction name="actionView_Reference_details"/>
   </widget>
   <action name="actionExport_to_csv">
    <property name="text">
@@ -368,34 +368,43 @@
     <string>Measure List</string>
    </property>
   </action>
-  <action name="actionNew_Zero">
+  <action name="actionNew_Reference">
    <property name="text">
-    <string>New Zero</string>
+    <string>New Reference</string>
+   </property>
+   <property name="toolTip">
+    <string>Make a new reference</string>
    </property>
    <property name="shortcut">
     <string>Alt+N</string>
    </property>
   </action>
-  <action name="actionDelete_Zero">
+  <action name="actionDelete_Reference">
    <property name="enabled">
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>Delete Zero</string>
+    <string>Delete Reference</string>
+   </property>
+   <property name="toolTip">
+    <string>Delete a reference</string>
    </property>
    <property name="shortcut">
     <string>Alt+Del</string>
    </property>
   </action>
-  <action name="actionView_Zero_details">
+  <action name="actionView_Reference_details">
    <property name="enabled">
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>View Zero details</string>
+    <string>View Reference details</string>
+   </property>
+   <property name="toolTip">
+    <string>View details of a reference</string>
    </property>
   </action>
-  <action name="actionZero_List">
+  <action name="actionReference_List">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -403,7 +412,10 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Zero List</string>
+    <string>Reference List</string>
+   </property>
+   <property name="toolTip">
+    <string>List of references</string>
    </property>
   </action>
   <action name="actionNew_Curve">
@@ -456,7 +468,7 @@
  </customwidgets>
  <tabstops>
   <tabstop>listView</tabstop>
-  <tabstop>listViewZero</tabstop>
+  <tabstop>listViewReference</tabstop>
   <tabstop>tabWidget</tabstop>
   <tabstop>tableView</tabstop>
   <tabstop>ThreadButton</tabstop>
