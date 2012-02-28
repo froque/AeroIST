@@ -15,3 +15,5 @@ SOURCES       += temperature.cpp
 
 HEADERS       += temperature.h
 
+SOURCES       += ../arduino-serial.cpp
+HEADERS       += ../arduino-serial.hn
