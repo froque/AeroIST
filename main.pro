@@ -11,12 +11,13 @@ SUBDIRS += \
 
 SUBDIRS += \
     Variable_Force/Force.pro\
-    Variable_Alpha/Alpha.pro\
+#    Variable_Alpha/Alpha.pro\
     Variable_Beta/Beta.pro\
     Variable_Motor/Motor.pro\
     Variable_Temperature/Temperature.pro\
     Variable_Wind/Wind.pro\
-    Variable_Time/Time.pro
+    Variable_Time/Time.pro\
+    Variable_Angles/Angles.pro
 
 SUBDIRS += \
     Virtual_Force\
