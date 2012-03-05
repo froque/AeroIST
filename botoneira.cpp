@@ -1,19 +1,10 @@
 #include <stdio.h>   /* Standard input/output definitions */
-#include <stdlib.h>
 #include <string.h>
-#include <stdint.h>   /* Standard types */
-#include <unistd.h>   /* UNIX standard function definitions */
-#include <fcntl.h>    /* File control definitions */
-#include <errno.h>    /* Error number definitions */
-#include <termios.h>  /* POSIX terminal control definitions */
-#include <sys/ioctl.h>
-#include <sys/time.h>
-#include <stdbool.h>
+
 #include "arduino-serial.h"
 #include "botoneira.h"
 
-#define COMMAND_ON 1
-#define COMMAND_OFF 0
+
 
 
 int init_arduino(const char *port){

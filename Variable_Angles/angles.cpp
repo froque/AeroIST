@@ -29,14 +29,26 @@
 #define PRECISION_BETA 0.05
 
 #define SETTINGS_ANGLES_PATH "angles_path"
-#define SETTINGS_ANGLES_PATH_DEFAULT "/dev/ttyUSB0"
-
-#define COMMAND_ON 1
-#define COMMAND_OFF 0
+//#define SETTINGS_ANGLES_PATH_DEFAULT "/dev/ttyUSB0"
 
 #define ARDUINO_ANALOG_REF 5.0
 #define SETTINGS_ARDUINO_PATH "arduino_path"
-#define SETTINGS_ARDUINO_PATH_DEFAULT "/dev/ttyUSB0"
+//#define SETTINGS_ARDUINO_PATH_DEFAULT "/dev/ttyUSB0"
+
+/*
+        The purpose of this function is to convert a reflected binary
+        Gray code number to a binary number. Source: wikipedia
+*/
+unsigned int grayToBinary(unsigned int num)
+{
+    unsigned int numBits = 8 * sizeof(num);
+    unsigned int shift;
+    for (shift = 1; shift < numBits; shift *= 2)
+    {
+        num ^= num >> shift;
+    }
+    return num;
+}
 
 
 bool AnglesMeta::is_controlable() {
@@ -109,7 +121,8 @@ QWidget* AnglesPreferences::get_widget() {
     QSettings settings;
     layout->addWidget(new QLabel(QObject::tr("Angles device path")),0,0);
     edit_angles = new QLineEdit;
-    edit_angles->setText(settings.value(SETTINGS_ANGLES_PATH,SETTINGS_ANGLES_PATH_DEFAULT).toString());
+//    edit_angles->setText(settings.value(SETTINGS_ANGLES_PATH,SETTINGS_ANGLES_PATH_DEFAULT).toString());
+    edit_angles->setText(settings.value(SETTINGS_ANGLES_PATH).toString());
     layout->addWidget(edit_angles,0,1);
     widget->setLayout(layout);
     return widget;
@@ -185,14 +198,14 @@ AnglesHardware::AnglesHardware(){
     anglemax[0] = ANGLEMAX_ALPHA;
     anglemax[1] = ANGLEMAX_BETA;
     precision[0] = PRECISION_ALPHA;
-    precision[1] = PRECISION_ALPHA;
+    precision[1] = PRECISION_BETA;
     relay_increase[0] = '0';
     relay_increase[1] = '2';
     relay_decrease[0] = '1';
     relay_decrease[1] = '3';
 
     port = new SerialPort;
-    port->setPort("/dev/ttyUSB0");
+    port->setPort(settings.value(SETTINGS_ANGLES_PATH).toString());
     port->setRate(SerialPort::Rate115200);
     port->setDataBits(SerialPort::Data8);
     port->setParity(SerialPort::NoParity);
@@ -201,21 +214,27 @@ AnglesHardware::AnglesHardware(){
         throw std::runtime_error("unable to open angles device");
         return;
     }
-//    qDebug() << port->portName() << port->rate() << port->dataBits() << port->parity() << port->stopBits() << port->openMode();
-    QString command = "$0L1241";                // set 24 bits for encoder 1
+    qDebug() << settings.value(SETTINGS_ANGLES_PATH).toString() << port->portName() << port->rate() << port->dataBits() << port->parity() << port->stopBits() << port->openMode();
+    QString command = "$0L1251";                // set 24 bits +1 bit PBF for encoder 1, parity on
     command.append('\r');
-    port->write(command.toAscii());
+    int status = port->write(command.toAscii());
+    if (status != command.size()){
+        qDebug() << "not a good write to encoder 1";
+    }
     if (port->waitForReadyRead(20) == false){
-        qDebug() << "error on waiting from encoder 1";
+        qDebug() << "error on waiting from encoder 1 " << status;
         return ;
     }
     QString output = port->readAll();
     if (output.contains("NACK")){
         qDebug() << "failed response from SSI to USB from encoder 1";
     }
-    command = "$0L2241";                        // set 24 bits for encoder 2
+    command = "$0L2251";                        // set 24 bits +1 bit PBF for encoder 2, parity on
     command.append('\r');
-    port->write(command.toAscii());
+    status = port->write(command.toAscii());
+    if (status != command.size()){
+        qDebug() << "not a good write to encoder 2";
+    }
     if (port->waitForReadyRead(20) == false){
         qDebug() << "error on waiting from encoder 2";
         return ;
@@ -230,44 +249,53 @@ AnglesHardware::~AnglesHardware(){
     close(arduinofd);
 }
 void AnglesHardware::read() {
-    QString command = "$0R1";
-    command.append('\r');
-    port->write(command.toAscii());
-    if (port->waitForReadyRead(20) == false){
-        qDebug() << "error on waiting in read from encoder 1";
-        return ;
-    }
-    QString output = port->readAll();
-    if (output.contains("NACK")){
-        qDebug() << "failed response from SSI to USB from encoder 1";
-    } else{
-        bool ok;
-        digits[0] = output.mid(4,8).toInt(&ok);            // 8 size in 24 bits
-        if (ok != true){
-            qDebug() << "conversion not ok in encoder 1";
-        } else {
-            convert_alpha();
+    QString command;
+    QString output;
+    bool ok1 = false, ok2 = false;
+    unsigned gray1,gray2;
+    while ((ok1 && ok2) == false){
+        command = "$0R1";
+        command.append('\r');
+        port->write(command.toAscii());
+        if (port->waitForReadyRead(50) == false){
+            qDebug() << "error on waiting in read from encoder 1";
+            continue;
+        }
+        output = port->readAll();
+        if (output.contains("NACK")){
+            qDebug() << "failed response from SSI to USB" << output;
+            continue;
+        }
+
+        gray1 = output.mid(4,10).toUInt(&ok1);            // length 10 for 25 bits
+
+        command = "$0R2";
+        command.append('\r');
+        port->write(command.toAscii());
+        if (port->waitForReadyRead(50) == false){
+            qDebug() << "error on waiting in read from encoder 2";
+            continue;
+        }
+        output = port->readAll();
+        if (output.contains("NACK")){
+            qDebug() << "failed response from SSI to USB" << output;
+            continue;
+        }
+
+        gray2 = output.mid(4,10).toUInt(&ok2);            // length 10 for 25 bits
+
+        if ((ok1 != true) || (ok2 != true)){
+            qDebug() << "conversion not ok" << output;
+            continue;
         }
     }
-    command = "$0R2";
-    command.append('\r');
-    port->write(command.toAscii());
-    if (port->waitForReadyRead(20) == false){
-        qDebug() << "error on waiting in read from encoder 1";
-        return ;
-    }
-    output = port->readAll();
-    if (output.contains("NACK")){
-        qDebug() << "failed response from SSI to USB from encoder 1";
-    } else{
-        bool ok;
-        digits[1] = output.mid(4,8).toInt(&ok);            // 8 size in 24 bits
-        if (ok != true){
-            qDebug() << "conversion not ok in encoder 1";
-        } else {
-            convert_beta();
-        }
-    }
+    unsigned int value1 = grayToBinary(gray1);
+    unsigned int value2 = grayToBinary(gray2);
+    digits[0] = static_cast<int>(value1);
+    digits[1] = static_cast<int>(value2);
+    convert_alpha();
+    convert_beta();
+    qDebug() <<  "gray: " << gray1 << " - " << value1 << gray2 << " - " << value2 << " :end" << ok1 << ok2 << output;
 
 }
 double AnglesHardware::get_value(int n) {

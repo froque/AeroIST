@@ -1,6 +1,8 @@
 #ifndef ARDUINO_H
 #define ARDUINO_H
 
+#include <stdint.h>   /* Standard types */
+
 #define SERIALRATE 9600
 
 int serialport_init(const char* serialport, int baud);
