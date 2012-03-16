@@ -112,7 +112,8 @@ void MeasureThread::isReady(void){
     VariableHardware *variable;
     foreach (variable, variables) {
         if (variable->isReady() == false){
-            throw std::runtime_error("Something is not ready.");
+            QString error_msg = QString("%1 is not ready.").arg(variable->meta->get_general_name());
+            throw std::runtime_error(error_msg.toStdString());
         }
     }
 }
