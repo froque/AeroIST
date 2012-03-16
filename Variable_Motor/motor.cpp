@@ -13,7 +13,7 @@
 #define SIMOREG_BUFLEN 8
 #define MOTOR_FULLSPEED 16384.0 // 100% according to manual
 #define MOTOR_FULLPERCENTAGE 100.0
-#define MOTOR_PRECISION 2           // in percentage
+#define MOTOR_PRECISION 0.1           // in percentage
 
 #define MOTOR_MIN    0
 #define MOTOR_MAX    100 //Percentage
