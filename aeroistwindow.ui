@@ -99,7 +99,7 @@
        <property name="orientation">
         <enum>Qt::Vertical</enum>
        </property>
-       <widget class="QWidget" name="">
+       <widget class="QWidget" name="layoutWidget">
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
           <widget class="QLabel" name="labelMeasureList">
@@ -123,7 +123,7 @@
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="">
+       <widget class="QWidget" name="layoutWidget">
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
           <widget class="QLabel" name="labelReferenceList">
@@ -277,9 +277,6 @@
    <property name="text">
     <string>Export to csv</string>
    </property>
-   <property name="iconVisibleInMenu">
-    <bool>true</bool>
-   </property>
   </action>
   <action name="actionPreferences">
    <property name="text">
@@ -287,9 +284,6 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+P</string>
-   </property>
-   <property name="iconVisibleInMenu">
-    <bool>true</bool>
    </property>
   </action>
   <action name="actionNew_Measure">
@@ -299,16 +293,10 @@
    <property name="shortcut">
     <string>Ctrl+N</string>
    </property>
-   <property name="iconVisibleInMenu">
-    <bool>true</bool>
-   </property>
   </action>
   <action name="actionExportPlot">
    <property name="text">
     <string>Export plot</string>
-   </property>
-   <property name="iconVisibleInMenu">
-    <bool>true</bool>
    </property>
   </action>
   <action name="actionDelete_Measure">
@@ -321,9 +309,6 @@
    <property name="shortcut">
     <string>Del</string>
    </property>
-   <property name="iconVisibleInMenu">
-    <bool>true</bool>
-   </property>
   </action>
   <action name="actionSave_Project">
    <property name="text">
@@ -331,9 +316,6 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
-   </property>
-   <property name="iconVisibleInMenu">
-    <bool>true</bool>
    </property>
   </action>
   <action name="actionLoad_Project">
@@ -343,9 +325,6 @@
    <property name="shortcut">
     <string>Ctrl+O</string>
    </property>
-   <property name="iconVisibleInMenu">
-    <bool>true</bool>
-   </property>
   </action>
   <action name="actionClear_Project">
    <property name="text">
@@ -354,9 +333,6 @@
    <property name="shortcut">
     <string>Ctrl+Shift+C</string>
    </property>
-   <property name="iconVisibleInMenu">
-    <bool>true</bool>
-   </property>
   </action>
   <action name="actionView_Measure_details">
    <property name="enabled">
@@ -364,9 +340,6 @@
    </property>
    <property name="text">
     <string>View Measure details</string>
-   </property>
-   <property name="iconVisibleInMenu">
-    <bool>true</bool>
    </property>
   </action>
   <action name="actionToolbar">
@@ -378,9 +351,6 @@
    </property>
    <property name="text">
     <string>Toolbar</string>
-   </property>
-   <property name="iconVisibleInMenu">
-    <bool>true</bool>
    </property>
   </action>
   <action name="actionMeasure_List">

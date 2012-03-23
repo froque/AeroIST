@@ -30,12 +30,14 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
     ui->setupUi(this);
 
     // Set some standard (freedesktop only) Icons
-    ui->actionNew_Measure->setIcon(QIcon::fromTheme("document-new"));
-    ui->actionDelete_Measure->setIcon(QIcon::fromTheme("edit-delete"));
-    ui->actionView_Measure_details->setIcon(QIcon::fromTheme("document-properties"));
-//    ui->actionClear_Project->setIcon(QIcon::fromTheme("edit-clear"));
+    ui->actionNew_Measure->setIcon(QIcon("resources/ruler_add.svg"));
+    ui->actionDelete_Measure->setIcon(QIcon("resources/ruler_remove.svg"));
+    ui->actionView_Measure_details->setIcon(QIcon("resources/ruler_view.svg"));
     ui->actionLoad_Project->setIcon(QIcon::fromTheme("document-open"));
     ui->actionSave_Project->setIcon(QIcon::fromTheme("document-save-as"));
+    ui->actionDelete_Reference->setIcon(QIcon("resources/ref_remove.svg"));
+    ui->actionNew_Reference->setIcon(QIcon("resources/ref_add.svg"));
+    ui->actionView_Reference_details->setIcon(QIcon("resources/ref_view.svg"));
 
     // Set the models
     measure_list = new MeasureList();
