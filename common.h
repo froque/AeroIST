@@ -1,11 +1,6 @@
 #ifndef COMMON_H
 #define COMMON_H
 
-#define SINGLE_SHARED 0 // Don't test for open instances
-#define SINGLE_PID 0
-#define SINGLE_SETTINGS 0
-#define SINGLE_SOCKET 0
-
 #define AEROIST "AeroIST"
 
 enum ThreadStatus{
