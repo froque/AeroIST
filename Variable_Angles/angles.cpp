@@ -20,16 +20,16 @@
 #define PRECISION_ALPHA 0.03
 
 
-#define DEFAULT_BETA_STEP   5
+#define DEFAULT_BETA_STEP   1
 #define DEFAULT_BETA_START  0
 #define ANGLEZERO_BETA 80751.0
 #define ANGLESENSITIVITY_BETA 0.00211000
 #define ANGLEMAX_BETA 180.0
 #define ANGLEMINSTEP_BETA 0.2
-#define PRECISION_BETA 0.05
+#define PRECISION_BETA 0.08
 
 #define SETTINGS_ANGLES_PATH "angles_path"
-//#define SETTINGS_ANGLES_PATH_DEFAULT "/dev/ttyUSB0"
+#define SETTINGS_ANGLES_PATH_DEFAULT "/dev/ttyUSB0"
 
 #define ARDUINO_ANALOG_REF 5.0
 #define SETTINGS_ARDUINO_PATH "arduino_path"
@@ -52,8 +52,8 @@ unsigned int grayToBinary(unsigned int num)
 
 
 bool AnglesMeta::is_controlable() {
-//    return true;
-    return false;
+    return true;
+//    return false;
 }
 bool AnglesMeta::has_zero() {
     return false;
@@ -121,8 +121,8 @@ QWidget* AnglesPreferences::get_widget() {
     QSettings settings;
     layout->addWidget(new QLabel(QObject::tr("Angles device path")),0,0);
     edit_angles = new QLineEdit;
-//    edit_angles->setText(settings.value(SETTINGS_ANGLES_PATH,SETTINGS_ANGLES_PATH_DEFAULT).toString());
-    edit_angles->setText(settings.value(SETTINGS_ANGLES_PATH).toString());
+    edit_angles->setText(settings.value(SETTINGS_ANGLES_PATH,SETTINGS_ANGLES_PATH_DEFAULT).toString());
+//    edit_angles->setText(settings.value(SETTINGS_ANGLES_PATH).toString());
     layout->addWidget(edit_angles,0,1);
     widget->setLayout(layout);
     return widget;
@@ -295,7 +295,7 @@ void AnglesHardware::read() {
     digits[1] = static_cast<int>(value2);
     convert_alpha();
     convert_beta();
-    qDebug() <<  "gray: " << gray1 << " - " << value1 << gray2 << " - " << value2 << " :end" << ok1 << ok2 << output;
+//    qDebug() <<  "gray: " << gray1 << " - " << value1 << gray2 << " - " << value2 << " :end" << ok1 << ok2 << output;
 
 }
 double AnglesHardware::get_value(int n) {

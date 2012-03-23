@@ -63,14 +63,14 @@ QWidget* ForcePreferences::get_widget() {
     combo_time->addItem(QObject::tr("1 s"),      4);
     combo_time->addItem(QObject::tr("5 s"),      5);
     combo_time->addItem(QObject::tr("10 s"),     6);
-    int index = combo_time->findData(settings.value(SETTINGS_DEFAULT_DVM_TIME).toInt());
+    int index = combo_time->findData(settings.value(SETTINGS_DEFAULT_DVM_TIME,4).toInt());
     combo_time->setCurrentIndex(index);
     layout->addWidget(combo_time,1,1);
     layout->addWidget(new QLabel(QObject::tr("Default Matrix")),2,0);
     combo_matrix =  new QComboBox;
     combo_matrix->addItem(QObject::tr("middle"), MIDDLE);
     combo_matrix->addItem(QObject::tr("floor"),  FLOOR);
-    index = combo_matrix->findData(settings.value(SETTINGS_DEFAULT_MATRIX).toInt());
+    index = combo_matrix->findData(settings.value(SETTINGS_DEFAULT_MATRIX,MIDDLE).toInt());
     combo_matrix->setCurrentIndex(index);
     layout->addWidget(combo_matrix,2,1);
     widget->setLayout(layout);
