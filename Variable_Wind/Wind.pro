@@ -16,4 +16,4 @@ SOURCES       += wind.cpp
 HEADERS       += wind.h
 
 SOURCES       += ../arduino-serial.cpp
-HEADERS       += ../arduino-serial.hn
+HEADERS       += ../arduino-serial.h

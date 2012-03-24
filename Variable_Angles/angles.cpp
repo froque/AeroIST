@@ -252,7 +252,7 @@ void AnglesHardware::read() {
     QString command;
     QString output;
     bool ok1 = false, ok2 = false;
-    unsigned gray1,gray2;
+    unsigned gray1 = 0,gray2 = 0;
     while ((ok1 && ok2) == false){
         command = "$0R1";
         command.append('\r');
