@@ -1,0 +1,8 @@
+[Desktop Entry]
+Exec=AeroIST %f
+Icon=aeroist.svg
+Type=Application
+Terminal=false
+Name=AeroIST
+MimeType=text/xml;
+Categories=Science;

@@ -8,7 +8,7 @@
 #include <QtNetwork/QLocalSocket>
 #include <QtNetwork/QLocalServer>
 
-
+#include <QDebug>
 
 int main(int argc, char *argv[])
 {
@@ -30,6 +30,7 @@ int main(int argc, char *argv[])
         w.load_xml(app.arguments().at(1));
     }
 
+    w.setWindowIcon(QIcon(":/resources/aeroist.svg"));
 
     w.show();
     return app.exec();

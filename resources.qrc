@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>resources/aeroist.svg</file>
+        <file>resources/ref_add.svg</file>
+        <file>resources/ref_remove.svg</file>
+        <file>resources/ref_view.svg</file>
+        <file>resources/ruler_add.svg</file>
+        <file>resources/ruler_remove.svg</file>
+        <file>resources/ruler_view.svg</file>
+    </qresource>
+</RCC>

@@ -10,29 +10,13 @@ QT += xmlpatterns
 TEMPLATE = app
 
 DESTDIR = build
-OBJECTS_DIR = objs
-MOC_DIR = moc
-UI_DIR = ui
+OBJECTS_DIR = $$DESTDIR/objs
+MOC_DIR = $$DESTDIR/moc
+UI_DIR = $$DESTDIR/ui
+RCC_DIR = $$DESTDIR/rcc
+
 LIBS += -L/usr/local/lib -lgpib
 CONFIG += qwt
-#INCLUDEPATH += /usr/include/qwt
-#CONFIG += 32bit
-#CONFIG += 64bit
-CONFIG(32bit) {
-    LIBS += -L/usr/local/lib -lgpib
-    TARGET = 32bit_binary
-#    QMAKE_CXXFLAGS += -m32
-#    QMAKE_CXX_FLAGS_RELEASE += -m32
-#    LIBS += -L<path to 32bit libraries>
-}
-CONFIG(64bit) {
-    LIBS += -L/usr/lib -lgpib
-    TARGET = 64bit_binary
-}
-#QMAKESPEC=linux-g++-64
-#QMAKESPEC=linux-g++-32
-#CONFIG += x86
-#CONFIG -= x86_64
 
 SOURCES += main.cpp \
     aeroistwindow.cpp \
@@ -78,3 +62,5 @@ FORMS += aeroistwindow.ui \
 
 TRANSLATIONS = aeroist_en.ts\
                 aeroist_pt.ts
+
+RESOURCES += resources.qrc
