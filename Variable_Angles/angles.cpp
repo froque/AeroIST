@@ -9,7 +9,7 @@
 #include <stdexcept>
 #include <QSettings>
 
-#include "../botoneira.h"
+#include "botoneira.h"
 
 #define DEFAULT_ALPHA_STEP  1
 #define DEFAULT_ALPHA_START 0

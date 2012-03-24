@@ -1,7 +1,7 @@
 #ifndef VIRTUAL_BETA_H
 #define VIRTUAL_BETA_H
 
-#include "../variable.h"
+#include "variable.h"
 #include <QString>
 #include <QtGui>
 

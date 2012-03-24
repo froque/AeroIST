@@ -11,7 +11,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>   /* Standard types */
-#include "../arduino-serial.h"
+#include "arduino-serial.h"
 #include <QSettings>
 
 #define WIND_SENSITIVITY 3.98

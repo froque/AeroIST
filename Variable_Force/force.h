@@ -1,7 +1,7 @@
 #ifndef FORCE_H
 #define FORCE_H
 
-#include "../variable.h"
+#include "variable.h"
 #include <QString>
 #include <QtGui>
 

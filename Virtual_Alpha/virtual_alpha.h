@@ -1,7 +1,7 @@
 #ifndef VIRTUAL_ALPHA_H
 #define VIRTUAL_ALPHA_H
 
-#include "../variable.h"
+#include "variable.h"
 #include <QString>
 #include <QtGui>
 

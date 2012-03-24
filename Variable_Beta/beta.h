@@ -1,7 +1,7 @@
 #ifndef BETA_H
 #define BETA_H
 
-#include "../variable.h"
+#include "variable.h"
 #include <QString>
 #include <QtGui>
 

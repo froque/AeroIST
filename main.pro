@@ -6,8 +6,7 @@
 TEMPLATE = subdirs
 
 
-SUBDIRS += \
-    AeroIST.pro
+SUBDIRS += aeroist/AeroIST.pro
 
 SUBDIRS += \
     Variable_Force/Force.pro\

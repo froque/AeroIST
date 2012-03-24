@@ -11,6 +11,8 @@ OBJECTS_DIR   = objs
 MOC_DIR       = moc
 DESTDIR       = ../build/plugins_virtual
 
+INCLUDEPATH += ../common
+
 SOURCES       += virtual_time.cpp
 
 HEADERS       += virtual_time.h

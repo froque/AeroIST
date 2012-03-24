@@ -11,7 +11,8 @@ OBJECTS_DIR   = objs
 MOC_DIR       = moc
 DESTDIR       = ../build/plugins
 
-SOURCES       += arduino.cpp
+INCLUDEPATH += ../common
 
+SOURCES       += arduino.cpp
 
 HEADERS       += arduino.h

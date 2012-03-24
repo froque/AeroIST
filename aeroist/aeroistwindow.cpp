@@ -248,7 +248,7 @@ void AeroISTWindow::on_actionExport_to_csv_triggered()
 
     QString fileName;
     QSettings settings;
-    fileName = QFileDialog::getSaveFileName(this, tr("Export mesurements"), settings.value(SETTINGS_PROJECT_FOLDER).toString(), tr("*.csv"));
+    fileName = QFileDialog::getSaveFileName(this, tr("Export mesurements"), settings.value(SETTINGS_PROJECT_FOLDER).toString(),"*.csv");
 
     if(fileName.endsWith(".csv",Qt::CaseInsensitive) == false){
         fileName.append(".csv");

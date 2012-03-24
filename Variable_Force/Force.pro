@@ -11,6 +11,8 @@ OBJECTS_DIR   = objs
 MOC_DIR       = moc
 DESTDIR       = ../build/plugins_real
 
+INCLUDEPATH += ../common
+
 SOURCES       += force.cpp
 
 HEADERS       += force.h

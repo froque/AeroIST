@@ -1,7 +1,7 @@
 #ifndef VIRTUAL_TIME_H
 #define VIRTUAL_TIME_H
 
-#include "../variable.h"
+#include "variable.h"
 #include <QString>
 #include <QtGui>
 

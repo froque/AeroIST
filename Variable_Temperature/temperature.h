@@ -1,7 +1,7 @@
 #ifndef TEMPERATURE_H
 #define TEMPERATURE_H
 
-#include "../variable.h"
+#include "variable.h"
 #include <QString>
 #include <QtGui>
 

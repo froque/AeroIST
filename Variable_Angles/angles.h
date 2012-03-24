@@ -1,7 +1,7 @@
 #ifndef ALPHA_H
 #define ALPHA_H
 
-#include "../variable.h"
+#include "variable.h"
 #include <QString>
 #include <QtGui>
 

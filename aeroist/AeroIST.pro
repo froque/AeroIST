@@ -9,12 +9,13 @@ QT += xmlpatterns
 #TARGET = AeroIST
 TEMPLATE = app
 
-DESTDIR = build
+DESTDIR = ../build
 OBJECTS_DIR = $$DESTDIR/objs
 MOC_DIR = $$DESTDIR/moc
 UI_DIR = $$DESTDIR/ui
 RCC_DIR = $$DESTDIR/rcc
 
+INCLUDEPATH += ../common
 LIBS += -L/usr/local/lib -lgpib
 CONFIG += qwt
 
@@ -28,11 +29,12 @@ SOURCES += main.cpp \
     measurementdetails.cpp \
     curvenew.cpp \
     curvedelete.cpp \
-    helper.cpp \
     referencedetails.cpp \
     referencelist.cpp \
     referencemodel.cpp \
     referencepreferences.cpp
+
+SOURCES += ../common/helper.cpp \
 
 HEADERS += aeroistwindow.h \
     measurementsmodel.h \
@@ -44,12 +46,13 @@ HEADERS += aeroistwindow.h \
     measurementdetails.h \
     curvenew.h \
     curvedelete.h \
-    helper.h \
-    variable.h \
     referencedetails.h \
     referencelist.h \
     referencemodel.h \
     referencepreferences.h
+
+HEADERS += ../common/variable.h \
+    ../common/helper.h \
 
 FORMS += aeroistwindow.ui \
     preferences.ui \

@@ -11,10 +11,12 @@ OBJECTS_DIR   = objs
 MOC_DIR       = moc
 DESTDIR       = ../build/plugins_real
 
-SOURCES       += alpha.cpp \
-                ../botoneira.cpp \
-                ../arduino-serial.cpp
+INCLUDEPATH += ../common
 
-HEADERS       += alpha.h \
-                ../botoneira.h \
-                ../arduino-serial.h
+SOURCES       += alpha.cpp
+SOURCES       += ../common/botoneira.cpp \
+                ../common/arduino-serial.cpp
+
+HEADERS       += alpha.h
+HEADERS       += ../common/botoneira.h \
+                ../common/arduino-serial.h

@@ -8,7 +8,7 @@
 #include <cmath>
 
 #include <QSettings>
-#include "../helper.h"
+#include "helper.h"
 
 #define SIMOREG_BUFLEN 8
 #define MOTOR_FULLSPEED 16384.0 // 100% according to manual

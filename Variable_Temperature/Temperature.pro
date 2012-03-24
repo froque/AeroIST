@@ -11,9 +11,11 @@ OBJECTS_DIR   = objs
 MOC_DIR       = moc
 DESTDIR       = ../build/plugins_real
 
+INCLUDEPATH += ../common
+
 SOURCES       += temperature.cpp
 
 HEADERS       += temperature.h
 
-SOURCES       += ../arduino-serial.cpp
-HEADERS       += ../arduino-serial.h
+SOURCES       += ../common/arduino-serial.cpp
+HEADERS       += ../common/arduino-serial.h

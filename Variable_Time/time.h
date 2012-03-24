@@ -1,7 +1,7 @@
 #ifndef TIME_H
 #define TIME_H
 
-#include "../variable.h"
+#include "variable.h"
 #include <QString>
 #include <QtGui>
 

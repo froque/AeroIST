@@ -1,7 +1,7 @@
 #ifndef VIRTUAL_FORCE_H
 #define VIRTUAL_FORCE_H
 
-#include "../variable.h"
+#include "variable.h"
 #include <QString>
 #include <QtGui>
 

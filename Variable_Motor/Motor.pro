@@ -11,9 +11,11 @@ OBJECTS_DIR   = objs
 MOC_DIR       = moc
 DESTDIR       = ../build/plugins_real
 
+INCLUDEPATH += ../common
+
 SOURCES       += motor.cpp \
-                ../helper.cpp
+                ../common/helper.cpp
 
 HEADERS       += motor.h \
-                ../helper.h
+                ../common/helper.h
 

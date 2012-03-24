@@ -12,7 +12,7 @@
 #include <string.h>
 #include <stdint.h>   /* Standard types */
 
-#include "../arduino-serial.h"
+#include "arduino-serial.h"
 
 #include <QSettings>
 

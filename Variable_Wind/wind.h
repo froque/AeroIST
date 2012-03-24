@@ -1,7 +1,7 @@
 #ifndef WIND_H
 #define WIND_H
 
-#include "../variable.h"
+#include "variable.h"
 #include <QString>
 #include <QtGui>
 

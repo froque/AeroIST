@@ -1,7 +1,7 @@
 #ifndef ARDUINO_H
 #define ARDUINO_H
 
-#include "../variable.h"
+#include "variable.h"
 #include <QString>
 #include <QtGui>
 

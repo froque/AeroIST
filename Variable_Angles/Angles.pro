@@ -11,15 +11,16 @@ OBJECTS_DIR   = objs
 MOC_DIR       = moc
 DESTDIR       = ../build/plugins_real
 
-SOURCES       += angles.cpp \
-                ../botoneira.cpp \
-                ../arduino-serial.cpp
+SOURCES       += angles.cpp
+SOURCES       += ../common/botoneira.cpp \
+                ../common/arduino-serial.cpp
 
-HEADERS       += angles.h \
-                ../botoneira.h \
-                ../arduino-serial.h
+HEADERS       += angles.h
+HEADERS       += ../common/botoneira.h \
+                ../common/arduino-serial.h
 
 INCLUDEPATH += ../qserialdevice/include
+INCLUDEPATH += ../common
 
 HEADERS += \
     ../qserialdevice/include/serialport.h \

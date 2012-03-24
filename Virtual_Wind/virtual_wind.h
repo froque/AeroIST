@@ -1,7 +1,7 @@
 #ifndef VIRTUAL_WIND_H
 #define VIRTUAL_WIND_H
 
-#include "../variable.h"
+#include "variable.h"
 #include <QString>
 #include <QtGui>
 
