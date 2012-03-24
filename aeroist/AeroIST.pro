@@ -67,3 +67,14 @@ TRANSLATIONS = aeroist_en.ts\
                 aeroist_pt.ts
 
 RESOURCES += resources.qrc
+
+### FOR INSTALLATION
+## Installation Variables
+#isEmpty(PREFIX) {
+#        PREFIX = /usr/local
+#}
+#BINDIR = $$PREFIX/bin
+
+##MAKE INSTALL
+#INSTALLS += target
+#target.path = $$BINDIR
