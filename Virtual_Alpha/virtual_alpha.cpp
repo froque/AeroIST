@@ -61,12 +61,24 @@ bool AlphaModel::measurement_accept_config(VariableModel *m){Q_UNUSED(m); return
 bool AlphaModel::measurement_is_configurable(){return false;}
 void AlphaModel::save_xml(QDomElement root){Q_UNUSED(root);}
 void AlphaModel::load_xml(QDomElement root){Q_UNUSED(root);}
+void AlphaModel::set_raw_value(int n, int row, double value){
+    Q_UNUSED(n);
+    raw.replace(row,value);
+}
+double AlphaModel::get_raw_value(int n, int row){
+    Q_UNUSED(n);
+    return raw.value(row);
+}
+void AlphaModel::insert_raw_value(int n, int row, int count, double value) {Q_UNUSED(n); raw.insert(row,count,value);}
+void AlphaModel::append_raw_value(int n, double value) {Q_UNUSED(n);  raw.append(value);}
+
 
 
 AlphaHardware::AlphaHardware(){meta = new AlphaMeta; value=0; control_set=false;}
-void AlphaHardware::read() {if(control_set==false){ value = -10.0 * qrand() / RAND_MAX;}}
+void AlphaHardware::read() {if(control_set==false){ raw = (1.0 * qrand() / RAND_MAX); value = 100 *raw + 10;}}
 double AlphaHardware::get_value(int n) {Q_UNUSED(n); return value;}
-void AlphaHardware::set_value(int n ,double value) {Q_UNUSED(n);  control_set=true; this->value = value;}
+double AlphaHardware::get_raw_value(int n) {Q_UNUSED(n); return raw;}
+void AlphaHardware::set_value(int n ,double value) {Q_UNUSED(n);  control_set=true; this->value = value;this->raw = value/100.0 - 10;}
 bool AlphaHardware::isReady(void) {return true;}
 bool AlphaHardware::has_set_final() {return meta->is_controlable() && false;}
 void AlphaHardware::set_final() {}

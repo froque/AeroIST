@@ -68,7 +68,33 @@ void MeasurementsModel::save_csv(QTextStream *out,bool header){
     }
 }
 
-void MeasurementsModel::GetMeasure(QHash<QString,double> hash){
+void MeasurementsModel::save_raw_csv(QTextStream *out,bool header){
+    int rows = rowCount();
+    int columns = columnCount();
+
+    if (header == true){
+        for (int column=0; column < columns; column++){
+            *out << headerData(column,Qt::Horizontal,Qt::DisplayRole).toString();
+            if (column != columns-1){
+                *out << ";";
+            }
+        }
+        *out << endl;
+    }
+    QModelIndex ind;
+    for (int row =0; row < rows;row++){
+        for (int column=0; column < columns; column++){
+            ind = index(row,column,QModelIndex());
+            *out << data(ind,Qt::UserRole).toDouble();
+            if (column != columns-1){
+                *out << ";";
+            }
+        }
+        *out << endl;
+    }
+}
+
+void MeasurementsModel::GetMeasure(QHash<QString,double> hash, QHash<QString, double> raw_hash){
 
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
 
@@ -76,12 +102,14 @@ void MeasurementsModel::GetMeasure(QHash<QString,double> hash){
         for (int k=0; k< var->meta->get_num(); k++){
             if(hash.contains(var->meta->get_name(k))){
                 var->append_value(k,hash[var->meta->get_name(k)]);
+                var->append_raw_value(k,raw_hash[var->meta->get_name(k)]);
             }
         }
     }
 
     endInsertRows();
 }
+
 
 int MeasurementsModel::columnCount(const QModelIndex &parent)  const{
     Q_UNUSED(parent);
@@ -119,6 +147,20 @@ QVariant MeasurementsModel::data(const QModelIndex &index, int role) const{
             }
         }
     }
+    if (role == Qt::UserRole) {
+        int row = index.row();
+        int upper = 0;
+        int lower = 0;
+        int column = index.column();
+        foreach (VariableModel *var, variables) {
+            lower = upper;
+            upper += var->meta->get_num();
+            if ( column < upper){
+                return var->get_raw_value( column- lower , row);
+            }
+        }
+    }
+
     return QVariant();
 }
 
@@ -255,6 +297,21 @@ void MeasurementsModel::save_xml(QDomElement root ){
             tag_header.replace(" ","_");
             force = root.ownerDocument().createElement(tag_header);
             data = this->data(this->index(row,column)).toString();
+            force.appendChild( root.ownerDocument().createTextNode(data));
+            element.appendChild(force);
+        }
+    }
+
+    QDomElement raw_data_element = root.ownerDocument().createElement(TAG_RAW_DATA);
+    root.appendChild(raw_data_element);
+    for (int row=0; row < rowCount(); row++){
+        element = root.ownerDocument().createElement(TAG_ITEM);
+        raw_data_element.appendChild(element);
+        for (int column =0; column < columnCount(); column++){
+            tag_header = this->headerData(column,Qt::Horizontal).toString().simplified();
+            tag_header.replace(" ","_");
+            force = root.ownerDocument().createElement(tag_header);
+            data = this->data(this->index(row,column),Qt::UserRole).toString();
             force.appendChild( root.ownerDocument().createTextNode(data));
             element.appendChild(force);
         }
@@ -401,6 +458,32 @@ void MeasurementsModel::load_xml(QDomElement root){
             }
             continue;
         }
+        if (element.tagName() == TAG_RAW_DATA){
+            QDomNodeList items = element.childNodes();
+            QDomElement item;
+
+            for (int row = 0; row < items.count(); row++){
+                // the previous if has already used insertrows that works for here
+                item = items.at(row).toElement();
+                QDomNodeList forces = item.childNodes();
+                QDomElement force;
+                for (int column = 0; column< forces.count(); column++ ){
+                    force = forces.at(column).toElement();
+                    QString tagname = force.tagName();
+                    QString tag_header;
+                    for (int k=0; k< columnCount(); k++){
+                        tag_header = this->headerData(k,Qt::Horizontal).toString().simplified();
+                        tag_header.replace(" ","_");
+                        if (tagname == tag_header){
+                            this->setData(index(row,k),force.text(),Qt::UserRole);
+                            break;
+                        }
+                    }
+                }
+            }
+            continue;
+        }
+
     }
 }
 
@@ -408,8 +491,7 @@ bool MeasurementsModel::setData ( const QModelIndex & index, const QVariant & va
     if (!index.isValid()){
         return false;
     }
-
-    if (role == Qt::EditRole) {
+    if (role == Qt::EditRole || role == Qt::UserRole) {
         int row = index.row();
         if (rowCount() < row){
             return false;
@@ -422,7 +504,11 @@ bool MeasurementsModel::setData ( const QModelIndex & index, const QVariant & va
             lower = upper;
             upper += var->meta->get_num();
             if ( column < upper){
-                var->set_value(column - lower,row,value.toDouble());
+                if (role== Qt::EditRole){
+                    var->set_value(column - lower,row,value.toDouble());
+                } else {
+                    var->set_raw_value(column - lower,row,value.toDouble());
+                }
                 return true;
             }
         }
@@ -440,6 +526,7 @@ bool MeasurementsModel::insertRows ( int row, int count, const QModelIndex & par
     foreach (VariableModel *var, variables) {
         for (int k=0; k< var->meta->get_num(); k++){
             var->insert_value(k, row, count, 0);
+            var->insert_raw_value(k,row,count,0);
         }
     }
 

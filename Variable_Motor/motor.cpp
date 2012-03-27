@@ -123,6 +123,22 @@ void MotorModel::append_value(int n, double value) {
     Q_UNUSED(n);
     contents.append(value);
 }
+double MotorModel::get_raw_value(int n,int row){
+    Q_UNUSED(n);
+    return raw.value(row);
+}
+void MotorModel::set_raw_value(int n ,int row, double value){
+    Q_UNUSED(n);
+    raw.replace(row,value);
+}
+void MotorModel::insert_raw_value(int n, int row, int count, double value) {
+    Q_UNUSED(n);
+    raw.insert(row,count,value);
+}
+void MotorModel::append_raw_value(int n, double value) {
+    Q_UNUSED(n);
+    raw.append(value);
+}
 void MotorModel::set_zero(QVector<double> zero) {
     Q_UNUSED(zero);
 }
@@ -203,6 +219,7 @@ void MotorHardware::read() {
 }
 double MotorHardware::get_value(int n) {
     Q_UNUSED(n);
+    //fixme: the value to return is percentage for now, but may change in the future
     return speed_actual;
 }
 void MotorHardware::set_value(int n ,double value) {
@@ -213,7 +230,10 @@ void MotorHardware::set_value(int n ,double value) {
         Helper::msleep(100);
     } while ( fabs(speed_actual - speed_setpoint) > MOTOR_PRECISION);
 }
-
+double MotorHardware::get_raw_value(int n){
+    Q_UNUSED(n);
+    return speed_actual; // raw is the percentage.
+}
 bool MotorHardware::isReady(void) {
     talk_to_simoreg();
     return terminal37;

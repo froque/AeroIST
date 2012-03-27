@@ -49,6 +49,10 @@ public:
     virtual void set_value(int n ,int row, double value) = 0;
     virtual void insert_value(int n, int row, int count, double value) = 0;
     virtual void append_value(int n, double value) = 0;
+    virtual double get_raw_value(int n,int row) = 0;
+    virtual void set_raw_value(int n ,int row, double value) = 0;
+    virtual void insert_raw_value(int n, int row, int count, double value) = 0;
+    virtual void append_raw_value(int n, double value) = 0;
     VariableMeta *meta;
     virtual void set_zero(QVector<double> zero) = 0;
     virtual QVector<double> get_zero() = 0;
@@ -66,6 +70,7 @@ public:
     virtual ~VariableHardware() {}
     virtual void read() = 0;
     virtual double get_value(int n) = 0;
+    virtual double get_raw_value(int n) = 0;
     virtual void set_value(int n ,double value) = 0;
     virtual bool isReady(void) = 0;
     virtual bool has_set_final() = 0;
@@ -85,7 +90,7 @@ public:
 };
 
 QT_BEGIN_NAMESPACE
-Q_DECLARE_INTERFACE(Factory, "pt.ist.utl.aeroist.factory/1.2")
+Q_DECLARE_INTERFACE(Factory, "pt.ist.utl.aeroist.factory/1.3")
 QT_END_NAMESPACE
 
 #endif // VARIABLE_H

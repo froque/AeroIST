@@ -95,6 +95,14 @@ QVector<double> ForceModel::get_vector(int n) {return force[n];}
 void ForceModel::set_value(int n ,int row, double value) { force[n].replace(row,value);}
 void ForceModel::insert_value(int n, int row, int count, double value) {force[n].insert(row,count,value);}
 void ForceModel::append_value(int n, double value) { force[n].append(value);}
+double ForceModel::get_raw_value(int n,int row){
+    return raw[n].value(row);
+}
+void ForceModel::set_raw_value(int n ,int row, double value){
+    raw[n].replace(row,value);
+}
+void ForceModel::insert_raw_value(int n, int row, int count, double value) {raw[n].insert(row,count,value);}
+void ForceModel::append_raw_value(int n, double value) { raw[n].append(value);}
 void ForceModel::set_zero(QVector<double> zero) {this->zero = zero;}
 QVector<double> ForceModel::get_zero() {return zero;}
 QWidget* ForceModel::view_get_widget(){
@@ -203,8 +211,9 @@ ForceHardware::ForceHardware(VariableModel* v){
     dvm_time = dynamic_cast<ForceModel*>(v)->dvm_time;
     matrix = dynamic_cast<ForceModel*>(v)->matrix;
 }
-void ForceHardware::read() { for (int k=0; k<6; k++) {value[k] = ( 1.1 * (k+1) * qrand() / RAND_MAX )- zero.value(k);}}
+void ForceHardware::read() { for (int k=0; k<6; k++) {raw[k]=(1.0 * qrand() / RAND_MAX); value[k] = ( 123.4 * (k+1) * raw[k] )- zero.value(k);}}
 double ForceHardware::get_value(int n) { return value[n];}
+double ForceHardware::get_raw_value(int n) {return raw[n];}
 void ForceHardware::set_value(int n ,double value) {Q_UNUSED(n); Q_UNUSED(value);  }
 bool ForceHardware::isReady(void) {return true;}
 bool ForceHardware::has_set_final() {return meta->is_controlable() && false;}

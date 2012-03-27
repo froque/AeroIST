@@ -122,6 +122,22 @@ void AlphaModel::append_value(int n, double value) {
     Q_UNUSED(n);
     contents.append(value);
 }
+double AlphaModel::get_raw_value(int n,int row){
+    Q_UNUSED(n);
+    return raw.value(row);
+}
+void AlphaModel::set_raw_value(int n ,int row, double value){
+    Q_UNUSED(n);
+    raw.replace(row,value);
+}
+void AlphaModel::insert_raw_value(int n, int row, int count, double value) {
+    Q_UNUSED(n);
+    raw.insert(row,count,value);
+}
+void AlphaModel::append_raw_value(int n, double value) {
+    Q_UNUSED(n);
+    raw.append(value);
+}
 void AlphaModel::set_zero(QVector<double> zero) {
     Q_UNUSED(zero);
 }
@@ -224,6 +240,11 @@ void AlphaHardware::set_value(int n ,double value) {
     }
     read(); //update value
 }
+double AlphaHardware::get_raw_value(int n){
+    Q_UNUSED(n);
+    return digits;
+}
+
 bool AlphaHardware::isReady(void) {
     return true;
 }

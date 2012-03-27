@@ -44,6 +44,8 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
     ui->listView->setModel(measure_list);
     reference_list = new ReferenceList();
     ui->listViewReference->setModel(reference_list);
+    proxy = new ProxyModel;
+    ui->tableView->setModel(proxy);
 
     // listview personalization. It couldn't be done from the .ui file
     QItemSelectionModel *selection = ui->listView->selectionModel();
@@ -52,6 +54,7 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
     ui->listView->insertAction(0,ui->actionView_Measure_details);
     ui->listView->insertAction(0,ui->actionDelete_Measure);
     ui->listView->insertAction(0,ui->actionExport_to_csv);
+    ui->listView->insertAction(0,ui->actionExport_raw_to_csv);
 
     selection = ui->listViewReference->selectionModel();
     connect(selection,SIGNAL(currentChanged(QModelIndex,QModelIndex)),this,SLOT(ReferenceSelectionChanged(QModelIndex,QModelIndex)));
@@ -170,7 +173,7 @@ void AeroISTWindow::on_ThreadButton_clicked(){
     connect(m_thread, SIGNAL(started()), m_test, SLOT(produce()));
 
     // dump connect
-    connect(m_test,SIGNAL(MeasureDone(QHash<QString,double>)), measurementThread, SLOT(GetMeasure(QHash<QString,double>)));
+    connect(m_test,SIGNAL(MeasureDone(QHash<QString,double>,QHash<QString,double>)), measurementThread, SLOT(GetMeasure(QHash<QString,double>,QHash<QString,double>)));
 
 
     // stop connects
@@ -262,6 +265,32 @@ void AeroISTWindow::on_actionExport_to_csv_triggered()
     data.close();
 }
 
+void AeroISTWindow::on_actionExport_raw_to_csv_triggered()
+{
+    int row =  ui->listView->currentIndex().row();
+    if (row < 0 || row > measure_list->rowCount()){
+        return;
+    }
+    MeasurementsModel *measurement;
+    measurement = measure_list->at(row);
+
+    QString fileName;
+    QSettings settings;
+    fileName = QFileDialog::getSaveFileName(this, tr("Export raw mesurements"), settings.value(SETTINGS_PROJECT_FOLDER).toString(),"*.csv");
+
+    if(fileName.endsWith(".csv",Qt::CaseInsensitive) == false){
+        fileName.append(".csv");
+    }
+
+    QFile data(fileName);
+    if (data.open(QFile::WriteOnly | QFile::Text)) {
+        QTextStream out(&data);
+        measurement->save_raw_csv(&out,true);
+    }
+    data.close();
+}
+
+
 // Save current plot to file based on extension
 void AeroISTWindow::on_actionExportPlot_triggered(){
     QString fileName;
@@ -296,8 +325,8 @@ void AeroISTWindow::on_actionDelete_Measure_triggered(){
     }
 
     // if the to be deleted model is shown in the table, unset
-    if (measure_list->at(index) == ui->tableView->model()){
-        ui->tableView->setModel(NULL);
+    if (measure_list->at(index) == proxy->sourceModel()){
+        proxy->setSourceModel(NULL);
         ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tab),tr("Table"));
     }
     measure_list->deleteMeasure(index);
@@ -414,10 +443,14 @@ void AeroISTWindow::selectionChanged(const QModelIndex &current ,const QModelInd
         ui->ThreadButton->setEnabled(true);
         ui->actionDelete_Measure->setEnabled(true);
         ui->actionView_Measure_details->setEnabled(true);
+        ui->actionExport_to_csv->setEnabled(true);
+        ui->actionExport_raw_to_csv->setEnabled(true);
     } else {
         ui->ThreadButton->setEnabled(false);
         ui->actionDelete_Measure->setEnabled(false);        // BUG unity, fixme later
         ui->actionView_Measure_details->setEnabled(false);
+        ui->actionExport_to_csv->setEnabled(false);
+        ui->actionExport_raw_to_csv->setEnabled(false);
     }
 }
 
@@ -433,7 +466,7 @@ void AeroISTWindow::ReferenceSelectionChanged(const QModelIndex &current ,const 
 }
 
 void AeroISTWindow::on_listView_activated(const QModelIndex &index){
-    ui->tableView->setModel( measure_list->at(index.row()));
+    proxy->setSourceModel( measure_list->at(index.row()));
     ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tab),measure_list->at(index.row())->name);
 }
 
@@ -530,8 +563,8 @@ void AeroISTWindow::on_actionDelete_Reference_triggered()
      }
 
      // if the to be deleted model is in the table, unset
-     if (reference_list->at(index) == ui->tableView->model()){
-         ui->tableView->setModel(NULL);
+     if (reference_list->at(index) == proxy->sourceModel()){
+         proxy->setSourceModel(NULL);
          ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tab),tr("Table"));
      }
      reference_list->deleteMeasure(index);
@@ -556,7 +589,7 @@ void AeroISTWindow::on_actionView_Reference_details_triggered(){
 }
 
 void AeroISTWindow::on_listViewReference_activated(const QModelIndex &index){
-    ui->tableView->setModel( reference_list->at(index.row()));
+    proxy->setSourceModel(reference_list->at(index.row()));
     ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tab),reference_list->at(index.row())->name);
 }
 
@@ -579,7 +612,7 @@ void AeroISTWindow::on_actionNew_Reference_triggered(){
         reference_list->newMeasure(referenceThread);
         QModelIndex index = reference_list->index(reference_list->rowCount()-1,0);
         ui->listViewReference->setCurrentIndex(index);
-        ui->tableView->setModel(referenceThread);
+        proxy->setSourceModel(referenceThread);
 
         try {
             m_test = new MeasureThread(referenceThread);
@@ -609,7 +642,7 @@ void AeroISTWindow::on_actionNew_Reference_triggered(){
         connect(m_thread, SIGNAL(started()), m_test, SLOT(produce()));
 
         // dump connect
-        connect(m_test, SIGNAL(MeasureDone(QHash<QString,double>)),referenceThread, SLOT(GetMeasure(QHash<QString,double>)));
+        connect(m_test, SIGNAL(MeasureDone(QHash<QString,double>,QHash<QString,double>)),referenceThread, SLOT(GetMeasure(QHash<QString,double>,QHash<QString,double>)));
 
         // stop connects
         connect(m_thread,SIGNAL(finished()),this,SLOT(ReferenceButton_cleanup()));
@@ -709,6 +742,14 @@ void AeroISTWindow::on_actionNames_in_Toolbar_toggled(bool arg1){
 
 void AeroISTWindow::on_actionLine_numbers_in_table_toggled(bool arg1){
     ui->tableView->verticalHeader()->setVisible(arg1);
+}
+
+void AeroISTWindow::on_actionRaw_data_toggled(bool arg1){
+    proxy->show_raw = arg1;
+
+    // refresh the table
+    ui->tableView->setModel(NULL);
+    ui->tableView->setModel(proxy);
 }
 
 void AeroISTWindow::on_ManualButton_clicked(){

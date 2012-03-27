@@ -64,12 +64,22 @@ bool MotorModel::measurement_accept_config(VariableModel *m){Q_UNUSED(m); return
 bool MotorModel::measurement_is_configurable(){return false;}
 void MotorModel::save_xml(QDomElement root){Q_UNUSED(root);}
 void MotorModel::load_xml(QDomElement root){Q_UNUSED(root);}
-
+void MotorModel::set_raw_value(int n, int row, double value){
+    Q_UNUSED(n);
+    raw.replace(row,value);
+}
+double MotorModel::get_raw_value(int n, int row){
+    Q_UNUSED(n);
+    return raw.value(row);
+}
+void MotorModel::insert_raw_value(int n, int row, int count, double value) {Q_UNUSED(n); raw.insert(row,count,value);}
+void MotorModel::append_raw_value(int n, double value) {Q_UNUSED(n);  raw.append(value);}
 
 MotorHardware::MotorHardware () {meta = new MotorMeta; value=0; control_set=false;}
-void MotorHardware::read() {if(control_set==false){ value = -10.0 * qrand() / RAND_MAX;}}
+void MotorHardware::read() {if(control_set==false){raw = (1.0 * qrand() / RAND_MAX); value = -30.0 * raw + 5;}}
 double MotorHardware::get_value(int n) {Q_UNUSED(n); return value;}
-void MotorHardware::set_value(int n ,double value) {Q_UNUSED(n);  control_set=true; this->value = value;}
+double MotorHardware::get_raw_value(int n) {Q_UNUSED(n); return raw;}
+void MotorHardware::set_value(int n ,double value) {Q_UNUSED(n);  control_set=true; this->value = value;this->raw = value/-30.0 - 5;}
 QString MotorHardware::get_name(int n) {Q_UNUSED(n); return "Motor";}
 bool MotorHardware::isReady(void) {return true;}
 bool MotorHardware::has_set_final() {return meta->is_controlable() && true;}

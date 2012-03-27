@@ -103,6 +103,22 @@ void WindModel::append_value(int n, double value) {
     Q_UNUSED(n);
     contents.append(value);
 }
+double WindModel::get_raw_value(int n,int row){
+    Q_UNUSED(n);
+    return raw.value(row);
+}
+void WindModel::set_raw_value(int n ,int row, double value){
+    Q_UNUSED(n);
+    raw.replace(row,value);
+}
+void WindModel::insert_raw_value(int n, int row, int count, double value) {
+    Q_UNUSED(n);
+    raw.insert(row,count,value);
+}
+void WindModel::append_raw_value(int n, double value) {
+    Q_UNUSED(n);
+    raw.append(value);
+}
 void WindModel::set_zero(QVector<double> zero) {
     Q_UNUSED(zero);
 }
@@ -174,6 +190,10 @@ double WindHardware::get_value(int n) {
 void WindHardware::set_value(int n ,double value) {
     Q_UNUSED(n);
     Q_UNUSED(value);
+}
+double WindHardware::get_raw_value(int n){
+    Q_UNUSED(n);
+    return wind_raw;
 }
 bool WindHardware::isReady(void) {
     return true;

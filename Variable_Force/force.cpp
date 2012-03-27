@@ -154,6 +154,18 @@ void ForceModel::insert_value(int n, int row, int count, double value) {
 void ForceModel::append_value(int n, double value) {
     force[n].append(value);
 }
+double ForceModel::get_raw_value(int n,int row){
+    return raw[n].value(row);
+}
+void ForceModel::set_raw_value(int n ,int row, double value){
+    raw[n].replace(row,value);
+}
+void ForceModel::insert_raw_value(int n, int row, int count, double value) {
+    raw[n].insert(row,count,value);
+}
+void ForceModel::append_raw_value(int n, double value) {
+    raw[n].append(value);
+}
 void ForceModel::set_zero(QVector<double> zero) {
     this->zero = zero;
 }
@@ -328,6 +340,9 @@ double ForceHardware::get_value(int n) {
 void ForceHardware::set_value(int n ,double value) {
     Q_UNUSED(n);
     Q_UNUSED(value);
+}
+double ForceHardware::get_raw_value(int n){
+    return dvm[n];
 }
 bool ForceHardware::isReady(void) {
     return true;

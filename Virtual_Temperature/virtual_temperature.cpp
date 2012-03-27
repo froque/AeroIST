@@ -34,10 +34,21 @@ bool TemperatureModel::measurement_accept_config(VariableModel *m){Q_UNUSED(m); 
 bool TemperatureModel::measurement_is_configurable(){return false;}
 void TemperatureModel::save_xml(QDomElement root){Q_UNUSED(root);}
 void TemperatureModel::load_xml(QDomElement root){Q_UNUSED(root);}
+void TemperatureModel::set_raw_value(int n, int row, double value){
+    Q_UNUSED(n);
+    raw.replace(row,value);
+}
+double TemperatureModel::get_raw_value(int n, int row){
+    Q_UNUSED(n);
+    return raw.value(row);
+}
+void TemperatureModel::insert_raw_value(int n, int row, int count, double value) {Q_UNUSED(n); raw.insert(row,count,value);}
+void TemperatureModel::append_raw_value(int n, double value) {Q_UNUSED(n);  raw.append(value);}
 
 TemperatureHardware::TemperatureHardware() {meta = new TemperatureMeta;}
-void TemperatureHardware::read() { value = -10.0 * qrand() / RAND_MAX;}
+void TemperatureHardware::read() { raw = (1.0* qrand() / RAND_MAX); value = -10.0 * raw +1;}
 double TemperatureHardware::get_value(int n) {Q_UNUSED(n); return value;}
+double TemperatureHardware::get_raw_value(int n) {Q_UNUSED(n); return raw;}
 void TemperatureHardware::set_value(int n ,double value) {Q_UNUSED(n); Q_UNUSED(value);  }
 bool TemperatureHardware::isReady(void) {return true;}
 bool TemperatureHardware::has_set_final() {return meta->is_controlable() && false;}

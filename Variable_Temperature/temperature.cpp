@@ -104,6 +104,22 @@ void TemperatureModel::append_value(int n, double value) {
     Q_UNUSED(n);
     contents.append(value);
 }
+double TemperatureModel::get_raw_value(int n,int row){
+    Q_UNUSED(n);
+    return raw.value(row);
+}
+void TemperatureModel::set_raw_value(int n ,int row, double value){
+    Q_UNUSED(n);
+    raw.replace(row,value);
+}
+void TemperatureModel::insert_raw_value(int n, int row, int count, double value) {
+    Q_UNUSED(n);
+    raw.insert(row,count,value);
+}
+void TemperatureModel::append_raw_value(int n, double value) {
+    Q_UNUSED(n);
+    raw.append(value);
+}
 void TemperatureModel::set_zero(QVector<double> zero) {
     Q_UNUSED(zero);
 }
@@ -175,6 +191,10 @@ double TemperatureHardware::get_value(int n) {
 void TemperatureHardware::set_value(int n ,double value) {
     Q_UNUSED(n);
     Q_UNUSED(value);
+}
+double TemperatureHardware::get_raw_value(int n){
+    Q_UNUSED(n);
+    return temp_raw;
 }
 bool TemperatureHardware::isReady(void) {
     return true;

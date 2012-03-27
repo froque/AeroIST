@@ -34,6 +34,16 @@ bool TimeModel::measurement_accept_config(VariableModel *m){Q_UNUSED(m); return 
 bool TimeModel::measurement_is_configurable(){return false;}
 void TimeModel::save_xml(QDomElement root){Q_UNUSED(root);}
 void TimeModel::load_xml(QDomElement root){Q_UNUSED(root);}
+void TimeModel::set_raw_value(int n, int row, double value){
+    Q_UNUSED(n);
+    raw.replace(row,value);
+}
+double TimeModel::get_raw_value(int n, int row){
+    Q_UNUSED(n);
+    return raw.value(row);
+}
+void TimeModel::insert_raw_value(int n, int row, int count, double value) {Q_UNUSED(n); raw.insert(row,count,value);}
+void TimeModel::append_raw_value(int n, double value) {Q_UNUSED(n);  raw.append(value);}
 
 VariableMeta* TimeFactory::CreateVariableMeta() { return new TimeMeta;}
 VariablePreferences* TimeFactory::CreateVariableGUI() { return new TimePreferences;}

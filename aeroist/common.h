@@ -13,6 +13,7 @@ enum ThreadStatus{
 #define TAG_DESCRIPTION "description"
 #define TAG_AVERAGE_NUMBER "average_number"
 #define TAG_DATA "data"
+#define TAG_RAW_DATA "raw_data"
 #define TAG_SETTLING_TIME "settling_time"
 #define TAG_START_VALUES "start_values"
 #define TAG_START "start"

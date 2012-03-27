@@ -62,12 +62,22 @@ bool BetaModel::measurement_accept_config(VariableModel *m){Q_UNUSED(m); return 
 bool BetaModel::measurement_is_configurable(){return false;}
 void BetaModel::save_xml(QDomElement root){Q_UNUSED(root);}
 void BetaModel::load_xml(QDomElement root){Q_UNUSED(root);}
-
+void BetaModel::set_raw_value(int n, int row, double value){
+    Q_UNUSED(n);
+    raw.replace(row,value);
+}
+double BetaModel::get_raw_value(int n, int row){
+    Q_UNUSED(n);
+    return raw.value(row);
+}
+void BetaModel::insert_raw_value(int n, int row, int count, double value) {Q_UNUSED(n); raw.insert(row,count,value);}
+void BetaModel::append_raw_value(int n, double value) {Q_UNUSED(n);  raw.append(value);}
 
 BetaHardware::BetaHardware () {meta = new BetaMeta; value=0; control_set=false;}
-void BetaHardware::read() {if(control_set==false){ value = -10.0 * qrand() / RAND_MAX;}}
+void BetaHardware::read() {if(control_set==false){ raw = (1.0 * qrand() / RAND_MAX); value = 20 *raw + 2;}}
 double BetaHardware::get_value(int n) {Q_UNUSED(n); return value;}
-void BetaHardware::set_value(int n ,double value) {Q_UNUSED(n);  control_set=true; this->value = value;}
+double BetaHardware::get_raw_value(int n) {Q_UNUSED(n); return raw;}
+void BetaHardware::set_value(int n ,double value) {Q_UNUSED(n);  control_set=true; this->value = value; this->raw = value/20.0 - 2;}
 bool BetaHardware::isReady(void) {return true;}
 bool BetaHardware::has_set_final() {return meta->is_controlable() && false;}
 void BetaHardware::set_final() {}

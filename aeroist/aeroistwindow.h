@@ -11,6 +11,7 @@
 #include "preferences.h"
 #include "common.h"
 #include "qwt_plot_item.h"
+#include "proxymodel.h"
 
 namespace Ui {
     class AeroISTWindow;
@@ -37,9 +38,12 @@ private slots:
     void cleanup();
     void ReferenceButton_cleanup();
 
-    // export actions. to be improved!
+    // Edit menu
     void on_actionPreferences_triggered();
+
+    // export actions. to be improved!
     void on_actionExport_to_csv_triggered();
+    void on_actionExport_raw_to_csv_triggered();
     void on_actionExportPlot_triggered();
 
     // measurement actions
@@ -59,6 +63,7 @@ private slots:
     void on_actionReference_List_toggled(bool arg1);
     void on_actionNames_in_Toolbar_toggled(bool arg1);
     void on_actionLine_numbers_in_table_toggled(bool arg1);
+    void on_actionRaw_data_toggled(bool arg1);
 
     // listviews and table
     void on_listView_activated(const QModelIndex &index);
@@ -80,6 +85,7 @@ private slots:
     // control spin boxes
     void on_ManualButton_clicked();
 
+
 private:
     void message(const QString &string);
     void load_settings(void);
@@ -90,6 +96,7 @@ private:
     MeasureList *measure_list;
     ReferenceList *reference_list;
 
+    ProxyModel *proxy;
     MeasurementsModel *measurementThread;
     ReferenceModel* referenceThread;
     ThreadStatus thread_status;

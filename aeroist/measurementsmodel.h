@@ -21,6 +21,7 @@ public:
     MeasurementsModel(QDomElement root,QObject *parent = 0);
 
     void save_csv(QTextStream *out,bool header);
+    void save_raw_csv(QTextStream *out,bool header);
     void save_xml(QDomElement root);
     void load_xml(QDomElement root);
 
@@ -48,7 +49,7 @@ public:
     int n;
 
 public slots:
-    void GetMeasure(QHash<QString,double> hash);
+    void GetMeasure(QHash<QString,double> hash,QHash<QString,double> raw_hash);
 
 private:
     void init(void);

@@ -223,6 +223,7 @@
      <string>E&amp;xport</string>
     </property>
     <addaction name="actionExport_to_csv"/>
+    <addaction name="actionExport_raw_to_csv"/>
     <addaction name="actionExportPlot"/>
    </widget>
    <widget class="QMenu" name="menuView">
@@ -234,6 +235,7 @@
     <addaction name="actionMeasure_List"/>
     <addaction name="actionReference_List"/>
     <addaction name="actionLine_numbers_in_table"/>
+    <addaction name="actionRaw_data"/>
    </widget>
    <widget class="QMenu" name="menuPlot">
     <property name="title">
@@ -451,6 +453,19 @@
    </property>
    <property name="text">
     <string>Line numbers in table</string>
+   </property>
+  </action>
+  <action name="actionExport_raw_to_csv">
+   <property name="text">
+    <string>Export raw to csv</string>
+   </property>
+  </action>
+  <action name="actionRaw_data">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Raw data</string>
    </property>
   </action>
  </widget>

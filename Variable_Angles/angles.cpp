@@ -158,6 +158,18 @@ void AnglesModel::insert_value(int n, int row, int count, double value) {
 void AnglesModel::append_value(int n, double value) {
     contents[n].append(value);
 }
+double AnglesModel::get_raw_value(int n,int row){
+    return raw[n].value(row);
+}
+void AnglesModel::set_raw_value(int n ,int row, double value){
+    raw[n].replace(row,value);
+}
+void AnglesModel::insert_raw_value(int n, int row, int count, double value) {
+    raw[n].insert(row,count,value);
+}
+void AnglesModel::append_raw_value(int n, double value) {
+    raw[n].append(value);
+}
 void AnglesModel::set_zero(QVector<double> zero) {
     Q_UNUSED(zero);
 }
@@ -331,6 +343,10 @@ void AnglesHardware::set_value(int n ,double value) {
     }
     read(); //update value
 }
+double AnglesHardware::get_raw_value(int n){
+    return digits[n];
+}
+
 bool AnglesHardware::isReady(void) {
     return true;
 }

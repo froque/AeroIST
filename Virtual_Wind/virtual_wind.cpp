@@ -35,11 +35,21 @@ bool WindModel::measurement_accept_config(VariableModel *m){Q_UNUSED(m); return 
 bool WindModel::measurement_is_configurable(){return false;}
 void WindModel::save_xml(QDomElement root){Q_UNUSED(root);}
 void WindModel::load_xml(QDomElement root){Q_UNUSED(root);}
-
+void WindModel::set_raw_value(int n, int row, double value){
+    Q_UNUSED(n);
+    raw.replace(row,value);
+}
+double WindModel::get_raw_value(int n, int row){
+    Q_UNUSED(n);
+    return raw.value(row);
+}
+void WindModel::insert_raw_value(int n, int row, int count, double value) {Q_UNUSED(n); raw.insert(row,count,value);}
+void WindModel::append_raw_value(int n, double value) {Q_UNUSED(n);  raw.append(value);}
 
 WindHardware::WindHardware() {meta = new WindMeta;}
-void WindHardware::read() { value = -10.0 * qrand() / RAND_MAX;}
+void WindHardware::read() { raw = (1.0 * qrand() / RAND_MAX); value = 10 *raw;}
 double WindHardware::get_value(int n) {Q_UNUSED(n); return value;}
+double WindHardware::get_raw_value(int n) {Q_UNUSED(n); return raw;}
 void WindHardware::set_value(int n ,double value) {Q_UNUSED(n); Q_UNUSED(value);  }
 bool WindHardware::isReady(void) {return true;}
 bool WindHardware::has_set_final() {return meta->is_controlable() && false;}

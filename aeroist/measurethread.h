@@ -19,7 +19,7 @@ public:
     void isReady(void);
 
 signals:
-  void MeasureDone(QHash<QString,double>);
+  void MeasureDone(QHash<QString,double>,QHash<QString,double>);
   void progress(int);
 
 public slots:
@@ -35,7 +35,7 @@ private:
 
     QElapsedTimer timer;
 
-    QHash<QString,double> m_hash;
+    QHash<QString,double> m_hash,raw_hash;
 
     int average_number;
     double settling_time;

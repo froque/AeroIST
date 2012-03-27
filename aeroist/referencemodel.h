@@ -37,7 +37,7 @@ public:
     int average_number;
 
 public slots:
-    void GetMeasure(QHash<QString, double>);
+    void GetMeasure(QHash<QString, double> m_hash, QHash<QString,double> raw_hash);
 private:
     void init(void);
 };

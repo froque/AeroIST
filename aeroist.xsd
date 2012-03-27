@@ -93,6 +93,24 @@
                   </xs:sequence>
                 </xs:complexType>
               </xs:element>
+              <xs:element name="raw_data">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="item" maxOccurs="unbounded" >
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element ref="Fx"/>
+                          <xs:element ref="Fy"/>
+                          <xs:element ref="Fz"/>
+                          <xs:element ref="Mx"/>
+                          <xs:element ref="My"/>
+                          <xs:element ref="Mz"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -139,6 +157,17 @@
                 </xs:complexType>
               </xs:element>
               <xs:element name="data" >
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="item" minOccurs="0" maxOccurs="unbounded" >
+                      <xs:complexType>
+                        <xs:group ref="variables" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="raw_data" >
                 <xs:complexType>
                   <xs:sequence>
                     <xs:element name="item" minOccurs="0" maxOccurs="unbounded" >
