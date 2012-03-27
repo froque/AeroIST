@@ -141,6 +141,7 @@ void ReferenceModel::save_xml(QDomElement root){
             for (int k = 0; k< var->meta->get_num(); k++){
                 start_element = root.ownerDocument().createElement(var->meta->get_name(k));
                 start_element.appendChild( root.ownerDocument().createTextNode(QString::number( var->start.at(k) ,'g',10)));
+                item.appendChild(start_element);
             }
         }
     }
@@ -198,18 +199,28 @@ void ReferenceModel::load_xml(QDomElement root){
         if (element.tagName() == TAG_START_VALUES){
             QDomNodeList items = element.childNodes();
             QDomElement item;
+
+            // cycle the items list
             for (int k = 0; k < items.count(); k++){
                 item = items.at(k).toElement();
                 if (item.tagName() == TAG_ITEM){
                     QDomNodeList node_vars = item.childNodes();
                     QDomElement node_var;
-                    for (int n = 0; n < node_vars.count(); n++ ){
-                        node_var = node_vars.at(n).toElement();
-                        foreach (VariableModel *var, variables) {
+
+                    // cycle the variables model list
+                    foreach (VariableModel *var, variables) {
+                        if(var->meta->is_controlable()){
                             var->start = QVector<double>(var->meta->get_num());
-                            for (int n=0; n<var->meta->get_num(); n++){
-                                if (node_var.nodeName() == var->meta->get_name(n)){
-                                    var->start[n] = node_var.text().toDouble();
+
+                            // cycle the variables file list
+                            for (int n = 0; n < node_vars.count(); n++ ){
+                                node_var = node_vars.at(n).toElement();
+
+                                // cycle each variable dimensions
+                                for (int n=0; n<var->meta->get_num(); n++){
+                                    if (node_var.nodeName() == var->meta->get_name(n)){
+                                        var->start[n] = node_var.text().toDouble();
+                                    }
                                 }
                             }
                         }
