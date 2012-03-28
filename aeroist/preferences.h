@@ -19,7 +19,7 @@ public:
     ~Preferences();
 
 private slots:
-    void on_buttonBox_accepted();
+    void accept(void);
     void on_toolButton_clicked();
 
 private:

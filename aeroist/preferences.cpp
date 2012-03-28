@@ -37,13 +37,14 @@ Preferences::Preferences(QWidget *parent) :
             ui->tabWidget->addTab(var->get_widget(),var->meta->get_general_name());
         }
     }
+    adjustSize();
 }
 
 Preferences::~Preferences(){
     delete ui;
 }
 
-void Preferences::on_buttonBox_accepted(){
+void Preferences::accept(){
     QSettings settings;
 
     foreach (VariablePreferences *var, variables) {
@@ -55,7 +56,8 @@ void Preferences::on_buttonBox_accepted(){
     settings.setValue(SETTINGS_DEFAULT_MEASURES_ITERATION, ui->spinBox->value());
     settings.setValue(SETTINGS_DEFAULT_SETTLING_TIME,ui->doubleSpinBox->value());
     settings.setValue(SETTINGS_PROJECT_FOLDER,ui->edit_project->text());
-    adjustSize();
+
+    QDialog::accept();
 }
 
 void Preferences::on_toolButton_clicked(){
