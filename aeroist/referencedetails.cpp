@@ -9,7 +9,7 @@ ReferenceDetails::ReferenceDetails(ReferenceModel *measurement, QWidget *parent)
 
     ui->labelName->setText( measurement->name);
     ui->labelDescription->setText(measurement->description);
-    ui->labelAverage->setText(QString::number(measurement->average_number));
+    ui->labelMeasuresIteration->setText(QString::number(measurement->measures_per_iteration));
 
     ui->gridLayout->removeWidget(ui->buttonBox);
     int row = ui->verticalLayout->indexOf(ui->widget);

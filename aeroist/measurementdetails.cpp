@@ -10,7 +10,7 @@ MeasurementDetails::MeasurementDetails(MeasurementsModel *measurement, QWidget *
     ui->labelName->setText( measurement->name);
     ui->labelDescription->setText(measurement->description);
     ui->labelSettling->setText(QString::number(measurement->settling_time));
-    ui->labelAverage->setText(QString::number(measurement->average_number));
+    ui->labelMeasuresIteration->setText(QString::number(measurement->measures_per_iteration));
     ui->labelReference->setText(measurement->ref_name);
 
     int row = ui->verticalLayout->indexOf(ui->widget);
@@ -42,13 +42,13 @@ MeasurementDetails::MeasurementDetails(MeasurementsModel *measurement, QWidget *
         ui->labelViewStep->hide();
         ui->labelEnd->hide();
         ui->labelStep->hide();
-        ui->labelN->setText(QString::number( measurement->n));
+        ui->labelIterations->setText(QString::number( measurement->iterations));
     } else{
         ui->labelControl->setText(measurement->control);
         ui->labelEnd->setText(QString::number(measurement->end));
         ui->labelStep->setText(QString::number(measurement->step));
-        ui->labelN->hide();
-        ui->labelViewN->hide();
+        ui->labelIterations->hide();
+        ui->labelViewIterations->hide();
     }
 
     this->adjustSize();

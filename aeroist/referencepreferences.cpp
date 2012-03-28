@@ -16,7 +16,7 @@ ReferencePreferences::ReferencePreferences(ReferenceModel *measurement, QWidget 
     ui->setupUi(this);
     QSettings settings;
 
-    ui->spinBoxAverage->setValue(settings.value(SETTINGS_DEFAULT_AVERAGE_NUMBER).toInt());
+    ui->spinBoxMeasuresIteration->setValue(settings.value(SETTINGS_DEFAULT_MEASURES_ITERATION).toInt());
 
     ui->gridLayout->removeWidget(ui->buttonBox);
     int row = 7;
@@ -83,7 +83,7 @@ void ReferencePreferences::accept(){
 
     measurement->name = ui->edit_name->text();
     measurement->description = ui->plainTextEdit->toPlainText();
-    measurement->average_number = ui->spinBoxAverage->value();
+    measurement->measures_per_iteration = ui->spinBoxMeasuresIteration->value();
 
     foreach (VariableModel *var, measurement->variables) {
         if (var->meta->is_controlable()){

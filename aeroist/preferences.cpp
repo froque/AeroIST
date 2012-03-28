@@ -16,7 +16,7 @@ Preferences::Preferences(QWidget *parent) :
     QSettings settings;
 
     ui->edit_project->setText(settings.value(SETTINGS_PROJECT_FOLDER).toString());
-    ui->spinBox->setValue(settings.value(SETTINGS_DEFAULT_AVERAGE_NUMBER).toInt());
+    ui->spinBox->setValue(settings.value(SETTINGS_DEFAULT_MEASURES_ITERATION).toInt());
     ui->doubleSpinBox->setValue(settings.value(SETTINGS_DEFAULT_SETTLING_TIME).toDouble());
 
     Factory *factory;
@@ -52,7 +52,7 @@ void Preferences::on_buttonBox_accepted(){
         }
     }
 
-    settings.setValue(SETTINGS_DEFAULT_AVERAGE_NUMBER, ui->spinBox->value());
+    settings.setValue(SETTINGS_DEFAULT_MEASURES_ITERATION, ui->spinBox->value());
     settings.setValue(SETTINGS_DEFAULT_SETTLING_TIME,ui->doubleSpinBox->value());
     settings.setValue(SETTINGS_PROJECT_FOLDER,ui->edit_project->text());
     adjustSize();

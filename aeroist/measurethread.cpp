@@ -11,12 +11,12 @@
 
 MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
     QObject(parent),
-    average_number(measurement->average_number),
+    measures_per_iteration(measurement->measures_per_iteration),
     settling_time(measurement->settling_time),
     end(measurement->end),
     step(measurement->step),
     control(measurement->control),
-    n(measurement->n)
+    iterations(measurement->iterations)
 {
     m_stop = false;
     m_parent_thread = thread();
@@ -52,11 +52,11 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
 
 MeasureThread::MeasureThread(ReferenceModel *measurement,QObject *parent) :
     QObject(parent),
-    average_number(measurement->average_number)
+    measures_per_iteration(measurement->measures_per_iteration)
 {
     m_stop = false;
     m_parent_thread = thread();
-        n=1;
+        iterations=1;
 //    QSettings settings;
 //    virtual_measures = settings.value(SETTINGS_VIRTUAL_MEASURES,false).toBool();
 //    settings.setValue(SETTINGS_VIRTUAL_MEASURES,virtual_measures);
@@ -126,12 +126,19 @@ void MeasureThread::produce(){
     while(!m_stop) {
         set_m();
         Helper::msleep(settling_time*1000);
-        read_m();
+
+        // make N reads and send them to
+        for (int l =0; l< measures_per_iteration; l++){
+            read_m();
+            emit MeasureDone(m_hash,raw_hash);
+            eloop.processEvents(QEventLoop::AllEvents, 50);
+        }
+
         if(control == ""){
-            if (n != 0 ){
-                double perc = ((k*1.0)/(n*1.0)) *100;
+            if (iterations != 0 ){
+                double perc = ((k*1.0)/(iterations*1.0)) *100;
                 emit progress( (int) perc);
-                if ( k>= n ){
+                if ( k>= iterations ){
                     m_stop = true;
                 }
             }
@@ -146,7 +153,6 @@ void MeasureThread::produce(){
         }
 
         k++;
-        emit MeasureDone(m_hash,raw_hash);
         eloop.processEvents(QEventLoop::AllEvents, 50);
     }
 
@@ -196,40 +202,15 @@ void MeasureThread::read_m(void){
 
     QHash<QString,double> value_h,values_raw;
 
-
-    // clear values
     foreach (VariableHardware *var, variables) {
+        var->read();
+        // get the result and add it
         for (int k=0 ; k< var->meta->get_num(); k++){
-            value_h[var->meta->get_name(k)] = 0;
-            values_raw[var->meta->get_name(k)] = 0;
+            value_h[var->meta->get_name(k)] = var->get_value(k);
+            values_raw[var->meta->get_name(k)] = var->get_raw_value(k);
         }
     }
-
-    for (int n=0;n < average_number; n++){
-        foreach (VariableHardware *var, variables) {
-            var->read();
-
-            // get the result and add it
-            for (int k=0 ; k< var->meta->get_num(); k++){
-                value_h[var->meta->get_name(k)] += var->get_value(k);
-                values_raw[var->meta->get_name(k)] += var->get_raw_value(k);
-            }
-        }
-    }
-
-    // fixme : replace this average number with a multiple read at the same set values for alpha, beta and motor
     // fixme : if the previous fixme is done, add a TimeHardware and remove time from this fucntion
-    // Divide by N
-    QHashIterator<QString, double> i(value_h);
-    while (i.hasNext()) {
-        i.next();
-        value_h[i.key()] = i.value() / (average_number *1.0);
-    }
-    QHashIterator<QString, double> l(values_raw);
-    while (l.hasNext()) {
-        l.next();
-        values_raw[l.key()] = l.value() / (average_number *1.0);
-    }
 
     m_hash = value_h;
     m_hash["Time"] = tempo;

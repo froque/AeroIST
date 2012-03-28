@@ -8,7 +8,7 @@ ReferenceModel::ReferenceModel(QObject *parent) :
     QAbstractTableModel(parent)
 {
     name="";
-    average_number=0;
+    measures_per_iteration=0;
     init();
 }
 
@@ -142,9 +142,9 @@ void ReferenceModel::save_xml(QDomElement root){
         var->save_xml(options);
     }
 
-    QDomElement average_number = root.ownerDocument().createElement(TAG_AVERAGE_NUMBER);
-    average_number.appendChild(root.ownerDocument().createTextNode(QString::number(this->average_number)));
-    root.appendChild(average_number);
+    QDomElement meas_it_element = root.ownerDocument().createElement(TAG_MEASURES_PER_ITERATION);
+    meas_it_element.appendChild(root.ownerDocument().createTextNode(QString::number(this->measures_per_iteration)));
+    root.appendChild(meas_it_element);
 
     QDomElement start_hash_element = root.ownerDocument().createElement(TAG_START_VALUES);
     root.appendChild(start_hash_element);
@@ -222,8 +222,8 @@ void ReferenceModel::load_xml(QDomElement root){
             continue;
         }
 
-        if (element.tagName() == TAG_AVERAGE_NUMBER){
-            this->average_number = element.text().toInt();
+        if (element.tagName() == TAG_MEASURES_PER_ITERATION){
+            this->measures_per_iteration = element.text().toInt();
             continue;
         }
         if (element.tagName() == TAG_START_VALUES){

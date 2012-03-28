@@ -37,7 +37,7 @@ private:
 
     QHash<QString,double> m_hash,raw_hash;
 
-    int average_number;
+    int measures_per_iteration;
     double settling_time;
     double end;
     double step;
@@ -47,7 +47,7 @@ private:
     QString control;
 
     QString name;
-    int n;
+    int iterations;
 
     bool m_stop;
     QThread* m_parent_thread;

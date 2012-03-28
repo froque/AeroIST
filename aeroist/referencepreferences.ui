@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>409</width>
-    <height>325</height>
+    <width>367</width>
+    <height>233</height>
    </rect>
   </property>
   <property name="maximumSize">
@@ -34,8 +34,8 @@
     <widget class="QPlainTextEdit" name="plainTextEdit">
      <property name="maximumSize">
       <size>
-       <width>400</width>
-       <height>300</height>
+       <width>300</width>
+       <height>100</height>
       </size>
      </property>
      <property name="tabChangesFocus">
@@ -44,14 +44,14 @@
     </widget>
    </item>
    <item row="3" column="0">
-    <widget class="QLabel" name="labelAverage">
+    <widget class="QLabel" name="labelMeasuresIteration">
      <property name="text">
-      <string>Average Measures</string>
+      <string>Measures</string>
      </property>
     </widget>
    </item>
    <item row="3" column="1">
-    <widget class="QSpinBox" name="spinBoxAverage">
+    <widget class="QSpinBox" name="spinBoxMeasuresIteration">
      <property name="minimum">
       <number>1</number>
      </property>
@@ -82,7 +82,7 @@
  <tabstops>
   <tabstop>edit_name</tabstop>
   <tabstop>plainTextEdit</tabstop>
-  <tabstop>spinBoxAverage</tabstop>
+  <tabstop>spinBoxMeasuresIteration</tabstop>
   <tabstop>buttonBox</tabstop>
  </tabstops>
  <resources/>

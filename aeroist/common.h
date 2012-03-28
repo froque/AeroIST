@@ -11,7 +11,7 @@ enum ThreadStatus{
 
 #define TAG_NAME "name"
 #define TAG_DESCRIPTION "description"
-#define TAG_AVERAGE_NUMBER "average_number"
+#define TAG_MEASURES_PER_ITERATION "measures_per_iteration"
 #define TAG_DATA "data"
 #define TAG_RAW_DATA "raw_data"
 #define TAG_SETTLING_TIME "settling_time"
@@ -20,7 +20,7 @@ enum ThreadStatus{
 #define TAG_END "end"
 #define TAG_STEP "step"
 #define TAG_CONTROL_TYPE "control_type"
-#define TAG_N "n"
+#define TAG_ITERATIONS "iterations"
 #define TAG_DATA_REFERENCE "data_reference"
 #define TAG_REFERENCE "reference"
 #define TAG_REFERENCE_NAME "reference_name"
@@ -41,7 +41,7 @@ enum ThreadStatus{
 #define SETTINGS_GUI_TABLECOLUMNSIZE "gui/tablecolumnsize"
 #define SETTINGS_GUI_SHORTCUT "gui/shortcut/"
 #define SETTINGS_GUI_ACTIONCHECKABLE "gui/actioncheckable/"
-#define SETTINGS_DEFAULT_AVERAGE_NUMBER "default_average_number"
+#define SETTINGS_DEFAULT_MEASURES_ITERATION "default_measures_iteration"
 #define SETTINGS_DEFAULT_SETTLING_TIME "default_settling_time"
 
 #endif // COMMON_H

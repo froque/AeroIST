@@ -8,13 +8,13 @@
 <xs:element name="id" type="xs:int"/>
 <xs:element name="dvm_time" type="xs:int"/>
 <xs:element name="matrix" type="xs:int"/>
-<xs:element name="average_number" type="xs:positiveInteger"/>
+<xs:element name="measures_per_iteration" type="xs:positiveInteger"/>
 <xs:element name="item" type="xs:double" />
 <xs:element name="settling_time" type="xs:int"/>
 <xs:element name="end" type="xs:double" />
 <xs:element name="step" type="xs:double" />
 <xs:element name="control_type" type="xs:string"/>
-<xs:element name="n" type="xs:int"/>
+<xs:element name="iterations" type="xs:int"/>
 
   
 <xs:element name="Time" type="xs:double" />
@@ -63,7 +63,7 @@
                   </xs:sequence>
                 </xs:complexType>
               </xs:element>
-              <xs:element ref="average_number"/>
+              <xs:element ref="measures_per_iteration"/>
               <xs:element name="start_values">
                 <xs:complexType>
                   <xs:sequence>
@@ -127,7 +127,7 @@
                   </xs:sequence>
                 </xs:complexType>
               </xs:element>
-              <xs:element ref="average_number"/>
+              <xs:element ref="measures_per_iteration"/>
               <xs:element ref="settling_time"/>
               <xs:element ref="end"/>              
               <xs:element ref="step"/>
@@ -143,7 +143,7 @@
                 </xs:complexType>
               </xs:element>
               <xs:element ref="control_type"/>
-              <xs:element ref="n"/>
+              <xs:element ref="iterations"/>
               <xs:element name="data_reference" >
                 <xs:complexType>
                   <xs:sequence>

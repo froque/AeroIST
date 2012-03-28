@@ -197,7 +197,7 @@ void AeroISTWindow::on_ThreadButton_clicked(){
             }
         }
     }
-    if ( (measurementThread->control == "" && measurementThread->n >0) || measurementThread->control != ""){
+    if ( (measurementThread->control == "" && measurementThread->iterations >0) || measurementThread->control != ""){
         if(ui->progressBar->isVisible()){
             ui->progressBar->setEnabled(true);
             connect(m_test, SIGNAL(progress(int)),ui->progressBar,SLOT(setValue(int)));
@@ -475,7 +475,7 @@ void AeroISTWindow::load_settings(void){
 
     // necessary settings
     settings.setValue(SETTINGS_PROJECT_FOLDER,settings.value(SETTINGS_PROJECT_FOLDER,QDir::homePath()).toString());
-    settings.setValue(SETTINGS_DEFAULT_AVERAGE_NUMBER,settings.value(SETTINGS_DEFAULT_AVERAGE_NUMBER,1));
+    settings.setValue(SETTINGS_DEFAULT_MEASURES_ITERATION,settings.value(SETTINGS_DEFAULT_MEASURES_ITERATION,1));
     settings.setValue(SETTINGS_DEFAULT_SETTLING_TIME,settings.value(SETTINGS_DEFAULT_SETTLING_TIME,0));
 
     // optional settings

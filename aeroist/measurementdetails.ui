@@ -38,16 +38,16 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="labelViewAverage">
+      <widget class="QLabel" name="labelViewMeasuresIteration">
        <property name="text">
-        <string>Average number</string>
+        <string>Measures per Iteration</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="labelViewN">
+      <widget class="QLabel" name="labelViewIterations">
        <property name="text">
-        <string>Number of iterations</string>
+        <string>Iterations</string>
        </property>
       </widget>
      </item>
@@ -108,14 +108,14 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="labelAverage">
+      <widget class="QLabel" name="labelMeasuresIteration">
        <property name="text">
         <string/>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="labelN">
+      <widget class="QLabel" name="labelIterations">
        <property name="text">
         <string/>
        </property>

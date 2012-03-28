@@ -31,9 +31,9 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="labelViewAverage">
+      <widget class="QLabel" name="labelViewMeasuresIteration">
        <property name="text">
-        <string>Average number</string>
+        <string>Measures</string>
        </property>
       </widget>
      </item>
@@ -59,7 +59,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="labelAverage">
+      <widget class="QLabel" name="labelMeasuresIteration">
        <property name="text">
         <string/>
        </property>

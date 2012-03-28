@@ -23,7 +23,7 @@ MeasurementsPreferences::MeasurementsPreferences(MeasurementsModel *measurement,
 
     ui->combo_zero->setModel(list);
 
-    ui->spinBoxAverage->setValue(settings.value(SETTINGS_DEFAULT_AVERAGE_NUMBER).toInt());
+    ui->spinBoxMeasuresIteration->setValue(settings.value(SETTINGS_DEFAULT_MEASURES_ITERATION).toInt());
     ui->doubleSpinBoxSettling->setValue(settings.value(SETTINGS_DEFAULT_SETTLING_TIME).toDouble());
 
     foreach (VariableModel *var, measurement->variables) {
@@ -152,13 +152,13 @@ void MeasurementsPreferences::accept(){
 
     measurement->name = ui->edit_name->text();
     measurement->description = ui->plainTextEdit->toPlainText();
-    measurement->average_number = ui->spinBoxAverage->value();
+    measurement->measures_per_iteration = ui->spinBoxMeasuresIteration->value();
     measurement->settling_time = ui->doubleSpinBoxSettling->value();
 
     measurement->end = end;
     measurement->step = step;
 
-    measurement->n = spin_iterations->value();
+    measurement->iterations = spin_iterations->value();
 
     foreach (VariableModel *var, measurement->variables) {
         if (var->meta->is_controlable()){
@@ -174,13 +174,20 @@ void MeasurementsPreferences::accept(){
     }
 
     ref = list->at(ui->combo_zero->currentIndex());
-    QVector<double> vector;
+    QVector<double> vector,avg;
     foreach (VariableModel *ref_var, ref->variables) {
         foreach (VariableModel *var, measurement->variables) {
             if(var->meta->has_zero()){
                 if (var->meta->get_general_name() == ref_var->meta->get_general_name()){
                     for(int k=0; k< ref_var->meta->get_num(); k++){
-                        vector.append(ref_var->get_value(k,0)); // fixme: this zero is not very elegant
+                        avg = ref_var->get_vector(k);
+                        double total = 0.0;
+                        int size = avg.size();
+                        for (int n=0; n < size; n++){
+                            total += avg.at(n);
+                        }
+                        total = total / size;
+                        vector.append(total);
                     }
                     var->set_zero(vector);
                 }

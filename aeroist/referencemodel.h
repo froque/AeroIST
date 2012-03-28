@@ -34,7 +34,7 @@ public:
     // metadata about the measurement
     QString name;
     QString description;
-    int average_number;
+    int measures_per_iteration;
 
 public slots:
     void GetMeasure(QHash<QString, double> m_hash, QHash<QString,double> raw_hash);

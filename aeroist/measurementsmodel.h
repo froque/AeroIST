@@ -40,13 +40,13 @@ public:
     // metadata about the measurement
     QString name;
     QString description;
-    int average_number;
+    int measures_per_iteration;
     double settling_time;
     double end;
     double step;
     QString control;
     QString ref_name;
-    int n;
+    int iterations;
 
 public slots:
     void GetMeasure(QHash<QString,double> hash,QHash<QString,double> raw_hash);
