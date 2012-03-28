@@ -4,6 +4,7 @@
 #include "variable.h"
 #include <QString>
 #include <QtGui>
+#include <QElapsedTimer>
 
 class TimeMeta: public VariableMeta {
 public:
@@ -54,6 +55,25 @@ private:
     QVector<double> contents,raw;
     QVector<double> zero;
 };
+
+class TimeHardware: public VariableHardware {
+public:
+    TimeHardware();
+    ~TimeHardware() {};
+    void read();
+    double get_value(int n);
+    double get_raw_value(int n);
+    void set_value(int n ,double value);
+    bool isReady(void);
+    bool has_set_final();
+    void set_final();
+    void set_zero(QVector<double> zero);
+private:
+    QElapsedTimer timer;
+    double tempo_mili,tempo_s;
+    bool virgin;
+};
+
 class TimeFactory: public QObject,public Factory {
     Q_OBJECT
     Q_INTERFACES(Factory)

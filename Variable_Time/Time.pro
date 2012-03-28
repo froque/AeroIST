@@ -9,7 +9,7 @@ TEMPLATE = lib
 
 OBJECTS_DIR   = objs
 MOC_DIR       = moc
-DESTDIR       = ../build/plugins_real
+DESTDIR       = ../build/plugins
 
 INCLUDEPATH += ../common
 

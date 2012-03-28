@@ -124,6 +124,45 @@ void TimeModel::load_xml(QDomElement root){
     Q_UNUSED(root);
 }
 
+
+TimeHardware::TimeHardware(){
+    meta = new TimeMeta;
+    virgin = true;
+}
+void TimeHardware::read(){
+    if (virgin == true){
+        timer.start();
+        virgin = false;
+    }
+
+    tempo_mili = timer.elapsed();
+    tempo_s = tempo_mili/1000.0;
+}
+double TimeHardware::get_value(int n){
+    Q_UNUSED(n);
+    return tempo_s;
+}
+double TimeHardware::get_raw_value(int n){
+    Q_UNUSED(n);
+    return tempo_mili;
+}
+void TimeHardware::set_value(int n ,double value){
+    Q_UNUSED(n);
+    Q_UNUSED(value);
+}
+bool TimeHardware::isReady(void){
+    return true;
+}
+bool TimeHardware::has_set_final(){
+    return false;
+}
+void TimeHardware::set_final(){
+}
+void TimeHardware::set_zero(QVector<double> zero){
+    Q_UNUSED(zero);
+}
+
+
 VariableMeta* TimeFactory::CreateVariableMeta() {
     return new TimeMeta;
 }
@@ -135,7 +174,7 @@ VariableModel* TimeFactory::CreateVariableModel() {
 }
 VariableHardware* TimeFactory::CreateVariableHardware(VariableModel *v) {
     Q_UNUSED(v);
-    return NULL;
+    return new TimeHardware;
 }
 
 Q_EXPORT_PLUGIN2(time, TimeFactory);

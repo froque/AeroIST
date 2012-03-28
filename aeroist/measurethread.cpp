@@ -120,7 +120,6 @@ void MeasureThread::isReady(void){
 
 void MeasureThread::produce(){
     int k = 1;
-    timer.start();
     QEventLoop eloop;
     set_initial();
     while(!m_stop) {
@@ -197,25 +196,16 @@ void MeasureThread::set_m(void){
 }
 
 void MeasureThread::read_m(void){
-
-    double tempo = timer.elapsed()/1000.0;
-
     QHash<QString,double> value_h,values_raw;
-
     foreach (VariableHardware *var, variables) {
         var->read();
-        // get the result and add it
         for (int k=0 ; k< var->meta->get_num(); k++){
             value_h[var->meta->get_name(k)] = var->get_value(k);
             values_raw[var->meta->get_name(k)] = var->get_raw_value(k);
         }
     }
-    // fixme : if the previous fixme is done, add a TimeHardware and remove time from this fucntion
-
     m_hash = value_h;
-    m_hash["Time"] = tempo;
     raw_hash = values_raw;
-    raw_hash["Time"] = tempo;
 }
 
 

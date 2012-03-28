@@ -33,8 +33,6 @@ private:
     void set_initial(void);
     void read_m(void);
 
-    QElapsedTimer timer;
-
     QHash<QString,double> m_hash,raw_hash;
 
     int measures_per_iteration;
@@ -51,7 +49,6 @@ private:
 
     bool m_stop;
     QThread* m_parent_thread;
-//    bool virtual_measures;
 
     // Variables
     QList<VariableHardware*> variables;
