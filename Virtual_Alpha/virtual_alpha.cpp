@@ -90,4 +90,4 @@ VariablePreferences* AlphaFactory::CreateVariableGUI() { return new AlphaPrefere
 VariableModel* AlphaFactory::CreateVariableModel() { return new AlphaModel;}
 VariableHardware* AlphaFactory::CreateVariableHardware(VariableModel *v) {Q_UNUSED(v); return new AlphaHardware;}
 
-Q_EXPORT_PLUGIN2(alpha, AlphaFactory);
+Q_EXPORT_PLUGIN2(21_alpha, AlphaFactory);

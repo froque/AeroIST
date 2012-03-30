@@ -62,4 +62,4 @@ VariablePreferences* TemperatureFactory::CreateVariableGUI() { return new Temper
 VariableModel* TemperatureFactory::CreateVariableModel() { return new TemperatureModel;}
 VariableHardware* TemperatureFactory::CreateVariableHardware(VariableModel *v) { Q_UNUSED(v); return new TemperatureHardware;}
 
-Q_EXPORT_PLUGIN2(temperature, TemperatureFactory);
+Q_EXPORT_PLUGIN2(50_temperature, TemperatureFactory);

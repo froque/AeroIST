@@ -289,5 +289,5 @@ VariableHardware* BetaFactory::CreateVariableHardware(VariableModel *v) {
     return new BetaHardware;
 }
 
-Q_EXPORT_PLUGIN2(beta, BetaFactory);
+Q_EXPORT_PLUGIN2(22_beta, BetaFactory);
 

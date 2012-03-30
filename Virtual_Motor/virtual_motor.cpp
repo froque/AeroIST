@@ -92,4 +92,4 @@ VariablePreferences* MotorFactory::CreateVariableGUI() { return new MotorPrefere
 VariableModel* MotorFactory::CreateVariableModel() { return new MotorModel;}
 VariableHardware* MotorFactory::CreateVariableHardware(VariableModel *v) {Q_UNUSED(v); return new MotorHardware;}
 
-Q_EXPORT_PLUGIN2(motor, MotorFactory);
+Q_EXPORT_PLUGIN2(30_motor, MotorFactory);

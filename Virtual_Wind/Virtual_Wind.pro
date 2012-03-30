@@ -3,7 +3,7 @@ QT       += xml
 
 CONFIG         += plugin
 CONFIG         += debug_and_release
-TARGET          = $$qtLibraryTarget(wind)
+TARGET          = $$qtLibraryTarget(40_wind)
 
 TEMPLATE = lib
 

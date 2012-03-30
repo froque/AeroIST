@@ -292,5 +292,5 @@ VariableHardware* AlphaFactory::CreateVariableHardware(VariableModel *v) {
     return new AlphaHardware;
 }
 
-Q_EXPORT_PLUGIN2(alpha, AlphaFactory);
+Q_EXPORT_PLUGIN2(21_alpha, AlphaFactory);
 

@@ -225,4 +225,4 @@ VariablePreferences* ForceFactory::CreateVariableGUI() { return new ForcePrefere
 VariableModel* ForceFactory::CreateVariableModel() { return new ForceModel;}
 VariableHardware* ForceFactory::CreateVariableHardware(VariableModel *v) { return new ForceHardware(v);}
 
-Q_EXPORT_PLUGIN2(force, ForceFactory);
+Q_EXPORT_PLUGIN2(10_force, ForceFactory);

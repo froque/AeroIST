@@ -397,5 +397,5 @@ VariableHardware* AnglesFactory::CreateVariableHardware(VariableModel *v) {
     return new AnglesHardware;
 }
 
-Q_EXPORT_PLUGIN2(angles, AnglesFactory);
+Q_EXPORT_PLUGIN2(20_angles, AnglesFactory);
 

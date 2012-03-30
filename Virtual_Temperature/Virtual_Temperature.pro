@@ -3,7 +3,7 @@ QT       += xml
 
 CONFIG         += plugin
 CONFIG         += debug_and_release
-TARGET          = $$qtLibraryTarget(temperature)
+TARGET          = $$qtLibraryTarget(50_temperature)
 
 TEMPLATE = lib
 

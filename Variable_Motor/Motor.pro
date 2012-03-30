@@ -3,7 +3,7 @@ QT       += xml
 
 CONFIG         += plugin
 CONFIG         += debug_and_release
-TARGET          = $$qtLibraryTarget(motor)
+TARGET          = $$qtLibraryTarget(30_motor)
 
 TEMPLATE = lib
 

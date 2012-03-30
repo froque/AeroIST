@@ -3,7 +3,7 @@ QT       += xml
 
 CONFIG         += plugin
 CONFIG         += debug_and_release
-TARGET          = $$qtLibraryTarget(angles)
+TARGET          = $$qtLibraryTarget(20_angles)
 
 TEMPLATE = lib
 

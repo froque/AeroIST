@@ -224,5 +224,5 @@ VariableHardware* WindFactory::CreateVariableHardware(VariableModel *v) {
 }
 
 
-Q_EXPORT_PLUGIN2(wind, WindFactory);
+Q_EXPORT_PLUGIN2(40_wind, WindFactory);
 

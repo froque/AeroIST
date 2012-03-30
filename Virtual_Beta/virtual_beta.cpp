@@ -89,4 +89,4 @@ VariablePreferences* BetaFactory::CreateVariableGUI() { return new BetaPreferenc
 VariableModel* BetaFactory::CreateVariableModel() { return new BetaModel;}
 VariableHardware* BetaFactory::CreateVariableHardware(VariableModel *v) {Q_UNUSED(v); return new BetaHardware;}
 
-Q_EXPORT_PLUGIN2(beta, BetaFactory);
+Q_EXPORT_PLUGIN2(22_beta, BetaFactory);

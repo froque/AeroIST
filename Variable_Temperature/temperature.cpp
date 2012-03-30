@@ -224,5 +224,5 @@ VariableHardware* TemperatureFactory::CreateVariableHardware(VariableModel *v) {
     return new TemperatureHardware;
 }
 
-Q_EXPORT_PLUGIN2(temperature, TemperatureFactory);
+Q_EXPORT_PLUGIN2(50_temperature, TemperatureFactory);
 

@@ -337,4 +337,4 @@ VariableHardware* MotorFactory::CreateVariableHardware(VariableModel *v) {
     return new MotorHardware;
 }
 
-Q_EXPORT_PLUGIN2(motor, MotorFactory);
+Q_EXPORT_PLUGIN2(30_motor, MotorFactory);

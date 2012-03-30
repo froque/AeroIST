@@ -3,7 +3,7 @@ QT       += xml
 
 CONFIG         += plugin
 CONFIG         += debug_and_release
-TARGET          = $$qtLibraryTarget(time)
+TARGET          = $$qtLibraryTarget(00_time)
 
 TEMPLATE = lib
 

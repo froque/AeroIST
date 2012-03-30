@@ -64,4 +64,4 @@ VariableModel* WindFactory::CreateVariableModel() { return new WindModel;}
 VariableHardware* WindFactory::CreateVariableHardware(VariableModel *v) { Q_UNUSED(v); return new WindHardware;}
 
 
-Q_EXPORT_PLUGIN2(wind, WindFactory);
+Q_EXPORT_PLUGIN2(40_wind, WindFactory);

@@ -177,5 +177,5 @@ VariableHardware* TimeFactory::CreateVariableHardware(VariableModel *v) {
     return new TimeHardware;
 }
 
-Q_EXPORT_PLUGIN2(time, TimeFactory);
+Q_EXPORT_PLUGIN2(00_time, TimeFactory);
 
