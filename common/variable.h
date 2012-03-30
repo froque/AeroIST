@@ -53,15 +53,16 @@ public:
     virtual void set_raw_value(int n ,int row, double value) = 0;
     virtual void insert_raw_value(int n, int row, int count, double value) = 0;
     virtual void append_raw_value(int n, double value) = 0;
-    VariableMeta *meta;
     virtual void set_zero(QVector<double> zero) = 0;
     virtual QVector<double> get_zero() = 0;
-    virtual QWidget* view_get_widget() = 0;
-    virtual QWidget* measurement_get_widget() = 0;
+
+    virtual QWidget* view_get_widget() = 0;  // details
+    virtual QWidget* measurement_get_widget() = 0; // preferences
     virtual bool measurement_accept_config(VariableModel *m) = 0;
     virtual bool measurement_is_configurable() = 0;
     virtual void save_xml(QDomElement root) = 0;
     virtual void load_xml(QDomElement root) = 0;
+    VariableMeta *meta;
     QVector<double> start;
 };
 

@@ -21,11 +21,6 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
     m_stop = false;
     m_parent_thread = thread();
 
-
-//    QSettings settings;
-//    virtual_measures = settings.value(SETTINGS_VIRTUAL_MEASURES,false).toBool();
-//    settings.setValue(SETTINGS_VIRTUAL_MEASURES,virtual_measures);
-
     init(measurement->variables);
 
     // set references/zeros to each variable
@@ -57,9 +52,6 @@ MeasureThread::MeasureThread(ReferenceModel *measurement,QObject *parent) :
     m_stop = false;
     m_parent_thread = thread();
         iterations=1;
-//    QSettings settings;
-//    virtual_measures = settings.value(SETTINGS_VIRTUAL_MEASURES,false).toBool();
-//    settings.setValue(SETTINGS_VIRTUAL_MEASURES,virtual_measures);
 
     init(measurement->variables);
 

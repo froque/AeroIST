@@ -50,7 +50,6 @@ public:
     bool measurement_is_configurable();
     void save_xml(QDomElement root);
     void load_xml(QDomElement root);
-    bool compare(VariableModel *m);
 private:
     QVector<double> contents,raw;
     QVector<double> zero;
