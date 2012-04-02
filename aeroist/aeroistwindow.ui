@@ -232,8 +232,7 @@
     </property>
     <addaction name="actionToolbar"/>
     <addaction name="actionNames_in_Toolbar"/>
-    <addaction name="actionMeasure_List"/>
-    <addaction name="actionReference_List"/>
+    <addaction name="actionShow_Lists"/>
     <addaction name="actionLine_numbers_in_table"/>
     <addaction name="actionRaw_data"/>
    </widget>
@@ -355,7 +354,7 @@
     <string>Toolbar</string>
    </property>
   </action>
-  <action name="actionMeasure_List">
+  <action name="actionShow_Lists">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -363,7 +362,10 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Measure List</string>
+    <string>Show Lists</string>
+   </property>
+   <property name="toolTip">
+    <string>Hide/Show Lists</string>
    </property>
   </action>
   <action name="actionNew_Reference">
@@ -400,20 +402,6 @@
    </property>
    <property name="toolTip">
     <string>View details of a reference</string>
-   </property>
-  </action>
-  <action name="actionReference_List">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="checked">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Reference List</string>
-   </property>
-   <property name="toolTip">
-    <string>List of references</string>
    </property>
   </action>
   <action name="actionNew_Curve">

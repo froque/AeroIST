@@ -722,16 +722,6 @@ void AeroISTWindow::on_actionToolbar_toggled(bool arg1){
     ui->toolBar->setVisible(arg1);
 }
 
-void AeroISTWindow::on_actionMeasure_List_toggled(bool checked){
-    ui->listView->setVisible(checked);
-    ui->labelMeasureList->setVisible(checked);
-}
-
-void AeroISTWindow::on_actionReference_List_toggled(bool arg1){
-    ui->listViewReference->setVisible(arg1);
-    ui->labelReferenceList->setVisible(arg1);
-}
-
 void AeroISTWindow::on_actionNames_in_Toolbar_toggled(bool arg1){
     if(arg1){
         ui->toolBar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
@@ -758,4 +748,8 @@ void AeroISTWindow::on_ManualButton_clicked(){
         hash[spin->objectName()] = spin->value();
     }
     emit set_variable(hash);
+}
+
+void AeroISTWindow::on_actionShow_Lists_toggled(bool arg1){
+    ui->splitterLists->setVisible(arg1);
 }

@@ -59,8 +59,7 @@ private slots:
 
     // View actions
     void on_actionToolbar_toggled(bool arg1);
-    void on_actionMeasure_List_toggled(bool checked);
-    void on_actionReference_List_toggled(bool arg1);
+    void on_actionShow_Lists_toggled(bool arg1);
     void on_actionNames_in_Toolbar_toggled(bool arg1);
     void on_actionLine_numbers_in_table_toggled(bool arg1);
     void on_actionRaw_data_toggled(bool arg1);
@@ -84,6 +83,7 @@ private slots:
 
     // control spin boxes
     void on_ManualButton_clicked();
+
 
 
 private:
