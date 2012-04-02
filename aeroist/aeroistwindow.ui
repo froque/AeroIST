@@ -235,6 +235,7 @@
     <addaction name="actionShow_Lists"/>
     <addaction name="actionLine_numbers_in_table"/>
     <addaction name="actionRaw_data"/>
+    <addaction name="actionTable_follows_Start"/>
    </widget>
    <widget class="QMenu" name="menuPlot">
     <property name="title">
@@ -454,6 +455,14 @@
    </property>
    <property name="text">
     <string>Raw data</string>
+   </property>
+  </action>
+  <action name="actionTable_follows_Start">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Table follows Start</string>
    </property>
   </action>
  </widget>

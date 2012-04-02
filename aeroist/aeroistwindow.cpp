@@ -147,6 +147,11 @@ void AeroISTWindow::on_ThreadButton_clicked(){
         message(tr("Measure is not empty"));
         return;
     }
+
+    if (ui->actionTable_follows_Start->isChecked()){
+        proxy->setSourceModel(measurementThread);
+    }
+
     try{
         m_test = new MeasureThread(measurementThread);
     }
@@ -612,7 +617,10 @@ void AeroISTWindow::on_actionNew_Reference_triggered(){
         reference_list->newMeasure(referenceThread);
         QModelIndex index = reference_list->index(reference_list->rowCount()-1,0);
         ui->listViewReference->setCurrentIndex(index);
-        proxy->setSourceModel(referenceThread);
+
+        if (ui->actionTable_follows_Start->isChecked()){
+            proxy->setSourceModel(referenceThread);
+        }
 
         try {
             m_test = new MeasureThread(referenceThread);

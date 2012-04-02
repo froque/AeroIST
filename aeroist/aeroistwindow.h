@@ -84,8 +84,6 @@ private slots:
     // control spin boxes
     void on_ManualButton_clicked();
 
-
-
 private:
     void message(const QString &string);
     void load_settings(void);
