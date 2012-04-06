@@ -1,14 +1,7 @@
 #include <QtGui/QApplication>
-#include <QSharedMemory>
+
 #include "aeroistwindow.h"
 
-#include <QMessageBox>
-#include <QSettings>
-#include <QTextStream>
-#include <QtNetwork/QLocalSocket>
-#include <QtNetwork/QLocalServer>
-
-#include <QDebug>
 
 int main(int argc, char *argv[])
 {
