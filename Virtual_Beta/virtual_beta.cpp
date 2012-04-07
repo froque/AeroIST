@@ -43,7 +43,7 @@ QWidget* BetaPreferences::get_widget() {
     QSettings settings;
     layout->addWidget(new QLabel(QObject::tr("Beta device")),0,0);
     edit_beta = new QLineEdit;
-    edit_beta->setText(settings.value(SETTINGS_BETA_PATH).toString());
+    edit_beta->setText(settings.value(SETTINGS_BETA_PATH,SETTINGS_BETA_PATH_DEFAULT).toString());
     layout->addWidget(edit_beta,0,1);
     widget->setLayout(layout);
     return widget;

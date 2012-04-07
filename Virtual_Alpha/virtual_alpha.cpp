@@ -42,7 +42,7 @@ QWidget* AlphaPreferences::get_widget() {
     QSettings settings;
     layout->addWidget(new QLabel(QObject::tr("Alpha device")),0,0);
     edit_alpha = new QLineEdit;
-    edit_alpha->setText(settings.value(SETTINGS_ALPHA_PATH).toString());
+    edit_alpha->setText(settings.value(SETTINGS_ALPHA_PATH,SETTINGS_ALPHA_PATH_DEFAULT).toString());
     layout->addWidget(edit_alpha,0,1);
     widget->setLayout(layout);
     return widget;
