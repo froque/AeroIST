@@ -26,7 +26,7 @@ MeasurementDetails::MeasurementDetails(MeasurementsModel *measurement, QWidget *
     foreach (VariableModel *var, measurement->variables) {
         if(var->meta->is_controlable()){
             for (int k=0; k<var->meta->get_num(); k++){
-                label = new QLabel(var->meta->get_name(k).append(" (").append(var->meta->get_units(k)).append(")"),ui->widget);
+                label = new QLabel(var->meta->get_name_tr(k).append(" (").append(var->meta->get_units(k)).append(")"),ui->widget);
                 ui->verticalLayout->insertWidget(row,label);
                 label = new QLabel(QString::number(var->start.at(k)));
                 ui->verticalLayout_2->insertWidget(row,label);

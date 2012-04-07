@@ -12,13 +12,20 @@ int TimeMeta::get_num() {
 QString TimeMeta::get_general_name(){
     return "Time";
 }
+QString TimeMeta::get_general_name_tr(){
+    return QString(QObject::tr("Time"));
+}
 QString TimeMeta::get_name(int n){
     Q_UNUSED(n);
     return "Time";
 }
+QString TimeMeta::get_name_tr(int n){
+    Q_UNUSED(n);
+    return QString(QObject::tr("Time"));
+}
 QString TimeMeta::get_units(int n) {
     Q_UNUSED(n);
-    return "s";
+    return QString(QObject::tr("s"));
 }
 double TimeMeta::get_lower_bound(int n) {
     Q_UNUSED(n);

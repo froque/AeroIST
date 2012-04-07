@@ -70,7 +70,7 @@ MeasurementsPreferences::MeasurementsPreferences(MeasurementsModel *measurement,
     foreach (VariableModel *var, measurement->variables) {
         if (var->meta->is_controlable()){
             for (int k=0; k< var->meta->get_num(); k++){
-                radio = new QRadioButton(var->meta->get_name(k).append(" (").append(var->meta->get_units(k)).append(")"),ui->widget);
+                radio = new QRadioButton(var->meta->get_name_tr(k).append(" (").append(var->meta->get_units(k)).append(")"),ui->widget);
                 radio->setObjectName(var->meta->get_name(k));
                 list_radio.append(radio);
                 layout->addWidget(radio, row, COL_RADIO);
@@ -119,7 +119,7 @@ void MeasurementsPreferences::accept(){
     }
     if (  ui->combo_zero->model()->rowCount(QModelIndex()) == 0){
         QMessageBox msgBox;
-        msgBox.setText(tr("No References. Create on first"));
+        msgBox.setText(tr("No References. Create one first"));
         msgBox.exec();
         return ;
     }

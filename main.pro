@@ -30,3 +30,6 @@ SUBDIRS += \
 # DESTDIR = plugins
 SUBDIRS += Variable_Time/Time.pro
 SUBDIRS += arduino/Arduino.pro
+
+TRANSLATIONS = aeroist_en.ts\
+                aeroist_pt.ts

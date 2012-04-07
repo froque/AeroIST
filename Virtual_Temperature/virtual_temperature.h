@@ -11,7 +11,9 @@ public:
     bool has_zero();
     int get_num();
     QString get_general_name();
+    QString get_general_name_tr();
     QString get_name(int n);
+    QString get_name_tr(int n);
     QString get_units(int n);
     double get_lower_bound(int n);
     double get_upper_bound(int n);

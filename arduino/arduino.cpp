@@ -20,9 +20,16 @@ int ArduinoMeta::get_num() {
 QString ArduinoMeta::get_general_name(){
     return "Arduino";
 }
+QString ArduinoMeta::get_general_name_tr(){
+    return QString(QObject::tr("Arduino"));
+}
 QString ArduinoMeta::get_name(int n){
     Q_UNUSED(n);
     return "";
+}
+QString ArduinoMeta::get_name_tr(int n){
+    Q_UNUSED(n);
+    return QString(QObject::tr("Arduino"));
 }
 QString ArduinoMeta::get_units(int n) {
     Q_UNUSED(n);
@@ -57,7 +64,7 @@ QWidget* ArduinoPreferences::get_widget() {
     QGridLayout *layout = new QGridLayout;
     QSettings settings;
 
-    layout->addWidget(new QLabel(QObject::tr("Arduino device path")),0,0);
+    layout->addWidget(new QLabel(QObject::tr("Arduino device")),0,0);
     edit_arduino = new QLineEdit;
     edit_arduino->setText(settings.value(SETTINGS_ARDUINO_PATH,SETTINGS_ARDUINO_PATH_DEFAULT).toString());
     layout->addWidget(edit_arduino,0,1);

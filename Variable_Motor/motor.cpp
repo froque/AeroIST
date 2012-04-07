@@ -36,13 +36,20 @@ int MotorMeta::get_num() {
 QString MotorMeta::get_general_name(){
     return "Motor";
 }
+QString MotorMeta::get_general_name_tr(){
+    return QString(QObject::tr("Motor"));
+}
 QString MotorMeta::get_name(int n){
     Q_UNUSED(n);
     return "Motor";
 }
+QString MotorMeta::get_name_tr(int n){
+    Q_UNUSED(n);
+    return QString(QObject::tr("Motor"));
+}
 QString MotorMeta::get_units(int n) {
     Q_UNUSED(n);
-    return "%";
+    return QString(QObject::tr("%"));
 }
 double MotorMeta::get_lower_bound(int n) {
     Q_UNUSED(n);
@@ -72,7 +79,7 @@ QWidget* MotorPreferences::get_widget() {
     QWidget *widget = new QWidget;
     QGridLayout *layout = new QGridLayout;
     QSettings settings;
-    layout->addWidget(new QLabel(QObject::tr("Motor device path")),0,0);
+    layout->addWidget(new QLabel(QObject::tr("Motor device")),0,0);
     edit_motor = new QLineEdit;
     edit_motor->setText(settings.value(SETTINGS_MOTOR_PATH).toString());
     layout->addWidget(edit_motor,0,1);

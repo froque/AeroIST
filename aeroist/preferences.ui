@@ -49,14 +49,14 @@
        <item row="0" column="0">
         <widget class="QLabel" name="label_8">
          <property name="text">
-          <string>Default measures per iteration</string>
+          <string>Measures per iteration</string>
          </property>
         </widget>
        </item>
        <item row="1" column="0">
         <widget class="QLabel" name="label_9">
          <property name="text">
-          <string>Default settling time ( s )</string>
+          <string>Settling time ( s )</string>
          </property>
         </widget>
        </item>

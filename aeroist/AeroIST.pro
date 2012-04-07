@@ -65,9 +65,6 @@ FORMS += aeroistwindow.ui \
     referencedetails.ui \
     referencepreferences.ui
 
-TRANSLATIONS = aeroist_en.ts\
-                aeroist_pt.ts
-
 RESOURCES += resources.qrc
 
 ### FOR INSTALLATION

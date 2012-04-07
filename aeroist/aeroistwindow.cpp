@@ -100,7 +100,7 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
     foreach (VariableMeta *var, variables) {
         if(var->is_controlable()){
             for (int k=0; k< var->get_num(); k++){
-                label = new QLabel(var->get_name(k).append(" (").append(var->get_units(k).append(")")));
+                label = new QLabel(var->get_name_tr(k).append(" (").append(var->get_units(k).append(")")));
                 ui->horizontalLayout_2->insertWidget( column,label);
                 column++;
                 spin = new QDoubleSpinBox;
@@ -325,7 +325,7 @@ void AeroISTWindow::on_actionDelete_Measure_triggered(){
     QModelIndex index = ui->listView->currentIndex();
 
     if (measure_list->at(index) == measurementThread && thread_status == MEASURE_RUNNING){
-        message(tr("Measuring is being done. Stop it to delete"));
+        message(tr("Measuring is being done. Stop it to delete."));
         return;
     }
 
@@ -342,11 +342,11 @@ void AeroISTWindow::on_actionDelete_Measure_triggered(){
 
 void AeroISTWindow::on_actionSave_Project_as_triggered(){
     if (thread_status != STOPPED){
-        message(tr("Measuring is being done. Stop it to save to disk"));
+        message(tr("Measuring is being done. Stop it to save to disk."));
         return;
     }
     QSettings settings;
-    project_filename = QFileDialog::getSaveFileName(this, tr("Save Project"), settings.value(SETTINGS_PROJECT_FOLDER).toString(), tr("*.xml"));
+    project_filename = QFileDialog::getSaveFileName(this, tr("Save Project"), settings.value(SETTINGS_PROJECT_FOLDER).toString(),"*.xml");
     save_xml(project_filename);
 }
 
@@ -357,7 +357,7 @@ void AeroISTWindow::on_actionSave_Project_triggered(){
     }
     if (project_filename.isNull() || project_filename.isEmpty()){
         QSettings settings;
-        project_filename = QFileDialog::getSaveFileName(this, tr("Save Project"), settings.value(SETTINGS_PROJECT_FOLDER).toString(), tr("*.xml"));
+        project_filename = QFileDialog::getSaveFileName(this, tr("Save Project"), settings.value(SETTINGS_PROJECT_FOLDER).toString(), "*.xml");
     }
     save_xml(project_filename);
 }
@@ -389,7 +389,7 @@ void AeroISTWindow::on_actionLoad_Project_triggered(){
     }
     QString fileName;
     QSettings settings;
-    fileName = QFileDialog::getOpenFileName(this, tr("Load Project"), settings.value(SETTINGS_PROJECT_FOLDER).toString(), tr("*.xml"));
+    fileName = QFileDialog::getOpenFileName(this, tr("Load Project"), settings.value(SETTINGS_PROJECT_FOLDER).toString(), "*.xml");
     if (fileName.isNull() || fileName.isEmpty()){
         return;
     }

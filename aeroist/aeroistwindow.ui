@@ -192,7 +192,7 @@
      <x>0</x>
      <y>0</y>
      <width>750</width>
-     <height>25</height>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuProject">
@@ -239,7 +239,7 @@
    </widget>
    <widget class="QMenu" name="menuPlot">
     <property name="title">
-     <string>&amp;Plot</string>
+     <string>&amp;Graph</string>
     </property>
     <addaction name="actionNew_Curve"/>
     <addaction name="actionDelete_Curve"/>
@@ -277,7 +277,7 @@
   </widget>
   <action name="actionExport_to_csv">
    <property name="text">
-    <string>Export to csv</string>
+    <string>Data to csv</string>
    </property>
   </action>
   <action name="actionPreferences">
@@ -298,7 +298,7 @@
   </action>
   <action name="actionExportPlot">
    <property name="text">
-    <string>Export plot</string>
+    <string>Plot</string>
    </property>
   </action>
   <action name="actionDelete_Measure">
@@ -446,7 +446,7 @@
   </action>
   <action name="actionExport_raw_to_csv">
    <property name="text">
-    <string>Export raw to csv</string>
+    <string>Raw data to csv</string>
    </property>
   </action>
   <action name="actionRaw_data">

@@ -43,13 +43,20 @@ int BetaMeta::get_num() {
 QString BetaMeta::get_general_name(){
     return "Beta";
 }
+QString BetaMeta::get_general_name_tr(){
+    return QString(QObject::tr("Beta"));
+}
 QString BetaMeta::get_name(int n){
     Q_UNUSED(n);
     return "Beta";
 }
+QString BetaMeta::get_name_tr(int n){
+    Q_UNUSED(n);
+    return QString(QObject::tr("Beta"));
+}
 QString BetaMeta::get_units(int n) {
     Q_UNUSED(n);
-    return QString::fromUtf8("°");
+    return QString(QObject::trUtf8("º"));
 }
 double BetaMeta::get_lower_bound(int n) {
     Q_UNUSED(n);
@@ -80,7 +87,7 @@ QWidget* BetaPreferences::get_widget() {
     QWidget *widget = new QWidget;
     QGridLayout *layout = new QGridLayout;
     QSettings settings;
-    layout->addWidget(new QLabel(QObject::tr("Beta device path")),0,0);
+    layout->addWidget(new QLabel(QObject::tr("Beta device")),0,0);
     edit_beta = new QLineEdit;
     edit_beta->setText(settings.value(SETTINGS_BETA_PATH).toString());
     layout->addWidget(edit_beta,0,1);

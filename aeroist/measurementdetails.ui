@@ -54,14 +54,14 @@
      <item>
       <widget class="QLabel" name="labelViewSettling">
        <property name="text">
-        <string>Settling Time</string>
+        <string>Settling time</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QLabel" name="labelViewControl">
        <property name="text">
-        <string>Control Type</string>
+        <string>Control type</string>
        </property>
       </widget>
      </item>

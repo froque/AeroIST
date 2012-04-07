@@ -92,8 +92,9 @@ QVariant ReferenceModel::data(const QModelIndex &index, int role) const{
 }
 
 QVariant ReferenceModel::headerData(int section, Qt::Orientation orientation, int role) const{
-    if (role != Qt::DisplayRole)
+    if ((role != Qt::DisplayRole) && (role != Qt::UserRole)){
         return QVariant();
+    }
 
     if (orientation == Qt::Vertical){
         return section+1;
@@ -106,7 +107,11 @@ QVariant ReferenceModel::headerData(int section, Qt::Orientation orientation, in
                 lower = upper;
                 upper += var->meta->get_num();
                 if ( column < upper){
-                    return var->meta->get_name( column- lower );
+                    if (role == Qt::DisplayRole){
+                        return var->meta->get_name_tr( column- lower );
+                    } else {
+                        return var->meta->get_name( column- lower );
+                    }
                 }
             }
         }
@@ -174,7 +179,7 @@ void ReferenceModel::save_xml(QDomElement root){
         element = root.ownerDocument().createElement(TAG_ITEM);
         data_element.appendChild(element);
         for (int column =0; column < columnCount(); column++){
-            tag_header = this->headerData(column,Qt::Horizontal).toString().simplified();
+            tag_header = this->headerData(column,Qt::Horizontal,Qt::UserRole).toString().simplified();
             tag_header.replace(" ","_");
             force = root.ownerDocument().createElement(tag_header);
             data = this->data(this->index(row,column)).toString();
@@ -189,7 +194,7 @@ void ReferenceModel::save_xml(QDomElement root){
         element = root.ownerDocument().createElement(TAG_ITEM);
         raw_data_element.appendChild(element);
         for (int column =0; column < columnCount(); column++){
-            tag_header = this->headerData(column,Qt::Horizontal).toString().simplified();
+            tag_header = this->headerData(column,Qt::Horizontal,Qt::UserRole).toString().simplified();
             tag_header.replace(" ","_");
             force = root.ownerDocument().createElement(tag_header);
             data = this->data(this->index(row,column),Qt::UserRole).toString();
@@ -272,7 +277,7 @@ void ReferenceModel::load_xml(QDomElement root){
                     QString tagname = force.tagName();
                     QString tag_header;
                     for (int k=0; k< columnCount(); k++){
-                        tag_header = this->headerData(k,Qt::Horizontal).toString().simplified();
+                        tag_header = this->headerData(k,Qt::Horizontal,Qt::UserRole).toString().simplified();
                         tag_header.replace(" ","_");
                         if (tagname == tag_header){
                             this->setData(index(row,k),force.text());
@@ -296,7 +301,7 @@ void ReferenceModel::load_xml(QDomElement root){
                     QString tagname = force.tagName();
                     QString tag_header;
                     for (int k=0; k< columnCount(); k++){
-                        tag_header = this->headerData(k,Qt::Horizontal).toString().simplified();
+                        tag_header = this->headerData(k,Qt::Horizontal,Qt::UserRole).toString().simplified();
                         tag_header.replace(" ","_");
                         if (tagname == tag_header){
                             this->setData(index(row,k),force.text(),Qt::UserRole);

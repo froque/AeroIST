@@ -42,13 +42,20 @@ int AlphaMeta::get_num() {
 QString AlphaMeta::get_general_name(){
     return "Alpha";
 }
+QString AlphaMeta::get_general_name_tr(){
+    return QString(QObject::tr("Alpha"));
+}
 QString AlphaMeta::get_name(int n){
     Q_UNUSED(n);
     return "Alpha";
 }
+QString AlphaMeta::get_name_tr(int n){
+    Q_UNUSED(n);
+    return QString(QObject::tr("Alpha"));
+}
 QString AlphaMeta::get_units(int n) {
     Q_UNUSED(n);
-    return QString::fromUtf8("°");
+    return QString(QObject::trUtf8("º"));
 }
 double AlphaMeta::get_lower_bound(int n) {
     Q_UNUSED(n);
@@ -79,7 +86,7 @@ QWidget* AlphaPreferences::get_widget() {
     QWidget *widget = new QWidget;
     QGridLayout *layout = new QGridLayout;
     QSettings settings;
-    layout->addWidget(new QLabel(QObject::tr("Alpha device path")),0,0);
+    layout->addWidget(new QLabel(QObject::tr("Alpha device")),0,0);
     edit_alpha = new QLineEdit;
     edit_alpha->setText(settings.value(SETTINGS_ALPHA_PATH).toString());
     layout->addWidget(edit_alpha,0,1);

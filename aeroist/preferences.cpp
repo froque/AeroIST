@@ -34,7 +34,7 @@ Preferences::Preferences(QWidget *parent) :
     }
     foreach (VariablePreferences *var, variables) {
         if(var->is_configurable()){
-            ui->tabWidget->addTab(var->get_widget(),var->meta->get_general_name());
+            ui->tabWidget->addTab(var->get_widget(),var->meta->get_general_name_tr());
         }
     }
     adjustSize();

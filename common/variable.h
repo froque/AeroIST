@@ -22,7 +22,12 @@ public:
     virtual bool has_zero() = 0;
     virtual int get_num() = 0;
     virtual QString get_general_name() = 0;
+    // should be translatable
+    virtual QString get_general_name_tr() = 0;
     virtual QString get_name(int n) = 0;
+    // should be translatable
+    virtual QString get_name_tr(int n) = 0;
+    // should be translatable
     virtual QString get_units(int n) = 0;
     virtual double get_lower_bound(int n) = 0;
     virtual double get_upper_bound(int n) = 0;
@@ -91,7 +96,7 @@ public:
 };
 
 QT_BEGIN_NAMESPACE
-Q_DECLARE_INTERFACE(Factory, "pt.ist.utl.aeroist.factory/1.3")
+Q_DECLARE_INTERFACE(Factory, "pt.ist.utl.aeroist.factory/1.4")
 QT_END_NAMESPACE
 
 #endif // VARIABLE_H

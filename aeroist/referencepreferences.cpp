@@ -42,7 +42,7 @@ ReferencePreferences::ReferencePreferences(ReferenceModel *measurement, QWidget 
         foreach (VariableModel *var, measurement->variables) {
             if (var->meta->is_controlable()){
                 for (int k=0; k< var->meta->get_num(); k++){
-                    label = new QLabel (var->meta->get_name(k).append(" (").append(var->meta->get_units(k)).append(")"));
+                    label = new QLabel (var->meta->get_name_tr(k).append(" (").append(var->meta->get_units(k)).append(")"));
                     ui->gridLayout->addWidget(label,row,0);
                     spin = new QDoubleSpinBox(ui->widget);
                     spin->setRange(var->meta->get_lower_bound(k),var->meta->get_upper_bound(k));

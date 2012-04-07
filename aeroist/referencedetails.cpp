@@ -25,7 +25,7 @@ ReferenceDetails::ReferenceDetails(ReferenceModel *measurement, QWidget *parent)
     foreach (VariableModel *var, measurement->variables) {
         if(var->meta->is_controlable()){
             for (int k=0; k<var->meta->get_num(); k++){
-                label = new QLabel(var->meta->get_name(k).append(" (").append(var->meta->get_units(k)).append(")"));
+                label = new QLabel(var->meta->get_name_tr(k).append(" (").append(var->meta->get_units(k)).append(")"));
                 ui->verticalLayout->insertWidget(row,label);
                 label = new QLabel(QString::number(var->start.at(k)));
                 ui->verticalLayout_2->insertWidget(row,label);

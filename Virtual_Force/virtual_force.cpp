@@ -16,6 +16,9 @@ bool ForceMeta::is_controlable() {return false;}
 bool ForceMeta::has_zero() {return true;}
 int ForceMeta::get_num() {return 6;}
 QString ForceMeta::get_general_name(){ return "Forces";}
+QString ForceMeta::get_general_name_tr(){
+    return QString(QObject::tr("Forces"));
+}
 QString ForceMeta::get_name(int n){
     switch (n){
     case 0: return "Fx"; break;
@@ -27,16 +30,27 @@ QString ForceMeta::get_name(int n){
     }
     return "";
 }
+QString ForceMeta::get_name_tr(int n){
+    switch (n){
+    case 0: return QString(QObject::tr("Fx")); break;
+    case 1: return QString(QObject::tr("Fy")); break;
+    case 2: return QString(QObject::tr("Fz")); break;
+    case 3: return QString(QObject::tr("Mx")); break;
+    case 4: return QString(QObject::tr("My")); break;
+    case 5: return QString(QObject::tr("Mz")); break;
+    }
+    return "";
+}
 QString ForceMeta::get_units(int n) {
     switch (n){
     case 0:
     case 1:
     case 2:
-        return "N"; break;
+        return QString(QObject::tr("N")); break;
     case 3:
     case 4:
     case 5:
-        return "N.m"; break;
+        return QString(QObject::tr("N.m")); break;
     }
     return "";
 }
@@ -68,8 +82,8 @@ QWidget* ForcePreferences::get_widget() {
     layout->addWidget(combo_time,1,1);
     layout->addWidget(new QLabel(QObject::tr("Default Matrix")),2,0);
     combo_matrix =  new QComboBox;
-    combo_matrix->addItem(QObject::tr("middle"), MIDDLE);
-    combo_matrix->addItem(QObject::tr("floor"),  FLOOR);
+    combo_matrix->addItem(QObject::tr("Middle"), MIDDLE);
+    combo_matrix->addItem(QObject::tr("Floor"),  FLOOR);
     index = combo_matrix->findData(settings.value(SETTINGS_DEFAULT_MATRIX,MIDDLE).toInt());
     combo_matrix->setCurrentIndex(index);
     layout->addWidget(combo_matrix,2,1);
@@ -153,8 +167,8 @@ QWidget* ForceModel::measurement_get_widget(){
     layout->addWidget(combo_time,0,1);
     layout->addWidget(new QLabel(QObject::tr("Test Type")),1,0);
     combo_matrix =  new QComboBox;
-    combo_matrix->addItem(QObject::tr("middle"), MIDDLE);
-    combo_matrix->addItem(QObject::tr("floor"),  FLOOR);
+    combo_matrix->addItem(QObject::tr("Middle"), MIDDLE);
+    combo_matrix->addItem(QObject::tr("Floor"),  FLOOR);
     index = combo_matrix->findData(settings.value(SETTINGS_DEFAULT_MATRIX).toInt());
     combo_matrix->setCurrentIndex(index);
     layout->addWidget(combo_matrix,1,1);

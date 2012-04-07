@@ -5,8 +5,18 @@ bool WindMeta::is_controlable() {return false;}
 bool WindMeta::has_zero() {return false;}
 int WindMeta::get_num() {return 1;}
 QString WindMeta::get_general_name(){ return "Wind";}
+QString WindMeta::get_general_name_tr(){
+    return QString(QObject::tr("Wind"));
+}
 QString WindMeta::get_name(int n){Q_UNUSED(n);  return "Wind"; }
-QString WindMeta::get_units(int n) {Q_UNUSED(n); return "mmH20"; }
+QString WindMeta::get_name_tr(int n){
+    Q_UNUSED(n);
+    return QString(QObject::tr("Wind"));
+}
+QString WindMeta::get_units(int n) {
+    Q_UNUSED(n);
+    return QString(QObject::tr("mmH20"));
+}
 double WindMeta::get_lower_bound(int n) {Q_UNUSED(n); return 0;}
 double WindMeta::get_upper_bound(int n) {Q_UNUSED(n); return 0;}
 double WindMeta::get_smaller_step(int n) {Q_UNUSED(n); return 0;}

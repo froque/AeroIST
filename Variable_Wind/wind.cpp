@@ -33,13 +33,20 @@ int WindMeta::get_num() {
 QString WindMeta::get_general_name(){
     return "Wind";
 }
+QString WindMeta::get_general_name_tr(){
+    return QString(QObject::tr("Wind"));
+}
 QString WindMeta::get_name(int n){
     Q_UNUSED(n);
     return "Wind";
 }
+QString WindMeta::get_name_tr(int n){
+    Q_UNUSED(n);
+    return QString(QObject::tr("Wind"));
+}
 QString WindMeta::get_units(int n) {
     Q_UNUSED(n);
-    return "mmH20";
+    return QString(QObject::tr("mmH20"));
 }
 double WindMeta::get_lower_bound(int n) {
     Q_UNUSED(n);
