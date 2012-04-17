@@ -1,1 +1,2 @@
-SUBSYSTEMS=="usb",ATTRS{idVendor}=="046d",ATTRS{idProduct}=="c05a",SYMLINK+="flip_yeah"
+SUBSYSTEMS=="usb",ATTRS{idVendor}=="2341",ATTRS{idProduct}=="0001",SYMLINK+="arduino_uno"
+SUBSYSTEMS=="usb",ATTRS{idVendor}=="0403",ATTRS{idProduct}=="6001",SYMLINK+="arduino_duemilanove"
