@@ -12,6 +12,7 @@ MOC_DIR       = moc
 DESTDIR       = ../build/plugins_real
 
 INCLUDEPATH += ../common
+LIBS += -L/usr/local/lib -lgpib
 
 SOURCES       += force.cpp
 

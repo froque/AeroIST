@@ -10,7 +10,7 @@
 #include "referencelist.h"
 #include "preferences.h"
 #include "common.h"
-#include "qwt_plot_item.h"
+#include <qwt_plot_item.h>
 #include "proxymodel.h"
 
 namespace Ui {

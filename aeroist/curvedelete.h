@@ -2,7 +2,7 @@
 #define DELETEPLOT_H
 
 #include <QDialog>
-#include <qwt/qwt_plot.h>
+#include <qwt_plot.h>
 
 namespace Ui {
     class DeletePlot;

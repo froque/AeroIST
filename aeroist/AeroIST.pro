@@ -16,7 +16,7 @@ UI_DIR = $$DESTDIR/ui
 RCC_DIR = $$DESTDIR/rcc
 
 INCLUDEPATH += ../common
-LIBS += -L/usr/local/lib -lgpib
+
 CONFIG += qwt
 
 SOURCES += main.cpp \

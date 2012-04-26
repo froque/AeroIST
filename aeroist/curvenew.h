@@ -3,7 +3,7 @@
 
 #include <QDialog>
 #include "measurelist.h"
-#include "qwt/qwt_plot.h"
+#include <qwt_plot.h>
 
 namespace Ui {
     class NewCurve;
