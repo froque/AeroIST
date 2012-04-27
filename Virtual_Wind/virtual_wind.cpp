@@ -1,8 +1,9 @@
 #include "virtual_wind.h"
 
-#define NUM_CHANNELS 8
+#define NUM_CHANNELS 5
 #define SETTINGS_WIND "wind_channel"
 #define SETTINGS_WIND_DEFAULT 1
+#define TAG_WIND_CHANNEL "wind_channel"
 
 bool WindMeta::is_controlable() {return false;}
 bool WindMeta::has_zero() {return false;}
@@ -34,15 +35,18 @@ QWidget* WindPreferences::get_widget() {
     QSettings settings;
     QAbstractButton *button;
     group = new QButtonGroup;
+
+    int half = (NUM_CHANNELS%2==0)? NUM_CHANNELS/2 : (NUM_CHANNELS+1)/2;
     for (int k=1; k<= NUM_CHANNELS; k++){
         button = new QRadioButton(QString(QObject::tr("channel %1")).arg(k));
-        group->addButton(button);
-        group->setId(button,k);
-        layout->addWidget(button,k,0);
+        group->addButton(button,k);
+        layout->addWidget(button,(k-1)%half,((k<=half)? 0:1));
     }
     button = group->button(settings.value(SETTINGS_WIND,SETTINGS_WIND_DEFAULT).toInt());
     if(button != 0){
         button->setChecked(true);
+    } else {
+        group->buttons().first()->setChecked(true);
     }
     widget->setLayout(layout);
     return widget;
@@ -64,12 +68,68 @@ void WindModel::insert_value(int n, int row, int count, double value) {Q_UNUSED(
 void WindModel::append_value(int n, double value) {Q_UNUSED(n);  contents.append(value);}
 void WindModel::set_zero(QVector<double> zero) {Q_UNUSED(zero);}
 QVector<double> WindModel::get_zero() {return QVector<double>();}
-QWidget* WindModel::view_get_widget(){ return NULL;}
-QWidget* WindModel::measurement_get_widget(){return NULL;}
-bool WindModel::measurement_accept_config(VariableModel *m){Q_UNUSED(m); return true;}
-bool WindModel::measurement_is_configurable(){return false;}
-void WindModel::save_xml(QDomElement root){Q_UNUSED(root);}
-void WindModel::load_xml(QDomElement root){Q_UNUSED(root);}
+QWidget* WindModel::view_get_widget(){
+    QWidget *widget = new QWidget;
+    QHBoxLayout *layout = new QHBoxLayout;
+    layout->addWidget(new QLabel(QObject::tr("Channel")));
+    layout->addWidget(new QLabel(QString::number(channel)));
+    widget->setLayout(layout);
+    return widget;
+}
+QWidget* WindModel::measurement_get_widget(){
+    QWidget *widget = new QWidget;
+    QGridLayout *layout = new QGridLayout;
+    QSettings settings;
+    QAbstractButton *button;
+    group = new QButtonGroup;
+
+    int half = (NUM_CHANNELS%2==0)? NUM_CHANNELS/2 : (NUM_CHANNELS+1)/2;
+    for (int k=1; k<= NUM_CHANNELS; k++){
+        button = new QRadioButton(QString(QObject::tr("Channel %1")).arg(k));
+        group->addButton(button,k);
+        layout->addWidget(button,(k-1)%half,((k<=half)? 0:1));
+    }
+    button = group->button(settings.value(SETTINGS_WIND,SETTINGS_WIND_DEFAULT).toInt());
+    if(button != 0){
+        button->setChecked(true);
+    } else {
+        group->buttons().first()->setChecked(true);
+    }
+    widget->setLayout(layout);
+    return widget;
+}
+bool WindModel::measurement_accept_config(VariableModel *m){
+    channel = group->checkedId();
+    if (m != NULL){
+        if (channel != dynamic_cast<WindModel*>(m)->channel){
+            QMessageBox message;
+            message.setText("The channels are different.");
+            message.exec();
+        }
+    }
+    return true;
+}
+bool WindModel::measurement_is_configurable(){
+    return true;
+}
+void WindModel::save_xml(QDomElement root){
+    QDomElement channel_element = root.ownerDocument().createElement(TAG_WIND_CHANNEL);
+    channel_element.appendChild(root.ownerDocument().createTextNode(QString::number(this->channel)));
+    root.appendChild(channel_element);
+}
+void WindModel::load_xml(QDomElement root){
+    QDomNodeList nodelist = root.childNodes();
+    QDomNode node;
+    QDomElement element;
+    for (int k=0; k< nodelist.count();k++){
+        node = nodelist.at(k);
+        element = node.toElement();
+        if (element.tagName() == TAG_WIND_CHANNEL){
+            this->channel = element.text().toInt();
+            continue;
+        }
+    }
+}
 void WindModel::set_raw_value(int n, int row, double value){
     Q_UNUSED(n);
     raw.replace(row,value);
@@ -81,7 +141,10 @@ double WindModel::get_raw_value(int n, int row){
 void WindModel::insert_raw_value(int n, int row, int count, double value) {Q_UNUSED(n); raw.insert(row,count,value);}
 void WindModel::append_raw_value(int n, double value) {Q_UNUSED(n);  raw.append(value);}
 
-WindHardware::WindHardware() {meta = new WindMeta;}
+WindHardware::WindHardware(VariableModel* v) {
+    meta = new WindMeta;
+    channel = dynamic_cast<WindModel*>(v)->channel;
+}
 void WindHardware::read() { raw = (1.0 * qrand() / RAND_MAX); value = 10 *raw;}
 double WindHardware::get_value(int n) {Q_UNUSED(n); return value;}
 double WindHardware::get_raw_value(int n) {Q_UNUSED(n); return raw;}
@@ -96,7 +159,7 @@ void WindHardware::set_zero(QVector<double> zero) {Q_UNUSED(zero);}
 VariableMeta* WindFactory::CreateVariableMeta() { return new WindMeta;}
 VariablePreferences* WindFactory::CreateVariableGUI() { return new WindPreferences;}
 VariableModel* WindFactory::CreateVariableModel() { return new WindModel;}
-VariableHardware* WindFactory::CreateVariableHardware(VariableModel *v) { Q_UNUSED(v); return new WindHardware;}
+VariableHardware* WindFactory::CreateVariableHardware(VariableModel *v) { return new WindHardware(v);}
 
 
 Q_EXPORT_PLUGIN2(40_wind, WindFactory);

@@ -21,9 +21,10 @@
 #define SETTINGS_ARDUINO_PATH "arduino_path"
 #define SETTINGS_ARDUINO_PATH_DEFAULT "/dev/ttyUSB0"
 
-#define NUM_CHANNELS 8
+#define NUM_CHANNELS 5
 #define SETTINGS_WIND "wind_channel"
 #define SETTINGS_WIND_DEFAULT 1
+#define TAG_WIND_CHANNEL "wind_channel"
 
 bool WindMeta::is_controlable() {
     return false;
@@ -83,15 +84,17 @@ QWidget* WindPreferences::get_widget() {
     QSettings settings;
     QAbstractButton *button;
     group = new QButtonGroup;
+    int half = (NUM_CHANNELS%2==0)? NUM_CHANNELS/2 : (NUM_CHANNELS+1)/2;
     for (int k=1; k<= NUM_CHANNELS; k++){
         button = new QRadioButton(QString(QObject::tr("channel %1")).arg(k));
-        group->addButton(button);
-        group->setId(button,k);
-        layout->addWidget(button,k,0);
+        group->addButton(button,k);
+        layout->addWidget(button,(k-1)%half,((k<=half)? 0:1));
     }
     button = group->button(settings.value(SETTINGS_WIND,SETTINGS_WIND_DEFAULT).toInt());
     if(button != 0){
         button->setChecked(true);
+    } else {
+        group->buttons().first()->setChecked(true);
     }
     widget->setLayout(layout);
     return widget;
@@ -158,27 +161,65 @@ QWidget* WindModel::view_get_widget(){
     return NULL;
 }
 QWidget* WindModel::measurement_get_widget(){
-    return NULL;
+    QWidget *widget = new QWidget;
+    QGridLayout *layout = new QGridLayout;
+    QSettings settings;
+    QAbstractButton *button;
+    group = new QButtonGroup;
+    int half = (NUM_CHANNELS%2==0)? NUM_CHANNELS/2 : (NUM_CHANNELS+1)/2;
+    for (int k=1; k<= NUM_CHANNELS; k++){
+        button = new QRadioButton(QString(QObject::tr("channel %1")).arg(k));
+        group->addButton(button,k);
+        layout->addWidget(button,(k-1)%half,((k<=half)? 0:1));
+    }
+    button = group->button(settings.value(SETTINGS_WIND,SETTINGS_WIND_DEFAULT).toInt());
+    if(button != 0){
+        button->setChecked(true);
+    } else {
+        group->buttons().first()->setChecked(true);
+    }
+    widget->setLayout(layout);
+    return widget;
 }
 bool WindModel::measurement_accept_config(VariableModel *m){
-    Q_UNUSED(m);
+    channel = group->checkedId();
+    if (m != NULL){
+        if (channel != dynamic_cast<WindModel*>(m)->channel){
+            QMessageBox message;
+            message.setText("The channels are different.");
+            message.exec();
+        }
+    }
     return true;
 }
 bool WindModel::measurement_is_configurable(){
-    return false;
+    return true;
 }
 void WindModel::save_xml(QDomElement root){
-    Q_UNUSED(root);
+    QDomElement channel_element = root.ownerDocument().createElement(TAG_WIND_CHANNEL);
+    channel_element.appendChild(root.ownerDocument().createTextNode(QString::number(this->channel)));
+    root.appendChild(channel_element);
 }
 void WindModel::load_xml(QDomElement root){
-    Q_UNUSED(root);
+    QDomNodeList nodelist = root.childNodes();
+    QDomNode node;
+    QDomElement element;
+    for (int k=0; k< nodelist.count();k++){
+        node = nodelist.at(k);
+        element = node.toElement();
+        if (element.tagName() == TAG_WIND_CHANNEL){
+            this->channel = element.text().toInt();
+            continue;
+        }
+    }
 }
 
 
-WindHardware::WindHardware() {
+WindHardware::WindHardware(VariableModel* v) {
     meta = new WindMeta;
     wind=0;
     wind_raw=0;
+    channel = dynamic_cast<WindModel*>(v)->channel;
     QSettings settings;
     arduinofd = serialport_init(settings.value(SETTINGS_ARDUINO_PATH).toString().toStdString().c_str(),SERIALRATE);
 }
@@ -248,8 +289,7 @@ VariableModel* WindFactory::CreateVariableModel() {
     return new WindModel;
 }
 VariableHardware* WindFactory::CreateVariableHardware(VariableModel *v) {
-    Q_UNUSED(v);
-    return new WindHardware;
+    return new WindHardware(v);
 }
 
 

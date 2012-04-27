@@ -26,10 +26,10 @@ MeasurementsPreferences::MeasurementsPreferences(MeasurementsModel *measurement,
     ui->spinBoxMeasuresIteration->setValue(settings.value(SETTINGS_DEFAULT_MEASURES_ITERATION).toInt());
     ui->doubleSpinBoxSettling->setValue(settings.value(SETTINGS_DEFAULT_SETTLING_TIME).toDouble());
 
+    // adds widgets to tabwidget for eache configurable variable
     foreach (VariableModel *var, measurement->variables) {
         if(var->measurement_is_configurable()){
-            ui->gridLayout_2->addWidget(var->measurement_get_widget());
-//            row++;
+            ui->tabWidget->addTab(var->measurement_get_widget(),var->meta->get_general_name_tr());
         }
     }
 
@@ -40,17 +40,18 @@ MeasurementsPreferences::MeasurementsPreferences(MeasurementsModel *measurement,
 
     int row = 0;
 
-    group = new QButtonGroup(ui->widget);
-    radio_none = new QRadioButton(tr("None"),ui->widget);
+    group = new QButtonGroup;
+    radio_none = new QRadioButton(tr("None"));
     radio_none->setChecked(true);
     layout->addWidget(radio_none,row,COL_RADIO);
     group->addButton(radio_none);
-    label = new QLabel(trUtf8("Nº of iterations"),ui->widget);
+    label = new QLabel(trUtf8("Nº of iterations"));
     layout->addWidget(label,row,COL_START);          // not really a start spinbox, but just to be pretty
-    spin_iterations = new QSpinBox(ui->widget);
+    spin_iterations = new QSpinBox;
     spin_iterations->setRange(0,1000);
     layout->addWidget(spin_iterations,row,COL_END);
 
+    // count the number of controlables
     int num_controls = 0;
     foreach (VariableModel *var, measurement->variables) {
         if (var->meta->is_controlable()){
@@ -66,39 +67,40 @@ MeasurementsPreferences::MeasurementsPreferences(MeasurementsModel *measurement,
         label = new QLabel (tr("Step"));
         layout->addWidget(label,row,COL_STEP);
         row++;
-    }
-    foreach (VariableModel *var, measurement->variables) {
-        if (var->meta->is_controlable()){
-            for (int k=0; k< var->meta->get_num(); k++){
-                radio = new QRadioButton(var->meta->get_name_tr(k).append(" (").append(var->meta->get_units(k)).append(")"),ui->widget);
-                radio->setObjectName(var->meta->get_name(k));
-                list_radio.append(radio);
-                layout->addWidget(radio, row, COL_RADIO);
-                group->addButton(radio,row);
-                spin = new QDoubleSpinBox(ui->widget);
-                spin->setRange(var->meta->get_lower_bound(k),var->meta->get_upper_bound(k));
-                spin->setSingleStep(var->meta->get_default_step(k));
-                spin->setValue(var->meta->get_default_start(k));
-                list_start.append(spin);
-                layout->addWidget(spin,row,COL_START);
-                spin = new QDoubleSpinBox(ui->widget);
-                spin->setRange(var->meta->get_lower_bound(k),var->meta->get_upper_bound(k));
-                spin->setSingleStep(var->meta->get_default_step(k));
-                spin->setValue(var->meta->get_upper_bound(k));
-                list_end.append(spin);
-                layout->addWidget(spin,row,COL_END);
-                spin = new QDoubleSpinBox(ui->widget);
-                spin->setRange(var->meta->get_smaller_step(k),var->meta->get_upper_bound(k) - var->meta->get_lower_bound(k));
-                spin->setSingleStep(var->meta->get_default_step(k));
-                spin->setValue(var->meta->get_default_step(k));
-                list_step.append(spin);
-                layout->addWidget(spin,row,COL_STEP);
-                row++;
+
+        foreach (VariableModel *var, measurement->variables) {
+            if (var->meta->is_controlable()){
+                for (int k=0; k< var->meta->get_num(); k++){
+                    radio = new QRadioButton(var->meta->get_name_tr(k).append(" (").append(var->meta->get_units(k)).append(")"));
+                    radio->setObjectName(var->meta->get_name(k));
+                    list_radio.append(radio);
+                    layout->addWidget(radio, row, COL_RADIO);
+                    group->addButton(radio,row);
+                    spin = new QDoubleSpinBox;
+                    spin->setRange(var->meta->get_lower_bound(k),var->meta->get_upper_bound(k));
+                    spin->setSingleStep(var->meta->get_default_step(k));
+                    spin->setValue(var->meta->get_default_start(k));
+                    list_start.append(spin);
+                    layout->addWidget(spin,row,COL_START);
+                    spin = new QDoubleSpinBox;
+                    spin->setRange(var->meta->get_lower_bound(k),var->meta->get_upper_bound(k));
+                    spin->setSingleStep(var->meta->get_default_step(k));
+                    spin->setValue(var->meta->get_upper_bound(k));
+                    list_end.append(spin);
+                    layout->addWidget(spin,row,COL_END);
+                    spin = new QDoubleSpinBox;
+                    spin->setRange(var->meta->get_smaller_step(k),var->meta->get_upper_bound(k) - var->meta->get_lower_bound(k));
+                    spin->setSingleStep(var->meta->get_default_step(k));
+                    spin->setValue(var->meta->get_default_step(k));
+                    list_step.append(spin);
+                    layout->addWidget(spin,row,COL_STEP);
+                    row++;
+                }
             }
         }
     }
-    ui->widget->setLayout(layout);
-    ui->widget->adjustSize();
+
+    ui->tab_control->setLayout(layout);
 
     connect(group, SIGNAL(buttonClicked(QAbstractButton*)),this,SLOT(maxminstep_enabled(QAbstractButton*)));
     ui->edit_name->setFocus();

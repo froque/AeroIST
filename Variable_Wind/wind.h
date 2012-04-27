@@ -51,12 +51,15 @@ public:
     bool measurement_is_configurable();
     void save_xml(QDomElement root);
     void load_xml(QDomElement root);
+
+    int channel;
 private:
     QVector<double> contents,raw;
+    QButtonGroup *group;
 };
 class WindHardware: public VariableHardware {
 public:
-    WindHardware();
+    WindHardware(VariableModel* v);
     ~WindHardware();
     void read();
     double get_value(int n);
@@ -66,6 +69,8 @@ public:
     bool has_set_final();
     void set_final();
     void set_zero(QVector<double> zero);
+
+    int channel;
 private:
     int arduinofd;
     int wind_raw;

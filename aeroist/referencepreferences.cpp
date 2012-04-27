@@ -1,9 +1,7 @@
 #include "referencepreferences.h"
 #include "ui_referencepreferences.h"
 
-
-#include "QMessageBox"
-
+#include <QMessageBox>
 #include <QDir>
 #include <QCoreApplication>
 #include <QPluginLoader>
@@ -18,16 +16,6 @@ ReferencePreferences::ReferencePreferences(ReferenceModel *measurement, QWidget 
 
     ui->spinBoxMeasuresIteration->setValue(settings.value(SETTINGS_DEFAULT_MEASURES_ITERATION).toInt());
 
-    ui->gridLayout->removeWidget(ui->buttonBox);
-    int row = 7;
-
-    foreach (VariableModel *var, measurement->variables) {
-        if(var->measurement_is_configurable()){
-            ui->gridLayout->addWidget(var->measurement_get_widget(),row,0,1,2);
-            row++;
-        }
-    }
-
     // just to count number of controllables
     int num_controls = 0;
     foreach (VariableModel *var, measurement->variables) {
@@ -36,27 +24,38 @@ ReferencePreferences::ReferencePreferences(ReferenceModel *measurement, QWidget 
         }
     }
 
-    if(num_controls > 0){
+    if(num_controls < 0 ){
+        // remove empty tab
+        ui->tabWidget->removeTab(ui->tabWidget->indexOf(ui->tab_control));
+    } else {
         QLabel *label;
         QDoubleSpinBox *spin;
+        QGridLayout *layout = new QGridLayout;
+        int row = 0;
         foreach (VariableModel *var, measurement->variables) {
             if (var->meta->is_controlable()){
                 for (int k=0; k< var->meta->get_num(); k++){
                     label = new QLabel (var->meta->get_name_tr(k).append(" (").append(var->meta->get_units(k)).append(")"));
-                    ui->gridLayout->addWidget(label,row,0);
-                    spin = new QDoubleSpinBox(ui->widget);
+                    layout->addWidget(label,row,0);
+                    spin = new QDoubleSpinBox;
                     spin->setRange(var->meta->get_lower_bound(k),var->meta->get_upper_bound(k));
                     spin->setSingleStep(var->meta->get_default_step(k));
                     spin->setValue(var->meta->get_default_start(k));
                     spin->setObjectName(var->meta->get_name(k));
                     list_start.append(spin);
-                    ui->gridLayout->addWidget(spin,row,1);
+                    layout->addWidget(spin,row,1);
                     row++;
                 }
             }
         }
+        ui->tab_control->setLayout(layout);
     }
-    ui->gridLayout->addWidget(ui->buttonBox,row,1);
+
+    foreach (VariableModel *var, measurement->variables) {
+        if(var->measurement_is_configurable()){
+            ui->tabWidget->addTab(var->measurement_get_widget(),var->meta->get_general_name_tr());
+        }
+    }
     ui->edit_name->setFocus();
     adjustSize();
 }
