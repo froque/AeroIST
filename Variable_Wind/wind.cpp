@@ -21,6 +21,10 @@
 #define SETTINGS_ARDUINO_PATH "arduino_path"
 #define SETTINGS_ARDUINO_PATH_DEFAULT "/dev/ttyUSB0"
 
+#define NUM_CHANNELS 8
+#define SETTINGS_WIND "wind_channel"
+#define SETTINGS_WIND_DEFAULT 1
+
 bool WindMeta::is_controlable() {
     return false;
 }
@@ -74,9 +78,27 @@ WindPreferences::WindPreferences() {
     meta = new WindMeta();
 }
 QWidget* WindPreferences::get_widget() {
-    return NULL;
+    QWidget *widget = new QWidget;
+    QGridLayout *layout = new QGridLayout;
+    QSettings settings;
+    QAbstractButton *button;
+    group = new QButtonGroup;
+    for (int k=1; k<= NUM_CHANNELS; k++){
+        button = new QRadioButton(QString(QObject::tr("channel %1")).arg(k));
+        group->addButton(button);
+        group->setId(button,k);
+        layout->addWidget(button,k,0);
+    }
+    button = group->button(settings.value(SETTINGS_WIND,SETTINGS_WIND_DEFAULT).toInt());
+    if(button != 0){
+        button->setChecked(true);
+    }
+    widget->setLayout(layout);
+    return widget;
 }
 bool WindPreferences::accept_config() {
+    QSettings settings;
+    settings.setValue(SETTINGS_WIND,group->checkedId());
     return true;
 }
 bool WindPreferences::is_configurable() {
