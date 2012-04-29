@@ -3,7 +3,7 @@
 
 #include <stdint.h>   /* Standard types */
 
-#define SERIALRATE 9600
+#define SERIALRATE 57600
 
 int serialport_init(const char* serialport, int baud);
 int serialport_writebyte(int fd, uint8_t b);

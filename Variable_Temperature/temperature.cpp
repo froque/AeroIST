@@ -166,10 +166,13 @@ TemperatureHardware::~TemperatureHardware() {
 }
 void TemperatureHardware::read() {
     char buffer_read[256]="", buffer_aux[256];
-    char buffer[] = "T0xxxx";
+    char buffer[] = "$A0xxxx\n";               // read from analog 0
     bool sucess=false;
 
-    sprintf(buffer_aux,"\"%s\"",buffer);
+    // response form: $CIXXXX\n
+    // $ is a start byte
+    // \n is a stop byte
+
     while (sucess == false){
         serialport_flush(arduinofd);
         if( serialport_write(arduinofd, buffer) == -1){
@@ -178,13 +181,13 @@ void TemperatureHardware::read() {
 
         serialport_read_until(arduinofd, buffer_read, '\n');
 
-        if (strncmp(buffer_aux,buffer_read,3)==0){
+        if (strncmp(buffer,buffer_read,3)==0){
             strncpy(buffer_aux,buffer_read + 3,4);
             temp_raw = atoi(buffer_aux);
             sucess=true;
         }
     }
-    // 3.3V
+    // 5.0 V
     // 10 bits = 1024
     // 100 ºC/V = 0,01 V/ºC
     temp = temp_raw * ARDUINO_ANALOG_REF * TEMPERATURE_SENSITIVITY /1024.0;

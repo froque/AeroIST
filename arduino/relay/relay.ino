@@ -1,0 +1,154 @@
+char cmd0,cmd1,arg0,arg1,arg2,arg3,etx, commandbuffer[20];
+
+int alphaup = 12;
+int alphadown = 11;
+int betaleft = 10;
+int betaright = 9;
+int relay;
+int led = 13;
+
+int pin_addr_0 = 8; // confirm
+int pin_addr_1 = 7; // confirm
+int pin_addr_2 = 6; // confirm
+int pin_enable = 5; // confirm
+
+// it easier this way. Table of values to 
+boolean addr_0[8] = {LOW, HIGH, LOW, HIGH, LOW, HIGH, LOW, HIGH};
+boolean addr_1[8] = {LOW, LOW, HIGH, HIGH, LOW, LOW, HIGH, HIGH};
+boolean addr_2[8] = {LOW, LOW, LOW, LOW, HIGH, HIGH, HIGH, HIGH};
+
+
+void choose_channel(int channel){
+  digitalWrite(pin_addr_0, addr_0[channel]);
+  digitalWrite(pin_addr_1, addr_1[channel]);
+  digitalWrite(pin_addr_2, addr_2[channel]);
+}
+
+void setup(){
+
+//  analogReference(EXTERNAL);
+
+  Serial.begin(57600);
+  pinMode(alphaup,OUTPUT);  
+  pinMode(alphadown,OUTPUT);  
+  pinMode(betaleft,OUTPUT);  
+  pinMode(betaright,OUTPUT);
+  pinMode(led,OUTPUT);
+  digitalWrite(alphaup, LOW);
+  digitalWrite(alphadown, LOW);
+  digitalWrite(betaleft, LOW);
+  digitalWrite(betaright, LOW);
+  digitalWrite(led, LOW);
+}
+  
+    // communication form: $CIXXXX\n
+    // $ is a start char
+    // \n is a stop char
+    
+    // current commands
+    // R - relay commands
+    // A - read analog commands
+    // C - channel enable/disable and selection commands
+    
+    // led 13 will be on during command processing
+
+void loop() {
+start:
+    char c;
+    c = Serial.read();
+    if ( c == '$' ){   
+        digitalWrite(led, HIGH);
+        while(Serial.available() < 7){
+            ;
+        }
+        
+        cmd0 = Serial.read();
+        cmd1 = Serial.read();
+        arg0 = Serial.read();
+        arg1 = Serial.read();
+        arg2 = Serial.read();
+        arg3 = Serial.read();
+        etx  = Serial.read();
+        if ( etx != '\n'){
+            //Serial.println("bad ending");
+            digitalWrite(led, LOW);
+            goto start;
+        } else {
+          
+            if (cmd0 == 'C'){
+              if (cmd1 == 'E'){
+                digitalWrite(pin_enable, HIGH);
+                Serial.println("$CExxxx");
+              }
+              if (cmd1 == 'D'){
+                digitalWrite(pin_enable, LOW);
+                Serial.println("$CDxxxx");
+              }
+              if (cmd1 == 'S'){
+                // only allow from 0 to 7
+                if ('0' <= arg0 &&  arg0 <= '7') {
+                  int i = arg0 - '0';
+                  choose_channel(i);                  
+                  sprintf(commandbuffer,"$CS%04d",i);
+                  Serial.println(commandbuffer);
+                } else {
+                  // handle error
+                  goto start;
+                }
+              }
+            }
+          
+            // Commands to control relays
+            if( cmd0=='R'){
+                switch (cmd1){
+                case '0': relay = alphaup;   break;
+                case '1': relay = alphadown; break;
+                case '2': relay = betaleft;  break;
+                case '3': relay = betaright; break;
+                default : goto start;        break;
+                }
+                if( arg0 =='o' && arg1=='n'){
+                    digitalWrite(relay, HIGH);   // set the RELAY on
+                }  
+                if (arg0 =='o' && arg1=='f' && arg2 =='f'){
+                    digitalWrite(relay, LOW);    // set the RELAY off 
+                }
+                Serial.print("$");
+                Serial.print(cmd0);
+                Serial.print(cmd1);
+                Serial.print(arg0);
+                Serial.print(arg1);
+                Serial.print(arg2);
+                Serial.println(arg3); // stop byte included
+            }
+            
+            // commands to read analog values
+            if( cmd0=='A' && cmd1=='0'){
+                sprintf(commandbuffer,"$A0%04d",analogRead(0));
+                Serial.println(commandbuffer);
+            }
+            if( cmd0=='A' && cmd1=='1'){
+                sprintf(commandbuffer,"$A1%04d",analogRead(1));
+                Serial.println(commandbuffer);
+            }
+            if( cmd0=='A' && cmd1=='2'){
+                sprintf(commandbuffer,"$A2%04d",analogRead(2));
+                Serial.println(commandbuffer);
+            }
+            if( cmd0=='A' && cmd1=='3'){
+                sprintf(commandbuffer,"$A3%04d",analogRead(3));
+                Serial.println(commandbuffer);
+            }
+            if( cmd0=='A' && cmd1=='4'){
+                sprintf(commandbuffer,"$A4%04d",analogRead(4));
+                Serial.println(commandbuffer);
+            }
+            if( cmd0=='A' && cmd1=='5'){
+                sprintf(commandbuffer,"$A5%04d",analogRead(5));
+                Serial.println(commandbuffer);
+            }
+            Serial.flush(); 
+        }
+        digitalWrite(led, LOW);
+    } // end if c == '$'
+} // end loop()

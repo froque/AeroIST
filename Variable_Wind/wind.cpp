@@ -96,6 +96,7 @@ QWidget* WindPreferences::get_widget() {
     } else {
         group->buttons().first()->setChecked(true);
     }
+
     widget->setLayout(layout);
     return widget;
 }
@@ -222,16 +223,27 @@ WindHardware::WindHardware(VariableModel* v) {
     channel = dynamic_cast<WindModel*>(v)->channel;
     QSettings settings;
     arduinofd = serialport_init(settings.value(SETTINGS_ARDUINO_PATH).toString().toStdString().c_str(),SERIALRATE);
+
+    char buffer[20];
+    sprintf(buffer,"$CS%dxxx\n",channel);
+    serialport_write(arduinofd, buffer);
+    serialport_write(arduinofd, "$CExxxx\n");
+
+
 }
 WindHardware::~WindHardware() {
+  serialport_write(arduinofd, "$CDxxxx\n");
   close(arduinofd);
 }
 void WindHardware::read() {
     char buffer_read[256]="", buffer_aux[256];
-    char buffer[] = "A5xxxx";               // read from analog 5
+    char buffer[] = "$A5xxxx\n";               // read from analog 5
     bool sucess=false;
 
-    sprintf(buffer_aux,"\"%s\"",buffer);
+    // response form: $CIXXXX\n
+    // $ is a start byte
+    // \n is a stop byte
+
     while (sucess == false){
         serialport_flush(arduinofd);
         if( serialport_write(arduinofd, buffer) == -1){
@@ -240,13 +252,13 @@ void WindHardware::read() {
 
         serialport_read_until(arduinofd, buffer_read, '\n');
 
-        if (strncmp(buffer_aux,buffer_read,3)==0){
+        if (strncmp(buffer,buffer_read,3)==0){
             strncpy(buffer_aux,buffer_read + 3,4);
             wind_raw = atoi(buffer_aux);
             sucess=true;
         }
     }
-    // 3.3V
+    // 5.0 V
     // 10 bits = 1024
     // 19.9 mm H20 = 5 V => 3.98 mm H20/V
     // 1 mm H20 = 9.80665 Pa
