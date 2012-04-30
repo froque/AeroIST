@@ -159,7 +159,12 @@ QVector<double> WindModel::get_zero() {
     return QVector<double>();
 }
 QWidget* WindModel::view_get_widget(){
-    return NULL;
+    QWidget *widget = new QWidget;
+    QHBoxLayout *layout = new QHBoxLayout;
+    layout->addWidget(new QLabel(QObject::tr("Channel")));
+    layout->addWidget(new QLabel(QString::number(channel)));
+    widget->setLayout(layout);
+    return widget;
 }
 QWidget* WindModel::measurement_get_widget(){
     QWidget *widget = new QWidget;
