@@ -49,6 +49,7 @@ private:
     QComboBox *combo_time;
     QLineEdit *edit;
     QComboBox *combo_matrix;
+    QCheckBox *checkbox;
 };
 class ForceModel : public VariableModel {
 public:

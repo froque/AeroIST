@@ -24,6 +24,7 @@
 #define SETTINGS_FORCES_MATRIX_MIDDLE_DEFAULT "matrix 2.coe"
 #define SETTINGS_MULTIMETER_PATH "multimeter_path"
 #define SETTINGS_MULTIMETER_PATH_DEFAULT "voltmeter"
+#define SETTINGS_MATRIX_ALLOW "matrix_allow"
 
 #define TAG_DVM_TIME "dvm_time"
 #define TAG_MATRIX "matrix"
@@ -130,6 +131,11 @@ QWidget* ForcePreferences::get_widget() {
     index = combo_matrix->findData(settings.value(SETTINGS_DEFAULT_MATRIX,MIDDLE).toInt());
     combo_matrix->setCurrentIndex(index);
     layout->addWidget(combo_matrix,2,1);
+
+    checkbox = new QCheckBox(QObject::tr("Allow different matrixes between measurement and reference"));
+    checkbox->setChecked(settings.value(SETTINGS_MATRIX_ALLOW,false).toBool());
+    layout->addWidget(checkbox,3,0,1,2);
+
     widget->setLayout(layout);
     return widget;
 }
@@ -140,6 +146,7 @@ bool ForcePreferences::accept_config() {
     settings.setValue(SETTINGS_MULTIMETER_PATH, edit->text());
     index = combo_matrix->currentIndex();
     settings.setValue(SETTINGS_DEFAULT_MATRIX, combo_matrix->itemData(index).toInt());
+    settings.setValue(SETTINGS_MATRIX_ALLOW,checkbox->isChecked());
     return true;
 }
 bool ForcePreferences::is_configurable() {
@@ -245,8 +252,13 @@ QWidget* ForceModel::measurement_get_widget(){
 bool ForceModel::measurement_accept_config(VariableModel *m){
     dvm_time = combo_time->itemData(combo_time->currentIndex()).toInt();
     matrix = (matrix_t) combo_matrix->currentIndex();
-    if (m != NULL){
+    QSettings settings;
+    bool allow = settings.value(SETTINGS_MATRIX_ALLOW,false).toBool();
+    if (m != NULL && allow == false){
         if (matrix != dynamic_cast<ForceModel*>(m)->matrix){
+            QMessageBox message;
+            message.setText("The reference matrix and the measurement matrix are different.");
+            message.exec();
             return false;
         }
     }
