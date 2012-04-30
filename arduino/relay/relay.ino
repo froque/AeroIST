@@ -7,10 +7,10 @@ int betaright = 9;
 int relay;
 int led = 13;
 
-int pin_addr_0 = 8; // confirm
-int pin_addr_1 = 7; // confirm
-int pin_addr_2 = 6; // confirm
-int pin_enable = 5; // confirm
+int pin_addr_0 = 5;  // A  (pin 1) on SN74HCT138N
+int pin_addr_1 = 6;  // B  (pin 2) on SN74HCT138N
+int pin_addr_2 = 7;  // C  (pin 3) on SN74HCT138N
+int pin_enable = 8;  // G1 (pin 6) on SN74HCT138N
 
 // it easier this way. Table of values to 
 boolean addr_0[8] = {LOW, HIGH, LOW, HIGH, LOW, HIGH, LOW, HIGH};
@@ -34,11 +34,19 @@ void setup(){
   pinMode(betaleft,OUTPUT);  
   pinMode(betaright,OUTPUT);
   pinMode(led,OUTPUT);
+  pinMode(pin_addr_0,OUTPUT);
+  pinMode(pin_addr_1,OUTPUT);
+  pinMode(pin_addr_2,OUTPUT);
+  pinMode(pin_enable,OUTPUT);
   digitalWrite(alphaup, LOW);
   digitalWrite(alphadown, LOW);
   digitalWrite(betaleft, LOW);
   digitalWrite(betaright, LOW);
   digitalWrite(led, LOW);
+  digitalWrite(pin_addr_0, LOW);
+  digitalWrite(pin_addr_1, LOW);
+  digitalWrite(pin_addr_2, LOW);
+  digitalWrite(pin_enable, LOW);
 }
   
     // communication form: $CIXXXX\n
