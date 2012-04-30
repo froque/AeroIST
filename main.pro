@@ -31,5 +31,5 @@ SUBDIRS += \
 SUBDIRS += Variable_Time/Time.pro
 SUBDIRS += arduino/Arduino.pro
 
-TRANSLATIONS = aeroist_en.ts\
-                aeroist_pt.ts
+TRANSLATIONS = translations/aeroist_en.ts\
+                translations/aeroist_pt.ts
