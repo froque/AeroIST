@@ -17,10 +17,14 @@
 #include <QSettings>
 
 #define TEMPERATURE_SENSITIVITY 100.0
+// OP-AMP Gain = 1 + R5/R4 = 1 + 158000/11500 = 14,74
+#define OPAMP_GAIN 14.74
 
 #define ARDUINO_ANALOG_REF 5.0
 #define SETTINGS_ARDUINO_PATH "arduino_path"
 #define SETTINGS_ARDUINO_PATH_DEFAULT "/dev/ttyUSB0"
+#define SETTINGS_TEMP_SENSOR "temperature_sensor"
+#define SETTINGS_TEMP_SENSOR_DEFAULT 1
 
 bool TemperatureMeta::is_controlable() {
     return false;
@@ -75,13 +79,37 @@ TemperaturePreferences::TemperaturePreferences() {
     meta = new TemperatureMeta();
 }
 QWidget* TemperaturePreferences::get_widget() {
-    return NULL;
+    QWidget *widget = new QWidget;
+    QGridLayout *layout = new QGridLayout;
+    QSettings settings;
+
+    group = new QButtonGroup;
+    QAbstractButton *button;
+
+    button = new QRadioButton(QString(QObject::tr("Onboard")));
+    group->addButton(button,0);
+    layout->addWidget(button,0,0);
+    button = new QRadioButton(QString(QObject::tr("APC external")));
+    group->addButton(button,1);
+    layout->addWidget(button,0,1);
+
+    button = group->button(settings.value(SETTINGS_TEMP_SENSOR,SETTINGS_TEMP_SENSOR_DEFAULT).toInt());
+    if(button != 0){
+        button->setChecked(true);
+    } else {
+        group->buttons().first()->setChecked(true);
+    }
+
+    widget->setLayout(layout);
+    return widget;
 }
 bool TemperaturePreferences::accept_config() {
+    QSettings settings;
+    settings.setValue(SETTINGS_TEMP_SENSOR,group->checkedId());
     return true;
 }
 bool TemperaturePreferences::is_configurable() {
-    return false;
+    return true;
 }
 
 
@@ -159,6 +187,7 @@ TemperatureHardware::TemperatureHardware() {
     temp_raw=0;
     QSettings settings;
     arduinofd = serialport_init(settings.value(SETTINGS_ARDUINO_PATH).toString().toStdString().c_str(),SERIALRATE);
+    sensor = settings.value(SETTINGS_TEMP_SENSOR,SETTINGS_TEMP_SENSOR_DEFAULT).toInt();
 }
 
 TemperatureHardware::~TemperatureHardware() {
@@ -168,6 +197,12 @@ void TemperatureHardware::read() {
     char buffer_read[256]="", buffer_aux[256];
     char buffer[] = "$A0xxxx\n";               // read from analog 0
     bool sucess=false;
+
+    if (sensor == 0){
+        buffer[2] = '0';
+    } else {
+        buffer[2] = '1';
+    }
 
     // response form: $CIXXXX\n
     // $ is a start byte
@@ -190,7 +225,12 @@ void TemperatureHardware::read() {
     // 5.0 V
     // 10 bits = 1024
     // 100 ºC/V = 0,01 V/ºC
-    temp = temp_raw * ARDUINO_ANALOG_REF * TEMPERATURE_SENSITIVITY /1024.0;
+    if (sensor == 0){
+        temp = temp_raw * ARDUINO_ANALOG_REF * TEMPERATURE_SENSITIVITY /1024.0;
+    } else {
+        // OP-AMP Gain = 1 + R5/R4 = 1 + 158000/11500 = 14,74
+        temp = temp_raw * ARDUINO_ANALOG_REF * TEMPERATURE_SENSITIVITY / OPAMP_GAIN /1024.0;
+    }
 }
 
 

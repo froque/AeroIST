@@ -99,6 +99,7 @@ QWidget* WindModel::measurement_get_widget(){
     return widget;
 }
 bool WindModel::measurement_accept_config(VariableModel *m){
+        Q_UNUSED(m);
     // it really does not make sense to check unless it is included in the reference
 /*
     channel = group->checkedId();

@@ -27,6 +27,8 @@ public:
     QWidget* get_widget();
     bool accept_config();
     bool is_configurable();
+private:
+    QButtonGroup *group;
 };
 class TemperatureModel: public VariableModel {
 public:
@@ -68,6 +70,7 @@ private:
     int arduinofd;
     int temp_raw;
     double temp;
+    int sensor;
 };
 
 class TemperatureFactory: public QObject,public Factory {
