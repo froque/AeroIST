@@ -33,8 +33,8 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
     ui->actionNew_Measure->setIcon(QIcon(":/resources/ruler_add.svg"));
     ui->actionDelete_Measure->setIcon(QIcon(":/resources/ruler_remove.svg"));
     ui->actionView_Measure_details->setIcon(QIcon(":/resources/ruler_view.svg"));
-    ui->actionLoad_Project->setIcon(QIcon::fromTheme("document-open"));
-    ui->actionSave_Project->setIcon(QIcon::fromTheme("document-save-as"));
+    ui->actionLoad_Project->setIcon(QIcon(":/resources/document-open.svg"));
+    ui->actionSave_Project->setIcon(QIcon(":/resources/document-save-as.svg"));
     ui->actionDelete_Reference->setIcon(QIcon(":/resources/ref_remove.svg"));
     ui->actionNew_Reference->setIcon(QIcon(":/resources/ref_add.svg"));
     ui->actionView_Reference_details->setIcon(QIcon(":/resources/ref_view.svg"));
