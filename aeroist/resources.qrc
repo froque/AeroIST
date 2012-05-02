@@ -7,5 +7,7 @@
         <file>resources/ruler_add.svg</file>
         <file>resources/ruler_remove.svg</file>
         <file>resources/ruler_view.svg</file>
+        <file>resources/document-open.svg</file>
+        <file>resources/document-save-as.svg</file>
     </qresource>
 </RCC>
