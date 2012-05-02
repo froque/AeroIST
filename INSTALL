@@ -1,0 +1,16 @@
+Dependencies:
+ - Qt > 4.8
+ - Qwt > 6
+ - linux-gpib
+
+
+Compile Instrunctions:
+ - qmake
+ - make
+ # make install - not used at this time
+ - choose wich plugins to be symlinked in build/plugins
+ - run build/AeroIST
+
+
+Linux-GPIB requires to compile:
+ - linux-headers
