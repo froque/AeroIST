@@ -3,9 +3,7 @@
 #include <termios.h>
 #include <unistd.h>
 #include <fcntl.h>   /* File control definitions */
-#include <iostream>
 #include <stdexcept>
-#include <cmath>
 
 #include <QSettings>
 #include "helper.h"
@@ -81,7 +79,7 @@ QWidget* MotorPreferences::get_widget() {
     QSettings settings;
     layout->addWidget(new QLabel(QObject::tr("Motor device")),0,0);
     edit_motor = new QLineEdit;
-    edit_motor->setText(settings.value(SETTINGS_MOTOR_PATH).toString());
+    edit_motor->setText(settings.value(SETTINGS_MOTOR_PATH,SETTINGS_MOTOR_PATH_DEFAULT).toString());
     layout->addWidget(edit_motor,0,1);
     button = new QToolButton;
     QObject::connect(button,SIGNAL(clicked()),this,SLOT(button_slot()));
@@ -183,7 +181,7 @@ MotorHardware::MotorHardware () {
     struct termios options;
 
     QSettings settings;
-    std::string filename = settings.value(SETTINGS_MOTOR_PATH).toString().toStdString();
+    std::string filename = settings.value(SETTINGS_MOTOR_PATH,SETTINGS_MOTOR_PATH_DEFAULT).toString().toStdString();
     fd = open(filename.c_str(), O_RDWR );
     if (fd == -1){
         throw std::runtime_error("unable to open serial port");

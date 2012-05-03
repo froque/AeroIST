@@ -345,7 +345,7 @@ ForceHardware::ForceHardware(VariableModel* v){
          }
      }
 
-     g_id = ibfind(settings.value(SETTINGS_MULTIMETER_PATH).toString().toStdString().c_str());
+     g_id = ibfind(settings.value(SETTINGS_MULTIMETER_PATH,SETTINGS_MULTIMETER_PATH_DEFAULT).toString().toStdString().c_str());
      if (  g_id == -1 ){
          throw std::runtime_error("unable to open GPIB device");
      }

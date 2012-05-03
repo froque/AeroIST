@@ -1,10 +1,6 @@
 #include "alpha.h"
 
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <fcntl.h>
-#include <unistd.h>
-#include <iostream>
 #include <cmath>
 #include <stdexcept>
 #include <QSettings>
@@ -177,7 +173,7 @@ void AlphaModel::load_xml(QDomElement root){
 AlphaHardware::AlphaHardware(){
     meta = new AlphaMeta;
     QSettings settings;
-    arduinofd = init_arduino(settings.value(SETTINGS_ARDUINO_PATH).toString().toStdString().c_str());
+    arduinofd = init_arduino(settings.value(SETTINGS_ARDUINO_PATH,SETTINGS_ARDUINO_PATH_DEFAULT).toString().toStdString().c_str());
 
     zero = ANGLEZERO_ALPHA;
     sensitivity = ANGLESENSITIVITY_ALPHA;
@@ -186,7 +182,7 @@ AlphaHardware::AlphaHardware(){
     relay_increase = '0';
     relay_decrease = '1';
 
-    std::string filename = settings.value(SETTINGS_ALPHA_PATH).toString().toStdString();
+    std::string filename = settings.value(SETTINGS_ALPHA_PATH,SETTINGS_ALPHA_PATH_DEFAULT).toString().toStdString();
     fp = open(filename.c_str(),O_RDWR);
     if ( fp == -1 ){
         throw std::runtime_error("unable to open alpha device");

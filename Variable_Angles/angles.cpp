@@ -1,11 +1,5 @@
 #include "angles.h"
 
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <iostream>
-#include <cmath>
 #include <stdexcept>
 #include <QSettings>
 
@@ -33,7 +27,7 @@
 
 #define ARDUINO_ANALOG_REF 5.0
 #define SETTINGS_ARDUINO_PATH "arduino_path"
-//#define SETTINGS_ARDUINO_PATH_DEFAULT "/dev/ttyUSB0"
+#define SETTINGS_ARDUINO_PATH_DEFAULT "/dev/ttyUSB0"
 
 /*
         The purpose of this function is to convert a reflected binary
@@ -132,7 +126,6 @@ QWidget* AnglesPreferences::get_widget() {
     layout->addWidget(new QLabel(QObject::tr("Angles device")),0,0);
     edit_angles = new QLineEdit;
     edit_angles->setText(settings.value(SETTINGS_ANGLES_PATH,SETTINGS_ANGLES_PATH_DEFAULT).toString());
-//    edit_angles->setText(settings.value(SETTINGS_ANGLES_PATH).toString());
     layout->addWidget(edit_angles,0,1);
     widget->setLayout(layout);
     return widget;
@@ -211,7 +204,7 @@ void AnglesModel::load_xml(QDomElement root){
 AnglesHardware::AnglesHardware(){
     meta = new AnglesMeta;
     QSettings settings;
-    arduinofd = init_arduino(settings.value(SETTINGS_ARDUINO_PATH).toString().toStdString().c_str());
+    arduinofd = init_arduino(settings.value(SETTINGS_ARDUINO_PATH,SETTINGS_ARDUINO_PATH_DEFAULT).toString().toStdString().c_str());
 
     zero[0] = ANGLEZERO_ALPHA;
     zero[1] = ANGLEZERO_BETA;
@@ -227,7 +220,7 @@ AnglesHardware::AnglesHardware(){
     relay_decrease[1] = '3';
 
     port = new SerialPort;
-    port->setPort(settings.value(SETTINGS_ANGLES_PATH).toString());
+    port->setPort(settings.value(SETTINGS_ANGLES_PATH,SETTINGS_ANGLES_PATH_DEFAULT).toString());
     port->setRate(SerialPort::Rate115200);
     port->setDataBits(SerialPort::Data8);
     port->setParity(SerialPort::NoParity);

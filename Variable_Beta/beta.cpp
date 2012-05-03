@@ -1,11 +1,6 @@
 #include "beta.h"
 
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <fcntl.h>
-#include <unistd.h>
-#include <iostream>
-#include <cmath>
 #include <stdexcept>
 #include <QSettings>
 
@@ -177,7 +172,7 @@ void BetaModel::load_xml(QDomElement root){
 BetaHardware::BetaHardware(){
     meta = new BetaMeta;
     QSettings settings;
-    arduinofd = init_arduino(settings.value(SETTINGS_ARDUINO_PATH).toString().toStdString().c_str());
+    arduinofd = init_arduino(settings.value(SETTINGS_ARDUINO_PATH,SETTINGS_ARDUINO_PATH_DEFAULT).toString().toStdString().c_str());
 
     zero = ANGLEZERO_BETA;
     sensitivity = ANGLESENSITIVITY_BETA;
@@ -186,7 +181,7 @@ BetaHardware::BetaHardware(){
     relay_increase = '2';
     relay_decrease = '3';
 
-    std::string filename = settings.value(SETTINGS_BETA_PATH).toString().toStdString();
+    std::string filename = settings.value(SETTINGS_BETA_PATH,SETTINGS_BETA_PATH_DEFAULT).toString().toStdString();
     fp = open(filename.c_str(),O_RDWR);
     if ( fp == -1 ){
         throw std::runtime_error("unable to open beta device");

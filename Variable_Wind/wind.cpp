@@ -1,17 +1,6 @@
 #include "wind.h"
-
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <iostream>
-#include <cmath>
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdint.h>   /* Standard types */
 #include "arduino-serial.h"
+
 #include <QSettings>
 
 #define WIND_SENSITIVITY 3.98
