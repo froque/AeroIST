@@ -86,19 +86,19 @@ start:
             if (cmd0 == 'C'){
               if (cmd1 == 'E'){
                 digitalWrite(pin_enable, HIGH);
-                Serial.println("$CExxxx");
+                Serial.print("$CExxxx\n");
               }
               if (cmd1 == 'D'){
                 digitalWrite(pin_enable, LOW);
-                Serial.println("$CDxxxx");
+                Serial.print("$CDxxxx\n");
               }
               if (cmd1 == 'S'){
                 // only allow from 0 to 7
                 if ('0' <= arg0 &&  arg0 <= '7') {
                   int i = arg0 - '0';
                   choose_channel(i);                  
-                  sprintf(commandbuffer,"$CS%04d",i);
-                  Serial.println(commandbuffer);
+                  sprintf(commandbuffer,"$CS%04d\n",i);
+                  Serial.print(commandbuffer);
                 } else {
                   // handle error
                   goto start;
@@ -127,33 +127,34 @@ start:
                 Serial.print(arg0);
                 Serial.print(arg1);
                 Serial.print(arg2);
-                Serial.println(arg3); // stop byte included
+                Serial.print(arg3);
+                Serial.print('\n'); // stop char
             }
             
             // commands to read analog values
             if( cmd0=='A' && cmd1=='0'){
-                sprintf(commandbuffer,"$A0%04d",analogRead(0));
-                Serial.println(commandbuffer);
+                sprintf(commandbuffer,"$A0%04d\n",analogRead(0));
+                Serial.print(commandbuffer);
             }
             if( cmd0=='A' && cmd1=='1'){
-                sprintf(commandbuffer,"$A1%04d",analogRead(1));
-                Serial.println(commandbuffer);
+                sprintf(commandbuffer,"$A1%04d\n",analogRead(1));
+                Serial.print(commandbuffer);
             }
             if( cmd0=='A' && cmd1=='2'){
-                sprintf(commandbuffer,"$A2%04d",analogRead(2));
-                Serial.println(commandbuffer);
+                sprintf(commandbuffer,"$A2%04d\n",analogRead(2));
+                Serial.print(commandbuffer);
             }
             if( cmd0=='A' && cmd1=='3'){
-                sprintf(commandbuffer,"$A3%04d",analogRead(3));
-                Serial.println(commandbuffer);
+                sprintf(commandbuffer,"$A3%04d\n",analogRead(3));
+                Serial.print(commandbuffer);
             }
             if( cmd0=='A' && cmd1=='4'){
-                sprintf(commandbuffer,"$A4%04d",analogRead(4));
-                Serial.println(commandbuffer);
+                sprintf(commandbuffer,"$A4%04d\n",analogRead(4));
+                Serial.print(commandbuffer);
             }
             if( cmd0=='A' && cmd1=='5'){
-                sprintf(commandbuffer,"$A5%04d",analogRead(5));
-                Serial.println(commandbuffer);
+                sprintf(commandbuffer,"$A5%04d\n",analogRead(5));
+                Serial.print(commandbuffer);
             }
             Serial.flush(); 
         }
