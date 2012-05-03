@@ -1,10 +1,6 @@
 #include "force.h"
 
-#include <cstdio>
 #include <gpib/ib.h>
-#include <cmath>
-#include <iostream>
-#include <fstream>
 #include <QString>
 #include <QSettings>
 #include <stdexcept>
@@ -314,9 +310,9 @@ ForceHardware::ForceHardware(VariableModel* v){
      } else{
          filename = settings.value(SETTINGS_FORCES_MATRIX_MIDDLE,SETTINGS_FORCES_MATRIX_MIDDLE_DEFAULT).toString();
      }
-     std::ifstream matrix_file(filename.toStdString().c_str(),std::ios::in|std::ios::binary);
-     if (matrix_file.is_open()) {
-         matrix_file.read((char*)&coe, sizeof(struct matrix));
+     QFile matrix_file(filename);
+     if(matrix_file.open(QIODevice::ReadOnly) == true){
+         matrix_file.read((char*)&coe,sizeof(struct matrix));
          matrix_file.close();
      } else {
          throw std::runtime_error("Could not open matrix file");

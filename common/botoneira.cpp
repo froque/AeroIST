@@ -14,7 +14,7 @@ int init_arduino(const char *port){
 }
 
 int set_relay(int fd, char relay , int command){
-    char buffer[7],buffer_read[256]="";
+    char buffer[9],buffer_read[256]="";
     bool sucess=false;
 
     buffer[0]='$';
