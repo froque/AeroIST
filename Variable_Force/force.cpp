@@ -310,6 +310,8 @@ ForceHardware::ForceHardware(VariableModel* v){
      } else{
          filename = settings.value(SETTINGS_FORCES_MATRIX_MIDDLE,SETTINGS_FORCES_MATRIX_MIDDLE_DEFAULT).toString();
      }
+     // matrix are in the same path as executable
+     filename.prepend(qApp->applicationDirPath() + "/");
      QFile matrix_file(filename);
      if(matrix_file.open(QIODevice::ReadOnly) == true){
          matrix_file.read((char*)&coe,sizeof(struct matrix));
