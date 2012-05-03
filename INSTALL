@@ -4,7 +4,7 @@ Dependencies:
  - linux-gpib
 
 
-Compile Instrunctions:
+Compile Instructions:
  - qmake
  - make
  # make install - not used at this time
@@ -14,3 +14,4 @@ Compile Instrunctions:
 
 Linux-GPIB requires to compile:
  - linux-headers
+ - user must have read acces to gpib devices
