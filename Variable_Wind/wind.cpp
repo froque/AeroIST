@@ -10,7 +10,11 @@
 #define SETTINGS_ARDUINO_PATH "arduino_path"
 #define SETTINGS_ARDUINO_PATH_DEFAULT "/dev/ttyUSB0"
 
-#define NUM_CHANNELS 5
+#define NUM_CHANNELS 8
+// the first black box has 8 channels, but only 5 are of real interest.
+// to keep consistency of names and numbers, there is the following global variable
+bool actives[NUM_CHANNELS]={false,true,true,true,true,true,false,false};
+
 #define SETTINGS_WIND "wind_channel"
 #define SETTINGS_WIND_DEFAULT 1
 #define TAG_WIND_CHANNEL "wind_channel"
@@ -73,12 +77,28 @@ QWidget* WindPreferences::get_widget() {
     QSettings settings;
     QAbstractButton *button;
     group = new QButtonGroup;
-    int half = (NUM_CHANNELS%2==0)? NUM_CHANNELS/2 : (NUM_CHANNELS+1)/2;
-    for (int k=1; k<= NUM_CHANNELS; k++){
-        button = new QRadioButton(QString(QObject::tr("channel %1")).arg(k));
-        group->addButton(button,k);
-        layout->addWidget(button,(k-1)%half,((k<=half)? 0:1));
+
+    // count the number of active channes
+    int num_actives=0;
+    for (int k=0; k< NUM_CHANNELS; k++){
+        if(actives[k] == true){
+            num_actives++;
+        }
     }
+
+    // to divide the number of active channels in 2 for display in a grid
+    int half = (num_actives%2==0)? num_actives/2 : (num_actives+1)/2;
+
+    // beware of start indices!
+    for (int k=1, j=1; k<= NUM_CHANNELS; k++){
+        if(actives[k-1] == true){
+            button = new QRadioButton(QString(QObject::tr("channel %1")).arg(k));
+            group->addButton(button,k);
+            layout->addWidget(button,(j-1)%half,((j<=half)? 0:1));
+            j++;
+        }
+    }
+
     button = group->button(settings.value(SETTINGS_WIND,SETTINGS_WIND_DEFAULT).toInt());
     if(button != 0){
         button->setChecked(true);
@@ -161,12 +181,28 @@ QWidget* WindModel::measurement_get_widget(){
     QSettings settings;
     QAbstractButton *button;
     group = new QButtonGroup;
-    int half = (NUM_CHANNELS%2==0)? NUM_CHANNELS/2 : (NUM_CHANNELS+1)/2;
-    for (int k=1; k<= NUM_CHANNELS; k++){
-        button = new QRadioButton(QString(QObject::tr("channel %1")).arg(k));
-        group->addButton(button,k);
-        layout->addWidget(button,(k-1)%half,((k<=half)? 0:1));
+
+    // count the number of active channes
+    int num_actives=0;
+    for (int k=0; k< NUM_CHANNELS; k++){
+        if(actives[k] == true){
+            num_actives++;
+        }
     }
+
+    // to divide the number of active channels in 2 for display in a grid
+    int half = (num_actives%2==0)? num_actives/2 : (num_actives+1)/2;
+
+    // beware of start indices!
+    for (int k=1, j=1; k<= NUM_CHANNELS; k++){
+        if(actives[k-1] == true){
+            button = new QRadioButton(QString(QObject::tr("channel %1")).arg(k));
+            group->addButton(button,k);
+            layout->addWidget(button,(j-1)%half,((j<=half)? 0:1));
+            j++;
+        }
+    }
+
     button = group->button(settings.value(SETTINGS_WIND,SETTINGS_WIND_DEFAULT).toInt());
     if(button != 0){
         button->setChecked(true);
