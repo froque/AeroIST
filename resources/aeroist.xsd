@@ -52,8 +52,8 @@
     <xs:element ref="Alpha" minOccurs="0" />
     <xs:element ref="Beta" minOccurs="0" />
     <xs:element ref="Motor" minOccurs="0" />
-    <xs:element ref="Temperature" minOccurs="0" />
     <xs:element ref="Wind" minOccurs="0" />
+    <xs:element ref="Temperature" minOccurs="0" />
   </xs:sequence>
 </xs:group>
 

@@ -407,10 +407,10 @@ void AeroISTWindow::load_xml(QString fileName){
     QXmlSchema schema;
     QSettings settings;
 
-    schema.load( QUrl::fromLocalFile(settings.value(SETTINGS_SCHEMA_FILE,SETTINGS_SCHEMA_FILE_DEFAULT).toString()) );
+    schema.load( QUrl::fromLocalFile(qApp->applicationDirPath() + "/" +  settings.value(SETTINGS_SCHEMA_FILE,SETTINGS_SCHEMA_FILE_DEFAULT).toString()) );
     if (schema.isValid()){
         QXmlSchemaValidator validator( schema );
-        if(!validator.validate(QUrl::fromLocalFile(fileName))){
+        if(!validator.validate(QUrl::fromLocalFile(fileName)) && settings.value(SETTINGS_SCHEMA_CONFIRM,false).toBool() == true){
             message(tr("Couldn't confirm xml file. Continuing without guaranty."));
 //            return;
         }

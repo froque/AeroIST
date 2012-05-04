@@ -18,6 +18,7 @@ Preferences::Preferences(QWidget *parent) :
     ui->edit_project->setText(settings.value(SETTINGS_PROJECT_FOLDER).toString());
     ui->spinBox->setValue(settings.value(SETTINGS_DEFAULT_MEASURES_ITERATION).toInt());
     ui->doubleSpinBox->setValue(settings.value(SETTINGS_DEFAULT_SETTLING_TIME).toDouble());
+    ui->checkBoxSchema->setChecked(settings.value(SETTINGS_SCHEMA_CONFIRM).toBool());
 
     Factory *factory;
     QDir pluginsDir = QDir(qApp->applicationDirPath());
@@ -56,6 +57,7 @@ void Preferences::accept(){
     settings.setValue(SETTINGS_DEFAULT_MEASURES_ITERATION, ui->spinBox->value());
     settings.setValue(SETTINGS_DEFAULT_SETTLING_TIME,ui->doubleSpinBox->value());
     settings.setValue(SETTINGS_PROJECT_FOLDER,ui->edit_project->text());
+    settings.setValue(SETTINGS_SCHEMA_CONFIRM,ui->checkBoxSchema->isChecked());
 
     QDialog::accept();
 }

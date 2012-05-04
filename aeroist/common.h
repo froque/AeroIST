@@ -33,6 +33,7 @@ enum ThreadStatus{
 #define SETTINGS_PROJECT_FOLDER "project_folder"
 #define SETTINGS_SCHEMA_FILE "schema_file"
 #define SETTINGS_SCHEMA_FILE_DEFAULT "aeroist.xsd"
+#define SETTINGS_SCHEMA_CONFIRM "schema_confirm"
 #define SETTINGS_GUI_STATE "gui/state"
 #define SETTINGS_GUI_GEOMETRY "gui/geometry"
 #define SETTINGS_GUI_TABWIDGET "gui/tabwidget"

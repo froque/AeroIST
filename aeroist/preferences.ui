@@ -87,6 +87,13 @@
          </property>
         </widget>
        </item>
+       <item row="3" column="0" colspan="3">
+        <widget class="QCheckBox" name="checkBoxSchema">
+         <property name="text">
+          <string>Confirm schema on loading project file</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
     </widget>
