@@ -100,9 +100,9 @@ QWidget* WindModel::measurement_get_widget(){
 }
 bool WindModel::measurement_accept_config(VariableModel *m){
         Q_UNUSED(m);
+    channel = group->checkedId();
     // it really does not make sense to check unless it is included in the reference
 /*
-    channel = group->checkedId();
     if (m != NULL){
         if (channel != dynamic_cast<WindModel*>(m)->channel){
             QMessageBox message;
