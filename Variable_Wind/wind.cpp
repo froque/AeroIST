@@ -222,12 +222,40 @@ WindHardware::WindHardware(VariableModel* v) {
     QSettings settings;
     arduinofd = serialport_init(settings.value(SETTINGS_ARDUINO_PATH).toString().toStdString().c_str(),SERIALRATE);
 
+    bool sucess=false;
+    char buffer_read[256]="";
     char buffer[20];
-    sprintf(buffer,"$CS%dxxx\n",channel);
-    serialport_write(arduinofd, buffer);
-    serialport_write(arduinofd, "$CExxxx\n");
+    // on the arduino channel starts at 0. But for the user it starts at 1
+    sprintf(buffer,"$CS%dxxx\n",channel-1);
 
+    while (sucess == false){
+        serialport_flush(arduinofd);
+        if( serialport_write(arduinofd, buffer) == -1){
+            perror("Wind writing");
+        }
 
+        serialport_read_until(arduinofd, buffer_read, '\n');
+
+        if (strncmp(buffer,buffer_read,3)==0){
+            sucess=true;
+        }
+    }
+
+    strcpy(buffer,"$CExxxx\n");
+
+    sucess =  false;
+    while (sucess == false){
+        serialport_flush(arduinofd);
+        if( serialport_write(arduinofd, buffer) == -1){
+            perror("Wind writing");
+        }
+
+        serialport_read_until(arduinofd, buffer_read, '\n');
+
+        if (strncmp(buffer,buffer_read,3)==0){
+            sucess=true;
+        }
+    }
 }
 WindHardware::~WindHardware() {
   serialport_write(arduinofd, "$CDxxxx\n");
