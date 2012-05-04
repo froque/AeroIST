@@ -26,7 +26,7 @@ MeasurementsPreferences::MeasurementsPreferences(MeasurementsModel *measurement,
     ui->spinBoxMeasuresIteration->setValue(settings.value(SETTINGS_DEFAULT_MEASURES_ITERATION).toInt());
     ui->doubleSpinBoxSettling->setValue(settings.value(SETTINGS_DEFAULT_SETTLING_TIME).toDouble());
 
-    // adds widgets to tabwidget for eache configurable variable
+    // adds widgets to tabwidget for each configurable variable
     foreach (VariableModel *var, measurement->variables) {
         if(var->measurement_is_configurable()){
             ui->tabWidget->addTab(var->measurement_get_widget(),var->meta->get_general_name_tr());
@@ -104,6 +104,7 @@ MeasurementsPreferences::MeasurementsPreferences(MeasurementsModel *measurement,
 
     connect(group, SIGNAL(buttonClicked(QAbstractButton*)),this,SLOT(maxminstep_enabled(QAbstractButton*)));
     ui->edit_name->setFocus();
+    maxminstep_enabled(radio_none); // to disable other spinboxs
     adjustSize();
 }
 
