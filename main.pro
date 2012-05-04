@@ -5,6 +5,11 @@
 
 TEMPLATE = subdirs
 
+CONFIG += ordered
+
+# internal libs for static compilation
+SUBDIRS += staticlibs/staticlib.pro
+
 
 SUBDIRS += aeroist/AeroIST.pro
 
@@ -30,6 +35,8 @@ SUBDIRS += \
 # DESTDIR = plugins
 SUBDIRS += Variable_Time/Time.pro
 SUBDIRS += arduino/Arduino.pro
+
+
 
 TRANSLATIONS = translations/aeroist_en.ts\
                 translations/aeroist_pt.ts

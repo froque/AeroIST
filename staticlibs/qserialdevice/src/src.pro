@@ -1,6 +1,6 @@
 TEMPLATE = lib
-CONFIG += dll
-#CONFIG += staticlib
+#CONFIG += dll
+CONFIG += staticlib
 QT -= gui
 TARGET = SerialPort
 
@@ -82,6 +82,5 @@ unix:!symbian {
     }
 }
 
-
-
-
+OBJECTS_DIR   = objs
+MOC_DIR = moc

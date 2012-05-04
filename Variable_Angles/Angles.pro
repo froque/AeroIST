@@ -12,61 +12,32 @@ MOC_DIR       = moc
 DESTDIR       = ../build/plugins_real
 
 SOURCES       += angles.cpp
-SOURCES       += ../common/botoneira.cpp \
-                ../common/arduino-serial.cpp
 
 HEADERS       += angles.h
-HEADERS       += ../common/botoneira.h \
-                ../common/arduino-serial.h
 
-INCLUDEPATH += ../qserialdevice/include
 INCLUDEPATH += ../common
 
-HEADERS += \
-    ../qserialdevice/include/serialport.h \
-    ../qserialdevice/include/serialportinfo.h
 
-HEADERS += \
-    ../qserialdevice/src/serialport_p.h \
-    ../qserialdevice/src/ringbuffer_p.h \
-    ../qserialdevice/src/serialportengine_p.h \
-    ../qserialdevice/src/serialportinfo_p.h
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../staticlibs/botoneira/release/ -lbotoneira
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../staticlibs/botoneira/debug/ -lbotoneira
+else:symbian: LIBS += -lbotoneira
+else:unix: LIBS += -L$$OUT_PWD/../staticlibs/botoneira/ -lbotoneira
 
-SOURCES += \
-    ../qserialdevice/src/serialport.cpp \
-    ../qserialdevice/src/serialportinfo.cpp
+INCLUDEPATH += $$PWD/../staticlibs/botoneira
+DEPENDPATH += $$PWD/../staticlibs/botoneira
 
-win32 {
-    HEADERS += \
-        ../qserialdevice/src/serialportengine_p_win.h
-    SOURCES += \
-        ../qserialdevice/src/serialportengine_p_win.cpp \
-        ../qserialdevice/src/serialportinfo_win.cpp
+win32:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../staticlibs/botoneira/release/botoneira.lib
+else:win32:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../staticlibs/botoneira/debug/botoneira.lib
+else:unix:!symbian: PRE_TARGETDEPS += $$OUT_PWD/../staticlibs/botoneira/libbotoneira.a
 
-    !wince*: LIBS += -lsetupapi -luuid -ladvapi32
-}
-unix:!symbian {
-    maemo5 {
-        target.path = /opt/usr/lib
-    } else {
-        target.path = /usr/lib
-    }
-    INSTALLS += target
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../staticlibs/qserialdevice/src/release/ -lSerialPort
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../staticlibs/qserialdevice/src/debug/ -lSerialPort
+else:symbian: LIBS += -lSerialPort
+else:unix: LIBS += -L$$OUT_PWD/../staticlibs/qserialdevice/src/ -lSerialPort
 
-    HEADERS += \
-        ../qserialdevice/src/ttylocker_p_unix.h \
-        ../qserialdevice/src/serialportengine_p_unix.h
-    SOURCES += \
-        ../qserialdevice/src/ttylocker_p_unix.cpp \
-        ../qserialdevice/src/serialportengine_p_unix.cpp
+INCLUDEPATH += $$PWD/../staticlibs/qserialdevice/include
+DEPENDPATH += $$PWD/../staticlibs/qserialdevice/src
 
-    macx {
-        SOURCES += ../qserialdevice/src/serialportinfo_mac.cpp
-        LIBS += -framework IOKit -framework CoreFoundation
-    } else {
-        SOURCES += ../qserialdevice/src/serialportinfo_unix.cpp
-        linux*:contains( DEFINES, HAVE_LIBUDEV ) {
-            LIBS += -ludev
-        }
-    }
-}
+win32:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../staticlibs/qserialdevice/src/release/SerialPort.lib
+else:win32:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../staticlibs/qserialdevice/src/debug/SerialPort.lib
+else:unix:!symbian: PRE_TARGETDEPS += $$OUT_PWD/../staticlibs/qserialdevice/src/libSerialPort.a

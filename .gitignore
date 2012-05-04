@@ -5,3 +5,4 @@ moc/
 objs/
 ui/
 *.qm
+*.a
