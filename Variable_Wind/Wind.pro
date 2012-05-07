@@ -17,14 +17,15 @@ SOURCES       += wind.cpp
 
 HEADERS       += wind.h
 
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../staticlibs/arduino-serial/release/ -larduino-serial
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../staticlibs/arduino-serial/debug/ -larduino-serial
-else:symbian: LIBS += -larduino-serial
-else:unix: LIBS += -L$$OUT_PWD/../staticlibs/arduino-serial/ -larduino-serial
 
-INCLUDEPATH += $$PWD/../staticlibs/arduino-serial
-DEPENDPATH += $$PWD/../staticlibs/arduino-serial
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../staticlibs/arduino-botoneira/release/ -larduino-serial
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../staticlibs/arduino-botoneira/debug/ -larduino-serial
+else:symbian: LIBS += -lbotoneira
+else:unix: LIBS += -L$$OUT_PWD/../staticlibs/arduino-botoneira/ -larduino-serial
 
-win32:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../staticlibs/arduino-serial/release/arduino-serial.lib
-else:win32:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../staticlibs/arduino-serial/debug/arduino-serial.lib
-else:unix:!symbian: PRE_TARGETDEPS += $$OUT_PWD/../staticlibs/arduino-serial/libarduino-serial.a
+INCLUDEPATH += $$PWD/../staticlibs/arduino-botoneira
+DEPENDPATH += $$PWD/../staticlibs/arduino-botoneira
+
+win32:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../staticlibs/arduino-botoneira/release/arduino-serial.lib
+else:win32:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../staticlibs/arduino-botoneira/debug/arduino-serial.lib
+else:unix:!symbian: PRE_TARGETDEPS += $$OUT_PWD/../staticlibs/arduino-botoneira/libarduino-serial.a
