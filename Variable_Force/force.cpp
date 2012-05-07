@@ -328,19 +328,8 @@ ForceHardware::ForceHardware(VariableModel* v){
      nominal_load[4] = 100.0;
      nominal_load[5] = 100.0;
 
-     int row,j,line,k;
-
-     // for getting the dvm for the zero. using R = AF + BF^2
-     for (row = 0; row< NUMCHANNELS; row++){
-         k = 0;
+     for (int row = 0; row< NUMCHANNELS; row++){
          dvm_si_zero[row] = 0.0;
-         for (line = 0; line < NUMCHANNELS; line++){
-             dvm_si_zero[row] = dvm_si_zero[row] + coe.coef_lin[line][row] * zero[line];  //matrix is transposed on file
-             for (j = line; j < NUMCHANNELS; j++){
-                 dvm_si_zero[row] = dvm_si_zero[row] + (coe.coef_qua[k][row] * zero[j] * zero[line]); //matrix is transposed on file
-                 k++;
-             }
-         }
      }
 
      g_id = ibfind(settings.value(SETTINGS_MULTIMETER_PATH,SETTINGS_MULTIMETER_PATH_DEFAULT).toString().toStdString().c_str());
@@ -379,6 +368,20 @@ void ForceHardware::set_final() {
 void ForceHardware::set_zero(QVector<double> zero) {
     this->zero = zero;
     qDebug() << this->zero;
+
+    int row,j,line,k;
+    // for getting the dvm for the zero. using R = AF + BF^2
+    for (row = 0; row< NUMCHANNELS; row++){
+        k = 0;
+        dvm_si_zero[row] = 0.0;
+        for (line = 0; line < NUMCHANNELS; line++){
+            dvm_si_zero[row] = dvm_si_zero[row] + coe.coef_lin[line][row] * zero[line];  //matrix is transposed on file
+            for (j = line; j < NUMCHANNELS; j++){
+                dvm_si_zero[row] = dvm_si_zero[row] + (coe.coef_qua[k][row] * zero[j] * zero[line]); //matrix is transposed on file
+                k++;
+            }
+        }
+    }
 }
 
 void ForceHardware::convert_dvm(){
