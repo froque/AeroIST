@@ -21,6 +21,7 @@ public:
 signals:
   void MeasureDone(QHash<QString,double>,QHash<QString,double>);
   void progress(int);
+  void message(QString);
 
 public slots:
     void produce(void);

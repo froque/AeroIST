@@ -157,6 +157,7 @@ void AeroISTWindow::on_ThreadButton_clicked(){
     }
     catch ( const std::runtime_error & err ) {
         message(tr("Error opening devices: ") + err.what());
+        delete m_test;
         return ;
     }
 
@@ -165,6 +166,7 @@ void AeroISTWindow::on_ThreadButton_clicked(){
     }
     catch ( const std::runtime_error & err ) {
         message(tr("Error using devices: ") + err.what());
+        delete m_test;
         return ;
     }
 
@@ -180,6 +182,8 @@ void AeroISTWindow::on_ThreadButton_clicked(){
     // dump connect
     connect(m_test,SIGNAL(MeasureDone(QHash<QString,double>,QHash<QString,double>)), measurementThread, SLOT(GetMeasure(QHash<QString,double>,QHash<QString,double>)));
 
+    // messages
+    connect(m_test,SIGNAL(message(QString)),this,SLOT(message(QString)));
 
     // stop connects
     connect(ui->ThreadButton, SIGNAL(clicked()), m_test, SLOT(stop()));
@@ -628,6 +632,7 @@ void AeroISTWindow::on_actionNew_Reference_triggered(){
         catch ( const std::runtime_error & err ) {
             message(tr("Error opening devices: ") + err.what());
             reference_list->deleteMeasure(index);
+            delete m_test;
             return ;
         }
 
@@ -637,6 +642,7 @@ void AeroISTWindow::on_actionNew_Reference_triggered(){
         catch ( const std::runtime_error & err ) {
             message(tr("Error using devices: ") + err.what());
             reference_list->deleteMeasure(index);
+            delete m_test;
             return ;
         }
 
@@ -651,6 +657,9 @@ void AeroISTWindow::on_actionNew_Reference_triggered(){
 
         // dump connect
         connect(m_test, SIGNAL(MeasureDone(QHash<QString,double>,QHash<QString,double>)),referenceThread, SLOT(GetMeasure(QHash<QString,double>,QHash<QString,double>)));
+
+        // messages
+        connect(m_test,SIGNAL(message(QString)),this,SLOT(message(QString)));
 
         // stop connects
         connect(m_thread,SIGNAL(finished()),this,SLOT(ReferenceButton_cleanup()));

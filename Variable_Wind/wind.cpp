@@ -1,6 +1,7 @@
 #include "wind.h"
 #include "arduino-serial.h"
 
+#include <stdexcept>
 #include <QSettings>
 
 #define WIND_SENSITIVITY 3.98
@@ -258,6 +259,7 @@ WindHardware::WindHardware(VariableModel* v) {
     QSettings settings;
     arduinofd = serialport_init(settings.value(SETTINGS_ARDUINO_PATH).toString().toStdString().c_str(),SERIALRATE);
 
+    int tries = 0;
     bool sucess=false;
     char buffer_read[256]="";
     char buffer[20];
@@ -267,29 +269,42 @@ WindHardware::WindHardware(VariableModel* v) {
     while (sucess == false){
         serialport_flush(arduinofd);
         if( serialport_write(arduinofd, buffer) == -1){
-            perror("Wind writing");
+            throw std::runtime_error("Problem in reading from Wind");
         }
 
         serialport_read_until(arduinofd, buffer_read, '\n');
 
         if (strncmp(buffer,buffer_read,3)==0){
             sucess=true;
+        } else {
+            // give up after 5 tries;
+            tries++;
+            if(tries > 5){
+                throw std::runtime_error("Problem in Wind");
+            }
         }
     }
 
     strcpy(buffer,"$CExxxx\n");
 
+    tries = 0;
     sucess =  false;
     while (sucess == false){
         serialport_flush(arduinofd);
         if( serialport_write(arduinofd, buffer) == -1){
-            perror("Wind writing");
+            throw std::runtime_error("Problem in reading from Wind");
         }
 
         serialport_read_until(arduinofd, buffer_read, '\n');
 
         if (strncmp(buffer,buffer_read,3)==0){
             sucess=true;
+        } else {
+            // give up after 5 tries;
+            tries++;
+            if(tries > 5){
+                throw std::runtime_error("Problem in Wind");
+            }
         }
     }
 }
@@ -301,7 +316,7 @@ void WindHardware::read() {
     char buffer_read[256]="", buffer_aux[256];
     char buffer[] = "$A5xxxx\n";               // read from analog 5
     bool sucess=false;
-
+    int tries = 0;
     // response form: $CIXXXX\n
     // $ is a start byte
     // \n is a stop byte
@@ -309,7 +324,7 @@ void WindHardware::read() {
     while (sucess == false){
         serialport_flush(arduinofd);
         if( serialport_write(arduinofd, buffer) == -1){
-            perror("Wind writing");
+            throw std::runtime_error("Problem in reading from Wind");
         }
 
         serialport_read_until(arduinofd, buffer_read, '\n');
@@ -318,6 +333,12 @@ void WindHardware::read() {
             strncpy(buffer_aux,buffer_read + 3,4);
             wind_raw = atoi(buffer_aux);
             sucess=true;
+        } else {
+            // give up after 5 tries;
+            tries++;
+            if(tries > 5){
+                throw std::runtime_error("Problem in reading from Wind");
+            }
         }
     }
     // 5.0 V

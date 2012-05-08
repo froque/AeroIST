@@ -299,31 +299,41 @@ void MotorHardware::talk_to_simoreg(void){
     buffer[7] = bcc;
 
     //    printf("SENDING:   stx:%02X lge:%02X adr:%02X net1:%02X%02X net2:%02X%02X bcc:%02X\n",stx,lge,adr,net1high,net1low,net2high,net2low,bcc);
+    int tries = 0;
+    bool success = false;
+    while (success == false ){
+        for(unsigned int k=0;k<sizeof(buffer);k++){
+            if ( write(fd, &buffer[k], 1) <1){
+                throw std::runtime_error("error on writing to SIMOREG");
+            }
+        }
 
-    for(unsigned int k=0;k<sizeof(buffer);k++){
-        if ( write(fd, &buffer[k], 1) <1){
-            throw std::runtime_error("error on writing to SIMOREG");
+        int bytesRead = ::read(fd,buffer2,SIMOREG_BUFLEN);
+        if (bytesRead != SIMOREG_BUFLEN) {
+            throw std::runtime_error("Error on reading from the SIMOREG serial port");
+        }
+
+        bcc=0;
+        for( int k=0 ; k<bytesRead-1 ; k++) {
+            bcc ^= buffer2[k];
+        }
+
+        //    printf("RECEIVING: stx:%02X lge:%02X adr:%02X net1:%02X %02X net2:%02X %02X bcc:%02X bcc_calc:%02X\n",buffer2[0],buffer2[1],buffer2[2],buffer2[3],buffer2[4],buffer2[5],buffer2[6],buffer2[7],bcc );
+
+        if (bcc == buffer2[bytesRead-1]) {
+            //        printf("bcc that should be %02X\t\t - bcc that is %02X",bcc,buffer2[bytesRead-1]);
+            //throw std::runtime_error("error on BCC. Try the green button");
+            success = true;
+        } else {
+            // give up after 5 tries;
+            tries++;
+            if(tries > 5){
+                throw std::runtime_error("Problem in reading from SIMOREG");
+            }
         }
     }
 
-    int bytesRead = ::read(fd,buffer2,SIMOREG_BUFLEN);
-
-    if (bytesRead != SIMOREG_BUFLEN) {
-        throw std::runtime_error("Error on reading from the SIMOREG serial port");
-    }
-
-    bcc=0;
-    for( int k=0 ; k<bytesRead-1 ; k++) {
-        bcc ^= buffer2[k];
-    }
-
-    //    printf("RECEIVING: stx:%02X lge:%02X adr:%02X net1:%02X %02X net2:%02X %02X bcc:%02X\n",buffer2[0],buffer2[1],buffer2[2],buffer2[3],buffer2[4],buffer2[5],buffer2[6],buffer2[7]);
-
-    if (bcc != buffer2[bytesRead-1]) {    
-        //        printf("bcc that should be %02X\t\t - bcc that is %02X",bcc,buffer2[bytesRead-1]);
-        throw std::runtime_error("error on BCC. Try the green button");
-    }
-
+    // 11 decimal = 0000 1011 binary
     terminal37 = !(buffer2[4] & 11);
     speed_actual = convert_percentage(buffer2[5], buffer2[6]);
 }

@@ -229,7 +229,7 @@ AnglesHardware::AnglesHardware(){
         throw std::runtime_error("unable to open angles device");
         return;
     }
-    qDebug() << settings.value(SETTINGS_ANGLES_PATH).toString() << port->portName() << port->rate() << port->dataBits() << port->parity() << port->stopBits() << port->openMode();
+
     QString command = "$0L1251";                // set 24 bits +1 bit PBF for encoder 1, parity on
     command.append('\r');
     int status = port->write(command.toAscii());
@@ -266,19 +266,25 @@ AnglesHardware::~AnglesHardware(){
 void AnglesHardware::read() {
     QString command;
     QString output;
+    int tries = 0;
     bool ok1 = false, ok2 = false;
     unsigned gray1 = 0,gray2 = 0;
     while ((ok1 && ok2) == false){
+        // give up after 5 tries;
+        if(tries > 5){
+            throw std::runtime_error("Problem in reading from SSI converter");
+        }
+
         command = "$0R1";
         command.append('\r');
         port->write(command.toAscii());
         if (port->waitForReadyRead(50) == false){
-            qDebug() << "error on waiting in read from encoder 1";
+            tries++;
             continue;
         }
         output = port->readAll();
         if (output.contains("NACK")){
-            qDebug() << "failed response from SSI to USB" << output;
+            tries++;
             continue;
         }
 
@@ -288,19 +294,19 @@ void AnglesHardware::read() {
         command.append('\r');
         port->write(command.toAscii());
         if (port->waitForReadyRead(50) == false){
-            qDebug() << "error on waiting in read from encoder 2";
+            tries++;
             continue;
         }
         output = port->readAll();
         if (output.contains("NACK")){
-            qDebug() << "failed response from SSI to USB" << output;
+            tries++;
             continue;
         }
 
         gray2 = output.mid(4,10).toUInt(&ok2);            // length 10 for 25 bits
 
         if ((ok1 != true) || (ok2 != true)){
-            qDebug() << "conversion not ok" << output;
+            tries++;
             continue;
         }
     }

@@ -4,8 +4,7 @@
 #include "arduino-serial.h"
 #include "botoneira.h"
 
-
-
+#include <stdexcept>
 
 int init_arduino(const char *port){
     int fd;
@@ -16,6 +15,7 @@ int init_arduino(const char *port){
 int set_relay(int fd, char relay , int command){
     char buffer[9],buffer_read[256]="";
     bool sucess=false;
+    int tries = 0;
 
     buffer[0]='$';
     buffer[1]='R';
@@ -41,15 +41,21 @@ int set_relay(int fd, char relay , int command){
     while (sucess == false){
         serialport_flush(fd);
         if( serialport_write(fd, buffer) == -1){
-            perror("botoneira writing");
+            throw std::runtime_error("Problem in Arduino");
             return -1;
         }
 
         if( serialport_read_until(fd, buffer_read, '\n') == -1){
-            perror("botoneira reading");
+            throw std::runtime_error("Problem in Arduino");
         }
         if (strncmp(buffer,buffer_read,8)==0){
             sucess=true;
+        } else {
+            // give up after 5 tries;
+            tries++;
+            if(tries > 5){
+                throw std::runtime_error("Problem in Arduino");
+            }
         }
     }
     return 0;

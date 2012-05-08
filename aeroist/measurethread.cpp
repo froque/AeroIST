@@ -75,7 +75,13 @@ void MeasureThread::init(QList<VariableModel*> list){
             if (meta != NULL){
                 foreach (VariableModel *model, list) {
                     if (meta->get_general_name() == model->meta->get_general_name()){
-                        VariableHardware *hardware = factory->CreateVariableHardware(model);
+                        VariableHardware *hardware;
+                        try {
+                            hardware = factory->CreateVariableHardware(model);
+                        } catch (...){
+                            qDeleteAll(variables);
+                            throw;
+                        }
                         if (hardware != NULL){
                             variables.append(hardware );
                             break;
@@ -113,49 +119,62 @@ void MeasureThread::isReady(void){
 void MeasureThread::produce(){
     int k = 1;
     QEventLoop eloop;
-    set_initial();
-    while(!m_stop) {
-        set_m();
-        Helper::msleep(settling_time*1000);
+    try{
+        set_initial();
+        while(!m_stop) {
+            set_m();
+            Helper::msleep(settling_time*1000);
 
-        // make N reads and send them to
-        for (int l =0; l< measures_per_iteration; l++){
-            read_m();
-            emit MeasureDone(m_hash,raw_hash);
+            // make N reads and send them to
+            for (int l =0; l< measures_per_iteration; l++){
+                read_m();
+                emit MeasureDone(m_hash,raw_hash);
+                eloop.processEvents(QEventLoop::AllEvents, 50);
+            }
+
+            if(control == ""){
+                if (iterations != 0 ){
+                    double perc = ((k*1.0)/(iterations*1.0)) *100;
+                    emit progress( (int) perc);
+                    if ( k>= iterations ){
+                        m_stop = true;
+                    }
+                }
+            } else {
+                current = current + step;
+                double perc = ((current - start) *1.0)/((end - start)*1.0) *100;
+                emit progress( (int) perc);
+                if (( step > 0 && current > end) || (step < 0 && current < end)){
+                    m_stop = true;
+                    emit progress( 100 ); // the step may not be adjusted to finish with 100%
+                }
+            }
+
+            k++;
             eloop.processEvents(QEventLoop::AllEvents, 50);
         }
 
-        if(control == ""){
-            if (iterations != 0 ){
-                double perc = ((k*1.0)/(iterations*1.0)) *100;
-                emit progress( (int) perc);
-                if ( k>= iterations ){
-                    m_stop = true;
-                }
-            }
-        } else {
-            current = current + step;
-            double perc = ((current - start) *1.0)/((end - start)*1.0) *100;
-            emit progress( (int) perc);
-            if (( step > 0 && current > end) || (step < 0 && current < end)){
-                m_stop = true;
-                emit progress( 100 ); // the step may not be adjusted to finish with 100%
+        // set variables to final safe values
+
+        foreach (VariableHardware *hardware, variables) {
+            VariableMeta *var = hardware->meta;
+            if (var->is_controlable() && hardware->has_set_final()){
+                hardware->set_final();
             }
         }
-
-        k++;
-        eloop.processEvents(QEventLoop::AllEvents, 50);
     }
-
-    // set variables to final safe values
-
-    foreach (VariableHardware *hardware, variables) {
-        VariableMeta *var = hardware->meta;
-        if (var->is_controlable() && hardware->has_set_final()){
-            hardware->set_final();
+    catch(const std::runtime_error &err){
+        // something has gone wrong in the middle of setting and reading
+        // cleanup hardware variables, send a message and quit.
+        QString  error(QObject::tr("Theres was a problem in setting or reading from hardware.\nThe measurement has stopped.\n\n"));
+        error.append(err.what());
+        message(error);
+        if (m_parent_thread != thread()){
+            thread()->quit();
+            moveToThread(m_parent_thread);
+            return;
         }
     }
-
     if (m_parent_thread != thread()){
         thread()->quit();
         moveToThread(m_parent_thread);

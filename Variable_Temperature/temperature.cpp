@@ -1,6 +1,7 @@
 #include "temperature.h"
 #include "arduino-serial.h"
 
+#include <stdexcept>
 #include <QSettings>
 
 #define TEMPERATURE_SENSITIVITY 100.0
@@ -184,6 +185,7 @@ void TemperatureHardware::read() {
     char buffer_read[256]="", buffer_aux[256];
     char buffer[] = "$A0xxxx\n";               // read from analog 0
     bool sucess=false;
+    int tries = 0;
 
     if (sensor == 0){
         buffer[2] = '0';
@@ -198,7 +200,7 @@ void TemperatureHardware::read() {
     while (sucess == false){
         serialport_flush(arduinofd);
         if( serialport_write(arduinofd, buffer) == -1){
-            perror("temperature writing");
+            throw std::runtime_error("Problem in reading from Temperature");
         }
 
         serialport_read_until(arduinofd, buffer_read, '\n');
@@ -207,6 +209,12 @@ void TemperatureHardware::read() {
             strncpy(buffer_aux,buffer_read + 3,4);
             temp_raw = atoi(buffer_aux);
             sucess=true;
+        } else {
+            // give up after 5 tries;
+            tries++;
+            if(tries > 5){
+                throw std::runtime_error("Problem in reading from Temperature");
+            }
         }
     }
     // 5.0 V

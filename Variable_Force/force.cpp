@@ -358,7 +358,14 @@ double ForceHardware::get_raw_value(int n){
     return dvm[n];
 }
 bool ForceHardware::isReady(void) {
-    return true;
+    char buf[READBUFFER];
+    ibwrt(g_id,"M0VDR1A0T1L0",12);
+    ibrd(g_id,buf, READBUFFER);
+    if (ibcnt == 12 ){
+        return true;
+    } else {
+        return false;
+    }
 }
 bool ForceHardware::has_set_final() {
     return meta->is_controlable() && false;
