@@ -23,7 +23,8 @@
 
 #define ARDUINO_ANALOG_REF 5.0
 #define SETTINGS_ARDUINO_PATH "arduino_path"
-#define SETTINGS_ARDUINO_PATH_DEFAULT "/dev/ttyUSB0"
+#define SETTINGS_ARDUINO_PATH_DEFAULT "/dev/arduino_duemilanove"
+
 #define SETTINGS_BETA_PATH "beta_path"
 #define SETTINGS_BETA_PATH_DEFAULT "/dev/angle_beta"
 

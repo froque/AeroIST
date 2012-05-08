@@ -9,7 +9,7 @@
 
 #define ARDUINO_ANALOG_REF 5.0
 #define SETTINGS_ARDUINO_PATH "arduino_path"
-#define SETTINGS_ARDUINO_PATH_DEFAULT "/dev/ttyUSB0"
+#define SETTINGS_ARDUINO_PATH_DEFAULT "/dev/arduino_duemilanove"
 
 #define NUM_CHANNELS 8
 // the first black box has 8 channels, but only 5 are of real interest.
