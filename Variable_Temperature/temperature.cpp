@@ -10,7 +10,7 @@
 
 #define ARDUINO_ANALOG_REF 5.0
 #define SETTINGS_ARDUINO_PATH "arduino_path"
-#define SETTINGS_ARDUINO_PATH_DEFAULT "/dev/ttyUSB0"
+#define SETTINGS_ARDUINO_PATH_DEFAULT "/dev/arduino_duemilanove"
 #define SETTINGS_TEMP_SENSOR "temperature_sensor"
 #define SETTINGS_TEMP_SENSOR_DEFAULT 1
 
@@ -174,7 +174,7 @@ TemperatureHardware::TemperatureHardware() {
     temp=0;
     temp_raw=0;
     QSettings settings;
-    arduinofd = serialport_init(settings.value(SETTINGS_ARDUINO_PATH).toString().toStdString().c_str(),SERIALRATE);
+    arduinofd = serialport_init(settings.value(SETTINGS_ARDUINO_PATH,   SETTINGS_ARDUINO_PATH_DEFAULT).toString().toStdString().c_str(),SERIALRATE);
     sensor = settings.value(SETTINGS_TEMP_SENSOR,SETTINGS_TEMP_SENSOR_DEFAULT).toInt();
 }
 

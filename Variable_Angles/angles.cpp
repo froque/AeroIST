@@ -23,12 +23,11 @@
 #define PRECISION_BETA 0.08
 
 #define SETTINGS_ANGLES_PATH "angles_path"
-#define SETTINGS_ANGLES_PATH_DEFAULT "/dev/ttyUSB0"
+#define SETTINGS_ANGLES_PATH_DEFAULT "/dev/SSI_converter"
 
 #define ARDUINO_ANALOG_REF 5.0
 #define SETTINGS_ARDUINO_PATH "arduino_path"
-#define SETTINGS_ARDUINO_PATH_DEFAULT "/dev/ttyUSB0"
-
+#define SETTINGS_ARDUINO_PATH_DEFAULT "/dev/arduino_duemilanove"
 /*
         The purpose of this function is to convert a reflected binary
         Gray code number to a binary number. Source: wikipedia
