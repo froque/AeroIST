@@ -166,7 +166,7 @@ void MeasureThread::produce(){
     catch(const std::runtime_error &err){
         // something has gone wrong in the middle of setting and reading
         // cleanup hardware variables, send a message and quit.
-        QString  error(QObject::tr("Theres was a problem in setting or reading from hardware.\nThe measurement has stopped.\n\n"));
+        QString  error(QObject::tr("There was a problem in setting or reading from hardware.\nThe measurement has stopped.\n\n"));
         error.append(err.what());
         message(error);
         if (m_parent_thread != thread()){
