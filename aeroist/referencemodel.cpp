@@ -59,7 +59,8 @@ QVariant ReferenceModel::data(const QModelIndex &index, int role) const{
     if (!index.isValid()){
         return QVariant();
     }
-
+    // Qt::DisplayRole - show normal values
+    // Qt::UserRole    - show raw values
     if (role == Qt::DisplayRole) {
         int row = index.row();
         int upper = 0,lower = 0;
@@ -92,13 +93,17 @@ QVariant ReferenceModel::data(const QModelIndex &index, int role) const{
 }
 
 QVariant ReferenceModel::headerData(int section, Qt::Orientation orientation, int role) const{
-    if ((role != Qt::DisplayRole) && (role != Qt::UserRole)){
+    if ( !( (role == Qt::DisplayRole) || (role >= Qt::UserRole) )){
         return QVariant();
     }
 
     if (orientation == Qt::Vertical){
         return section+1;
     }
+    // Qt::DisplayRole - don't show units
+    // Qt::UserRole    - dont't translate
+    // Qt::UserRole +1 - translate and show units
+    // Qt::UserRole +2 - translate and show raw units
     if (orientation == Qt::Horizontal) {
         int upper = 0, lower = 0;
         int column = section;
@@ -107,10 +112,11 @@ QVariant ReferenceModel::headerData(int section, Qt::Orientation orientation, in
                 lower = upper;
                 upper += var->meta->get_num();
                 if ( column < upper){
-                    if (role == Qt::DisplayRole){
-                        return var->meta->get_name_tr( column- lower );
-                    } else {
-                        return var->meta->get_name( column- lower );
+                    switch (role){
+                    case Qt::DisplayRole: return var->meta->get_name_tr( column- lower ); break;
+                    case Qt::UserRole +1: return var->meta->get_name_tr(column- lower).append(" (").append(var->meta->get_units(column- lower)).append(")"); break;
+                    case Qt::UserRole +2: return var->meta->get_name_tr(column- lower).append(" (").append(var->meta->get_raw_units(column- lower)).append(")"); break;
+                    case Qt::UserRole: return var->meta->get_name( column- lower ); break;
                     }
                 }
             }

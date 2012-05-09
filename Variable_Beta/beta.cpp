@@ -55,6 +55,10 @@ QString BetaMeta::get_units(int n) {
     Q_UNUSED(n);
     return QString(QObject::trUtf8("º"));
 }
+QString BetaMeta::get_raw_units(int n) {
+    Q_UNUSED(n);
+    return QString(QObject::tr("step"));
+}
 double BetaMeta::get_lower_bound(int n) {
     Q_UNUSED(n);
     return -ANGLEMAX_BETA;

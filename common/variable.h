@@ -29,6 +29,7 @@ public:
     virtual QString get_name_tr(int n) = 0;
     // should be translatable
     virtual QString get_units(int n) = 0;
+    virtual QString get_raw_units(int n) = 0;
     virtual double get_lower_bound(int n) = 0;
     virtual double get_upper_bound(int n) = 0;
     virtual double get_smaller_step(int n) = 0;
@@ -96,7 +97,7 @@ public:
 };
 
 QT_BEGIN_NAMESPACE
-Q_DECLARE_INTERFACE(Factory, "pt.ist.utl.aeroist.factory/1.4")
+Q_DECLARE_INTERFACE(Factory, "pt.ist.utl.aeroist.factory/1.5")
 QT_END_NAMESPACE
 
 #endif // VARIABLE_H

@@ -25,6 +25,10 @@ QString WindMeta::get_units(int n) {
     Q_UNUSED(n);
     return QString(QObject::tr("mmH20"));
 }
+QString WindMeta::get_raw_units(int n) {
+    Q_UNUSED(n);
+    return QString(QObject::tr("step"));
+}
 double WindMeta::get_lower_bound(int n) {Q_UNUSED(n); return 0;}
 double WindMeta::get_upper_bound(int n) {Q_UNUSED(n); return 0;}
 double WindMeta::get_smaller_step(int n) {Q_UNUSED(n); return 0;}

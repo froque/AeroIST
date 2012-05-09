@@ -567,8 +567,8 @@
 <context>
     <name>MotorPreferences</name>
     <message>
-        <location filename="../Variable_Motor/motor.cpp" line="102"/>
-        <location filename="../Virtual_Motor/virtual_motor.cpp" line="59"/>
+        <location filename="../Variable_Motor/motor.cpp" line="106"/>
+        <location filename="../Virtual_Motor/virtual_motor.cpp" line="63"/>
         <source>Choose device</source>
         <translation type="unfinished"></translation>
     </message>
@@ -708,131 +708,137 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Variable_Force/force.cpp" line="109"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="70"/>
+        <location filename="../Variable_Force/force.cpp" line="82"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="60"/>
+        <source>V</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Variable_Force/force.cpp" line="113"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="74"/>
         <source>Multimeter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Variable_Force/force.cpp" line="112"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="73"/>
+        <location filename="../Variable_Force/force.cpp" line="116"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="77"/>
         <source>Default Multimeter time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Variable_Force/force.cpp" line="114"/>
-        <location filename="../Variable_Force/force.cpp" line="200"/>
-        <location filename="../Variable_Force/force.cpp" line="229"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="75"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="137"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="166"/>
+        <location filename="../Variable_Force/force.cpp" line="118"/>
+        <location filename="../Variable_Force/force.cpp" line="204"/>
+        <location filename="../Variable_Force/force.cpp" line="233"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="79"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="141"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="170"/>
         <source>50 ms</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Variable_Force/force.cpp" line="115"/>
-        <location filename="../Variable_Force/force.cpp" line="202"/>
-        <location filename="../Variable_Force/force.cpp" line="230"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="76"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="139"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="167"/>
+        <location filename="../Variable_Force/force.cpp" line="119"/>
+        <location filename="../Variable_Force/force.cpp" line="206"/>
+        <location filename="../Variable_Force/force.cpp" line="234"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="80"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="143"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="171"/>
         <source>100 ms</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Variable_Force/force.cpp" line="116"/>
-        <location filename="../Variable_Force/force.cpp" line="204"/>
-        <location filename="../Variable_Force/force.cpp" line="231"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="77"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="141"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="168"/>
+        <location filename="../Variable_Force/force.cpp" line="120"/>
+        <location filename="../Variable_Force/force.cpp" line="208"/>
+        <location filename="../Variable_Force/force.cpp" line="235"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="81"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="145"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="172"/>
         <source>500 ms</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Variable_Force/force.cpp" line="117"/>
-        <location filename="../Variable_Force/force.cpp" line="206"/>
-        <location filename="../Variable_Force/force.cpp" line="232"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="78"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="143"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="169"/>
+        <location filename="../Variable_Force/force.cpp" line="121"/>
+        <location filename="../Variable_Force/force.cpp" line="210"/>
+        <location filename="../Variable_Force/force.cpp" line="236"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="82"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="147"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="173"/>
         <source>1 s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Variable_Force/force.cpp" line="118"/>
-        <location filename="../Variable_Force/force.cpp" line="208"/>
-        <location filename="../Variable_Force/force.cpp" line="233"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="79"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="145"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="170"/>
+        <location filename="../Variable_Force/force.cpp" line="122"/>
+        <location filename="../Variable_Force/force.cpp" line="212"/>
+        <location filename="../Variable_Force/force.cpp" line="237"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="83"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="149"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="174"/>
         <source>5 s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Variable_Force/force.cpp" line="119"/>
-        <location filename="../Variable_Force/force.cpp" line="210"/>
-        <location filename="../Variable_Force/force.cpp" line="234"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="80"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="147"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="171"/>
+        <location filename="../Variable_Force/force.cpp" line="123"/>
+        <location filename="../Variable_Force/force.cpp" line="214"/>
+        <location filename="../Variable_Force/force.cpp" line="238"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="84"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="151"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="175"/>
         <source>10 s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Variable_Force/force.cpp" line="123"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="84"/>
+        <location filename="../Variable_Force/force.cpp" line="127"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="88"/>
         <source>Default Matrix</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Variable_Force/force.cpp" line="125"/>
-        <location filename="../Variable_Force/force.cpp" line="215"/>
-        <location filename="../Variable_Force/force.cpp" line="240"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="86"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="152"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="177"/>
+        <location filename="../Variable_Force/force.cpp" line="129"/>
+        <location filename="../Variable_Force/force.cpp" line="219"/>
+        <location filename="../Variable_Force/force.cpp" line="244"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="90"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="156"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="181"/>
         <source>Middle</source>
         <oldsource>middle</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Variable_Force/force.cpp" line="126"/>
-        <location filename="../Variable_Force/force.cpp" line="217"/>
-        <location filename="../Variable_Force/force.cpp" line="241"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="87"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="154"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="178"/>
+        <location filename="../Variable_Force/force.cpp" line="130"/>
+        <location filename="../Variable_Force/force.cpp" line="221"/>
+        <location filename="../Variable_Force/force.cpp" line="245"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="91"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="158"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="182"/>
         <source>Floor</source>
         <oldsource>floor</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Variable_Force/force.cpp" line="131"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="92"/>
+        <location filename="../Variable_Force/force.cpp" line="135"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="96"/>
         <source>Allow different matrixes between measurement and reference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Variable_Force/force.cpp" line="195"/>
-        <location filename="../Variable_Force/force.cpp" line="227"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="132"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="164"/>
+        <location filename="../Variable_Force/force.cpp" line="199"/>
+        <location filename="../Variable_Force/force.cpp" line="231"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="136"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="168"/>
         <source>Multimeter time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Variable_Force/force.cpp" line="212"/>
-        <location filename="../Variable_Force/force.cpp" line="238"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="149"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="175"/>
+        <location filename="../Variable_Force/force.cpp" line="216"/>
+        <location filename="../Variable_Force/force.cpp" line="242"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="153"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="179"/>
         <source>Test Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../Variable_Alpha/alpha.cpp" line="43"/>
         <location filename="../Variable_Alpha/alpha.cpp" line="51"/>
-        <location filename="../Variable_Angles/angles.cpp" line="73"/>
+        <location filename="../Variable_Angles/angles.cpp" line="72"/>
         <location filename="../Virtual_Alpha/virtual_alpha.cpp" line="20"/>
         <location filename="../Virtual_Alpha/virtual_alpha.cpp" line="25"/>
         <source>Alpha</source>
@@ -840,32 +846,45 @@
     </message>
     <message utf8="true">
         <location filename="../Variable_Alpha/alpha.cpp" line="55"/>
-        <location filename="../Variable_Beta/beta.cpp" line="55"/>
-        <location filename="../Variable_Angles/angles.cpp" line="80"/>
+        <location filename="../Variable_Beta/beta.cpp" line="56"/>
+        <location filename="../Variable_Angles/angles.cpp" line="79"/>
         <location filename="../Virtual_Alpha/virtual_alpha.cpp" line="29"/>
         <location filename="../Virtual_Beta/virtual_beta.cpp" line="30"/>
         <source>º</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Variable_Alpha/alpha.cpp" line="86"/>
-        <location filename="../Virtual_Alpha/virtual_alpha.cpp" line="43"/>
+        <location filename="../Variable_Alpha/alpha.cpp" line="59"/>
+        <location filename="../Variable_Beta/beta.cpp" line="60"/>
+        <location filename="../Variable_Temperature/temperature.cpp" line="46"/>
+        <location filename="../Variable_Wind/wind.cpp" line="52"/>
+        <location filename="../Variable_Angles/angles.cpp" line="83"/>
+        <location filename="../Virtual_Alpha/virtual_alpha.cpp" line="33"/>
+        <location filename="../Virtual_Beta/virtual_beta.cpp" line="34"/>
+        <location filename="../Virtual_Temperature/virtual_temperature.cpp" line="21"/>
+        <location filename="../Virtual_Wind/virtual_wind.cpp" line="30"/>
+        <source>step</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Variable_Alpha/alpha.cpp" line="90"/>
+        <location filename="../Virtual_Alpha/virtual_alpha.cpp" line="47"/>
         <source>Alpha device</source>
         <oldsource>Alpha device path</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Variable_Beta/beta.cpp" line="43"/>
-        <location filename="../Variable_Beta/beta.cpp" line="51"/>
-        <location filename="../Variable_Angles/angles.cpp" line="74"/>
+        <location filename="../Variable_Beta/beta.cpp" line="44"/>
+        <location filename="../Variable_Beta/beta.cpp" line="52"/>
+        <location filename="../Variable_Angles/angles.cpp" line="73"/>
         <location filename="../Virtual_Beta/virtual_beta.cpp" line="21"/>
         <location filename="../Virtual_Beta/virtual_beta.cpp" line="26"/>
         <source>Beta</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Variable_Beta/beta.cpp" line="86"/>
-        <location filename="../Virtual_Beta/virtual_beta.cpp" line="44"/>
+        <location filename="../Variable_Beta/beta.cpp" line="91"/>
+        <location filename="../Virtual_Beta/virtual_beta.cpp" line="48"/>
         <source>Beta device</source>
         <oldsource>Beta device path</oldsource>
         <translation type="unfinished"></translation>
@@ -880,13 +899,15 @@
     </message>
     <message>
         <location filename="../Variable_Motor/motor.cpp" line="50"/>
+        <location filename="../Variable_Motor/motor.cpp" line="54"/>
         <location filename="../Virtual_Motor/virtual_motor.cpp" line="26"/>
+        <location filename="../Virtual_Motor/virtual_motor.cpp" line="30"/>
         <source>%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Variable_Motor/motor.cpp" line="80"/>
-        <location filename="../Virtual_Motor/virtual_motor.cpp" line="39"/>
+        <location filename="../Variable_Motor/motor.cpp" line="84"/>
+        <location filename="../Virtual_Motor/virtual_motor.cpp" line="43"/>
         <source>Motor device</source>
         <oldsource>Motor device path</oldsource>
         <translation type="unfinished"></translation>
@@ -900,12 +921,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Variable_Temperature/temperature.cpp" line="77"/>
+        <location filename="../Variable_Temperature/temperature.cpp" line="81"/>
         <source>Onboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Variable_Temperature/temperature.cpp" line="80"/>
+        <location filename="../Variable_Temperature/temperature.cpp" line="84"/>
         <source>APC external</source>
         <translation type="unfinished"></translation>
     </message>
@@ -924,26 +945,26 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Variable_Wind/wind.cpp" line="96"/>
-        <location filename="../Variable_Wind/wind.cpp" line="200"/>
-        <location filename="../Virtual_Wind/virtual_wind.cpp" line="57"/>
-        <location filename="../Virtual_Wind/virtual_wind.cpp" line="119"/>
+        <location filename="../Variable_Wind/wind.cpp" line="100"/>
+        <location filename="../Variable_Wind/wind.cpp" line="204"/>
+        <location filename="../Virtual_Wind/virtual_wind.cpp" line="61"/>
+        <location filename="../Virtual_Wind/virtual_wind.cpp" line="123"/>
         <source>channel %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Variable_Wind/wind.cpp" line="174"/>
-        <location filename="../Virtual_Wind/virtual_wind.cpp" line="93"/>
+        <location filename="../Variable_Wind/wind.cpp" line="178"/>
+        <location filename="../Virtual_Wind/virtual_wind.cpp" line="97"/>
         <source>Channel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Variable_Angles/angles.cpp" line="62"/>
+        <location filename="../Variable_Angles/angles.cpp" line="61"/>
         <source>Angles</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Variable_Angles/angles.cpp" line="126"/>
+        <location filename="../Variable_Angles/angles.cpp" line="129"/>
         <source>Angles device</source>
         <oldsource>Angles device path</oldsource>
         <translation type="unfinished"></translation>
@@ -972,13 +993,18 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../arduino/arduino.cpp" line="24"/>
-        <location filename="../arduino/arduino.cpp" line="32"/>
+        <location filename="../Variable_Time/time.cpp" line="32"/>
+        <source>ms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../arduino/arduino.cpp" line="23"/>
+        <location filename="../arduino/arduino.cpp" line="31"/>
         <source>Arduino</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../arduino/arduino.cpp" line="67"/>
+        <location filename="../arduino/arduino.cpp" line="70"/>
         <source>Arduino device</source>
         <oldsource>Arduino device path</oldsource>
         <translation type="unfinished"></translation>

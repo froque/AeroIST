@@ -36,7 +36,7 @@ void CurveNew::on_comboBox_x_currentIndexChanged(int index){
     ui->listWidget_x->clear();
     model = list->at(index);
     for (int k=0;k< model->columnCount();k++){
-        ui->listWidget_x->addItem(model->headerData(k,Qt::Horizontal,Qt::DisplayRole).toString());
+        ui->listWidget_x->addItem(model->headerData(k,Qt::Horizontal,Qt::UserRole+1).toString());
     }
 
 }
@@ -45,7 +45,7 @@ void CurveNew::on_comboBox_y_currentIndexChanged(int index){
     ui->listWidget_y->clear();
     model = list->at(index);
     for (int k=0;k< model->columnCount();k++){
-        ui->listWidget_y->addItem(model->headerData(k,Qt::Horizontal,Qt::DisplayRole).toString());
+        ui->listWidget_y->addItem(model->headerData(k,Qt::Horizontal,Qt::UserRole+1).toString());
     }
 
 }

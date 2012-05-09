@@ -55,6 +55,10 @@ QString ForceMeta::get_units(int n) {
     }
     return "";
 }
+QString ForceMeta::get_raw_units(int n) {
+    Q_UNUSED(n);
+    return QString(QObject::tr("V"));
+}
 double ForceMeta::get_lower_bound(int n) {Q_UNUSED(n); return 0;}
 double ForceMeta::get_upper_bound(int n) {Q_UNUSED(n); return 0;}
 double ForceMeta::get_smaller_step(int n) {Q_UNUSED(n); return 0;}

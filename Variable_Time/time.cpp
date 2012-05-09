@@ -27,6 +27,10 @@ QString TimeMeta::get_units(int n) {
     Q_UNUSED(n);
     return QString(QObject::tr("s"));
 }
+QString TimeMeta::get_raw_units(int n) {
+    Q_UNUSED(n);
+    return QString(QObject::tr("ms"));
+}
 double TimeMeta::get_lower_bound(int n) {
     Q_UNUSED(n);
     return 0;

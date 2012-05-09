@@ -28,6 +28,10 @@ QString AlphaMeta::get_units(int n) {
     Q_UNUSED(n);
     return QString(QObject::trUtf8("º"));
 }
+QString AlphaMeta::get_raw_units(int n) {
+    Q_UNUSED(n);
+    return QString(QObject::tr("step"));
+}
 double AlphaMeta::get_lower_bound(int n) {Q_UNUSED(n); return -ANGLEMAX_ALPHA;}
 double AlphaMeta::get_upper_bound(int n) {Q_UNUSED(n); return ANGLEMAX_ALPHA;}
 double AlphaMeta::get_smaller_step(int n) {Q_UNUSED(n); return ANGLEMINSTEP_ALPHA;}

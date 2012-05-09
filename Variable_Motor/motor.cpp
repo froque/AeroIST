@@ -49,6 +49,10 @@ QString MotorMeta::get_units(int n) {
     Q_UNUSED(n);
     return QString(QObject::tr("%"));
 }
+QString MotorMeta::get_raw_units(int n) {
+    Q_UNUSED(n);
+    return QString(QObject::tr("%"));
+}
 double MotorMeta::get_lower_bound(int n) {
     Q_UNUSED(n);
     return MOTOR_MIN;

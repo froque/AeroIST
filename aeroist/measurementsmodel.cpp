@@ -48,7 +48,7 @@ void MeasurementsModel::save_csv(QTextStream *out,bool header){
 
     if (header == true){
         for (int column=0; column < columns; column++){
-            *out << headerData(column,Qt::Horizontal,Qt::DisplayRole).toString();
+            *out << "\"" << headerData(column,Qt::Horizontal,Qt::UserRole+1).toString() << "\"";
             if (column != columns-1){
                 *out << ";";
             }
@@ -74,7 +74,7 @@ void MeasurementsModel::save_raw_csv(QTextStream *out,bool header){
 
     if (header == true){
         for (int column=0; column < columns; column++){
-            *out << headerData(column,Qt::Horizontal,Qt::DisplayRole).toString();
+            *out << "\"" << headerData(column,Qt::Horizontal,Qt::UserRole+2).toString() << "\"";
             if (column != columns-1){
                 *out << ";";
             }
@@ -134,6 +134,8 @@ QVariant MeasurementsModel::data(const QModelIndex &index, int role) const{
         return QVariant();
     }
 
+    // Qt::DisplayRole - show normal values
+    // Qt::UserRole    - show raw values
     if (role == Qt::DisplayRole) {
         int row = index.row();
         int upper = 0;
@@ -165,7 +167,7 @@ QVariant MeasurementsModel::data(const QModelIndex &index, int role) const{
 }
 
 QVariant MeasurementsModel::headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const{
-    if ((role != Qt::DisplayRole) && (role != Qt::UserRole)){
+    if ( !( (role == Qt::DisplayRole) || (role >= Qt::UserRole) )){
         return QVariant();
     }
 
@@ -173,6 +175,10 @@ QVariant MeasurementsModel::headerData(int section, Qt::Orientation orientation,
         return section+1;
     }
 
+    // Qt::DisplayRole - don't show units
+    // Qt::UserRole    - dont't translate
+    // Qt::UserRole +1 - translate and show units
+    // Qt::UserRole +2 - translate and show raw units
     if (orientation == Qt::Horizontal) {
         int upper = 0;
         int lower = 0;
@@ -181,10 +187,11 @@ QVariant MeasurementsModel::headerData(int section, Qt::Orientation orientation,
             lower = upper;
             upper += var->meta->get_num();
             if ( column < upper){
-                if (role == Qt::DisplayRole){
-                    return var->meta->get_name_tr( column- lower );
-                } else {
-                    return var->meta->get_name( column- lower );
+                switch (role){
+                    case Qt::DisplayRole: return var->meta->get_name_tr( column- lower ); break;
+                    case Qt::UserRole +1: return var->meta->get_name_tr(column- lower).append(" (").append(var->meta->get_units(column- lower)).append(")"); break;
+                    case Qt::UserRole +2: return var->meta->get_name_tr(column- lower).append(" (").append(var->meta->get_raw_units(column- lower)).append(")"); break;
+                    case Qt::UserRole: return var->meta->get_name( column- lower ); break;
                 }
             }
         }

@@ -78,6 +78,10 @@ QString AnglesMeta::get_units(int n) {
     Q_UNUSED(n);
     return QString(QObject::trUtf8("º"));
 }
+QString AnglesMeta::get_raw_units(int n) {
+    Q_UNUSED(n);
+    return QString(QObject::trUtf8("step"));
+}
 double AnglesMeta::get_lower_bound(int n) {
     switch(n){
     case 0: return -ANGLEMAX_ALPHA; break;

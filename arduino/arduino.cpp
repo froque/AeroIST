@@ -34,6 +34,10 @@ QString ArduinoMeta::get_units(int n) {
     Q_UNUSED(n);
     return "";
 }
+QString ArduinoMeta::get_raw_units(int n) {
+    Q_UNUSED(n);
+    return "";
+}
 double ArduinoMeta::get_lower_bound(int n) {
     Q_UNUSED(n);
     return 0.0;
