@@ -25,6 +25,7 @@ public:
 class WindPreferences: public VariablePreferences {
 public:
     WindPreferences();
+    ~WindPreferences();
     QWidget* get_widget();
     bool accept_config();
     bool is_configurable();
@@ -34,6 +35,7 @@ private:
 class WindModel : public VariableModel {
 public:
     WindModel();
+    ~WindModel();
     int get_size();
     double get_value(int n,int row);
     QVector<double> get_vector(int n);
@@ -61,6 +63,7 @@ private:
 class WindHardware: public VariableHardware {
 public:
     WindHardware(VariableModel* v);
+    ~WindHardware();
     void read();
     double get_value(int n);
     void set_value(int n ,double value);

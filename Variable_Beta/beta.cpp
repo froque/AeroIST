@@ -84,6 +84,9 @@ double BetaMeta::get_default_start(int n) {
 BetaPreferences::BetaPreferences() {
     meta = new BetaMeta();
 }
+BetaPreferences::~BetaPreferences(){
+    delete meta;
+}
 QWidget* BetaPreferences::get_widget() {
     QWidget *widget = new QWidget;
     QGridLayout *layout = new QGridLayout;
@@ -95,7 +98,6 @@ QWidget* BetaPreferences::get_widget() {
     widget->setLayout(layout);
     return widget;
 }
-
 bool BetaPreferences::accept_config() {
     QSettings settings;
     settings.setValue(SETTINGS_BETA_PATH, edit_beta->text());
@@ -105,8 +107,12 @@ bool BetaPreferences::is_configurable() {
     return true;
 }
 
+
 BetaModel::BetaModel(){
     meta = new BetaMeta;
+}
+BetaModel::~BetaModel(){
+    delete meta;
 }
 int BetaModel::get_size() {
     return contents.size();
@@ -195,6 +201,7 @@ BetaHardware::BetaHardware(){
 BetaHardware::~BetaHardware(){
     close(fp);
     close(arduinofd);
+    delete meta;
 }
 void BetaHardware::read() {
 

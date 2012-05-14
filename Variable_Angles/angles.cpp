@@ -122,6 +122,9 @@ double AnglesMeta::get_default_start(int n) {
 AnglesPreferences::AnglesPreferences() {
     meta = new AnglesMeta();
 }
+AnglesPreferences::~AnglesPreferences(){
+    delete meta;
+}
 QWidget* AnglesPreferences::get_widget() {
     QWidget *widget = new QWidget;
     QGridLayout *layout = new QGridLayout;
@@ -145,6 +148,9 @@ bool AnglesPreferences::is_configurable() {
 
 AnglesModel::AnglesModel(){
     meta = new AnglesMeta;
+}
+AnglesModel::~AnglesModel(){
+    delete meta;
 }
 int AnglesModel::get_size() {
     return contents[0].size();
@@ -265,6 +271,7 @@ AnglesHardware::AnglesHardware(){
 AnglesHardware::~AnglesHardware(){
     port->close();
     close(arduinofd);
+    delete meta;
 }
 void AnglesHardware::read() {
     QString command;

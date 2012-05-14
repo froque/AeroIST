@@ -39,7 +39,12 @@ double AlphaMeta::get_default_step(int n) {Q_UNUSED(n); return DEFAULT_ALPHA_STE
 double AlphaMeta::get_default_start(int n) {Q_UNUSED(n); return DEFAULT_ALPHA_START;}
 
 
-AlphaPreferences::AlphaPreferences() {meta = new AlphaMeta();}
+AlphaPreferences::AlphaPreferences() {
+    meta = new AlphaMeta();
+}
+AlphaPreferences::~AlphaPreferences() {
+    delete meta;
+}
 QWidget* AlphaPreferences::get_widget() {
     QWidget *widget = new QWidget;
     QGridLayout *layout = new QGridLayout;
@@ -59,7 +64,12 @@ bool AlphaPreferences::accept_config() {
 }
 bool AlphaPreferences::is_configurable() {return true;}
 
-AlphaModel::AlphaModel(){meta = new AlphaMeta;}
+AlphaModel::AlphaModel(){
+    meta = new AlphaMeta;
+}
+AlphaModel::~AlphaModel(){
+    delete meta;
+}
 int AlphaModel::get_size() {return contents.size();}
 double AlphaModel::get_value(int n,int row) {Q_UNUSED(n); return contents.value(row);}
 QVector<double> AlphaModel::get_vector(int n) {Q_UNUSED(n); return contents;}
@@ -88,7 +98,14 @@ void AlphaModel::append_raw_value(int n, double value) {Q_UNUSED(n);  raw.append
 
 
 
-AlphaHardware::AlphaHardware(){meta = new AlphaMeta; value=0; control_set=false;}
+AlphaHardware::AlphaHardware(){
+    meta = new AlphaMeta;
+    value=0;
+    control_set=false;
+}
+AlphaHardware::~AlphaHardware(){
+    delete meta;
+}
 void AlphaHardware::read() {if(control_set==false){ raw = (1.0 * qrand() / RAND_MAX); value = 100 *raw + 10;}}
 double AlphaHardware::get_value(int n) {Q_UNUSED(n); return value;}
 double AlphaHardware::get_raw_value(int n) {Q_UNUSED(n); return raw;}

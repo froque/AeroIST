@@ -93,6 +93,7 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
             }
         }
     }
+    delete factory;
 
     QDoubleSpinBox *spin;
     QLabel *label;
@@ -114,6 +115,7 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
             }
         }
     }
+    qDeleteAll(variables);
     ui->ManualButton->setEnabled(false);
 }
 
@@ -123,6 +125,7 @@ AeroISTWindow::~AeroISTWindow()
     delete ui;
     delete measure_list;
     delete reference_list;
+    delete proxy;
 }
 
 void AeroISTWindow::on_ThreadButton_clicked(){
@@ -317,11 +320,10 @@ void AeroISTWindow::on_actionNew_Measure_triggered(){
     MeasurementsPreferences *meas_prefs = new MeasurementsPreferences( measurement, reference_list , this);
     if (meas_prefs->exec() == QDialog::Rejected ){
         delete measurement;
-        delete meas_prefs;
-        return ;
+    } else {
+        measure_list->newMeasure(measurement);
+        ui->listView->setCurrentIndex(measure_list->index(measure_list->rowCount()-1,0));
     }
-    measure_list->newMeasure(measurement);
-    ui->listView->setCurrentIndex(measure_list->index(measure_list->rowCount()-1,0));
     delete meas_prefs;
 }
 

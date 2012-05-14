@@ -40,7 +40,12 @@ double BetaMeta::get_default_step(int n) {Q_UNUSED(n); return DEFAULT_BETA_STEP;
 double BetaMeta::get_default_start(int n) {Q_UNUSED(n); return DEFAULT_BETA_START;}
 
 
-BetaPreferences::BetaPreferences() {meta = new BetaMeta();}
+BetaPreferences::BetaPreferences() {
+    meta = new BetaMeta();
+}
+BetaPreferences::~BetaPreferences(){
+    delete meta;
+}
 QWidget* BetaPreferences::get_widget() {
     QWidget *widget = new QWidget;
     QGridLayout *layout = new QGridLayout;
@@ -61,7 +66,12 @@ bool BetaPreferences::accept_config() {
 bool BetaPreferences::is_configurable() {return true;}
 
 
-BetaModel::BetaModel(){meta = new BetaMeta;}
+BetaModel::BetaModel(){
+    meta = new BetaMeta;
+}
+BetaModel::~BetaModel(){
+    delete meta;
+}
 int BetaModel::get_size() {return contents.size();}
 double BetaModel::get_value(int n,int row) {Q_UNUSED(n); return contents.value(row);}
 QVector<double> BetaModel::get_vector(int n) {Q_UNUSED(n); return contents;}
@@ -87,7 +97,14 @@ double BetaModel::get_raw_value(int n, int row){
 void BetaModel::insert_raw_value(int n, int row, int count, double value) {Q_UNUSED(n); raw.insert(row,count,value);}
 void BetaModel::append_raw_value(int n, double value) {Q_UNUSED(n);  raw.append(value);}
 
-BetaHardware::BetaHardware () {meta = new BetaMeta; value=0; control_set=false;}
+BetaHardware::BetaHardware () {
+    meta = new BetaMeta;
+    value=0;
+    control_set=false;
+}
+BetaHardware::~BetaHardware(){
+    delete meta;
+}
 void BetaHardware::read() {if(control_set==false){ raw = (1.0 * qrand() / RAND_MAX); value = 20 *raw + 2;}}
 double BetaHardware::get_value(int n) {Q_UNUSED(n); return value;}
 double BetaHardware::get_raw_value(int n) {Q_UNUSED(n); return raw;}

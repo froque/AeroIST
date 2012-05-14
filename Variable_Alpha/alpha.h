@@ -27,6 +27,7 @@ public:
 class AlphaPreferences: public VariablePreferences {
 public:
     AlphaPreferences();
+    ~AlphaPreferences();
     QWidget* get_widget();
     bool accept_config();
     bool is_configurable();
@@ -37,6 +38,7 @@ private:
 class AlphaModel : public VariableModel {
 public:
     AlphaModel();
+    ~AlphaModel();
     int get_size();
     double get_value(int n,int row);
     QVector<double> get_vector(int n);

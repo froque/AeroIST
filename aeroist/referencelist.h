@@ -11,7 +11,7 @@ class ReferenceList : public QAbstractListModel
     Q_OBJECT
 public:
     explicit ReferenceList(QObject *parent = 0);
-
+    ~ReferenceList();
     int	rowCount ( const QModelIndex & parent = QModelIndex() ) const ;
     QVariant	data ( const QModelIndex & index, int role = Qt::DisplayRole ) const;
 

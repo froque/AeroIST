@@ -17,7 +17,7 @@ class ReferenceModel : public QAbstractTableModel
 public:
     explicit ReferenceModel(QObject *parent = 0);
     explicit ReferenceModel(QDomElement root,QObject *parent = 0);
-
+    ~ReferenceModel();
     void load_xml(QDomElement root);
     void save_xml(QDomElement root);
 

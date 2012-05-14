@@ -28,6 +28,7 @@ public:
 class AnglesPreferences: public VariablePreferences {
 public:
     AnglesPreferences();
+    ~AnglesPreferences();
     QWidget* get_widget();
     bool accept_config();
     bool is_configurable();
@@ -38,6 +39,7 @@ private:
 class AnglesModel : public VariableModel {
 public:
     AnglesModel();
+    ~AnglesModel();
     int get_size();
     double get_value(int n,int row);
     QVector<double> get_vector(int n);

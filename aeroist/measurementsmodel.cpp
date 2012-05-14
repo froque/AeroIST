@@ -26,6 +26,10 @@ MeasurementsModel::MeasurementsModel(QDomElement root, QObject *parent):
     load_xml(root);
 }
 
+MeasurementsModel::~MeasurementsModel(){
+    qDeleteAll(variables);
+}
+
 void MeasurementsModel::init(){
     Factory *factory;
     QDir pluginsDir = QDir(qApp->applicationDirPath());
@@ -40,6 +44,7 @@ void MeasurementsModel::init(){
             }
         }
     }
+    delete factory;
 }
 
 void MeasurementsModel::save_csv(QTextStream *out,bool header){

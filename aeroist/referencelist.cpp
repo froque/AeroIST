@@ -6,6 +6,10 @@ ReferenceList::ReferenceList(QObject *parent) :
     Q_UNUSED(parent);
 }
 
+ReferenceList::~ReferenceList(){
+    qDeleteAll(list);
+}
+
 int ReferenceList::rowCount ( const QModelIndex & parent ) const {
     Q_UNUSED(parent);
     return list.size();

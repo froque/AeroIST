@@ -40,7 +40,7 @@ MeasurementsPreferences::MeasurementsPreferences(MeasurementsModel *measurement,
 
     int row = 0;
 
-    group = new QButtonGroup;
+    group = new QButtonGroup(this);
     radio_none = new QRadioButton(tr("None"));
     radio_none->setChecked(true);
     layout->addWidget(radio_none,row,COL_RADIO);

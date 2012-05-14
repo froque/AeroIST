@@ -19,6 +19,10 @@ ReferenceModel::ReferenceModel(QDomElement root,QObject *parent) :
     load_xml(root);
 }
 
+ReferenceModel::~ReferenceModel(){
+    qDeleteAll(variables);
+}
+
 void ReferenceModel::init(){
     Factory *factory;
     QDir pluginsDir = QDir(qApp->applicationDirPath());
@@ -33,6 +37,7 @@ void ReferenceModel::init(){
             }
         }
     }
+    delete factory;
 }
 
 int ReferenceModel::rowCount(const QModelIndex &parent) const{

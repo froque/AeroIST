@@ -76,6 +76,9 @@ double WindMeta::get_default_start(int n) {
 WindPreferences::WindPreferences() {
     meta = new WindMeta();
 }
+WindPreferences::~WindPreferences() {
+    delete meta;
+}
 QWidget* WindPreferences::get_widget() {
     QWidget *widget = new QWidget;
     QGridLayout *layout = new QGridLayout;
@@ -126,6 +129,9 @@ bool WindPreferences::is_configurable() {
 
 WindModel::WindModel(){
     meta = new WindMeta;
+}
+WindModel::~WindModel(){
+    delete meta;
 }
 int WindModel::get_size() {
     return contents.size();
@@ -315,6 +321,7 @@ WindHardware::WindHardware(VariableModel* v) {
 WindHardware::~WindHardware() {
   serialport_write(arduinofd, "$CDxxxx\n");
   close(arduinofd);
+  delete meta;
 }
 void WindHardware::read() {
     char buffer_read[256]="", buffer_aux[256];

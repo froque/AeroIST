@@ -5,6 +5,10 @@ MeasureList::MeasureList (QObject * parent ) : QAbstractListModel(parent){
     Q_UNUSED(parent);
 }
 
+MeasureList::~MeasureList(){
+    qDeleteAll(list);
+}
+
 int MeasureList::rowCount ( const QModelIndex & parent  ) const{
     Q_UNUSED(parent);
     return list.size();

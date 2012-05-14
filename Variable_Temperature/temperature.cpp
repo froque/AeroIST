@@ -70,6 +70,9 @@ double TemperatureMeta::get_default_start(int n) {
 TemperaturePreferences::TemperaturePreferences() {
     meta = new TemperatureMeta();
 }
+TemperaturePreferences::~TemperaturePreferences(){
+    delete meta;
+}
 QWidget* TemperaturePreferences::get_widget() {
     QWidget *widget = new QWidget;
     QGridLayout *layout = new QGridLayout;
@@ -107,6 +110,9 @@ bool TemperaturePreferences::is_configurable() {
 
 TemperatureModel::TemperatureModel(){
     meta = new TemperatureMeta;
+}
+TemperatureModel::~TemperatureModel(){
+    delete meta;
 }
 int TemperatureModel::get_size() {
     return contents.size();
@@ -184,6 +190,7 @@ TemperatureHardware::TemperatureHardware() {
 
 TemperatureHardware::~TemperatureHardware() {
     close(arduinofd);
+    delete meta;
 }
 void TemperatureHardware::read() {
     char buffer_read[256]="", buffer_aux[256];

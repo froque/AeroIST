@@ -27,6 +27,7 @@ public:
 class ArduinoPreferences: public VariablePreferences {
 public:
     ArduinoPreferences();
+    ~ArduinoPreferences();
     QWidget* get_widget();
     bool accept_config();
     bool is_configurable();

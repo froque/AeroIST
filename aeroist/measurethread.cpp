@@ -88,6 +88,7 @@ void MeasureThread::init(QList<VariableModel*> list){
                         }
                     }
                 }
+                delete meta;
             }
         }
     }
@@ -100,6 +101,7 @@ void MeasureThread::init(QList<VariableModel*> list){
             }
         }
     }
+    delete factory;
 }
 
 MeasureThread::~MeasureThread(){

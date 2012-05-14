@@ -36,13 +36,18 @@ double WindMeta::get_default_step(int n) {Q_UNUSED(n); return 0;}
 double WindMeta::get_default_start(int n) {Q_UNUSED(n); return 0;}
 
 
-WindPreferences::WindPreferences() {meta = new WindMeta();}
+WindPreferences::WindPreferences() {
+    meta = new WindMeta();
+}
+WindPreferences::~WindPreferences(){
+    delete meta;
+}
 QWidget* WindPreferences::get_widget() {
     QWidget *widget = new QWidget;
     QGridLayout *layout = new QGridLayout;
     QSettings settings;
     QAbstractButton *button;
-    group = new QButtonGroup;
+    group = new QButtonGroup(widget);
 
     // count the number of active channes
     int num_actives=0;
@@ -82,7 +87,12 @@ bool WindPreferences::accept_config() {
 bool WindPreferences::is_configurable() {return true;}
 
 
-WindModel::WindModel(){meta = new WindMeta;}
+WindModel::WindModel(){
+    meta = new WindMeta;
+}
+WindModel::~WindModel(){
+    delete meta;
+}
 int WindModel::get_size() {return contents.size();}
 double WindModel::get_value(int n,int row) {Q_UNUSED(n); return contents.value(row);}
 QVector<double> WindModel::get_vector(int n) {Q_UNUSED(n); return contents;}
@@ -104,7 +114,7 @@ QWidget* WindModel::measurement_get_widget(){
     QGridLayout *layout = new QGridLayout;
     QSettings settings;
     QAbstractButton *button;
-    group = new QButtonGroup;
+    group = new QButtonGroup(widget);
 
     // count the number of active channes
     int num_actives=0;
@@ -186,6 +196,9 @@ void WindModel::append_raw_value(int n, double value) {Q_UNUSED(n);  raw.append(
 WindHardware::WindHardware(VariableModel* v) {
     meta = new WindMeta;
     channel = dynamic_cast<WindModel*>(v)->channel;
+}
+WindHardware::~WindHardware(){
+    delete meta;
 }
 void WindHardware::read() { raw = (1.0 * qrand() / RAND_MAX); value = 10 *raw;}
 double WindHardware::get_value(int n) {Q_UNUSED(n); return value;}

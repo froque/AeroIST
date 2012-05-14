@@ -32,6 +32,7 @@ public:
 class ForcePreferences: public VariablePreferences{
 public:
     ForcePreferences();
+    ~ForcePreferences();
     QWidget* get_widget();
     bool accept_config();
     bool is_configurable();
@@ -44,6 +45,7 @@ private:
 class ForceModel : public VariableModel {
 public:
     ForceModel();
+    ~ForceModel();
     int get_size();
     double get_value(int n,int row);
     QVector<double> get_vector(int n);
@@ -75,6 +77,7 @@ private:
 class ForceHardware: public VariableHardware {
 public:
     ForceHardware(VariableModel* v);
+    ~ForceHardware();
     void read();
     double get_value(int n);
     void set_value(int n ,double value);

@@ -106,6 +106,9 @@ double ForceMeta::get_default_start(int n) {
 ForcePreferences::ForcePreferences(){
     meta = new ForceMeta;
 }
+ForcePreferences::~ForcePreferences(){
+    delete meta;
+}
 QWidget* ForcePreferences::get_widget() {
     QWidget *widget = new QWidget;
     QGridLayout *layout = new QGridLayout;
@@ -156,6 +159,9 @@ bool ForcePreferences::is_configurable() {
 
 ForceModel::ForceModel(){
     meta = new ForceMeta;
+}
+ForceModel::~ForceModel(){
+    delete meta;
 }
 int ForceModel::get_size() {
     return force[0].size();
@@ -344,6 +350,7 @@ ForceHardware::ForceHardware(VariableModel* v){
 
 ForceHardware::~ForceHardware(){
     ibonl(g_id,0);
+    delete meta;
 }
 void ForceHardware::read() {
     read_dvm();             // determines dvm

@@ -35,7 +35,12 @@ double MotorMeta::get_smaller_step(int n) {Q_UNUSED(n); return MOTOR_MIN_STEP;}
 double MotorMeta::get_default_step(int n) {Q_UNUSED(n); return DEFAULT_MOTOR_STEP;}
 double MotorMeta::get_default_start(int n) {Q_UNUSED(n); return 0;}
 
-MotorPreferences::MotorPreferences() {meta = new MotorMeta();}
+MotorPreferences::MotorPreferences() {
+    meta = new MotorMeta();
+}
+MotorPreferences::~MotorPreferences(){
+    delete meta;
+}
 QWidget* MotorPreferences::get_widget() {
     QWidget *widget = new QWidget;
     QGridLayout *layout = new QGridLayout;
@@ -63,7 +68,12 @@ void MotorPreferences::button_slot(){
     edit_motor->setText(QFileDialog::getOpenFileName(NULL, tr("Choose device"),"/dev", ""));
 }
 
-MotorModel::MotorModel(){meta = new MotorMeta;}
+MotorModel::MotorModel(){
+    meta = new MotorMeta;
+}
+MotorModel::~MotorModel(){
+    delete meta;
+}
 int MotorModel::get_size() {return contents.size();}
 double MotorModel::get_value(int n,int row) {Q_UNUSED(n); return contents.value(row);}
 QVector<double> MotorModel::get_vector(int n) {Q_UNUSED(n); return contents;}
@@ -89,7 +99,14 @@ double MotorModel::get_raw_value(int n, int row){
 void MotorModel::insert_raw_value(int n, int row, int count, double value) {Q_UNUSED(n); raw.insert(row,count,value);}
 void MotorModel::append_raw_value(int n, double value) {Q_UNUSED(n);  raw.append(value);}
 
-MotorHardware::MotorHardware () {meta = new MotorMeta; value=0; control_set=false;}
+MotorHardware::MotorHardware () {
+    meta = new MotorMeta;
+    value=0;
+    control_set=false;
+}
+MotorHardware::~MotorHardware(){
+    delete meta;
+}
 void MotorHardware::read() {if(control_set==false){raw = (1.0 * qrand() / RAND_MAX); value = -30.0 * raw + 5;}}
 double MotorHardware::get_value(int n) {Q_UNUSED(n); return value;}
 double MotorHardware::get_raw_value(int n) {Q_UNUSED(n); return raw;}

@@ -26,8 +26,8 @@ public:
 class BetaPreferences: public VariablePreferences {
 public:
     BetaPreferences();
+    ~BetaPreferences();
     QWidget* get_widget();
-
     bool accept_config();
     bool is_configurable();
 private:
@@ -36,6 +36,7 @@ private:
 class BetaModel : public VariableModel {
 public:
     BetaModel();
+    ~BetaModel();
     int get_size();
     double get_value(int n,int row);
     QVector<double> get_vector(int n);
@@ -60,6 +61,7 @@ private:
 class BetaHardware: public VariableHardware {
 public:
     BetaHardware ();
+    ~BetaHardware ();
     void read();
     double get_value(int n);
     void set_value(int n ,double value);

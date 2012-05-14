@@ -83,6 +83,9 @@ double AlphaMeta::get_default_start(int n) {
 AlphaPreferences::AlphaPreferences() {
     meta = new AlphaMeta();
 }
+AlphaPreferences::~AlphaPreferences() {
+    delete meta;
+}
 QWidget* AlphaPreferences::get_widget() {
     QWidget *widget = new QWidget;
     QGridLayout *layout = new QGridLayout;
@@ -106,6 +109,9 @@ bool AlphaPreferences::is_configurable() {
 
 AlphaModel::AlphaModel(){
     meta = new AlphaMeta;
+}
+AlphaModel::~AlphaModel(){
+    delete meta;
 }
 int AlphaModel::get_size() {
     return contents.size();
@@ -196,6 +202,7 @@ AlphaHardware::AlphaHardware(){
 AlphaHardware::~AlphaHardware(){
     close(fp);
     close(arduinofd);
+    delete meta;
 }
 void AlphaHardware::read() {
 

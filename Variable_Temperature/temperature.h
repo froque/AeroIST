@@ -25,6 +25,7 @@ public:
 class TemperaturePreferences: public VariablePreferences {
 public:
     TemperaturePreferences();
+    ~TemperaturePreferences();
     QWidget* get_widget();
     bool accept_config();
     bool is_configurable();
@@ -34,6 +35,7 @@ private:
 class TemperatureModel: public VariableModel {
 public:
     TemperatureModel();
+    ~TemperatureModel();
     int get_size();
     double get_value(int n,int row);
     QVector<double> get_vector(int n);

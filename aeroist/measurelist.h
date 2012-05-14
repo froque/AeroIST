@@ -13,7 +13,7 @@ class MeasureList : public QAbstractListModel
 
 public:
     MeasureList(QObject * parent = 0);
-
+    ~MeasureList();
     int	rowCount ( const QModelIndex & parent = QModelIndex() ) const ;
     QVariant	data ( const QModelIndex & index, int role = Qt::DisplayRole ) const;
 

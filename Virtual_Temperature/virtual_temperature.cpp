@@ -27,13 +27,23 @@ double TemperatureMeta::get_default_step(int n) {Q_UNUSED(n); return 0;}
 double TemperatureMeta::get_default_start(int n) {Q_UNUSED(n); return 0;}
 
 
-TemperaturePreferences::TemperaturePreferences() {meta = new TemperatureMeta();}
+TemperaturePreferences::TemperaturePreferences() {
+    meta = new TemperatureMeta();
+}
+TemperaturePreferences::~TemperaturePreferences(){
+    delete meta;
+}
 QWidget* TemperaturePreferences::get_widget() {return NULL;}
 bool TemperaturePreferences::accept_config() {return true;}
 bool TemperaturePreferences::is_configurable() {return false;}
 
 
-TemperatureModel::TemperatureModel(){meta = new TemperatureMeta;}
+TemperatureModel::TemperatureModel(){
+    meta = new TemperatureMeta;
+}
+TemperatureModel::~TemperatureModel(){
+    delete meta;
+}
 int TemperatureModel::get_size() {return contents.size();}
 double TemperatureModel::get_value(int n,int row) {Q_UNUSED(n); return contents.value(row);}
 QVector<double> TemperatureModel::get_vector(int n) {Q_UNUSED(n); return contents;}
@@ -59,7 +69,12 @@ double TemperatureModel::get_raw_value(int n, int row){
 void TemperatureModel::insert_raw_value(int n, int row, int count, double value) {Q_UNUSED(n); raw.insert(row,count,value);}
 void TemperatureModel::append_raw_value(int n, double value) {Q_UNUSED(n);  raw.append(value);}
 
-TemperatureHardware::TemperatureHardware() {meta = new TemperatureMeta;}
+TemperatureHardware::TemperatureHardware() {
+    meta = new TemperatureMeta;
+}
+TemperatureHardware::~TemperatureHardware(){
+    delete meta;
+}
 void TemperatureHardware::read() { raw = (1.0* qrand() / RAND_MAX); value = -10.0 * raw +1;}
 double TemperatureHardware::get_value(int n) {Q_UNUSED(n); return value;}
 double TemperatureHardware::get_raw_value(int n) {Q_UNUSED(n); return raw;}

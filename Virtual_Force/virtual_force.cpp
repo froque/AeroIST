@@ -66,7 +66,12 @@ double ForceMeta::get_default_step(int n) {Q_UNUSED(n); return 0;}
 double ForceMeta::get_default_start(int n) {Q_UNUSED(n); return 0;}
 
 
-ForcePreferences::ForcePreferences(){meta = new ForceMeta;}
+ForcePreferences::ForcePreferences(){
+    meta = new ForceMeta;
+}
+ForcePreferences::~ForcePreferences(){
+    delete meta;
+}
 QWidget* ForcePreferences::get_widget() {
     QWidget *widget = new QWidget;
     QGridLayout *layout = new QGridLayout;
@@ -113,7 +118,12 @@ bool ForcePreferences::accept_config() {
 bool ForcePreferences::is_configurable() {return true;}
 
 
-ForceModel::ForceModel(){meta = new ForceMeta;}
+ForceModel::ForceModel(){
+    meta = new ForceMeta;
+}
+ForceModel::~ForceModel(){
+    delete meta;
+}
 int ForceModel::get_size() {return force[0].size();}
 double ForceModel::get_value(int n,int row) {return force[n].value(row);}
 QVector<double> ForceModel::get_vector(int n) {return force[n];}
@@ -240,6 +250,9 @@ ForceHardware::ForceHardware(VariableModel* v){
     meta = new ForceMeta;
     dvm_time = dynamic_cast<ForceModel*>(v)->dvm_time;
     matrix = dynamic_cast<ForceModel*>(v)->matrix;
+}
+ForceHardware::~ForceHardware(){
+    delete meta;
 }
 void ForceHardware::read() { for (int k=0; k<6; k++) {raw[k]=(1.0 * qrand() / RAND_MAX); value[k] = ( 123.4 * (k+1) * raw[k] )- zero.value(k);}}
 double ForceHardware::get_value(int n) { return value[n];}

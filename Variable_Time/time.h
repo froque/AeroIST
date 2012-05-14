@@ -26,6 +26,7 @@ public:
 class TimePreferences: public VariablePreferences {
 public:
     TimePreferences();
+    ~TimePreferences();
     QWidget* get_widget();
     bool accept_config();
     bool is_configurable();
@@ -35,6 +36,7 @@ private:
 class TimeModel: public VariableModel {
 public:
     TimeModel();
+    ~TimeModel();
     int get_size();
     double get_value(int n,int row);
     QVector<double> get_vector(int n);
@@ -61,7 +63,7 @@ private:
 class TimeHardware: public VariableHardware {
 public:
     TimeHardware();
-    ~TimeHardware() {};
+    ~TimeHardware();
     void read();
     double get_value(int n);
     double get_raw_value(int n);

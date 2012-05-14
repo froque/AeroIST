@@ -19,7 +19,9 @@ CurveDelete::~CurveDelete()
 
 void CurveDelete::accept(){
     if(ui->listWidget->currentIndex().isValid()){
-        plot->itemList().at(ui->listWidget->currentIndex().row())->detach();
+        QwtPlotItem *curve = plot->itemList().at(ui->listWidget->currentIndex().row());
+        curve->detach();
+        delete curve;
         plot->replot();
         QDialog::accept();
     }

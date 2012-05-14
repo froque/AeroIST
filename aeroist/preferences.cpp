@@ -33,16 +33,19 @@ Preferences::Preferences(QWidget *parent) :
             }
         }
     }
+
     foreach (VariablePreferences *var, variables) {
         if(var->is_configurable()){
             ui->tabWidget->addTab(var->get_widget(),var->meta->get_general_name_tr());
         }
     }
     adjustSize();
+    delete factory;
 }
 
 Preferences::~Preferences(){
     delete ui;
+    qDeleteAll(variables);
 }
 
 void Preferences::accept(){

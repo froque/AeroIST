@@ -77,6 +77,9 @@ double MotorMeta::get_default_start(int n) {
 MotorPreferences::MotorPreferences() {
     meta = new MotorMeta();
 }
+MotorPreferences::~MotorPreferences(){
+    delete meta;
+}
 QWidget* MotorPreferences::get_widget() {
     QWidget *widget = new QWidget;
     QGridLayout *layout = new QGridLayout;
@@ -91,7 +94,6 @@ QWidget* MotorPreferences::get_widget() {
     widget->setLayout(layout);
     return widget;
 }
-
 bool MotorPreferences::accept_config() {
     QSettings settings;
     settings.setValue(SETTINGS_MOTOR_PATH, edit_motor->text());
@@ -100,14 +102,16 @@ bool MotorPreferences::accept_config() {
 bool MotorPreferences::is_configurable() {
     return true;
 }
-
-
 void MotorPreferences::button_slot(){
     edit_motor->setText(QFileDialog::getOpenFileName(NULL, tr("Choose device"),"/dev", ""));
 }
 
+
 MotorModel::MotorModel(){
     meta = new MotorMeta;
+}
+MotorModel::~MotorModel(){
+    delete meta;
 }
 int MotorModel::get_size() {
     return contents.size();
@@ -222,6 +226,7 @@ MotorHardware::MotorHardware () {
 }
 MotorHardware::~MotorHardware(){
     close(fd);
+    delete meta;
 }
 void MotorHardware::read() {
     talk_to_simoreg();
@@ -256,7 +261,6 @@ void MotorHardware::set_final() {
 void MotorHardware::set_zero(QVector<double> zero) {
     Q_UNUSED(zero);
 }
-
 void MotorHardware::convert_velocity(double percentage, unsigned char *nethigh, unsigned char *netlow){
     if (percentage > MOTOR_FULLPERCENTAGE){
         percentage = MOTOR_FULLPERCENTAGE;
