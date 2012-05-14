@@ -10,7 +10,7 @@
     </message>
     <message>
         <location filename="../aeroist/aeroistwindow.ui" line="38"/>
-        <location filename="../aeroist/aeroistwindow.cpp" line="228"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="231"/>
         <source>Start</source>
         <translation>Iniciar</translation>
     </message>
@@ -31,9 +31,9 @@
     </message>
     <message>
         <location filename="../aeroist/aeroistwindow.ui" line="153"/>
-        <location filename="../aeroist/aeroistwindow.cpp" line="339"/>
-        <location filename="../aeroist/aeroistwindow.cpp" line="440"/>
-        <location filename="../aeroist/aeroistwindow.cpp" line="577"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="341"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="442"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="579"/>
         <source>Table</source>
         <translation>Tabela</translation>
     </message>
@@ -99,7 +99,7 @@
         <translation>Ctrl+N</translation>
     </message>
     <message>
-        <location filename="../aeroist/aeroistwindow.cpp" line="307"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="310"/>
         <source>Export plot</source>
         <translation>Exportar gráfico</translation>
     </message>
@@ -120,8 +120,8 @@
     </message>
     <message>
         <location filename="../aeroist/aeroistwindow.ui" line="317"/>
-        <location filename="../aeroist/aeroistwindow.cpp" line="353"/>
-        <location filename="../aeroist/aeroistwindow.cpp" line="364"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="355"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="366"/>
         <source>Save Project</source>
         <translation>Gravar Projecto</translation>
     </message>
@@ -132,7 +132,7 @@
     </message>
     <message>
         <location filename="../aeroist/aeroistwindow.ui" line="325"/>
-        <location filename="../aeroist/aeroistwindow.cpp" line="396"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="398"/>
         <source>Load Project</source>
         <translation>Abrir Projecto</translation>
     </message>
@@ -263,95 +263,95 @@
         <translation>Mudar tabela com o Iniciar </translation>
     </message>
     <message>
-        <location filename="../aeroist/aeroistwindow.cpp" line="131"/>
-        <location filename="../aeroist/aeroistwindow.cpp" line="607"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="134"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="609"/>
         <source>Thread busy</source>
         <translation>Processo ocupado</translation>
     </message>
     <message>
-        <location filename="../aeroist/aeroistwindow.cpp" line="142"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="145"/>
         <source>index not valid</source>
         <translation>Indíce não válido</translation>
     </message>
     <message>
-        <location filename="../aeroist/aeroistwindow.cpp" line="147"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="150"/>
         <source>Measure is not empty</source>
         <translation>Medida não está vazia</translation>
     </message>
     <message>
-        <location filename="../aeroist/aeroistwindow.cpp" line="159"/>
-        <location filename="../aeroist/aeroistwindow.cpp" line="633"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="162"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="635"/>
         <source>Error opening devices: </source>
         <translation>Erro ao abrir dispositivos: </translation>
     </message>
     <message>
-        <location filename="../aeroist/aeroistwindow.cpp" line="168"/>
-        <location filename="../aeroist/aeroistwindow.cpp" line="643"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="171"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="645"/>
         <source>Error using devices: </source>
         <translation>Erro ao usar dispositivo: </translation>
     </message>
     <message>
-        <location filename="../aeroist/aeroistwindow.cpp" line="219"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="222"/>
         <source>Stop </source>
         <translation>Parar </translation>
     </message>
     <message>
-        <location filename="../aeroist/aeroistwindow.cpp" line="263"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="266"/>
         <source>Export mesurements</source>
         <translation>Exportar medidas</translation>
     </message>
     <message>
-        <location filename="../aeroist/aeroistwindow.cpp" line="288"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="291"/>
         <source>Export raw mesurements</source>
         <translation>Exportar medidas brutas</translation>
     </message>
     <message>
-        <location filename="../aeroist/aeroistwindow.cpp" line="332"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="334"/>
         <source>Measuring is being done. Stop it to delete.</source>
         <translation>Uma medição está a ser realizada. Tem de a parar para apagar.</translation>
     </message>
     <message>
-        <location filename="../aeroist/aeroistwindow.cpp" line="349"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="351"/>
         <source>Measuring is being done. Stop it to save to disk.</source>
         <translation>Uma medição está a ser realizada. Tem de a parar para gravar.</translation>
     </message>
     <message>
-        <location filename="../aeroist/aeroistwindow.cpp" line="570"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="572"/>
         <source>Measuring is being done. Stop it to delete</source>
         <translation>Uma medição está a ser realizada. Tem de a parar para apagar</translation>
     </message>
     <message>
-        <location filename="../aeroist/aeroistwindow.cpp" line="359"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="361"/>
         <source>Measuring is being done. Stop it to save to disk</source>
         <translation>Uma medição está a ser realizada. Tem de a parar para gravar</translation>
     </message>
     <message>
-        <location filename="../aeroist/aeroistwindow.cpp" line="391"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="393"/>
         <source>There is data in the project</source>
         <translation>Há dados no projecto</translation>
     </message>
     <message>
-        <location filename="../aeroist/aeroistwindow.cpp" line="407"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="409"/>
         <source>Could not open file</source>
         <translation>Não foi possível abrir o ficheiro</translation>
     </message>
     <message>
-        <location filename="../aeroist/aeroistwindow.cpp" line="418"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="420"/>
         <source>Couldn&apos;t confirm xml file. Continuing without guaranty.</source>
         <translation>Não foi possível confirmar o ficheiro xml. Continuando sem garantias.</translation>
     </message>
     <message>
-        <location filename="../aeroist/aeroistwindow.cpp" line="422"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="424"/>
         <source>Couldn&apos;t confirm schema file</source>
         <translation>Não foi possível confirmar ficheiro</translation>
     </message>
     <message>
-        <location filename="../aeroist/aeroistwindow.cpp" line="694"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="696"/>
         <source>A measurement is running</source>
         <translation>Uma medição está a ser feita</translation>
     </message>
     <message>
-        <location filename="../aeroist/aeroistwindow.cpp" line="695"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="697"/>
         <source>Do you really want to quit? Hardware may not be properly closed.</source>
         <translation>Deseja mesmo sair? Os dispositvos poderão não ser encerrados devidamente.</translation>
     </message>
@@ -410,7 +410,7 @@
 <context>
     <name>MeasureThread</name>
     <message>
-        <location filename="../aeroist/measurethread.cpp" line="113"/>
+        <location filename="../aeroist/measurethread.cpp" line="115"/>
         <source>%1 is not ready.</source>
         <translation>%1 não está pronto.</translation>
     </message>
@@ -568,7 +568,7 @@
     <name>MotorPreferences</name>
     <message>
         <location filename="../Variable_Motor/motor.cpp" line="106"/>
-        <location filename="../Virtual_Motor/virtual_motor.cpp" line="63"/>
+        <location filename="../Virtual_Motor/virtual_motor.cpp" line="68"/>
         <source>Choose device</source>
         <translation>Escolha dispositivo</translation>
     </message>
@@ -646,7 +646,7 @@
         <translation>Confirmar ficheiro ao abrir</translation>
     </message>
     <message>
-        <location filename="../aeroist/preferences.cpp" line="67"/>
+        <location filename="../aeroist/preferences.cpp" line="70"/>
         <source>Choose Directory</source>
         <translation>Escolha uma pasta</translation>
     </message>
@@ -714,124 +714,124 @@
         <translation>V</translation>
     </message>
     <message>
-        <location filename="../Variable_Force/force.cpp" line="113"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="74"/>
+        <location filename="../Variable_Force/force.cpp" line="116"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="79"/>
         <source>Multimeter</source>
         <translation>Multímetro</translation>
     </message>
     <message>
-        <location filename="../Variable_Force/force.cpp" line="116"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="77"/>
+        <location filename="../Variable_Force/force.cpp" line="119"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="82"/>
         <source>Default Multimeter time</source>
         <translation>Tempo do Multímetro pré-definido</translation>
     </message>
     <message>
-        <location filename="../Variable_Force/force.cpp" line="118"/>
-        <location filename="../Variable_Force/force.cpp" line="204"/>
-        <location filename="../Variable_Force/force.cpp" line="233"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="79"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="141"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="170"/>
+        <location filename="../Variable_Force/force.cpp" line="121"/>
+        <location filename="../Variable_Force/force.cpp" line="210"/>
+        <location filename="../Variable_Force/force.cpp" line="239"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="84"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="151"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="180"/>
         <source>50 ms</source>
         <translation>50 ms</translation>
     </message>
     <message>
-        <location filename="../Variable_Force/force.cpp" line="119"/>
-        <location filename="../Variable_Force/force.cpp" line="206"/>
-        <location filename="../Variable_Force/force.cpp" line="234"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="80"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="143"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="171"/>
+        <location filename="../Variable_Force/force.cpp" line="122"/>
+        <location filename="../Variable_Force/force.cpp" line="212"/>
+        <location filename="../Variable_Force/force.cpp" line="240"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="85"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="153"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="181"/>
         <source>100 ms</source>
         <translation>100 ms</translation>
     </message>
     <message>
-        <location filename="../Variable_Force/force.cpp" line="120"/>
-        <location filename="../Variable_Force/force.cpp" line="208"/>
-        <location filename="../Variable_Force/force.cpp" line="235"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="81"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="145"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="172"/>
+        <location filename="../Variable_Force/force.cpp" line="123"/>
+        <location filename="../Variable_Force/force.cpp" line="214"/>
+        <location filename="../Variable_Force/force.cpp" line="241"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="86"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="155"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="182"/>
         <source>500 ms</source>
         <translation>500 ms</translation>
     </message>
     <message>
-        <location filename="../Variable_Force/force.cpp" line="121"/>
-        <location filename="../Variable_Force/force.cpp" line="210"/>
-        <location filename="../Variable_Force/force.cpp" line="236"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="82"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="147"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="173"/>
+        <location filename="../Variable_Force/force.cpp" line="124"/>
+        <location filename="../Variable_Force/force.cpp" line="216"/>
+        <location filename="../Variable_Force/force.cpp" line="242"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="87"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="157"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="183"/>
         <source>1 s</source>
         <translation>1 s</translation>
     </message>
     <message>
-        <location filename="../Variable_Force/force.cpp" line="122"/>
-        <location filename="../Variable_Force/force.cpp" line="212"/>
-        <location filename="../Variable_Force/force.cpp" line="237"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="83"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="149"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="174"/>
+        <location filename="../Variable_Force/force.cpp" line="125"/>
+        <location filename="../Variable_Force/force.cpp" line="218"/>
+        <location filename="../Variable_Force/force.cpp" line="243"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="88"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="159"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="184"/>
         <source>5 s</source>
         <translation>5 s</translation>
     </message>
     <message>
-        <location filename="../Variable_Force/force.cpp" line="123"/>
-        <location filename="../Variable_Force/force.cpp" line="214"/>
-        <location filename="../Variable_Force/force.cpp" line="238"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="84"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="151"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="175"/>
+        <location filename="../Variable_Force/force.cpp" line="126"/>
+        <location filename="../Variable_Force/force.cpp" line="220"/>
+        <location filename="../Variable_Force/force.cpp" line="244"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="89"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="161"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="185"/>
         <source>10 s</source>
         <translation>10 s</translation>
     </message>
     <message>
-        <location filename="../Variable_Force/force.cpp" line="127"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="88"/>
+        <location filename="../Variable_Force/force.cpp" line="130"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="93"/>
         <source>Default Matrix</source>
         <translation>Matriz pré-definida</translation>
     </message>
     <message>
-        <location filename="../Variable_Force/force.cpp" line="129"/>
-        <location filename="../Variable_Force/force.cpp" line="219"/>
-        <location filename="../Variable_Force/force.cpp" line="244"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="90"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="156"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="181"/>
+        <location filename="../Variable_Force/force.cpp" line="132"/>
+        <location filename="../Variable_Force/force.cpp" line="225"/>
+        <location filename="../Variable_Force/force.cpp" line="250"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="95"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="166"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="191"/>
         <source>Middle</source>
         <oldsource>middle</oldsource>
         <translation>Meio</translation>
     </message>
     <message>
-        <location filename="../Variable_Force/force.cpp" line="130"/>
-        <location filename="../Variable_Force/force.cpp" line="221"/>
-        <location filename="../Variable_Force/force.cpp" line="245"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="91"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="158"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="182"/>
+        <location filename="../Variable_Force/force.cpp" line="133"/>
+        <location filename="../Variable_Force/force.cpp" line="227"/>
+        <location filename="../Variable_Force/force.cpp" line="251"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="96"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="168"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="192"/>
         <source>Floor</source>
         <oldsource>floor</oldsource>
         <translation>Chão</translation>
     </message>
     <message>
-        <location filename="../Variable_Force/force.cpp" line="135"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="96"/>
+        <location filename="../Variable_Force/force.cpp" line="138"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="101"/>
         <source>Allow different matrixes between measurement and reference</source>
         <translation>Permitir matrizes diferentes entre a medição e a referência</translation>
     </message>
     <message>
-        <location filename="../Variable_Force/force.cpp" line="199"/>
-        <location filename="../Variable_Force/force.cpp" line="231"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="136"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="168"/>
+        <location filename="../Variable_Force/force.cpp" line="205"/>
+        <location filename="../Variable_Force/force.cpp" line="237"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="146"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="178"/>
         <source>Multimeter time</source>
         <translation>Tempo do Multímetro</translation>
     </message>
     <message>
-        <location filename="../Variable_Force/force.cpp" line="216"/>
-        <location filename="../Variable_Force/force.cpp" line="242"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="153"/>
-        <location filename="../Virtual_Force/virtual_force.cpp" line="179"/>
+        <location filename="../Variable_Force/force.cpp" line="222"/>
+        <location filename="../Variable_Force/force.cpp" line="248"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="163"/>
+        <location filename="../Virtual_Force/virtual_force.cpp" line="189"/>
         <source>Test Type</source>
         <translation>Tipo de Teste</translation>
     </message>
@@ -867,8 +867,8 @@
         <translation>passo</translation>
     </message>
     <message>
-        <location filename="../Variable_Alpha/alpha.cpp" line="90"/>
-        <location filename="../Virtual_Alpha/virtual_alpha.cpp" line="47"/>
+        <location filename="../Variable_Alpha/alpha.cpp" line="93"/>
+        <location filename="../Virtual_Alpha/virtual_alpha.cpp" line="52"/>
         <source>Alpha device</source>
         <oldsource>Alpha device path</oldsource>
         <translation>Dispositivo Alfa</translation>
@@ -883,8 +883,8 @@
         <translation>Beta</translation>
     </message>
     <message>
-        <location filename="../Variable_Beta/beta.cpp" line="91"/>
-        <location filename="../Virtual_Beta/virtual_beta.cpp" line="48"/>
+        <location filename="../Variable_Beta/beta.cpp" line="94"/>
+        <location filename="../Virtual_Beta/virtual_beta.cpp" line="53"/>
         <source>Beta device</source>
         <oldsource>Beta device path</oldsource>
         <translation>Dispositivo Beta</translation>
@@ -906,8 +906,8 @@
         <translation>%</translation>
     </message>
     <message>
-        <location filename="../Variable_Motor/motor.cpp" line="84"/>
-        <location filename="../Virtual_Motor/virtual_motor.cpp" line="43"/>
+        <location filename="../Variable_Motor/motor.cpp" line="87"/>
+        <location filename="../Virtual_Motor/virtual_motor.cpp" line="48"/>
         <source>Motor device</source>
         <oldsource>Motor device path</oldsource>
         <translation>Dispositivo Motor</translation>
@@ -921,12 +921,12 @@
         <translation>Temperatura</translation>
     </message>
     <message>
-        <location filename="../Variable_Temperature/temperature.cpp" line="81"/>
+        <location filename="../Variable_Temperature/temperature.cpp" line="84"/>
         <source>Onboard</source>
         <translation>Embutido</translation>
     </message>
     <message>
-        <location filename="../Variable_Temperature/temperature.cpp" line="84"/>
+        <location filename="../Variable_Temperature/temperature.cpp" line="87"/>
         <source>APC external</source>
         <translation>Externo APC</translation>
     </message>
@@ -945,16 +945,16 @@
         <translation>mmH20</translation>
     </message>
     <message>
-        <location filename="../Variable_Wind/wind.cpp" line="100"/>
-        <location filename="../Variable_Wind/wind.cpp" line="204"/>
-        <location filename="../Virtual_Wind/virtual_wind.cpp" line="61"/>
-        <location filename="../Virtual_Wind/virtual_wind.cpp" line="123"/>
+        <location filename="../Variable_Wind/wind.cpp" line="103"/>
+        <location filename="../Variable_Wind/wind.cpp" line="210"/>
+        <location filename="../Virtual_Wind/virtual_wind.cpp" line="66"/>
+        <location filename="../Virtual_Wind/virtual_wind.cpp" line="133"/>
         <source>channel %1</source>
         <translation>canal %1</translation>
     </message>
     <message>
-        <location filename="../Variable_Wind/wind.cpp" line="178"/>
-        <location filename="../Virtual_Wind/virtual_wind.cpp" line="97"/>
+        <location filename="../Variable_Wind/wind.cpp" line="184"/>
+        <location filename="../Virtual_Wind/virtual_wind.cpp" line="107"/>
         <source>Channel</source>
         <translation>Canal</translation>
     </message>
@@ -964,7 +964,7 @@
         <translation>Ângulos</translation>
     </message>
     <message>
-        <location filename="../Variable_Angles/angles.cpp" line="129"/>
+        <location filename="../Variable_Angles/angles.cpp" line="132"/>
         <source>Angles device</source>
         <oldsource>Angles device path</oldsource>
         <translation>Dispositivo ângulos</translation>
@@ -1004,7 +1004,7 @@
         <translation>Arduino</translation>
     </message>
     <message>
-        <location filename="../arduino/arduino.cpp" line="70"/>
+        <location filename="../arduino/arduino.cpp" line="73"/>
         <source>Arduino device</source>
         <oldsource>Arduino device path</oldsource>
         <translation>Dispositivo Arduino</translation>
@@ -1017,7 +1017,7 @@
         <translation>°C</translation>
     </message>
     <message>
-        <location filename="../aeroist/measurethread.cpp" line="169"/>
+        <location filename="../aeroist/measurethread.cpp" line="171"/>
         <source>There was a problem in setting or reading from hardware.
 The measurement has stopped.
 
