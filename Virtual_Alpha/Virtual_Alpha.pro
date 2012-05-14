@@ -2,7 +2,6 @@ QT       += gui
 QT       += xml
 
 CONFIG         += plugin
-CONFIG         += debug_and_release
 TARGET          = $$qtLibraryTarget(21_alpha)
 
 TEMPLATE = lib
