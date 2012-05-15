@@ -153,6 +153,7 @@ void AeroISTWindow::on_ThreadButton_clicked(){
 
     if (ui->actionTable_follows_Start->isChecked()){
         proxy->setSourceModel(measurementThread);
+        ui->tableView->resizeColumnsToContents();
     }
 
     try{
@@ -478,6 +479,7 @@ void AeroISTWindow::ReferenceSelectionChanged(const QModelIndex &current ,const 
 
 void AeroISTWindow::on_listView_activated(const QModelIndex &index){
     proxy->setSourceModel( measure_list->at(index.row()));
+    ui->tableView->resizeColumnsToContents();
     ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tab),measure_list->at(index.row())->name);
 }
 
@@ -601,6 +603,7 @@ void AeroISTWindow::on_actionView_Reference_details_triggered(){
 
 void AeroISTWindow::on_listViewReference_activated(const QModelIndex &index){
     proxy->setSourceModel(reference_list->at(index.row()));
+    ui->tableView->resizeColumnsToContents();
     ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tab),reference_list->at(index.row())->name);
 }
 
@@ -626,6 +629,7 @@ void AeroISTWindow::on_actionNew_Reference_triggered(){
 
         if (ui->actionTable_follows_Start->isChecked()){
             proxy->setSourceModel(referenceThread);
+            ui->tableView->resizeColumnsToContents();
         }
 
         try {
@@ -759,6 +763,7 @@ void AeroISTWindow::on_actionRaw_data_toggled(bool arg1){
     // refresh the table
     ui->tableView->setModel(NULL);
     ui->tableView->setModel(proxy);
+    ui->tableView->resizeColumnsToContents();
 }
 
 void AeroISTWindow::on_ManualButton_clicked(){
