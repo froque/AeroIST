@@ -3,15 +3,29 @@ Dependencies:
  - Qwt > 6
  - linux-gpib
 
+General Compile Instructions:
+ - qmake PREFIX=/usr/local
+ - make
+ - make install
 
-Compile Instructions:
+
+Example on a fresh installation of Debian testing
+ * Install GPIB from packages or form source (see instructions below)
+ - aptitude install -R qt4-qmake g++ libqt4-dev libqwt-dev libicu48 git
+ - git clone -b plugins https://git.gitorious.org/aeroist/aeroist.git
+ - cd aeroist
  - qmake
  - make
- # make install - not used at this time
- - choose wich plugins to be symlinked in build/plugins
- - run build/AeroIST
+ - make install
 
-
-Linux-GPIB requires to compile:
+GPIB:
+To compile Linux-GPIB, it requires:
  - linux-headers
  - user must have read acces to gpib devices
+ - get linux-gpib-3.2.16.tar.gz from http://linux-gpib.sourceforge.net
+    * tar zxf linux-gpib-3.2.16.tar.gz
+    * cd linux-gpib-3.2.16
+    * ./configure
+    * make
+    * make install
+

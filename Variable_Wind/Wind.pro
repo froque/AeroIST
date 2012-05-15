@@ -1,3 +1,4 @@
+include(../common.pri)
 QT       += gui
 QT       += xml
 
@@ -6,9 +7,9 @@ TARGET          = $$qtLibraryTarget(40_wind)
 
 TEMPLATE = lib
 
-OBJECTS_DIR   = objs
-MOC_DIR       = moc
-DESTDIR       = ../build/plugins_real
+OBJECTS_DIR = $$BUILDDIR/objs/$$TARGET
+MOC_DIR     = $$BUILDDIR/moc/$$TARGET
+DESTDIR     = $$BUILDDIR/plugins_real
 
 INCLUDEPATH += ../common
 
@@ -28,3 +29,6 @@ DEPENDPATH += $$PWD/../staticlibs/arduino-botoneira
 win32:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../staticlibs/arduino-botoneira/release/arduino-serial.lib
 else:win32:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../staticlibs/arduino-botoneira/debug/arduino-serial.lib
 else:unix:!symbian: PRE_TARGETDEPS += $$OUT_PWD/../staticlibs/arduino-botoneira/libarduino-serial.a
+
+target.path = $$SHAREDIR/aeroist/plugins/
+INSTALLS += target

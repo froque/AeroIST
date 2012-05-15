@@ -1,12 +1,14 @@
 # -------------------------------------------------
 # Project created by QtCreator 2011-08-11T23:59:52
 # -------------------------------------------------
+include(../common.pri)
+
 QT += core
 QT += gui
 QT += xml
 QT += xmlpatterns
 
-#TARGET = AeroIST
+TARGET = AeroIST
 TEMPLATE = app
 
 DESTDIR = ../build
@@ -69,13 +71,12 @@ FORMS += aeroistwindow.ui \
 
 RESOURCES += resources.qrc
 
-### FOR INSTALLATION
-## Installation Variables
-#isEmpty(PREFIX) {
-#        PREFIX = /usr/local
-#}
-#BINDIR = $$PREFIX/bin
 
-##MAKE INSTALL
-#INSTALLS += target
-#target.path = $$BINDIR
+# create a symbolic link
+symlink.path = /usr/local/bin/
+symlink.extra = ln -s $$SHAREDIR/aeroist/$$TARGET /usr/local/bin/
+INSTALLS += symlink
+
+target.path = $$SHAREDIR/aeroist/
+
+INSTALLS += target

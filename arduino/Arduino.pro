@@ -1,3 +1,4 @@
+include(../common.pri)
 QT       += gui
 QT       += xml
 
@@ -6,12 +7,15 @@ TARGET          = $$qtLibraryTarget(arduino)
 
 TEMPLATE = lib
 
-OBJECTS_DIR   = objs
-MOC_DIR       = moc
-DESTDIR       = ../build/plugins
+OBJECTS_DIR = $$BUILDDIR/objs/$$TARGET
+MOC_DIR     = $$BUILDDIR/moc/$$TARGET
+DESTDIR     = $$BUILDDIR/plugins
 
 INCLUDEPATH += ../common
 
 SOURCES       += arduino.cpp
 
 HEADERS       += arduino.h
+
+target.path = $$SHAREDIR/aeroist/plugins/
+INSTALLS += target

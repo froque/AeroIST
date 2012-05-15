@@ -62,7 +62,7 @@ unix:!symbian {
     } else {
         target.path = /usr/lib
     }
-    INSTALLS += target
+#    INSTALLS += target
     
     HEADERS += \
         ttylocker_p_unix.h \

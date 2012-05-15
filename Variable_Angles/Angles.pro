@@ -1,3 +1,4 @@
+include(../common.pri)
 QT       += gui
 QT       += xml
 
@@ -6,9 +7,9 @@ TARGET          = $$qtLibraryTarget(20_angles)
 
 TEMPLATE = lib
 
-OBJECTS_DIR   = objs
-MOC_DIR       = moc
-DESTDIR       = ../build/plugins_real
+OBJECTS_DIR = $$BUILDDIR/objs/$$TARGET
+MOC_DIR     = $$BUILDDIR/moc/$$TARGET
+DESTDIR     = $$BUILDDIR/plugins_real
 
 SOURCES       += angles.cpp
 
@@ -42,3 +43,6 @@ DEPENDPATH += $$PWD/../staticlibs/qserialdevice/src
 win32:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../staticlibs/qserialdevice/src/release/SerialPort.lib
 else:win32:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../staticlibs/qserialdevice/src/debug/SerialPort.lib
 else:unix:!symbian: PRE_TARGETDEPS += $$OUT_PWD/../staticlibs/qserialdevice/src/libSerialPort.a
+
+target.path = $$SHAREDIR/aeroist/plugins/
+INSTALLS += target
