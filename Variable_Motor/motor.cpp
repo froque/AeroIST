@@ -219,7 +219,7 @@ MotorHardware::MotorHardware () {
     options.c_cc[VMIN]=0;
     /*  Set the new options for the port... */
     if (tcsetattr(fd, TCSANOW, &options)!=0){
-        throw std::runtime_error("setting attributes failed");
+        throw std::runtime_error("Motor setting attributes failed");
     }
 
     talk_to_simoreg();

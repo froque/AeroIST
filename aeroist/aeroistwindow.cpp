@@ -151,11 +151,6 @@ void AeroISTWindow::on_ThreadButton_clicked(){
         return;
     }
 
-    if (ui->actionTable_follows_Start->isChecked()){
-        proxy->setSourceModel(measurementThread);
-        ui->tableView->resizeColumnsToContents();
-    }
-
     try{
         m_test = new MeasureThread(measurementThread);
     }
@@ -218,6 +213,11 @@ void AeroISTWindow::on_ThreadButton_clicked(){
     }
 
     m_thread->start();
+
+    if (ui->actionTable_follows_Start->isChecked()){
+        proxy->setSourceModel(measurementThread);
+        ui->tableView->resizeColumnsToContents();
+    }
 
     thread_status = MEASURE_RUNNING;
     QString text(tr("Stop "));
@@ -627,11 +627,6 @@ void AeroISTWindow::on_actionNew_Reference_triggered(){
         QModelIndex index = reference_list->index(reference_list->rowCount()-1,0);
         ui->listViewReference->setCurrentIndex(index);
 
-        if (ui->actionTable_follows_Start->isChecked()){
-            proxy->setSourceModel(referenceThread);
-            ui->tableView->resizeColumnsToContents();
-        }
-
         try {
             m_test = new MeasureThread(referenceThread);
         }
@@ -673,6 +668,12 @@ void AeroISTWindow::on_actionNew_Reference_triggered(){
         thread_status = REFERENCE_RUNNING;
 
         m_thread->start();
+
+        if (ui->actionTable_follows_Start->isChecked()){
+            proxy->setSourceModel(referenceThread);
+            ui->tableView->resizeColumnsToContents();
+        }
+
         return;
     }
 }
