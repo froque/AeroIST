@@ -21,7 +21,7 @@ INCLUDEPATH += ../common
 
 unix:CONFIG += qwt
 win32:INCLUDEPATH += "C:/Qwt-6.0.2-svn/include"
-win32:LIBS += -L"C:/Qwt-6.0.2-svn/lib" -lqwt
+win32:LIBS += "-LC:/Qwt-6.0.2-svn/lib" -lqwt
 
 SOURCES += main.cpp \
     aeroistwindow.cpp \

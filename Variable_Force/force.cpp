@@ -1,6 +1,10 @@
 #include "force.h"
-
+#ifdef Q_OS_LINUX
 #include <gpib/ib.h>
+#endif
+#ifdef Q_OS_WIN
+#include <ni4882.h>
+#endif
 #include <QString>
 #include <QSettings>
 #include <stdexcept>
@@ -341,8 +345,12 @@ ForceHardware::ForceHardware(VariableModel* v){
      for (int row = 0; row< NUMCHANNELS; row++){
          dvm_si_zero[row] = 0.0;
      }
-
+#ifdef Q_OS_LINUX
      g_id = ibfind(settings.value(SETTINGS_MULTIMETER_PATH,SETTINGS_MULTIMETER_PATH_DEFAULT).toString().toStdString().c_str());
+#endif
+#ifdef Q_OS_WIN
+     g_id = ibfindA(settings.value(SETTINGS_MULTIMETER_PATH,SETTINGS_MULTIMETER_PATH_DEFAULT).toString().toStdString().c_str());
+#endif
      if (  g_id == -1 ){
          throw std::runtime_error("unable to open GPIB device");
      }
