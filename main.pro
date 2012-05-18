@@ -16,9 +16,8 @@ SUBDIRS += aeroist/AeroIST.pro
 
 # DESTDIR = plugins_real
 contains(PLUGINS,real){
-SUBDIRS += \
-    Variable_Force/Force.pro\
-    Variable_Alpha/Alpha.pro\
+SUBDIRS += Variable_Force/Force.pro
+unix:SUBDIRS += Variable_Alpha/Alpha.pro\
     Variable_Beta/Beta.pro\
     Variable_Motor/Motor.pro\
     Variable_Temperature/Temperature.pro\
