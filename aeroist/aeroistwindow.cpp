@@ -717,9 +717,8 @@ void AeroISTWindow::closeEvent(QCloseEvent *event){
 
 // PLOT add, delete and clear
 void AeroISTWindow::on_actionNew_Curve_triggered(){
-    CurveNew *newcurve = new CurveNew(ui->qwtPlot, measure_list);
-    if (newcurve->exec() == QDialog::Rejected){
-        delete newcurve;
+    CurveNew newcurve(ui->qwtPlot, measure_list);
+    if (newcurve.exec() == QDialog::Rejected){
         return;
     }
 }
