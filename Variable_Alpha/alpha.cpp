@@ -113,51 +113,6 @@ AlphaModel::AlphaModel(){
 AlphaModel::~AlphaModel(){
     delete meta;
 }
-int AlphaModel::get_size() {
-    return contents.size();
-}
-double AlphaModel::get_value(int n,int row) {
-    Q_UNUSED(n);
-    return contents.value(row);
-}
-QVector<double> AlphaModel::get_vector(int n) {
-    Q_UNUSED(n);
-    return contents;
-}
-void AlphaModel::set_value(int n ,int row, double value) {
-    Q_UNUSED(n);
-    contents.replace(row,value);
-}
-void AlphaModel::insert_value(int n, int row, int count, double value) {
-    Q_UNUSED(n);
-    contents.insert(row,count,value);
-}
-void AlphaModel::append_value(int n, double value) {
-    Q_UNUSED(n);
-    contents.append(value);
-}
-double AlphaModel::get_raw_value(int n,int row){
-    Q_UNUSED(n);
-    return raw.value(row);
-}
-void AlphaModel::set_raw_value(int n ,int row, double value){
-    Q_UNUSED(n);
-    raw.replace(row,value);
-}
-void AlphaModel::insert_raw_value(int n, int row, int count, double value) {
-    Q_UNUSED(n);
-    raw.insert(row,count,value);
-}
-void AlphaModel::append_raw_value(int n, double value) {
-    Q_UNUSED(n);
-    raw.append(value);
-}
-void AlphaModel::set_zero(QVector<double> zero) {
-    Q_UNUSED(zero);
-}
-QVector<double> AlphaModel::get_zero() {
-    return QVector<double>();
-}
 QWidget* AlphaModel::view_get_widget(){
     return NULL;
 }
@@ -168,7 +123,6 @@ bool AlphaModel::measurement_accept_config(VariableModel *m){
     Q_UNUSED(m);
     return true;
 }
-
 bool AlphaModel::measurement_is_configurable(){
     return false;
 }

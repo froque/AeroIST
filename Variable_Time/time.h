@@ -37,17 +37,6 @@ class TimeModel: public VariableModel {
 public:
     TimeModel();
     ~TimeModel();
-    int get_size();
-    double get_value(int n,int row);
-    QVector<double> get_vector(int n);
-    void set_value(int n ,int row, double value);
-    void insert_value(int n, int row, int count, double value);
-    void append_value(int n, double value);
-    double get_raw_value(int n,int row);
-    void set_raw_value(int n ,int row, double value);
-    void insert_raw_value(int n, int row, int count, double value);
-    void append_raw_value(int n, double value);
-    void set_zero(QVector<double> zero);
     QVector<double> get_zero();
     QWidget* view_get_widget();
     QWidget* measurement_get_widget();
@@ -55,9 +44,6 @@ public:
     bool measurement_is_configurable();
     void save_xml(QDomElement root);
     void load_xml(QDomElement root);
-private:
-    QVector<double> contents,raw;
-    QVector<double> zero;
 };
 
 class TimeHardware: public VariableHardware {

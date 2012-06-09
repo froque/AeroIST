@@ -27,6 +27,9 @@ MeasurementsModel::MeasurementsModel(QDomElement root, QObject *parent):
 }
 
 MeasurementsModel::~MeasurementsModel(){
+    foreach (VariableModel *var, variables) {
+        delete var->data;
+    }
     qDeleteAll(variables);
 }
 
@@ -40,6 +43,7 @@ void MeasurementsModel::init(){
         if(factory){
             VariableModel *model = factory->CreateVariableModel();
             if (model != NULL){
+                model->data = new Data(model->meta->get_num());
                 variables.append(model);
             }
         }
@@ -106,8 +110,8 @@ void MeasurementsModel::GetMeasure(QHash<QString,double> hash, QHash<QString, do
     foreach (VariableModel *var, variables) {
         for (int k=0; k< var->meta->get_num(); k++){
             if(hash.contains(var->meta->get_name(k))){
-                var->append_value(k,hash[var->meta->get_name(k)]);
-                var->append_raw_value(k,raw_hash[var->meta->get_name(k)]);
+                var->data->append_value(k,hash[var->meta->get_name(k)]);
+                var->data->append_raw_value(k,raw_hash[var->meta->get_name(k)]);
             }
         }
     }
@@ -130,7 +134,7 @@ int MeasurementsModel::rowCount(const QModelIndex &parent ) const{
     if (variables.isEmpty()){
         return 0;
     } else {
-        return variables.first()->get_size();
+        return variables.first()->data->get_size();
     }
 }
 
@@ -150,7 +154,7 @@ QVariant MeasurementsModel::data(const QModelIndex &index, int role) const{
             lower = upper;
             upper += var->meta->get_num();
             if ( column < upper){
-                return var->get_value( column- lower , row);
+                return var->data->get_value( column- lower , row);
             }
         }
     }
@@ -163,7 +167,7 @@ QVariant MeasurementsModel::data(const QModelIndex &index, int role) const{
             lower = upper;
             upper += var->meta->get_num();
             if ( column < upper){
-                return var->get_raw_value( column- lower , row);
+                return var->data->get_raw_value( column- lower , row);
             }
         }
     }
@@ -213,7 +217,7 @@ QVector<double>  MeasurementsModel::vector_data(int index){
         lower = upper;
         upper += var->meta->get_num();
         if ( column < upper){
-            return var->get_vector(column - lower);
+            return var->data->get_vector(column - lower);
         }
     }
 
@@ -297,7 +301,7 @@ void MeasurementsModel::save_xml(QDomElement root ){
                 tag_header = var->meta->get_name(k).simplified();
                 tag_header.replace(" ","_");
                 force = root.ownerDocument().createElement(tag_header);
-                data = QString::number( var->get_zero().value(k) ,'g',10);
+                data = QString::number( var->data->get_zero().value(k) ,'g',10);
                 force.appendChild( root.ownerDocument().createTextNode(data));
                 element.appendChild(force);
             }
@@ -442,7 +446,7 @@ void MeasurementsModel::load_xml(QDomElement root){
                                     }
                                 }
                             }
-                            var->set_zero(vector);
+                            var->data->set_zero(vector);
                         }
                     }
                 }
@@ -522,9 +526,9 @@ bool MeasurementsModel::setData ( const QModelIndex & index, const QVariant & va
             upper += var->meta->get_num();
             if ( column < upper){
                 if (role== Qt::EditRole){
-                    var->set_value(column - lower,row,value.toDouble());
+                    var->data->set_value(column - lower,row,value.toDouble());
                 } else {
-                    var->set_raw_value(column - lower,row,value.toDouble());
+                    var->data->set_raw_value(column - lower,row,value.toDouble());
                 }
                 return true;
             }
@@ -542,8 +546,8 @@ bool MeasurementsModel::insertRows ( int row, int count, const QModelIndex & par
 
     foreach (VariableModel *var, variables) {
         for (int k=0; k< var->meta->get_num(); k++){
-            var->insert_value(k, row, count, 0);
-            var->insert_raw_value(k,row,count,0);
+            var->data->insert_value(k, row, count, 0);
+            var->data->insert_raw_value(k,row,count,0);
         }
     }
 

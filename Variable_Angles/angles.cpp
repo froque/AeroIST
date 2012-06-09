@@ -152,42 +152,6 @@ AnglesModel::AnglesModel(){
 AnglesModel::~AnglesModel(){
     delete meta;
 }
-int AnglesModel::get_size() {
-    return contents[0].size();
-}
-double AnglesModel::get_value(int n,int row) {
-    return contents[n].value(row);
-}
-QVector<double> AnglesModel::get_vector(int n) {
-    return contents[n];
-}
-void AnglesModel::set_value(int n ,int row, double value) {
-    contents[n].replace(row,value);
-}
-void AnglesModel::insert_value(int n, int row, int count, double value) {
-    contents[n].insert(row,count,value);
-}
-void AnglesModel::append_value(int n, double value) {
-    contents[n].append(value);
-}
-double AnglesModel::get_raw_value(int n,int row){
-    return raw[n].value(row);
-}
-void AnglesModel::set_raw_value(int n ,int row, double value){
-    raw[n].replace(row,value);
-}
-void AnglesModel::insert_raw_value(int n, int row, int count, double value) {
-    raw[n].insert(row,count,value);
-}
-void AnglesModel::append_raw_value(int n, double value) {
-    raw[n].append(value);
-}
-void AnglesModel::set_zero(QVector<double> zero) {
-    Q_UNUSED(zero);
-}
-QVector<double> AnglesModel::get_zero() {
-    return QVector<double>();
-}
 QWidget* AnglesModel::view_get_widget(){
     return NULL;
 }
@@ -198,7 +162,6 @@ bool AnglesModel::measurement_accept_config(VariableModel *m){
     Q_UNUSED(m);
     return true;
 }
-
 bool AnglesModel::measurement_is_configurable(){
     return false;
 }

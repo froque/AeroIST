@@ -74,30 +74,13 @@ MotorModel::MotorModel(){
 MotorModel::~MotorModel(){
     delete meta;
 }
-int MotorModel::get_size() {return contents.size();}
-double MotorModel::get_value(int n,int row) {Q_UNUSED(n); return contents.value(row);}
-QVector<double> MotorModel::get_vector(int n) {Q_UNUSED(n); return contents;}
-void MotorModel::set_value(int n ,int row, double value) {Q_UNUSED(n);  contents.replace(row,value);}
-void MotorModel::insert_value(int n, int row, int count, double value) {Q_UNUSED(n); contents.insert(row,count,value);}
-void MotorModel::append_value(int n, double value) {Q_UNUSED(n);  contents.append(value);}
-void MotorModel::set_zero(QVector<double> zero) {Q_UNUSED(zero);}
-QVector<double> MotorModel::get_zero() {return QVector<double>();}
 QWidget* MotorModel::view_get_widget(){ return NULL;}
 QWidget* MotorModel::measurement_get_widget(){return NULL;}
 bool MotorModel::measurement_accept_config(VariableModel *m){Q_UNUSED(m); return true;}
 bool MotorModel::measurement_is_configurable(){return false;}
 void MotorModel::save_xml(QDomElement root){Q_UNUSED(root);}
 void MotorModel::load_xml(QDomElement root){Q_UNUSED(root);}
-void MotorModel::set_raw_value(int n, int row, double value){
-    Q_UNUSED(n);
-    raw.replace(row,value);
-}
-double MotorModel::get_raw_value(int n, int row){
-    Q_UNUSED(n);
-    return raw.value(row);
-}
-void MotorModel::insert_raw_value(int n, int row, int count, double value) {Q_UNUSED(n); raw.insert(row,count,value);}
-void MotorModel::append_raw_value(int n, double value) {Q_UNUSED(n);  raw.append(value);}
+
 
 MotorHardware::MotorHardware () {
     meta = new MotorMeta;

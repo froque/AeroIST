@@ -124,22 +124,6 @@ ForceModel::ForceModel(){
 ForceModel::~ForceModel(){
     delete meta;
 }
-int ForceModel::get_size() {return force[0].size();}
-double ForceModel::get_value(int n,int row) {return force[n].value(row);}
-QVector<double> ForceModel::get_vector(int n) {return force[n];}
-void ForceModel::set_value(int n ,int row, double value) { force[n].replace(row,value);}
-void ForceModel::insert_value(int n, int row, int count, double value) {force[n].insert(row,count,value);}
-void ForceModel::append_value(int n, double value) { force[n].append(value);}
-double ForceModel::get_raw_value(int n,int row){
-    return raw[n].value(row);
-}
-void ForceModel::set_raw_value(int n ,int row, double value){
-    raw[n].replace(row,value);
-}
-void ForceModel::insert_raw_value(int n, int row, int count, double value) {raw[n].insert(row,count,value);}
-void ForceModel::append_raw_value(int n, double value) { raw[n].append(value);}
-void ForceModel::set_zero(QVector<double> zero) {this->zero = zero;}
-QVector<double> ForceModel::get_zero() {return zero;}
 QWidget* ForceModel::view_get_widget(){
     QWidget *widget = new QWidget;
     QGridLayout *layout = new QGridLayout;

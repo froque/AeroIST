@@ -114,51 +114,6 @@ TemperatureModel::TemperatureModel(){
 TemperatureModel::~TemperatureModel(){
     delete meta;
 }
-int TemperatureModel::get_size() {
-    return contents.size();
-}
-double TemperatureModel::get_value(int n,int row) {
-    Q_UNUSED(n);
-    return contents.value(row);
-}
-QVector<double> TemperatureModel::get_vector(int n) {
-    Q_UNUSED(n);
-    return contents;
-}
-void TemperatureModel::set_value(int n ,int row, double value) {
-    Q_UNUSED(n);
-    contents.replace(row,value);
-}
-void TemperatureModel::insert_value(int n, int row, int count, double value) {
-    Q_UNUSED(n);
-    contents.insert(row,count,value);
-}
-void TemperatureModel::append_value(int n, double value) {
-    Q_UNUSED(n);
-    contents.append(value);
-}
-double TemperatureModel::get_raw_value(int n,int row){
-    Q_UNUSED(n);
-    return raw.value(row);
-}
-void TemperatureModel::set_raw_value(int n ,int row, double value){
-    Q_UNUSED(n);
-    raw.replace(row,value);
-}
-void TemperatureModel::insert_raw_value(int n, int row, int count, double value) {
-    Q_UNUSED(n);
-    raw.insert(row,count,value);
-}
-void TemperatureModel::append_raw_value(int n, double value) {
-    Q_UNUSED(n);
-    raw.append(value);
-}
-void TemperatureModel::set_zero(QVector<double> zero) {
-    Q_UNUSED(zero);
-}
-QVector<double> TemperatureModel::get_zero() {
-    return QVector<double>();
-}
 QWidget* TemperatureModel::view_get_widget(){
     return NULL;
 }

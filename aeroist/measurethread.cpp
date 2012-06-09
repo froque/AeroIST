@@ -28,7 +28,7 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
         foreach (VariableModel *var, measurement->variables) {
             if(var->meta->has_zero()){
                 if (var->meta->get_general_name() == hard_var->meta->get_general_name()){
-                    hard_var->set_zero(var->get_zero());
+                    hard_var->set_zero(var->data->get_zero());
                 }
             }
         }

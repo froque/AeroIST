@@ -1,6 +1,7 @@
 #ifndef VARIABLE_H
 #define VARIABLE_H
 
+
 #include <QString>
 #include <QWidget>
 #include <QDomElement>
@@ -14,6 +15,8 @@
 // a controlable variable maybe set to a safe value in the final
 
 // raw ?
+
+class Data;
 
 class VariableMeta {
 public:
@@ -49,19 +52,6 @@ public:
 class VariableModel{
 public:
     virtual ~VariableModel() {}
-    virtual int get_size() = 0;
-    virtual double get_value(int n,int row) = 0;
-    virtual QVector<double> get_vector(int n) = 0;
-    virtual void set_value(int n ,int row, double value) = 0;
-    virtual void insert_value(int n, int row, int count, double value) = 0;
-    virtual void append_value(int n, double value) = 0;
-    virtual double get_raw_value(int n,int row) = 0;
-    virtual void set_raw_value(int n ,int row, double value) = 0;
-    virtual void insert_raw_value(int n, int row, int count, double value) = 0;
-    virtual void append_raw_value(int n, double value) = 0;
-    virtual void set_zero(QVector<double> zero) = 0;
-    virtual QVector<double> get_zero() = 0;
-
     virtual QWidget* view_get_widget() = 0;  // details
     virtual QWidget* measurement_get_widget() = 0; // preferences
     virtual bool measurement_accept_config(VariableModel *m) = 0;
@@ -70,6 +60,7 @@ public:
     virtual void load_xml(QDomElement root) = 0;
     VariableMeta *meta;
     QVector<double> start;
+    Data *data;
 };
 
 class VariableHardware{
@@ -97,7 +88,7 @@ public:
 };
 
 QT_BEGIN_NAMESPACE
-Q_DECLARE_INTERFACE(Factory, "pt.ist.utl.aeroist.factory/1.5")
+Q_DECLARE_INTERFACE(Factory, "pt.ist.utl.aeroist.factory/1.6")
 QT_END_NAMESPACE
 
 #endif // VARIABLE_H

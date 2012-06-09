@@ -72,30 +72,13 @@ BetaModel::BetaModel(){
 BetaModel::~BetaModel(){
     delete meta;
 }
-int BetaModel::get_size() {return contents.size();}
-double BetaModel::get_value(int n,int row) {Q_UNUSED(n); return contents.value(row);}
-QVector<double> BetaModel::get_vector(int n) {Q_UNUSED(n); return contents;}
-void BetaModel::set_value(int n ,int row, double value) {Q_UNUSED(n);  contents.insert(row,value);}
-void BetaModel::insert_value(int n, int row, int count, double value) {Q_UNUSED(n); contents.insert(row,count,value);}
-void BetaModel::append_value(int n, double value) {Q_UNUSED(n);  contents.append(value);}
-void BetaModel::set_zero(QVector<double> zero) {Q_UNUSED(zero);}
-QVector<double> BetaModel::get_zero() {return QVector<double> ();}
 QWidget* BetaModel::view_get_widget(){ return NULL;}
 QWidget* BetaModel::measurement_get_widget(){return NULL;}
 bool BetaModel::measurement_accept_config(VariableModel *m){Q_UNUSED(m); return true;}
 bool BetaModel::measurement_is_configurable(){return false;}
 void BetaModel::save_xml(QDomElement root){Q_UNUSED(root);}
 void BetaModel::load_xml(QDomElement root){Q_UNUSED(root);}
-void BetaModel::set_raw_value(int n, int row, double value){
-    Q_UNUSED(n);
-    raw.replace(row,value);
-}
-double BetaModel::get_raw_value(int n, int row){
-    Q_UNUSED(n);
-    return raw.value(row);
-}
-void BetaModel::insert_raw_value(int n, int row, int count, double value) {Q_UNUSED(n); raw.insert(row,count,value);}
-void BetaModel::append_raw_value(int n, double value) {Q_UNUSED(n);  raw.append(value);}
+
 
 BetaHardware::BetaHardware () {
     meta = new BetaMeta;

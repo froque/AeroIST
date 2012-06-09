@@ -20,6 +20,9 @@ ReferenceModel::ReferenceModel(QDomElement root,QObject *parent) :
 }
 
 ReferenceModel::~ReferenceModel(){
+    foreach (VariableModel *var, variables) {
+        delete var->data;
+    }
     qDeleteAll(variables);
 }
 
@@ -33,6 +36,7 @@ void ReferenceModel::init(){
         if(factory){
             VariableModel *model = factory->CreateVariableModel();
             if (model != NULL){
+                model->data = new Data(model->meta->get_num());
                 variables.append( model);
             }
         }
@@ -45,7 +49,7 @@ int ReferenceModel::rowCount(const QModelIndex &parent) const{
     if (variables.isEmpty()){
         return 0;
     } else {
-        return variables.first()->get_size();
+        return variables.first()->data->get_size();
     }
 }
 
@@ -75,7 +79,7 @@ QVariant ReferenceModel::data(const QModelIndex &index, int role) const{
                 lower = upper;
                 upper += var->meta->get_num();
                 if ( column < upper){
-                    return var->get_value( column- lower , row);
+                    return var->data->get_value( column- lower , row);
                 }
             }
         }
@@ -89,7 +93,7 @@ QVariant ReferenceModel::data(const QModelIndex &index, int role) const{
                 lower = upper;
                 upper += var->meta->get_num();
                 if ( column < upper){
-                    return var->get_raw_value( column- lower , row);
+                    return var->data->get_raw_value( column- lower , row);
                 }
             }
         }
@@ -135,8 +139,8 @@ void ReferenceModel::GetMeasure(QHash<QString,double> hash, QHash<QString, doubl
     foreach (VariableModel *var, variables) {
         for (int k=0; k< var->meta->get_num(); k++){
             if(hash.contains(var->meta->get_name(k))){
-                var->append_value(k,hash[var->meta->get_name(k)]);
-                var->append_raw_value(k,raw_hash[var->meta->get_name(k)]);
+                var->data->append_value(k,hash[var->meta->get_name(k)]);
+                var->data->append_raw_value(k,raw_hash[var->meta->get_name(k)]);
             }
         }
     }
@@ -343,9 +347,9 @@ bool ReferenceModel::setData ( const QModelIndex & index, const QVariant & value
                 upper += var->meta->get_num();
                 if ( column < upper){
                     if (role== Qt::EditRole){
-                        var->set_value(column - lower,row,value.toDouble());
+                        var->data->set_value(column - lower,row,value.toDouble());
                     } else {
-                        var->set_raw_value(column - lower,row,value.toDouble());
+                        var->data->set_raw_value(column - lower,row,value.toDouble());
                     }
                     return true;
                 }
@@ -363,8 +367,8 @@ bool ReferenceModel::insertRows ( int row, int count, const QModelIndex & parent
 
     foreach (VariableModel *var, variables) {
         for (int k=0; k< var->meta->get_num(); k++){
-            var->insert_value(k, row, count, 0);
-            var->insert_raw_value(k,row,count,0);
+            var->data->insert_value(k, row, count, 0);
+            var->data->insert_raw_value(k,row,count,0);
         }
     }
     return true;

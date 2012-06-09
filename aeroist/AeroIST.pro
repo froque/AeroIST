@@ -37,7 +37,8 @@ SOURCES += main.cpp \
     referencelist.cpp \
     referencemodel.cpp \
     referencepreferences.cpp \
-    proxymodel.cpp
+    proxymodel.cpp \
+    data.cpp
 
 SOURCES += ../common/helper.cpp \
 
@@ -55,7 +56,8 @@ HEADERS += aeroistwindow.h \
     referencelist.h \
     referencemodel.h \
     referencepreferences.h \
-    proxymodel.h
+    proxymodel.h \
+    data.h
 
 HEADERS += ../common/variable.h \
     ../common/helper.h \

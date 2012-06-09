@@ -183,7 +183,7 @@ void MeasurementsPreferences::accept(){
             if(var->meta->has_zero()){
                 if (var->meta->get_general_name() == ref_var->meta->get_general_name()){
                     for(int k=0; k< ref_var->meta->get_num(); k++){
-                        avg = ref_var->get_vector(k);
+                        avg = ref_var->data->get_vector(k);
                         double total = 0.0;
                         int size = avg.size();
                         for (int n=0; n < size; n++){
@@ -192,7 +192,7 @@ void MeasurementsPreferences::accept(){
                         total = total / size;
                         vector.append(total);
                     }
-                    var->set_zero(vector);
+                    var->data->set_zero(vector);
                 }
             }
         }
