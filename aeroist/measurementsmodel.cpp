@@ -2,9 +2,8 @@
 #include <QStringList>
 #include "measurementsmodel.h"
 
-#include <QDir>
-#include <QCoreApplication>
-#include <QPluginLoader>
+#include "pluginmanager.h"
+#include "data.h"
 
 MeasurementsModel::MeasurementsModel(QObject *parent)
     : QAbstractTableModel(parent)
@@ -27,28 +26,13 @@ MeasurementsModel::MeasurementsModel(QDomElement root, QObject *parent):
 }
 
 MeasurementsModel::~MeasurementsModel(){
-    foreach (VariableModel *var, variables) {
-        delete var->data;
-    }
-    qDeleteAll(variables);
+    PluginManager manager;
+    manager.destroyListVariableModel(variables);
 }
 
 void MeasurementsModel::init(){
-    Factory *factory;
-    QDir pluginsDir = QDir(qApp->applicationDirPath());
-    pluginsDir.cd("plugins");
-    foreach (QString fileName, pluginsDir.entryList(QDir::Files)) {
-        QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
-        factory = qobject_cast<Factory*>( loader.instance());
-        if(factory){
-            VariableModel *model = factory->CreateVariableModel();
-            if (model != NULL){
-                model->data = new Data(model->meta->get_num());
-                variables.append(model);
-            }
-        }
-    }
-    delete factory;
+    PluginManager manager;
+    variables = manager.getListVariableModel();
 }
 
 void MeasurementsModel::save_csv(QTextStream *out,bool header){

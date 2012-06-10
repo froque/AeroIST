@@ -2,11 +2,9 @@
 #include "ui_preferences.h"
 
 #include "common.h"
-#include <QDir>
 #include <QFileDialog>
-
-#include <QPluginLoader>
 #include "variable.h"
+#include "pluginmanager.h"
 
 Preferences::Preferences(QWidget *parent) :
     QDialog(parent),
@@ -20,19 +18,8 @@ Preferences::Preferences(QWidget *parent) :
     ui->doubleSpinBox->setValue(settings.value(SETTINGS_DEFAULT_SETTLING_TIME).toDouble());
     ui->checkBoxSchema->setChecked(settings.value(SETTINGS_SCHEMA_CONFIRM).toBool());
 
-    Factory *factory;
-    QDir pluginsDir = QDir(qApp->applicationDirPath());
-    pluginsDir.cd("plugins");
-    foreach (QString fileName, pluginsDir.entryList(QDir::Files)) {
-        QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
-        factory = qobject_cast<Factory*>( loader.instance());
-        if(factory){
-            VariablePreferences * pref = factory->CreateVariableGUI();
-            if (pref != NULL){
-                variables.append( pref);
-            }
-        }
-    }
+    PluginManager manager;
+    variables = manager.getListVariablePreferences();
 
     foreach (VariablePreferences *var, variables) {
         if(var->is_configurable()){
@@ -40,12 +27,12 @@ Preferences::Preferences(QWidget *parent) :
         }
     }
     adjustSize();
-    delete factory;
 }
 
 Preferences::~Preferences(){
     delete ui;
-    qDeleteAll(variables);
+    PluginManager manager;
+    manager.destroyListVariablePreferences(variables);
 }
 
 void Preferences::accept(){

@@ -37,10 +37,8 @@ double WindMeta::get_default_start(int n) {Q_UNUSED(n); return 0;}
 
 
 WindPreferences::WindPreferences() {
-    meta = new WindMeta();
 }
 WindPreferences::~WindPreferences(){
-    delete meta;
 }
 QWidget* WindPreferences::get_widget() {
     QWidget *widget = new QWidget;
@@ -88,10 +86,8 @@ bool WindPreferences::is_configurable() {return true;}
 
 
 WindModel::WindModel(){
-    meta = new WindMeta;
 }
 WindModel::~WindModel(){
-    delete meta;
 }
 QWidget* WindModel::view_get_widget(){
     QWidget *widget = new QWidget;
@@ -177,11 +173,9 @@ void WindModel::load_xml(QDomElement root){
 
 
 WindHardware::WindHardware(VariableModel* v) {
-    meta = new WindMeta;
     channel = dynamic_cast<WindModel*>(v)->channel;
 }
 WindHardware::~WindHardware(){
-    delete meta;
 }
 void WindHardware::read() { raw = (1.0 * qrand() / RAND_MAX); value = 10 *raw;}
 double WindHardware::get_value(int n) {Q_UNUSED(n); return value;}

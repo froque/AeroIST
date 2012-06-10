@@ -120,10 +120,8 @@ double AnglesMeta::get_default_start(int n) {
 
 
 AnglesPreferences::AnglesPreferences() {
-    meta = new AnglesMeta();
 }
 AnglesPreferences::~AnglesPreferences(){
-    delete meta;
 }
 QWidget* AnglesPreferences::get_widget() {
     QWidget *widget = new QWidget;
@@ -147,10 +145,8 @@ bool AnglesPreferences::is_configurable() {
 }
 
 AnglesModel::AnglesModel(){
-    meta = new AnglesMeta;
 }
 AnglesModel::~AnglesModel(){
-    delete meta;
 }
 QWidget* AnglesModel::view_get_widget(){
     return NULL;
@@ -174,7 +170,6 @@ void AnglesModel::load_xml(QDomElement root){
 
 
 AnglesHardware::AnglesHardware(){
-    meta = new AnglesMeta;
     QSettings settings;
     arduinofd = init_arduino(settings.value(SETTINGS_ARDUINO_PATH,SETTINGS_ARDUINO_PATH_DEFAULT).toString().toStdString().c_str());
 
@@ -234,7 +229,6 @@ AnglesHardware::AnglesHardware(){
 AnglesHardware::~AnglesHardware(){
     port->close();
     close(arduinofd);
-    delete meta;
 }
 void AnglesHardware::read() {
     QString command;

@@ -74,10 +74,8 @@ double WindMeta::get_default_start(int n) {
 
 
 WindPreferences::WindPreferences() {
-    meta = new WindMeta();
 }
 WindPreferences::~WindPreferences() {
-    delete meta;
 }
 QWidget* WindPreferences::get_widget() {
     QWidget *widget = new QWidget;
@@ -128,10 +126,8 @@ bool WindPreferences::is_configurable() {
 
 
 WindModel::WindModel(){
-    meta = new WindMeta;
 }
 WindModel::~WindModel(){
-    delete meta;
 }
 QWidget* WindModel::view_get_widget(){
     QWidget *widget = new QWidget;
@@ -217,7 +213,6 @@ void WindModel::load_xml(QDomElement root){
 
 
 WindHardware::WindHardware(VariableModel* v) {
-    meta = new WindMeta;
     wind=0;
     wind_raw=0;
     channel = dynamic_cast<WindModel*>(v)->channel;
@@ -276,7 +271,6 @@ WindHardware::WindHardware(VariableModel* v) {
 WindHardware::~WindHardware() {
   serialport_write(arduinofd, "$CDxxxx\n");
   close(arduinofd);
-  delete meta;
 }
 void WindHardware::read() {
     char buffer_read[256]="", buffer_aux[256];

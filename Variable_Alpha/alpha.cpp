@@ -81,10 +81,8 @@ double AlphaMeta::get_default_start(int n) {
 
 
 AlphaPreferences::AlphaPreferences() {
-    meta = new AlphaMeta();
 }
 AlphaPreferences::~AlphaPreferences() {
-    delete meta;
 }
 QWidget* AlphaPreferences::get_widget() {
     QWidget *widget = new QWidget;
@@ -108,10 +106,8 @@ bool AlphaPreferences::is_configurable() {
 }
 
 AlphaModel::AlphaModel(){
-    meta = new AlphaMeta;
 }
 AlphaModel::~AlphaModel(){
-    delete meta;
 }
 QWidget* AlphaModel::view_get_widget(){
     return NULL;
@@ -135,7 +131,6 @@ void AlphaModel::load_xml(QDomElement root){
 
 
 AlphaHardware::AlphaHardware(){
-    meta = new AlphaMeta;
     QSettings settings;
     arduinofd = init_arduino(settings.value(SETTINGS_ARDUINO_PATH,SETTINGS_ARDUINO_PATH_DEFAULT).toString().toStdString().c_str());
 
@@ -156,7 +151,6 @@ AlphaHardware::AlphaHardware(){
 AlphaHardware::~AlphaHardware(){
     close(fp);
     close(arduinofd);
-    delete meta;
 }
 void AlphaHardware::read() {
 

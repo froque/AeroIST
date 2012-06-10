@@ -41,10 +41,8 @@ double BetaMeta::get_default_start(int n) {Q_UNUSED(n); return DEFAULT_BETA_STAR
 
 
 BetaPreferences::BetaPreferences() {
-    meta = new BetaMeta();
 }
 BetaPreferences::~BetaPreferences(){
-    delete meta;
 }
 QWidget* BetaPreferences::get_widget() {
     QWidget *widget = new QWidget;
@@ -67,10 +65,8 @@ bool BetaPreferences::is_configurable() {return true;}
 
 
 BetaModel::BetaModel(){
-    meta = new BetaMeta;
 }
 BetaModel::~BetaModel(){
-    delete meta;
 }
 QWidget* BetaModel::view_get_widget(){ return NULL;}
 QWidget* BetaModel::measurement_get_widget(){return NULL;}
@@ -81,12 +77,10 @@ void BetaModel::load_xml(QDomElement root){Q_UNUSED(root);}
 
 
 BetaHardware::BetaHardware () {
-    meta = new BetaMeta;
     value=0;
     control_set=false;
 }
 BetaHardware::~BetaHardware(){
-    delete meta;
 }
 void BetaHardware::read() {if(control_set==false){ raw = (1.0 * qrand() / RAND_MAX); value = 20 *raw + 2;}}
 double BetaHardware::get_value(int n) {Q_UNUSED(n); return value;}

@@ -38,7 +38,8 @@ SOURCES += main.cpp \
     referencemodel.cpp \
     referencepreferences.cpp \
     proxymodel.cpp \
-    data.cpp
+    data.cpp \
+    pluginmanager.cpp
 
 SOURCES += ../common/helper.cpp \
 
@@ -57,7 +58,8 @@ HEADERS += aeroistwindow.h \
     referencemodel.h \
     referencepreferences.h \
     proxymodel.h \
-    data.h
+    data.h \
+    pluginmanager.h
 
 HEADERS += ../common/variable.h \
     ../common/helper.h \

@@ -67,10 +67,8 @@ double ForceMeta::get_default_start(int n) {Q_UNUSED(n); return 0;}
 
 
 ForcePreferences::ForcePreferences(){
-    meta = new ForceMeta;
 }
 ForcePreferences::~ForcePreferences(){
-    delete meta;
 }
 QWidget* ForcePreferences::get_widget() {
     QWidget *widget = new QWidget;
@@ -119,10 +117,8 @@ bool ForcePreferences::is_configurable() {return true;}
 
 
 ForceModel::ForceModel(){
-    meta = new ForceMeta;
 }
 ForceModel::~ForceModel(){
-    delete meta;
 }
 QWidget* ForceModel::view_get_widget(){
     QWidget *widget = new QWidget;
@@ -231,12 +227,10 @@ void ForceModel::load_xml(QDomElement root){
 
 
 ForceHardware::ForceHardware(VariableModel* v){
-    meta = new ForceMeta;
     dvm_time = dynamic_cast<ForceModel*>(v)->dvm_time;
     matrix = dynamic_cast<ForceModel*>(v)->matrix;
 }
 ForceHardware::~ForceHardware(){
-    delete meta;
 }
 void ForceHardware::read() { for (int k=0; k<6; k++) {raw[k]=(1.0 * qrand() / RAND_MAX); value[k] = ( 123.4 * (k+1) * raw[k] )- zero.value(k);}}
 double ForceHardware::get_value(int n) { return value[n];}
@@ -245,7 +239,7 @@ void ForceHardware::set_value(int n ,double value) {Q_UNUSED(n); Q_UNUSED(value)
 bool ForceHardware::isReady(void) {return true;}
 bool ForceHardware::has_set_final() {return meta->is_controlable() && false;}
 void ForceHardware::set_final() {}
-void ForceHardware::set_zero(QVector<double> zero) {this->zero = zero; qDebug() << this->zero;}
+void ForceHardware::set_zero(QVector<double> zero) {this->zero = zero;}
 
 VariableMeta* ForceFactory::CreateVariableMeta() { return new ForceMeta;}
 VariablePreferences* ForceFactory::CreateVariableGUI() { return new ForcePreferences;}

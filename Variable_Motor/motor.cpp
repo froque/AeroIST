@@ -75,10 +75,8 @@ double MotorMeta::get_default_start(int n) {
 }
 
 MotorPreferences::MotorPreferences() {
-    meta = new MotorMeta();
 }
 MotorPreferences::~MotorPreferences(){
-    delete meta;
 }
 QWidget* MotorPreferences::get_widget() {
     QWidget *widget = new QWidget;
@@ -108,10 +106,8 @@ void MotorPreferences::button_slot(){
 
 
 MotorModel::MotorModel(){
-    meta = new MotorMeta;
 }
 MotorModel::~MotorModel(){
-    delete meta;
 }
 QWidget* MotorModel::view_get_widget(){
     return NULL;
@@ -135,7 +131,6 @@ void MotorModel::load_xml(QDomElement root){
 
 
 MotorHardware::MotorHardware () {
-    meta = new MotorMeta;
     terminal37 = false;
     speed_setpoint = 0;
     speed_actual = 0;
@@ -181,7 +176,6 @@ MotorHardware::MotorHardware () {
 }
 MotorHardware::~MotorHardware(){
     close(fd);
-    delete meta;
 }
 void MotorHardware::read() {
     talk_to_simoreg();

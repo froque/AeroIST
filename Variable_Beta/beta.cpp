@@ -82,10 +82,8 @@ double BetaMeta::get_default_start(int n) {
 
 
 BetaPreferences::BetaPreferences() {
-    meta = new BetaMeta();
 }
 BetaPreferences::~BetaPreferences(){
-    delete meta;
 }
 QWidget* BetaPreferences::get_widget() {
     QWidget *widget = new QWidget;
@@ -109,10 +107,8 @@ bool BetaPreferences::is_configurable() {
 
 
 BetaModel::BetaModel(){
-    meta = new BetaMeta;
 }
 BetaModel::~BetaModel(){
-    delete meta;
 }
 QWidget* BetaModel::view_get_widget(){
     return NULL;
@@ -136,7 +132,6 @@ void BetaModel::load_xml(QDomElement root){
 
 
 BetaHardware::BetaHardware(){
-    meta = new BetaMeta;
     QSettings settings;
     arduinofd = init_arduino(settings.value(SETTINGS_ARDUINO_PATH,SETTINGS_ARDUINO_PATH_DEFAULT).toString().toStdString().c_str());
 
@@ -156,7 +151,6 @@ BetaHardware::BetaHardware(){
 BetaHardware::~BetaHardware(){
     close(fp);
     close(arduinofd);
-    delete meta;
 }
 void BetaHardware::read() {
 

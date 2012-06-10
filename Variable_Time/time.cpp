@@ -54,10 +54,8 @@ double TimeMeta::get_default_start(int n) {
 
 
 TimePreferences::TimePreferences() {
-    meta = new TimeMeta();
 }
 TimePreferences::~TimePreferences(){
-    delete meta;
 }
 QWidget* TimePreferences::get_widget() {
     return NULL;
@@ -71,10 +69,8 @@ bool TimePreferences::is_configurable() {
 
 
 TimeModel::TimeModel(){
-    meta = new TimeMeta;
 }
 TimeModel::~TimeModel(){
-    delete meta;
 }
 QWidget* TimeModel::view_get_widget(){
     return NULL;
@@ -98,11 +94,9 @@ void TimeModel::load_xml(QDomElement root){
 
 
 TimeHardware::TimeHardware(){
-    meta = new TimeMeta;
     virgin = true;
 }
 TimeHardware::~TimeHardware() {
-    delete meta;
 }
 void TimeHardware::read(){
     if (virgin == true){

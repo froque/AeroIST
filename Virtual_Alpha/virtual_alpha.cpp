@@ -40,10 +40,8 @@ double AlphaMeta::get_default_start(int n) {Q_UNUSED(n); return DEFAULT_ALPHA_ST
 
 
 AlphaPreferences::AlphaPreferences() {
-    meta = new AlphaMeta();
 }
 AlphaPreferences::~AlphaPreferences() {
-    delete meta;
 }
 QWidget* AlphaPreferences::get_widget() {
     QWidget *widget = new QWidget;
@@ -65,10 +63,8 @@ bool AlphaPreferences::accept_config() {
 bool AlphaPreferences::is_configurable() {return true;}
 
 AlphaModel::AlphaModel(){
-    meta = new AlphaMeta;
 }
 AlphaModel::~AlphaModel(){
-    delete meta;
 }
 QWidget* AlphaModel::view_get_widget(){ return NULL;}
 QWidget* AlphaModel::measurement_get_widget(){return NULL;}
@@ -79,12 +75,10 @@ void AlphaModel::load_xml(QDomElement root){Q_UNUSED(root);}
 
 
 AlphaHardware::AlphaHardware(){
-    meta = new AlphaMeta;
     value=0;
     control_set=false;
 }
 AlphaHardware::~AlphaHardware(){
-    delete meta;
 }
 void AlphaHardware::read() {if(control_set==false){ raw = (1.0 * qrand() / RAND_MAX); value = 100 *raw + 10;}}
 double AlphaHardware::get_value(int n) {Q_UNUSED(n); return value;}

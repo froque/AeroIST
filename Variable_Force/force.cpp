@@ -104,10 +104,8 @@ double ForceMeta::get_default_start(int n) {
 
 
 ForcePreferences::ForcePreferences(){
-    meta = new ForceMeta;
 }
 ForcePreferences::~ForcePreferences(){
-    delete meta;
 }
 QWidget* ForcePreferences::get_widget() {
     QWidget *widget = new QWidget;
@@ -158,10 +156,8 @@ bool ForcePreferences::is_configurable() {
 
 
 ForceModel::ForceModel(){
-    meta = new ForceMeta;
 }
 ForceModel::~ForceModel(){
-    delete meta;
 }
 QWidget* ForceModel::view_get_widget(){
     QWidget *widget = new QWidget;
@@ -272,7 +268,6 @@ void ForceModel::load_xml(QDomElement root){
 
 
 ForceHardware::ForceHardware(VariableModel* v){
-    meta = new ForceMeta;
     dvm_time = dynamic_cast<ForceModel*>(v)->dvm_time;
     matrix = dynamic_cast<ForceModel*>(v)->matrix;
 
@@ -314,7 +309,6 @@ ForceHardware::ForceHardware(VariableModel* v){
 
 ForceHardware::~ForceHardware(){
     ibonl(g_id,0);
-    delete meta;
 }
 void ForceHardware::read() {
     read_dvm();             // determines dvm
@@ -349,7 +343,6 @@ void ForceHardware::set_final() {
 }
 void ForceHardware::set_zero(QVector<double> zero) {
     this->zero = zero;
-    qDebug() << this->zero;
 
     int row,j,line,k;
     // for getting the dvm for the zero. using R = AF + BF^2

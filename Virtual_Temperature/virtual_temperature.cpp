@@ -28,10 +28,8 @@ double TemperatureMeta::get_default_start(int n) {Q_UNUSED(n); return 0;}
 
 
 TemperaturePreferences::TemperaturePreferences() {
-    meta = new TemperatureMeta();
 }
 TemperaturePreferences::~TemperaturePreferences(){
-    delete meta;
 }
 QWidget* TemperaturePreferences::get_widget() {return NULL;}
 bool TemperaturePreferences::accept_config() {return true;}
@@ -39,10 +37,8 @@ bool TemperaturePreferences::is_configurable() {return false;}
 
 
 TemperatureModel::TemperatureModel(){
-    meta = new TemperatureMeta;
 }
 TemperatureModel::~TemperatureModel(){
-    delete meta;
 }
 QWidget* TemperatureModel::view_get_widget(){ return NULL;}
 QWidget* TemperatureModel::measurement_get_widget(){return NULL;}
@@ -53,10 +49,8 @@ void TemperatureModel::load_xml(QDomElement root){Q_UNUSED(root);}
 
 
 TemperatureHardware::TemperatureHardware() {
-    meta = new TemperatureMeta;
 }
 TemperatureHardware::~TemperatureHardware(){
-    delete meta;
 }
 void TemperatureHardware::read() { raw = (1.0* qrand() / RAND_MAX); value = -10.0 * raw +1;}
 double TemperatureHardware::get_value(int n) {Q_UNUSED(n); return value;}

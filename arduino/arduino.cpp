@@ -60,10 +60,8 @@ double ArduinoMeta::get_default_start(int n) {
 }
 
 ArduinoPreferences::ArduinoPreferences() {
-    meta = new ArduinoMeta();
 }
 ArduinoPreferences::~ArduinoPreferences(){
-    delete meta;
 }
 QWidget* ArduinoPreferences::get_widget() {
     QWidget *widget = new QWidget;

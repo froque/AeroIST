@@ -36,10 +36,8 @@ double MotorMeta::get_default_step(int n) {Q_UNUSED(n); return DEFAULT_MOTOR_STE
 double MotorMeta::get_default_start(int n) {Q_UNUSED(n); return 0;}
 
 MotorPreferences::MotorPreferences() {
-    meta = new MotorMeta();
 }
 MotorPreferences::~MotorPreferences(){
-    delete meta;
 }
 QWidget* MotorPreferences::get_widget() {
     QWidget *widget = new QWidget;
@@ -69,10 +67,8 @@ void MotorPreferences::button_slot(){
 }
 
 MotorModel::MotorModel(){
-    meta = new MotorMeta;
 }
 MotorModel::~MotorModel(){
-    delete meta;
 }
 QWidget* MotorModel::view_get_widget(){ return NULL;}
 QWidget* MotorModel::measurement_get_widget(){return NULL;}
@@ -83,12 +79,10 @@ void MotorModel::load_xml(QDomElement root){Q_UNUSED(root);}
 
 
 MotorHardware::MotorHardware () {
-    meta = new MotorMeta;
     value=0;
     control_set=false;
 }
 MotorHardware::~MotorHardware(){
-    delete meta;
 }
 void MotorHardware::read() {if(control_set==false){raw = (1.0 * qrand() / RAND_MAX); value = -30.0 * raw + 5;}}
 double MotorHardware::get_value(int n) {Q_UNUSED(n); return value;}

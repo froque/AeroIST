@@ -18,8 +18,7 @@
 #include "referencedetails.h"
 #include "curvenew.h"
 #include "curvedelete.h"
-
-#include <QDebug>
+#include "pluginmanager.h"
 
 #include <stdexcept>
 
@@ -79,21 +78,9 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
     connect(ui->qwtPlot,SIGNAL(legendChecked(QwtPlotItem*,bool)),this,SLOT(plot_legend(QwtPlotItem*,bool)));
 
     // set spinboxes range and step
-    QList<VariableMeta*> variables;
-    Factory *factory;
-    QDir pluginsDir = QDir(qApp->applicationDirPath());
-    pluginsDir.cd("plugins");
-    foreach (QString fileName, pluginsDir.entryList(QDir::Files)) {
-        QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
-        factory = qobject_cast<Factory*>( loader.instance());
-        if(factory){
-            VariableMeta *meta = factory->CreateVariableMeta();
-            if (meta != NULL){
-                variables.append(meta);
-            }
-        }
-    }
-    delete factory;
+    PluginManager manager;
+    QList<VariableMeta*> variables = manager.getListVariableMeta();
+
 
     QDoubleSpinBox *spin;
     QLabel *label;
@@ -115,7 +102,7 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
             }
         }
     }
-    qDeleteAll(variables);
+    manager.destroyListVariableMeta(variables);
     ui->ManualButton->setEnabled(false);
 }
 
@@ -679,7 +666,6 @@ void AeroISTWindow::on_actionNew_Reference_triggered(){
 }
 
 void AeroISTWindow::ReferenceButton_cleanup(){
-    qDebug() << "zero button cleanup" << thread_status;
     if (thread_status == REFERENCE_RUNNING){
         thread_status = STOPPED;
         cleanup();

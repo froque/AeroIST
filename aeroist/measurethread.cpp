@@ -5,9 +5,9 @@
 #include <stdexcept>
 #include "helper.h"
 
-#include <QDir>
 #include <QCoreApplication>
-#include <QPluginLoader>
+#include "pluginmanager.h"
+
 
 MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
     QObject(parent),
@@ -22,17 +22,6 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
     m_parent_thread = thread();
 
     init(measurement->variables);
-
-    // set references/zeros to each variable
-    foreach (VariableHardware *hard_var, variables) {
-        foreach (VariableModel *var, measurement->variables) {
-            if(var->meta->has_zero()){
-                if (var->meta->get_general_name() == hard_var->meta->get_general_name()){
-                    hard_var->set_zero(var->data->get_zero());
-                }
-            }
-        }
-    }
 
     foreach (VariableModel *model, measurement->variables) {
         for (int k=0; k< model->meta->get_num(); k++){
@@ -64,48 +53,13 @@ MeasureThread::MeasureThread(ReferenceModel *measurement,QObject *parent) :
 }
 
 void MeasureThread::init(QList<VariableModel*> list){
-    Factory *factory;
-    QDir pluginsDir = QDir(qApp->applicationDirPath());
-    pluginsDir.cd("plugins");
-    foreach (QString fileName, pluginsDir.entryList(QDir::Files)) {
-        QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
-        factory = qobject_cast<Factory*>( loader.instance());
-        if(factory){
-            VariableMeta *meta = factory->CreateVariableMeta();
-            if (meta != NULL){
-                foreach (VariableModel *model, list) {
-                    if (meta->get_general_name() == model->meta->get_general_name()){
-                        VariableHardware *hardware;
-                        try {
-                            hardware = factory->CreateVariableHardware(model);
-                        } catch (...){
-                            qDeleteAll(variables);
-                            throw;
-                        }
-                        if (hardware != NULL){
-                            variables.append(hardware );
-                            break;
-                        }
-                    }
-                }
-                delete meta;
-            }
-        }
-    }
-    foreach (VariableHardware *hard_var, variables) {
-        foreach (VariableModel *var, list) {
-            if(var->meta->is_controlable()){
-                if (var->meta->get_general_name() == hard_var->meta->get_general_name()){
-                    hard_var->start = var->start;
-                }
-            }
-        }
-    }
-    delete factory;
+    PluginManager manager;
+    variables = manager.getListVariableHardware(list);
 }
 
 MeasureThread::~MeasureThread(){
-    qDeleteAll(variables);
+    PluginManager manager;
+    manager.destroyListVariableHardware(variables);
 }
 
 void MeasureThread::isReady(void){
