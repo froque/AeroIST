@@ -427,6 +427,7 @@ void AeroISTWindow::load_xml(QString fileName){
 void AeroISTWindow::on_actionClear_Project_triggered(){
     measure_list->clear();
     reference_list->clear();
+    proxy->setSourceModel(NULL);
     ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tab),tr("Table"));
 }
 

@@ -5,6 +5,9 @@
 #include <cmath>
 #include <QSettings>
 
+#include "variable.h"
+#include "data.h"
+
 #define COL_RADIO 1
 #define COL_START 2
 #define COL_END   3
