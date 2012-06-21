@@ -1,5 +1,7 @@
 #include "curvedelete.h"
 #include "ui_deleteplot.h"
+#include <QSettings>
+#include "common.h"
 
 CurveDelete::CurveDelete(QwtPlot *plot,QWidget *parent) :
     QDialog(parent),
@@ -10,10 +12,17 @@ CurveDelete::CurveDelete(QwtPlot *plot,QWidget *parent) :
     foreach(QwtPlotItem *item,plot->itemList()){
         ui->listWidget->addItem(item->title().text());
     }
+    QSettings settings;
+    if(settings.contains(SETTINGS_GUI_CD_GEOMETRY)){
+        restoreGeometry(settings.value(SETTINGS_GUI_CD_GEOMETRY).toByteArray());
+    } else {
+        adjustSize();
+    }
 }
 
-CurveDelete::~CurveDelete()
-{
+CurveDelete::~CurveDelete(){
+    QSettings settings;
+    settings.setValue(SETTINGS_GUI_CD_GEOMETRY, saveGeometry());
     delete ui;
 }
 

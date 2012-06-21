@@ -26,10 +26,16 @@ Preferences::Preferences(QWidget *parent) :
             ui->tabWidget->addTab(var->get_widget(),var->meta->get_general_name_tr());
         }
     }
-    adjustSize();
+    if(settings.contains(SETTINGS_GUI_PREF_GEOMETRY)){
+        restoreGeometry(settings.value(SETTINGS_GUI_PREF_GEOMETRY).toByteArray());
+    } else {
+        adjustSize();
+    }
 }
 
 Preferences::~Preferences(){
+    QSettings settings;
+    settings.setValue(SETTINGS_GUI_PREF_GEOMETRY, saveGeometry());
     delete ui;
     PluginManager manager;
     manager.destroyListVariablePreferences(variables);

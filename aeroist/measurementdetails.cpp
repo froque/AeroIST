@@ -1,5 +1,6 @@
 #include "measurementdetails.h"
 #include "ui_measurementdetails.h"
+#include <QSettings>
 
 MeasurementDetails::MeasurementDetails(MeasurementsModel *measurement, QWidget *parent) :
     QDialog(parent),
@@ -66,10 +67,16 @@ MeasurementDetails::MeasurementDetails(MeasurementsModel *measurement, QWidget *
             ui->tabWidget->addTab(var->view_get_widget(),var->meta->get_general_name_tr());
         }
     }
-
-    this->adjustSize();
+    QSettings settings;
+    if(settings.contains(SETTINGS_GUI_MD_GEOMETRY)){
+        restoreGeometry(settings.value(SETTINGS_GUI_MD_GEOMETRY).toByteArray());
+    } else {
+        adjustSize();
+    }
 }
 
 MeasurementDetails::~MeasurementDetails(){
+    QSettings settings;
+    settings.setValue(SETTINGS_GUI_MD_GEOMETRY, saveGeometry());
     delete ui;
 }

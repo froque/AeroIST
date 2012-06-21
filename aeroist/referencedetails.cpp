@@ -1,5 +1,6 @@
 #include "referencedetails.h"
 #include "ui_referencedetails.h"
+#include <QSettings>
 
 ReferenceDetails::ReferenceDetails(ReferenceModel *measurement, QWidget *parent) :
     QDialog(parent),
@@ -49,10 +50,16 @@ ReferenceDetails::ReferenceDetails(ReferenceModel *measurement, QWidget *parent)
             ui->tabWidget->addTab(var->view_get_widget(),var->meta->get_general_name_tr());
         }
     }
-
-    this->adjustSize();
+    QSettings settings;
+    if(settings.contains(SETTINGS_GUI_RD_GEOMETRY)){
+        restoreGeometry(settings.value(SETTINGS_GUI_RD_GEOMETRY).toByteArray());
+    } else {
+        adjustSize();
+    }
 }
 
 ReferenceDetails::~ReferenceDetails(){
+    QSettings settings;
+    settings.setValue(SETTINGS_GUI_RD_GEOMETRY, saveGeometry());
     delete ui;
 }

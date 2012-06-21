@@ -108,11 +108,17 @@ MeasurementsPreferences::MeasurementsPreferences(MeasurementsModel *measurement,
     connect(group, SIGNAL(buttonClicked(QAbstractButton*)),this,SLOT(maxminstep_enabled(QAbstractButton*)));
     ui->edit_name->setFocus();
     maxminstep_enabled(radio_none); // to disable other spinboxs
-    adjustSize();
+    if(settings.contains(SETTINGS_GUI_MP_GEOMETRY)){
+        restoreGeometry(settings.value(SETTINGS_GUI_MP_GEOMETRY).toByteArray());
+    } else {
+        adjustSize();
+    }
 }
 
 
 MeasurementsPreferences::~MeasurementsPreferences(){
+    QSettings settings;
+    settings.setValue(SETTINGS_GUI_MP_GEOMETRY, saveGeometry());
     delete ui;
 }
 

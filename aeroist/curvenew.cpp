@@ -25,10 +25,17 @@ CurveNew::CurveNew(QwtPlot *plot, MeasureList *list, QWidget *parent) :
 
     ui->comboBoxColor->addItems(QColor::colorNames());
     ui->comboBoxColor->setCurrentIndex(ui->comboBoxColor->findText("black"));
-
+    QSettings settings;
+    if(settings.contains(SETTINGS_GUI_CN_GEOMETRY)){
+        restoreGeometry(settings.value(SETTINGS_GUI_CN_GEOMETRY).toByteArray());
+    } else {
+        adjustSize();
+    }
 }
 
 CurveNew::~CurveNew(){
+    QSettings settings;
+    settings.setValue(SETTINGS_GUI_CN_GEOMETRY, saveGeometry());
     delete ui;
 }
 

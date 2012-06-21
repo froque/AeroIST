@@ -57,10 +57,17 @@ ReferencePreferences::ReferencePreferences(ReferenceModel *measurement, QWidget 
         }
     }
     ui->edit_name->setFocus();
-    adjustSize();
+
+    if(settings.contains(SETTINGS_GUI_RP_GEOMETRY)){
+        restoreGeometry(settings.value(SETTINGS_GUI_RP_GEOMETRY).toByteArray());
+    } else {
+        adjustSize();
+    }
 }
 
 ReferencePreferences::~ReferencePreferences(){
+    QSettings settings;
+    settings.setValue(SETTINGS_GUI_RP_GEOMETRY, saveGeometry());
     delete ui;
 }
 
