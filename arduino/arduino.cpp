@@ -88,7 +88,7 @@ bool ArduinoPreferences::is_configurable() {
 
 
 VariableMeta* ArduinoFactory::CreateVariableMeta() {
-    return NULL;
+    return new ArduinoMeta;
 }
 VariablePreferences* ArduinoFactory::CreateVariableGUI() {
     return new ArduinoPreferences;
