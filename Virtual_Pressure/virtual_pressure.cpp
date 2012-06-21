@@ -1,46 +1,46 @@
-#include "virtual_wind.h"
+#include "virtual_pressure.h"
 
 #define NUM_CHANNELS 8
 // the first black box has 8 channels, but only 5 are of real interest.
 // to keep consistency of names and numbers, there is the following global variable
 bool actives[NUM_CHANNELS]={false,true,true,true,true,true,false,false};
 
-#define SETTINGS_WIND "wind_channel"
-#define SETTINGS_WIND_DEFAULT 1
-#define TAG_WIND_CHANNEL "wind_channel"
+#define SETTINGS_PRESSURE "pressure_channel"
+#define SETTINGS_PRESSURE_DEFAULT 1
+#define TAG_PRESSURE_CHANNEL "pressure_channel"
 
-bool WindMeta::is_controlable() {return false;}
-bool WindMeta::has_zero() {return false;}
-int WindMeta::get_num() {return 1;}
-QString WindMeta::get_general_name(){ return "Wind";}
-QString WindMeta::get_general_name_tr(){
-    return QString(QObject::tr("Wind"));
+bool PressureMeta::is_controlable() {return false;}
+bool PressureMeta::has_zero() {return false;}
+int PressureMeta::get_num() {return 1;}
+QString PressureMeta::get_general_name(){ return "Pressure";}
+QString PressureMeta::get_general_name_tr(){
+    return QString(QObject::tr("Pressure"));
 }
-QString WindMeta::get_name(int n){Q_UNUSED(n);  return "Wind"; }
-QString WindMeta::get_name_tr(int n){
+QString PressureMeta::get_name(int n){Q_UNUSED(n);  return "Pressure"; }
+QString PressureMeta::get_name_tr(int n){
     Q_UNUSED(n);
-    return QString(QObject::tr("Wind"));
+    return QString(QObject::tr("Pressure"));
 }
-QString WindMeta::get_units(int n) {
+QString PressureMeta::get_units(int n) {
     Q_UNUSED(n);
     return QString(QObject::tr("mmH20"));
 }
-QString WindMeta::get_raw_units(int n) {
+QString PressureMeta::get_raw_units(int n) {
     Q_UNUSED(n);
     return QString(QObject::tr("step"));
 }
-double WindMeta::get_lower_bound(int n) {Q_UNUSED(n); return 0;}
-double WindMeta::get_upper_bound(int n) {Q_UNUSED(n); return 0;}
-double WindMeta::get_smaller_step(int n) {Q_UNUSED(n); return 0;}
-double WindMeta::get_default_step(int n) {Q_UNUSED(n); return 0;}
-double WindMeta::get_default_start(int n) {Q_UNUSED(n); return 0;}
+double PressureMeta::get_lower_bound(int n) {Q_UNUSED(n); return 0;}
+double PressureMeta::get_upper_bound(int n) {Q_UNUSED(n); return 0;}
+double PressureMeta::get_smaller_step(int n) {Q_UNUSED(n); return 0;}
+double PressureMeta::get_default_step(int n) {Q_UNUSED(n); return 0;}
+double PressureMeta::get_default_start(int n) {Q_UNUSED(n); return 0;}
 
 
-WindPreferences::WindPreferences() {
+PressurePreferences::PressurePreferences() {
 }
-WindPreferences::~WindPreferences(){
+PressurePreferences::~PressurePreferences(){
 }
-QWidget* WindPreferences::get_widget() {
+QWidget* PressurePreferences::get_widget() {
     QWidget *widget = new QWidget;
     QGridLayout *layout = new QGridLayout;
     QSettings settings;
@@ -68,7 +68,7 @@ QWidget* WindPreferences::get_widget() {
         }
     }
 
-    button = group->button(settings.value(SETTINGS_WIND,SETTINGS_WIND_DEFAULT).toInt());
+    button = group->button(settings.value(SETTINGS_PRESSURE,SETTINGS_PRESSURE_DEFAULT).toInt());
     if(button != 0){
         button->setChecked(true);
     } else {
@@ -77,19 +77,19 @@ QWidget* WindPreferences::get_widget() {
     widget->setLayout(layout);
     return widget;
 }
-bool WindPreferences::accept_config() {
+bool PressurePreferences::accept_config() {
     QSettings settings;
-    settings.setValue(SETTINGS_WIND,group->checkedId());
+    settings.setValue(SETTINGS_PRESSURE,group->checkedId());
     return true;
 }
-bool WindPreferences::is_configurable() {return true;}
+bool PressurePreferences::is_configurable() {return true;}
 
 
-WindModel::WindModel(){
+PressureModel::PressureModel(){
 }
-WindModel::~WindModel(){
+PressureModel::~PressureModel(){
 }
-QWidget* WindModel::view_get_widget(){
+QWidget* PressureModel::view_get_widget(){
     QWidget *widget = new QWidget;
     QHBoxLayout *layout = new QHBoxLayout;
     layout->addWidget(new QLabel(QObject::tr("Channel")));
@@ -97,7 +97,7 @@ QWidget* WindModel::view_get_widget(){
     widget->setLayout(layout);
     return widget;
 }
-QWidget* WindModel::measurement_get_widget(){
+QWidget* PressureModel::measurement_get_widget(){
     QWidget *widget = new QWidget;
     QGridLayout *layout = new QGridLayout;
     QSettings settings;
@@ -125,7 +125,7 @@ QWidget* WindModel::measurement_get_widget(){
         }
     }
 
-    button = group->button(settings.value(SETTINGS_WIND,SETTINGS_WIND_DEFAULT).toInt());
+    button = group->button(settings.value(SETTINGS_PRESSURE,SETTINGS_PRESSURE_DEFAULT).toInt());
     if(button != 0){
         button->setChecked(true);
     } else {
@@ -134,13 +134,13 @@ QWidget* WindModel::measurement_get_widget(){
     widget->setLayout(layout);
     return widget;
 }
-bool WindModel::measurement_accept_config(VariableModel *m){
+bool PressureModel::measurement_accept_config(VariableModel *m){
         Q_UNUSED(m);
     channel = group->checkedId();
     // it really does not make sense to check unless it is included in the reference
 /*
     if (m != NULL){
-        if (channel != dynamic_cast<WindModel*>(m)->channel){
+        if (channel != dynamic_cast<PressureModel*>(m)->channel){
             QMessageBox message;
             message.setText("The channels are different.");
             message.exec();
@@ -149,22 +149,22 @@ bool WindModel::measurement_accept_config(VariableModel *m){
 */
     return true;
 }
-bool WindModel::measurement_is_configurable(){
+bool PressureModel::measurement_is_configurable(){
     return true;
 }
-void WindModel::save_xml(QDomElement root){
-    QDomElement channel_element = root.ownerDocument().createElement(TAG_WIND_CHANNEL);
+void PressureModel::save_xml(QDomElement root){
+    QDomElement channel_element = root.ownerDocument().createElement(TAG_PRESSURE_CHANNEL);
     channel_element.appendChild(root.ownerDocument().createTextNode(QString::number(this->channel)));
     root.appendChild(channel_element);
 }
-void WindModel::load_xml(QDomElement root){
+void PressureModel::load_xml(QDomElement root){
     QDomNodeList nodelist = root.childNodes();
     QDomNode node;
     QDomElement element;
     for (int k=0; k< nodelist.count();k++){
         node = nodelist.at(k);
         element = node.toElement();
-        if (element.tagName() == TAG_WIND_CHANNEL){
+        if (element.tagName() == TAG_PRESSURE_CHANNEL){
             this->channel = element.text().toInt();
             continue;
         }
@@ -172,26 +172,26 @@ void WindModel::load_xml(QDomElement root){
 }
 
 
-WindHardware::WindHardware(VariableModel* v) {
-    channel = dynamic_cast<WindModel*>(v)->channel;
+PressureHardware::PressureHardware(VariableModel* v) {
+    channel = dynamic_cast<PressureModel*>(v)->channel;
 }
-WindHardware::~WindHardware(){
+PressureHardware::~PressureHardware(){
 }
-void WindHardware::read() { raw = (1.0 * qrand() / RAND_MAX); value = 10 *raw;}
-double WindHardware::get_value(int n) {Q_UNUSED(n); return value;}
-double WindHardware::get_raw_value(int n) {Q_UNUSED(n); return raw;}
-void WindHardware::set_value(int n ,double value) {Q_UNUSED(n); Q_UNUSED(value);  }
-bool WindHardware::isReady(void) {return true;}
-bool WindHardware::has_set_final() {return meta->is_controlable() && false;}
-void WindHardware::set_final() {}
-void WindHardware::set_zero(QVector<double> zero) {Q_UNUSED(zero);}
+void PressureHardware::read() { raw = (1.0 * qrand() / RAND_MAX); value = 10 *raw;}
+double PressureHardware::get_value(int n) {Q_UNUSED(n); return value;}
+double PressureHardware::get_raw_value(int n) {Q_UNUSED(n); return raw;}
+void PressureHardware::set_value(int n ,double value) {Q_UNUSED(n); Q_UNUSED(value);  }
+bool PressureHardware::isReady(void) {return true;}
+bool PressureHardware::has_set_final() {return meta->is_controlable() && false;}
+void PressureHardware::set_final() {}
+void PressureHardware::set_zero(QVector<double> zero) {Q_UNUSED(zero);}
 
 
 
-VariableMeta* WindFactory::CreateVariableMeta() { return new WindMeta;}
-VariablePreferences* WindFactory::CreateVariableGUI() { return new WindPreferences;}
-VariableModel* WindFactory::CreateVariableModel() { return new WindModel;}
-VariableHardware* WindFactory::CreateVariableHardware(VariableModel *v) { return new WindHardware(v);}
+VariableMeta* PressureFactory::CreateVariableMeta() { return new PressureMeta;}
+VariablePreferences* PressureFactory::CreateVariableGUI() { return new PressurePreferences;}
+VariableModel* PressureFactory::CreateVariableModel() { return new PressureModel;}
+VariableHardware* PressureFactory::CreateVariableHardware(VariableModel *v) { return new PressureHardware(v);}
 
 
-Q_EXPORT_PLUGIN2(40_wind, WindFactory);
+Q_EXPORT_PLUGIN2(40_pressure, PressureFactory);

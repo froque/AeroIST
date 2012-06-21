@@ -22,7 +22,7 @@ SUBDIRS += \
     Variable_Beta/Beta.pro\
     Variable_Motor/Motor.pro\
     Variable_Temperature/Temperature.pro\
-    Variable_Wind/Wind.pro\
+    Variable_Pressure/Pressure.pro\
     Variable_Angles/Angles.pro
 }
 # DESTDIR = plugins_virtual
@@ -33,7 +33,7 @@ SUBDIRS += \
     Virtual_Beta\
     Virtual_Motor\
     Virtual_Temperature\
-    Virtual_Wind
+    Virtual_Pressure
 }
 
 # DESTDIR = plugins

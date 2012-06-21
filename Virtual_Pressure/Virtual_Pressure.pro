@@ -3,7 +3,7 @@ QT       += gui
 QT       += xml
 
 CONFIG         += plugin
-TARGET          = $$qtLibraryTarget(40_wind)
+TARGET          = $$qtLibraryTarget(40_pressure)
 
 TEMPLATE = lib
 
@@ -13,7 +13,7 @@ DESTDIR     = $$BUILDDIR/plugins_virtual
 
 INCLUDEPATH += ../common
 
-SOURCES       += virtual_wind.cpp
+SOURCES       += virtual_pressure.cpp
 
-HEADERS       += virtual_wind.h
+HEADERS       += virtual_pressure.h
 

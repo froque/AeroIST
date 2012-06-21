@@ -1,11 +1,11 @@
-#ifndef WIND_H
-#define WIND_H
+#ifndef VIRTUAL_PRESSURE_H
+#define VIRTUAL_PRESSURE_H
 
 #include "variable.h"
 #include <QString>
 #include <QtGui>
 
-class WindMeta : public VariableMeta {
+class PressureMeta : public VariableMeta {
 public:
     bool is_controlable();
     bool has_zero();
@@ -22,20 +22,20 @@ public:
     double get_default_step(int n);
     double get_default_start(int n);
 };
-class WindPreferences: public VariablePreferences {
+class PressurePreferences: public VariablePreferences {
 public:
-    WindPreferences();
-    ~WindPreferences();
+    PressurePreferences();
+    ~PressurePreferences();
     QWidget* get_widget();
     bool accept_config();
     bool is_configurable();
 private:
     QButtonGroup *group;
 };
-class WindModel : public VariableModel {
+class PressureModel : public VariableModel {
 public:
-    WindModel();
-    ~WindModel();
+    PressureModel();
+    ~PressureModel();
     QWidget* view_get_widget();
     QWidget* measurement_get_widget();
     bool measurement_accept_config(VariableModel *m);
@@ -47,10 +47,10 @@ public:
 private:
     QButtonGroup *group;
 };
-class WindHardware: public VariableHardware {
+class PressureHardware: public VariableHardware {
 public:
-    WindHardware(VariableModel* v);
-    ~WindHardware();
+    PressureHardware(VariableModel* v);
+    ~PressureHardware();
     void read();
     double get_value(int n);
     void set_value(int n ,double value);
@@ -62,11 +62,9 @@ public:
 
     int channel;
 private:
-    int arduinofd;
-    int wind_raw;
-    double wind;
+    double value,raw;
 };
-class WindFactory: public QObject,public Factory {
+class PressureFactory: public QObject,public Factory {
     Q_OBJECT
     Q_INTERFACES(Factory)
 public:
@@ -77,4 +75,4 @@ public:
 };
 
 
-#endif // WIND_H
+#endif // VIRTUAL_PRESSURE_H

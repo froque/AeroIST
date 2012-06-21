@@ -8,7 +8,7 @@
 <xs:element name="id" type="xs:int"/>
 <xs:element name="dvm_time" type="xs:int"/>
 <xs:element name="matrix" type="xs:int"/>
-<xs:element name="wind_channel" type="xs:int"/>
+<xs:element name="pressure_channel" type="xs:int"/>
 <xs:element name="measures_per_iteration" type="xs:positiveInteger"/>
 <xs:element name="item" type="xs:double" />
 <xs:element name="settling_time" type="xs:int"/>
@@ -28,14 +28,14 @@
 <xs:element name="Beta" type="xs:double" />
 <xs:element name="Motor" type="xs:double" />
 <xs:element name="Temperature" type="xs:double" />
-<xs:element name="Wind" type="xs:double" />
+<xs:element name="Pressure" type="xs:double" />
 
 <xs:element name="options">
   <xs:complexType>
     <xs:sequence>
       <xs:element ref="dvm_time"/>
       <xs:element ref="matrix"/>
-      <xs:element ref="wind_channel"/>
+      <xs:element ref="pressure_channel"/>
     </xs:sequence>
   </xs:complexType>
 </xs:element>
@@ -52,7 +52,7 @@
     <xs:element ref="Alpha" minOccurs="0" />
     <xs:element ref="Beta" minOccurs="0" />
     <xs:element ref="Motor" minOccurs="0" />
-    <xs:element ref="Wind" minOccurs="0" />
+    <xs:element ref="Pressure" minOccurs="0" />
     <xs:element ref="Temperature" minOccurs="0" />
   </xs:sequence>
 </xs:group>

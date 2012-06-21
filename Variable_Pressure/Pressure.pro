@@ -3,7 +3,7 @@ QT       += gui
 QT       += xml
 
 CONFIG         += plugin
-TARGET          = $$qtLibraryTarget(40_wind)
+TARGET          = $$qtLibraryTarget(40_pressure)
 
 TEMPLATE = lib
 
@@ -13,9 +13,9 @@ DESTDIR     = $$BUILDDIR/plugins_real
 
 INCLUDEPATH += ../common
 
-SOURCES       += wind.cpp
+SOURCES       += pressure.cpp
 
-HEADERS       += wind.h
+HEADERS       += pressure.h
 
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../staticlibs/arduino-botoneira/release/ -larduino-serial
