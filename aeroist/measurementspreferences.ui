@@ -2,6 +2,14 @@
 <ui version="4.0">
  <class>MeasurementsPreferences</class>
  <widget class="QDialog" name="MeasurementsPreferences">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>453</width>
+    <height>427</height>
+   </rect>
+  </property>
   <property name="windowTitle">
    <string>Measurements</string>
   </property>
@@ -22,15 +30,22 @@
        <string>General</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout">
-       <item row="2" column="0">
-        <widget class="QLabel" name="labelMeasuresIteration">
+       <item row="0" column="0">
+        <widget class="QLabel" name="labelName">
          <property name="text">
-          <string>Measures per Iteration</string>
+          <string>Name</string>
          </property>
         </widget>
        </item>
-       <item row="4" column="1">
-        <widget class="QComboBox" name="combo_zero"/>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="edit_name"/>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="labelDescription">
+         <property name="text">
+          <string>Description</string>
+         </property>
+        </widget>
        </item>
        <item row="1" column="1">
         <widget class="QPlainTextEdit" name="plainTextEdit">
@@ -42,6 +57,13 @@
          </property>
          <property name="tabChangesFocus">
           <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="labelMeasuresIteration">
+         <property name="text">
+          <string>Measures per Iteration</string>
          </property>
         </widget>
        </item>
@@ -59,25 +81,8 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="labelDescription">
-         <property name="text">
-          <string>Description</string>
-         </property>
-        </widget>
-       </item>
        <item row="3" column="1">
         <widget class="QDoubleSpinBox" name="doubleSpinBoxSettling"/>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="labelName">
-         <property name="text">
-          <string>Name</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QLineEdit" name="edit_name"/>
        </item>
        <item row="4" column="0">
         <widget class="QLabel" name="labelReference">
@@ -85,6 +90,9 @@
           <string>Reference</string>
          </property>
         </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QComboBox" name="combo_zero"/>
        </item>
       </layout>
      </widget>
@@ -107,9 +115,6 @@
    </item>
   </layout>
  </widget>
- <tabstops>
-  <tabstop>buttonBox</tabstop>
- </tabstops>
  <resources/>
  <connections>
   <connection>
