@@ -4,6 +4,7 @@
 #include <QDialog>
 #include "measurelist.h"
 #include <qwt_plot.h>
+#include <QListWidget>
 
 namespace Ui {
     class NewCurve;
@@ -21,16 +22,12 @@ public slots:
     void accept(void);
 
 private slots:
-
-    void on_comboBox_x_currentIndexChanged(int index);
-    void on_comboBox_y_currentIndexChanged(int index);
+    void on_listWidget_x_itemActivated(QListWidgetItem *item);
+    void on_listWidget_y_itemActivated(QListWidgetItem *item);
 
 private:
     Ui::NewCurve *ui;
-    MeasureList *list;
-    QVector<double> x;
-    QVector<double> y;
-    MeasurementsModel* model;
+    MeasureList *mlist;
     QwtPlot *plot;
 };
 

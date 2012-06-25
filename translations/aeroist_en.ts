@@ -359,43 +359,55 @@
 <context>
     <name>CurveNew</name>
     <message>
-        <location filename="../aeroist/curvenew.cpp" line="18"/>
+        <location filename="../aeroist/curvenew.cpp" line="30"/>
         <source>Solid Line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/curvenew.cpp" line="19"/>
+        <location filename="../aeroist/curvenew.cpp" line="31"/>
         <source>Dash Line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/curvenew.cpp" line="20"/>
+        <location filename="../aeroist/curvenew.cpp" line="32"/>
         <source>Dot Line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/curvenew.cpp" line="21"/>
+        <location filename="../aeroist/curvenew.cpp" line="33"/>
         <source>Dash Dot Line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/curvenew.cpp" line="22"/>
+        <location filename="../aeroist/curvenew.cpp" line="34"/>
         <source>Dash Dot Dot Line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/curvenew.cpp" line="23"/>
+        <location filename="../aeroist/curvenew.cpp" line="35"/>
         <source>custom Dash Line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/curvenew.cpp" line="24"/>
+        <location filename="../aeroist/curvenew.cpp" line="36"/>
         <source>No Pen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/curvenew.cpp" line="77"/>
+        <location filename="../aeroist/curvenew.cpp" line="79"/>
+        <source>Empty measurements list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../aeroist/curvenew.cpp" line="86"/>
         <source>Fill in a title and choose X and Y</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../aeroist/curvenew.cpp" line="142"/>
+        <source>Problem with defined expressions.
+
+</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -488,42 +500,42 @@
 <context>
     <name>MeasurementsPreferences</name>
     <message>
-        <location filename="../aeroist/measurementspreferences.ui" line="6"/>
+        <location filename="../aeroist/measurementspreferences.ui" line="14"/>
         <source>Measurements</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/measurementspreferences.ui" line="22"/>
+        <location filename="../aeroist/measurementspreferences.ui" line="30"/>
         <source>General</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/measurementspreferences.ui" line="28"/>
+        <location filename="../aeroist/measurementspreferences.ui" line="66"/>
         <source>Measures per Iteration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/measurementspreferences.ui" line="75"/>
+        <location filename="../aeroist/measurementspreferences.ui" line="36"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/measurementspreferences.ui" line="93"/>
+        <location filename="../aeroist/measurementspreferences.ui" line="101"/>
         <source>control</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/measurementspreferences.ui" line="58"/>
+        <location filename="../aeroist/measurementspreferences.ui" line="80"/>
         <source>Settling time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/measurementspreferences.ui" line="65"/>
+        <location filename="../aeroist/measurementspreferences.ui" line="46"/>
         <source>Description</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/measurementspreferences.ui" line="85"/>
+        <location filename="../aeroist/measurementspreferences.ui" line="90"/>
         <source>Reference</source>
         <translation type="unfinished"></translation>
     </message>
@@ -581,27 +593,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/curvenew.ui" line="20"/>
+        <location filename="../aeroist/curvenew.ui" line="30"/>
         <source>Select data for X</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/curvenew.ui" line="43"/>
+        <location filename="../aeroist/curvenew.ui" line="20"/>
         <source>Curve title</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/curvenew.ui" line="62"/>
+        <location filename="../aeroist/curvenew.ui" line="48"/>
         <source>Select data for Y</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/curvenew.ui" line="72"/>
+        <location filename="../aeroist/curvenew.ui" line="66"/>
         <source>Style</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/curvenew.ui" line="79"/>
+        <location filename="../aeroist/curvenew.ui" line="76"/>
         <source>Color</source>
         <translation type="unfinished"></translation>
     </message>
@@ -625,18 +637,18 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/preferences.ui" line="59"/>
+        <location filename="../aeroist/preferences.ui" line="66"/>
         <source>Settling time ( s )</source>
         <oldsource>Default settling time ( s )</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/preferences.ui" line="69"/>
+        <location filename="../aeroist/preferences.ui" line="76"/>
         <source>Project folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/preferences.ui" line="79"/>
+        <location filename="../aeroist/preferences.ui" line="86"/>
         <source>...</source>
         <translation type="unfinished"></translation>
     </message>

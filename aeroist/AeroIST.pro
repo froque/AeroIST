@@ -23,6 +23,8 @@ unix:CONFIG += qwt
 win32:INCLUDEPATH += "C:/Qwt-6.0.2-svn/include"
 win32:LIBS += -L"C:/Qwt-6.0.2-svn/lib" -lqwt
 
+unix: LIBS += -lmuparser
+
 SOURCES += main.cpp \
     aeroistwindow.cpp \
     measurementsmodel.cpp \

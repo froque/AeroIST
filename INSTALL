@@ -2,6 +2,7 @@ Dependencies:
  - Qt > 4.8
  - Qwt > 6
  - linux-gpib
+ - muparser
 
 General Compile Instructions:
  - qmake PREFIX=/usr/local
@@ -11,7 +12,7 @@ General Compile Instructions:
 
 Example on a fresh installation of Debian testing
  * Install GPIB from packages or form source (see instructions below)
- - aptitude install -R qt4-qmake g++ libqt4-dev libqwt-dev libicu48 git
+ - aptitude install -R qt4-qmake g++ libqt4-dev libqwt-dev libicu48 git libmuparser-dev
  - git clone https://git.gitorious.org/aeroist/aeroist.git
  - cd aeroist
  - qmake
