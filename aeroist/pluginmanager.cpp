@@ -75,7 +75,7 @@ void PluginManager::destroyListVariableModel(QList<VariableModel*> variables){
     qDeleteAll(variables);
 }
 
-QList<VariableHardware*> PluginManager::getListVariableHardware(QList<VariableModel*> model_list){
+QList<VariableHardware*> PluginManager::getListVariableHardware(QList<VariableModel*> model_list, bool setZero){
     QList<VariableHardware*> variables;
     foreach (Factory *factory, fact_list ) {
 
@@ -89,7 +89,7 @@ QList<VariableHardware*> PluginManager::getListVariableHardware(QList<VariableMo
                         hardware = factory->CreateVariableHardware(model);
                         hardware->meta = factory->CreateVariableMeta();
                         hardware->start = model->start;
-                        if(model->meta->has_zero()){
+                        if(model->meta->has_zero() && setZero){
                             if (model->meta->get_general_name() == hardware->meta->get_general_name()){
                                 hardware->set_zero(model->data->get_zero());
                             }
