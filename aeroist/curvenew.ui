@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>656</width>
-    <height>432</height>
+    <width>475</width>
+    <height>421</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,79 +15,19 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="1">
-    <widget class="QLabel" name="label_title">
-     <property name="text">
-      <string>Curve title</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="2">
     <widget class="QLineEdit" name="lineEdit"/>
    </item>
    <item row="1" column="1">
-    <widget class="QGroupBox" name="groupBox">
-     <property name="title">
-      <string>Select data for X</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_3">
-      <item row="0" column="0">
-       <widget class="QLineEdit" name="lineEdit_x"/>
-      </item>
-      <item row="1" column="0">
-       <widget class="QComboBox" name="comboBox_x"/>
-      </item>
-      <item row="2" column="0">
-       <widget class="QListWidget" name="listWidget_x"/>
-      </item>
-     </layout>
-    </widget>
+    <widget class="QComboBox" name="comboBoxModel"/>
    </item>
-   <item row="1" column="2" rowspan="2">
-    <widget class="QGroupBox" name="groupBox_2">
-     <property name="title">
-      <string>Select data for Y</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="1" colspan="2">
-       <widget class="QLineEdit" name="lineEdit_y"/>
-      </item>
-      <item row="2" column="1">
-       <widget class="QListWidget" name="listWidget_y"/>
-      </item>
-      <item row="1" column="1">
-       <widget class="QComboBox" name="comboBox_y"/>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="5" column="1">
-    <widget class="QLabel" name="label">
+   <item row="1" column="0">
+    <widget class="QLabel" name="label_5">
      <property name="text">
-      <string>Style</string>
+      <string>Select Measurement</string>
      </property>
     </widget>
    </item>
-   <item row="5" column="2">
-    <widget class="QComboBox" name="comboBoxStyle"/>
-   </item>
-   <item row="6" column="1">
-    <widget class="QLabel" name="label_2">
-     <property name="text">
-      <string>Color</string>
-     </property>
-    </widget>
-   </item>
-   <item row="6" column="2">
-    <widget class="QComboBox" name="comboBoxColor"/>
-   </item>
-   <item row="7" column="1" colspan="2">
-    <widget class="QLabel" name="label_consts">
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </item>
-   <item row="9" column="1" colspan="3">
+   <item row="9" column="0" colspan="3">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="enabled">
       <bool>true</bool>
@@ -100,18 +40,114 @@
      </property>
     </widget>
    </item>
+   <item row="3" column="1">
+    <widget class="QLineEdit" name="lineEdit_y"/>
+   </item>
+   <item row="4" column="1">
+    <widget class="QCheckBox" name="checkBoxError">
+     <property name="text">
+      <string>Error Bars</string>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="0">
+    <widget class="QListWidget" name="listWidgetVars">
+     <property name="tabKeyNavigation">
+      <bool>false</bool>
+     </property>
+     <property name="dragEnabled">
+      <bool>true</bool>
+     </property>
+     <property name="dragDropMode">
+      <enum>QAbstractItemView::DragOnly</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="1">
+    <widget class="QListWidget" name="listWidgetConsts">
+     <property name="tabKeyNavigation">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="label_3">
+     <property name="text">
+      <string>Expression for Y</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="1">
+    <widget class="QComboBox" name="comboBoxStyle"/>
+   </item>
+   <item row="4" column="0">
+    <widget class="QCheckBox" name="checkBoxAvg">
+     <property name="text">
+      <string>Average numbers</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="label_4">
+     <property name="text">
+      <string>Expression for X</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QLabel" name="label_title">
+     <property name="text">
+      <string>Curve title</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QLineEdit" name="lineEdit_x"/>
+   </item>
+   <item row="5" column="0">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Style</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="0">
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>Color</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="1">
+    <widget class="QComboBox" name="comboBoxColor"/>
+   </item>
+   <item row="7" column="0">
+    <widget class="QLabel" name="label_6">
+     <property name="text">
+      <string>Acceptable Variables:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="1">
+    <widget class="QLabel" name="label_7">
+     <property name="text">
+      <string>Acceptable Constants:</string>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <tabstops>
   <tabstop>lineEdit</tabstop>
+  <tabstop>comboBoxModel</tabstop>
   <tabstop>lineEdit_x</tabstop>
-  <tabstop>comboBox_x</tabstop>
-  <tabstop>listWidget_x</tabstop>
   <tabstop>lineEdit_y</tabstop>
-  <tabstop>comboBox_y</tabstop>
-  <tabstop>listWidget_y</tabstop>
+  <tabstop>checkBoxAvg</tabstop>
+  <tabstop>checkBoxError</tabstop>
   <tabstop>comboBoxStyle</tabstop>
   <tabstop>comboBoxColor</tabstop>
+  <tabstop>listWidgetVars</tabstop>
+  <tabstop>listWidgetConsts</tabstop>
   <tabstop>buttonBox</tabstop>
  </tabstops>
  <resources/>

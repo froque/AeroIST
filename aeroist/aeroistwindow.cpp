@@ -7,6 +7,9 @@
 #include <qwt_legend.h>
 #include <qwt_plot_curve.h>
 #include <qwt_plot_renderer.h>
+#include <qwt_plot_magnifier.h>
+#include <qwt_plot_zoomer.h>
+#include <qwt_plot_panner.h>
 #include <QMessageBox>
 #include <QtXml>
 #include <QXmlSchema>
@@ -70,11 +73,16 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
     m_thread = 0;
     m_test = 0;
 
+    // Plot zoom,pan, magnifier
+//    new QwtPlotMagnifier(ui->qwtPlot->canvas());    // scroll wheel zooms in and out
+//    new QwtPlotPanner(ui->qwtPlot->canvas());       // mouse left button pans the view
+//    new QwtPlotZoomer(ui->qwtPlot->canvas());     // mouse left button zooms with rectangle. Right button must be improved
+
+
     // Plot legend
     QwtLegend *legend = new QwtLegend;
     legend->setItemMode(QwtLegend::CheckableItem);
     ui->qwtPlot->insertLegend(legend);
-//    ui->qwtPlot->enableAxis(QwtPlot::yRight);
     connect(ui->qwtPlot,SIGNAL(legendChecked(QwtPlotItem*,bool)),this,SLOT(plot_legend(QwtPlotItem*,bool)));
 
     // set spinboxes range and step

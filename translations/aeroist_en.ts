@@ -10,7 +10,7 @@
     </message>
     <message>
         <location filename="../aeroist/aeroistwindow.ui" line="38"/>
-        <location filename="../aeroist/aeroistwindow.cpp" line="219"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="227"/>
         <source>Start</source>
         <translation type="unfinished"></translation>
     </message>
@@ -31,9 +31,9 @@
     </message>
     <message>
         <location filename="../aeroist/aeroistwindow.ui" line="153"/>
-        <location filename="../aeroist/aeroistwindow.cpp" line="329"/>
-        <location filename="../aeroist/aeroistwindow.cpp" line="431"/>
-        <location filename="../aeroist/aeroistwindow.cpp" line="569"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="337"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="439"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="577"/>
         <source>Table</source>
         <translation type="unfinished"></translation>
     </message>
@@ -99,7 +99,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/aeroistwindow.cpp" line="298"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="306"/>
         <source>Export plot</source>
         <translation type="unfinished"></translation>
     </message>
@@ -120,8 +120,8 @@
     </message>
     <message>
         <location filename="../aeroist/aeroistwindow.ui" line="320"/>
-        <location filename="../aeroist/aeroistwindow.cpp" line="343"/>
-        <location filename="../aeroist/aeroistwindow.cpp" line="354"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="351"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="362"/>
         <source>Save Project</source>
         <translation type="unfinished"></translation>
     </message>
@@ -132,7 +132,7 @@
     </message>
     <message>
         <location filename="../aeroist/aeroistwindow.ui" line="328"/>
-        <location filename="../aeroist/aeroistwindow.cpp" line="386"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="394"/>
         <source>Load Project</source>
         <translation type="unfinished"></translation>
     </message>
@@ -263,95 +263,95 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/aeroistwindow.cpp" line="121"/>
-        <location filename="../aeroist/aeroistwindow.cpp" line="600"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="129"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="608"/>
         <source>Thread busy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/aeroistwindow.cpp" line="132"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="140"/>
         <source>index not valid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/aeroistwindow.cpp" line="137"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="145"/>
         <source>Measure is not empty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/aeroistwindow.cpp" line="145"/>
-        <location filename="../aeroist/aeroistwindow.cpp" line="622"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="153"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="630"/>
         <source>Error opening devices: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/aeroistwindow.cpp" line="154"/>
-        <location filename="../aeroist/aeroistwindow.cpp" line="632"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="162"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="640"/>
         <source>Error using devices: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/aeroistwindow.cpp" line="210"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="218"/>
         <source>Stop </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/aeroistwindow.cpp" line="254"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="262"/>
         <source>Export mesurements</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/aeroistwindow.cpp" line="279"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="287"/>
         <source>Export raw mesurements</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/aeroistwindow.cpp" line="322"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="330"/>
         <source>Measuring is being done. Stop it to delete.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/aeroistwindow.cpp" line="339"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="347"/>
         <source>Measuring is being done. Stop it to save to disk.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/aeroistwindow.cpp" line="562"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="570"/>
         <source>Measuring is being done. Stop it to delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/aeroistwindow.cpp" line="349"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="357"/>
         <source>Measuring is being done. Stop it to save to disk</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/aeroistwindow.cpp" line="381"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="389"/>
         <source>There is data in the project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/aeroistwindow.cpp" line="397"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="405"/>
         <source>Could not open file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/aeroistwindow.cpp" line="408"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="416"/>
         <source>Couldn&apos;t confirm xml file. Continuing without guaranty.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/aeroistwindow.cpp" line="412"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="420"/>
         <source>Couldn&apos;t confirm schema file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/aeroistwindow.cpp" line="688"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="696"/>
         <source>A measurement is running</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/aeroistwindow.cpp" line="689"/>
+        <location filename="../aeroist/aeroistwindow.cpp" line="697"/>
         <source>Do you really want to quit? Hardware may not be properly closed.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -359,52 +359,42 @@
 <context>
     <name>CurveNew</name>
     <message>
-        <location filename="../aeroist/curvenew.cpp" line="30"/>
+        <location filename="../aeroist/curvenew.cpp" line="33"/>
         <source>Solid Line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/curvenew.cpp" line="31"/>
+        <location filename="../aeroist/curvenew.cpp" line="34"/>
         <source>Dash Line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/curvenew.cpp" line="32"/>
+        <location filename="../aeroist/curvenew.cpp" line="35"/>
         <source>Dot Line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/curvenew.cpp" line="33"/>
+        <location filename="../aeroist/curvenew.cpp" line="36"/>
         <source>Dash Dot Line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/curvenew.cpp" line="34"/>
+        <location filename="../aeroist/curvenew.cpp" line="37"/>
         <source>Dash Dot Dot Line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/curvenew.cpp" line="35"/>
-        <source>custom Dash Line</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../aeroist/curvenew.cpp" line="36"/>
-        <source>No Pen</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../aeroist/curvenew.cpp" line="79"/>
+        <location filename="../aeroist/curvenew.cpp" line="87"/>
         <source>Empty measurements list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/curvenew.cpp" line="86"/>
+        <location filename="../aeroist/curvenew.cpp" line="94"/>
         <source>Fill in a title and choose X and Y</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/curvenew.cpp" line="142"/>
+        <location filename="../aeroist/curvenew.cpp" line="143"/>
         <source>Problem with defined expressions.
 
 </source>
@@ -593,28 +583,53 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/curvenew.ui" line="30"/>
-        <source>Select data for X</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../aeroist/curvenew.ui" line="20"/>
+        <location filename="../aeroist/curvenew.ui" line="100"/>
         <source>Curve title</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/curvenew.ui" line="48"/>
-        <source>Select data for Y</source>
+        <location filename="../aeroist/curvenew.ui" line="26"/>
+        <source>Select Measurement</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../aeroist/curvenew.ui" line="66"/>
-        <source>Style</source>
+        <location filename="../aeroist/curvenew.ui" line="49"/>
+        <source>Error Bars</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../aeroist/curvenew.ui" line="76"/>
+        <source>Expression for Y</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../aeroist/curvenew.ui" line="86"/>
+        <source>Average numbers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../aeroist/curvenew.ui" line="93"/>
+        <source>Expression for X</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../aeroist/curvenew.ui" line="110"/>
+        <source>Style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../aeroist/curvenew.ui" line="117"/>
         <source>Color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../aeroist/curvenew.ui" line="127"/>
+        <source>Acceptable Variables:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../aeroist/curvenew.ui" line="134"/>
+        <source>Acceptable Constants:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

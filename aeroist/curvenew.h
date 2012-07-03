@@ -22,8 +22,7 @@ public slots:
     void accept(void);
 
 private slots:
-    void on_listWidget_x_itemActivated(QListWidgetItem *item);
-    void on_listWidget_y_itemActivated(QListWidgetItem *item);
+    void on_checkBoxAvg_toggled(bool checked);
 
 private:
     Ui::NewCurve *ui;
