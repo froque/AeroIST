@@ -163,7 +163,7 @@ QWidget* ForceModel::measurement_get_widget(){
     combo_time->addItem(QObject::tr("1 s"),      4);
     combo_time->addItem(QObject::tr("5 s"),      5);
     combo_time->addItem(QObject::tr("10 s"),     6);
-    int index = combo_time->findData(settings.value(SETTINGS_DEFAULT_DVM_TIME).toInt());
+    int index = combo_time->findData(settings.value(SETTINGS_DEFAULT_DVM_TIME,4).toInt());
     combo_time->setCurrentIndex(index);
     layout->addWidget(combo_time,0,1);
     layout->addWidget(new QLabel(QObject::tr("Test Type")),1,0);
