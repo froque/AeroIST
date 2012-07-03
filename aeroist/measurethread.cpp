@@ -21,7 +21,8 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
     m_stop = false;
     m_parent_thread = thread();
 
-    init(measurement->variables);
+    PluginManager manager;
+    variables = manager.getListVariableHardware(measurement->variables,true);
 
     foreach (VariableModel *model, measurement->variables) {
         for (int k=0; k< model->meta->get_num(); k++){
@@ -42,7 +43,8 @@ MeasureThread::MeasureThread(ReferenceModel *measurement,QObject *parent) :
     m_parent_thread = thread();
         iterations=1;
 
-    init(measurement->variables);
+    PluginManager manager;
+    variables = manager.getListVariableHardware(measurement->variables,false);
 
     settling_time = 0;
     end           = 0;
@@ -50,11 +52,6 @@ MeasureThread::MeasureThread(ReferenceModel *measurement,QObject *parent) :
     current       = 0;
 
     control = "";
-}
-
-void MeasureThread::init(QList<VariableModel*> list){
-    PluginManager manager;
-    variables = manager.getListVariableHardware(list);
 }
 
 MeasureThread::~MeasureThread(){

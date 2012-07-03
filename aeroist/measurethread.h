@@ -29,7 +29,6 @@ public slots:
     void manual_control(QHash<QString,double>);
 
 private:
-    void init(QList<VariableModel*> list);
     void set_m(void);
     void set_initial(void);
     void read_m(void);

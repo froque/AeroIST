@@ -14,7 +14,7 @@ public:
     void destroyListVariablePreferences(QList<VariablePreferences*>);
     QList<VariableModel*> getListVariableModel(void);
     void destroyListVariableModel(QList<VariableModel*>);
-    QList<VariableHardware*> getListVariableHardware(QList<VariableModel*> model_list);
+    QList<VariableHardware*> getListVariableHardware(QList<VariableModel*> model_list, bool setZero);
     void destroyListVariableHardware(QList<VariableHardware*>);
 private:
     QList<Factory*> fact_list;
