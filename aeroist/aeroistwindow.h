@@ -42,6 +42,7 @@ private slots:
     void on_actionPreferences_triggered();
 
     // export actions. to be improved!
+    void on_actionAverage_Data_to_csv_triggered();
     void on_actionExport_to_csv_triggered();
     void on_actionExport_raw_to_csv_triggered();
     void on_actionExportPlot_triggered();
@@ -85,6 +86,8 @@ private slots:
     void on_ManualButton_clicked();
 
     void message(const QString &string);
+
+
 private:
     void load_settings(void);
     void save_settings(void);

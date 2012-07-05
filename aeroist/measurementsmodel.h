@@ -20,6 +20,7 @@ public:
     MeasurementsModel( QObject *parent=0);
     MeasurementsModel(QDomElement root,QObject *parent = 0);
     ~MeasurementsModel();
+    void save_avg_csv(QTextStream *out,bool header);
     void save_csv(QTextStream *out,bool header);
     void save_raw_csv(QTextStream *out,bool header);
     void save_xml(QDomElement root);

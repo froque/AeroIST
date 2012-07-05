@@ -222,6 +222,7 @@
     <property name="title">
      <string>E&amp;xport</string>
     </property>
+    <addaction name="actionAverage_Data_to_csv"/>
     <addaction name="actionExport_to_csv"/>
     <addaction name="actionExport_raw_to_csv"/>
     <addaction name="actionExportPlot"/>
@@ -469,6 +470,11 @@
    </property>
    <property name="text">
     <string>Table follows Start</string>
+   </property>
+  </action>
+  <action name="actionAverage_Data_to_csv">
+   <property name="text">
+    <string>Average Data to csv</string>
    </property>
   </action>
  </widget>

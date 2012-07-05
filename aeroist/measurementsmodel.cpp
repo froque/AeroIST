@@ -35,6 +35,37 @@ void MeasurementsModel::init(){
     variables = manager.getListVariableModel();
 }
 
+void MeasurementsModel::save_avg_csv(QTextStream *out,bool header){
+    int rows = rowCount();
+    int columns = columnCount();
+    int N = measures_per_iteration;
+
+    if (header == true){
+        for (int column=0; column < columns; column++){
+            *out << "\"" << headerData(column,Qt::Horizontal,Qt::UserRole+1).toString() << "\"";
+            if (column != columns-1){
+                *out << ";";
+            }
+        }
+        *out << endl;
+    }
+    QModelIndex ind;
+    for (int row=0; row < (rows - rows%N); row+=N){
+        for (int column=0; column < columns; column++){
+            double avg = 0;
+            for (int i=row ; i < row+N;i++){
+                avg += data(index(i,column,QModelIndex()),Qt::DisplayRole).toDouble();
+            }
+            avg = avg / N;
+            *out << avg;
+            if (column != columns-1){
+                *out << ";";
+            }
+        }
+        *out << endl;
+    }
+}
+
 void MeasurementsModel::save_csv(QTextStream *out,bool header){
     int rows = rowCount();
     int columns = columnCount();

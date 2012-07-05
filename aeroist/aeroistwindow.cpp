@@ -247,6 +247,31 @@ void AeroISTWindow::cleanup(){
     m_thread = 0;
 }
 
+
+void AeroISTWindow::on_actionAverage_Data_to_csv_triggered(){
+    int row =  ui->listView->currentIndex().row();
+    if (row < 0 || row > measure_list->rowCount()){
+        return;
+    }
+    MeasurementsModel *measurement;
+    measurement = measure_list->at(row);
+
+    QString fileName;
+    QSettings settings;
+    fileName = QFileDialog::getSaveFileName(this, tr("Export averages mesurements"), settings.value(SETTINGS_PROJECT_FOLDER).toString(),"*.csv");
+
+    if(fileName.endsWith(".csv",Qt::CaseInsensitive) == false){
+        fileName.append(".csv");
+    }
+
+    QFile data(fileName);
+    if (data.open(QFile::WriteOnly | QFile::Text)) {
+        QTextStream out(&data);
+        measurement->save_avg_csv(&out,true);
+    }
+    data.close();
+}
+
 // export selected measurement to .csv
 void AeroISTWindow::on_actionExport_to_csv_triggered()
 {
