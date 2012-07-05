@@ -689,6 +689,11 @@ void AeroISTWindow::on_actionNew_Reference_triggered(){
 
         thread_status = REFERENCE_RUNNING;
 
+        if(ui->progressBar->isVisible()){
+            ui->progressBar->setEnabled(true);
+            ui->progressBar->setValue(0);
+            connect(m_test, SIGNAL(progress(int)),ui->progressBar,SLOT(setValue(int)));
+        }
         m_thread->start();
 
         if (ui->actionTable_follows_Start->isChecked()){
@@ -703,6 +708,7 @@ void AeroISTWindow::on_actionNew_Reference_triggered(){
 void AeroISTWindow::ReferenceButton_cleanup(){
     if (thread_status == REFERENCE_RUNNING){
         thread_status = STOPPED;
+        ui->progressBar->setEnabled(false);
         cleanup();
         return;
     }
