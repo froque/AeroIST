@@ -47,6 +47,10 @@ private:
     QString name;
     int iterations;
 
+    // manual variables
+    bool man_control;
+    QHash<QString, double> man_hash;
+
     bool m_stop;
     QThread* m_parent_thread;
 

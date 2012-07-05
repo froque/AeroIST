@@ -18,6 +18,7 @@ MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
     iterations(measurement->iterations)
 {
     m_stop = false;
+    man_control = false;
     m_parent_thread = thread();
 
     PluginManager manager;
@@ -39,6 +40,7 @@ MeasureThread::MeasureThread(ReferenceModel *measurement,QObject *parent) :
     measures_per_iteration(measurement->measures_per_iteration)
 {
     m_stop = false;
+    man_control = false;
     m_parent_thread = thread();
         iterations=1;
 
@@ -76,7 +78,20 @@ void MeasureThread::produce(){
     try{
         set_initial();
         while(!m_stop) {
-            set_m();
+            if(control == "" && man_control){
+                man_control = false;
+                foreach (VariableHardware *var, variables) {
+                    if (var->meta->is_controlable()){
+                        for (int k = 0 ; k< var->meta->get_num(); k++){
+                            if(man_hash.contains(var->meta->get_name(k))){
+                                var->set_value(k,man_hash[var->meta->get_name(k)]);
+                            }
+                        }
+                    }
+                }
+            } else {
+                set_m();
+            }
             Helper::msleep(settling_time*1000);
 
             // make N reads and send them to
@@ -145,8 +160,8 @@ void MeasureThread::produce(){
     }
 }
 
+// sets all controlable variables
 void MeasureThread::set_initial(){
-
     foreach (VariableHardware *var, variables) {
         if (var->meta->is_controlable()){
             for (int k = 0 ; k< var->meta->get_num(); k++){
@@ -156,6 +171,7 @@ void MeasureThread::set_initial(){
     }
 }
 
+// sets only variable of interest
 void MeasureThread::set_m(void){
     VariableHardware *var;
     foreach (var, variables) {
@@ -189,14 +205,6 @@ void MeasureThread::stop(){
 }
 
 void MeasureThread::manual_control(QHash<QString, double> hash){
-
-    foreach (VariableHardware *var, variables) {
-        if (var->meta->is_controlable()){
-            for (int k = 0 ; k< var->meta->get_num(); k++){
-                if(hash.contains(var->meta->get_name(k))){
-                    var->set_value(k,hash[var->meta->get_name(k)]);
-                }
-            }
-        }
-    }
+    man_control = true;
+    man_hash = hash;
 }
