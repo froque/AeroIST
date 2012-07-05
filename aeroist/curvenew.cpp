@@ -24,7 +24,7 @@ CurveNew::CurveNew(QwtPlot *plot, MeasureList *list, QWidget *parent) :
     foreach (VariableMeta *var, variables) {
         for(int k=0; k<var->get_num();k++){
             strlist.append(var->get_name(k));
-            ui->listWidgetVars->addItem(var->get_name(k));
+            ui->listWidgetVars->addItem(var->get_name(k) + " (" + var->get_units(k) + ")");
         }
     }
 //    ui->label_vars->setText(strlist.join("\n"));
