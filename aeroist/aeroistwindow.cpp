@@ -55,6 +55,7 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
     ui->listView->setContextMenuPolicy(Qt::ActionsContextMenu);
     ui->listView->insertAction(0,ui->actionView_Measure_details);
     ui->listView->insertAction(0,ui->actionDelete_Measure);
+    ui->listView->insertAction(0,ui->actionAverage_Data_to_csv);
     ui->listView->insertAction(0,ui->actionExport_to_csv);
     ui->listView->insertAction(0,ui->actionExport_raw_to_csv);
 
