@@ -305,6 +305,7 @@ ForceHardware::ForceHardware(VariableModel* v){
      if (  g_id == -1 ){
          throw std::runtime_error("unable to open GPIB device");
      }
+     ibtmo(g_id, T30s);
 }
 
 ForceHardware::~ForceHardware(){
