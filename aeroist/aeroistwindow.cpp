@@ -203,6 +203,7 @@ void AeroISTWindow::on_ThreadButton_clicked(){
     if ( (measurementThread->control == "" && measurementThread->iterations >0) || measurementThread->control != ""){
         if(ui->progressBar->isVisible()){
             ui->progressBar->setEnabled(true);
+            ui->progressBar->setValue(0);
             connect(m_test, SIGNAL(progress(int)),ui->progressBar,SLOT(setValue(int)));
         }
     }

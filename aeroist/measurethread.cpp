@@ -8,7 +8,6 @@
 #include <QCoreApplication>
 #include "pluginmanager.h"
 
-
 MeasureThread::MeasureThread(MeasurementsModel *measurement,QObject *parent) :
     QObject(parent),
     measures_per_iteration(measurement->measures_per_iteration),
@@ -70,8 +69,10 @@ void MeasureThread::isReady(void){
 }
 
 void MeasureThread::produce(){
-    int k = 1;
+    int k = 0;
     QEventLoop eloop;
+    //clear percentage;
+    emit progress( 0 );
     try{
         set_initial();
         while(!m_stop) {
@@ -83,27 +84,37 @@ void MeasureThread::produce(){
                 read_m();
                 emit MeasureDone(m_hash,raw_hash);
                 eloop.processEvents(QEventLoop::AllEvents, 50);
+
+                if(control == ""){
+                    if (iterations != 0 ){
+                        double perc_B = (((k)*1.0)/(iterations*1.0)) ;
+                        double perc_S = ((l+1) *1.0) /(measures_per_iteration *1.0);
+                        double perc_T = perc_B + 1.0/(iterations*1.0) * perc_S;
+                        emit progress( (int) (perc_T*100));
+                    }
+                } else {
+                    double range = (end - start)*1.0 + step;
+                    double perc_B = ((current - start) *1.0)/range;
+                    double perc_S = ((l+1) *1.0) /(measures_per_iteration *1.0);
+                    double perc_T = perc_B + (step *1.0)/range * perc_S;
+                    emit progress( (int) (perc_T*100));
+                }
             }
+            current = current + step;
+            k++;
 
             if(control == ""){
                 if (iterations != 0 ){
-                    double perc = ((k*1.0)/(iterations*1.0)) *100;
-                    emit progress( (int) perc);
                     if ( k>= iterations ){
                         m_stop = true;
                     }
                 }
             } else {
-                current = current + step;
-                double perc = ((current - start) *1.0)/((end - start)*1.0) *100;
-                emit progress( (int) perc);
                 if (( step > 0 && current > end) || (step < 0 && current < end)){
                     m_stop = true;
                     emit progress( 100 ); // the step may not be adjusted to finish with 100%
                 }
             }
-
-            k++;
             eloop.processEvents(QEventLoop::AllEvents, 50);
         }
 
