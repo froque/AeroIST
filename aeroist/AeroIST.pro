@@ -80,7 +80,7 @@ RESOURCES += resources.qrc
 
 # create a symbolic link
 symlink.path = /usr/local/bin/
-symlink.extra = ln -s $$SHAREDIR/aeroist/$$TARGET /usr/local/bin/
+symlink.extra = ln -sf $$SHAREDIR/aeroist/$$TARGET /usr/local/bin/
 INSTALLS += symlink
 
 target.path = $$SHAREDIR/aeroist/
