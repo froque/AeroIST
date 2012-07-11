@@ -136,91 +136,95 @@ void AeroISTWindow::on_ThreadButton_clicked(){
     }
 
     if(thread_status == STOPPED){
-    QModelIndex index = ui->listView->currentIndex();
-    if (index.isValid() == false){
-        message(tr("index not valid"));
-        return;
-    }
-    measurementThread = measure_list->at(index.row());         // get the index
-    if (measurementThread->rowCount(QModelIndex()) !=0){
-        message(tr("Measure is not empty"));
-        return;
-    }
+        QModelIndex index = ui->listView->currentIndex();
+        if (index.isValid() == false){
+            message(tr("index not valid"));
+            return;
+        }
+        measurementThread = measure_list->at(index.row());         // get the index
+        if (measurementThread->rowCount(QModelIndex()) !=0){
+            message(tr("Measure is not empty"));
+            return;
+        }
 
-    try{
-        m_test = new MeasureThread(measurementThread);
-    }
-    catch ( const std::runtime_error & err ) {
-        message(tr("Error opening devices: ") + err.what());
-        delete m_test;
-        return ;
-    }
+        try{
+            m_test = new MeasureThread(measurementThread);
+        }
+        catch ( const std::runtime_error & err ) {
+            message(tr("Error opening devices: ") + err.what());
+            delete m_test;
+            return ;
+        }
 
-    try{
-        m_test->isReady();
-    }
-    catch ( const std::runtime_error & err ) {
-        message(tr("Error using devices: ") + err.what());
-        delete m_test;
-        return ;
-    }
-
-
-    if (!m_thread)
-        m_thread = new QThread(0);
-    if (m_test->thread() != m_thread)
-        m_test->moveToThread(m_thread);
-
-    // start connects
-    connect(m_thread, SIGNAL(started()), m_test, SLOT(produce()));
-
-    // dump connect
-    connect(m_test,SIGNAL(MeasureDone(QHash<QString,double>,QHash<QString,double>)), measurementThread, SLOT(GetMeasure(QHash<QString,double>,QHash<QString,double>)));
-
-    // messages
-    connect(m_test,SIGNAL(message(QString)),this,SLOT(message(QString)));
-
-    // stop connects
-    connect(ui->ThreadButton, SIGNAL(clicked()), m_test, SLOT(stop()));
-    connect(m_thread,SIGNAL(finished()),this,SLOT(ThreadButton_cleanup()));
-
-    // pass the values from comboboxes to the thread. only for free control
-    connect(this,SIGNAL(set_variable(QHash<QString,double>)),m_test,SLOT(manual_control(QHash<QString,double>)));
+        try{
+            m_test->isReady();
+        }
+        catch ( const std::runtime_error & err ) {
+            message(tr("Error using devices: ") + err.what());
+            delete m_test;
+            return ;
+        }
 
 
-    if (measurementThread->control == ""){
-        ui->ManualButton->setEnabled(true);
-        foreach (QDoubleSpinBox *spin, list_spins) {
-            spin->setEnabled(true);
-            foreach (VariableModel * var, measurementThread->variables) {
-                for(int k=0; k<var->meta->get_num(); k++){
-                    if(var->meta->get_name(k) == spin->objectName()){
-                        spin->setValue(var->start.at(k));
+        if (!m_thread){
+            m_thread = new QThread(0);
+        }
+        if (m_test->thread() != m_thread){
+            m_test->moveToThread(m_thread);
+        }
+
+        // start connects
+        connect(m_thread, SIGNAL(started()), m_test, SLOT(produce()));
+
+        // dump connect
+        connect(m_test,SIGNAL(MeasureDone(QHash<QString,double>,QHash<QString,double>)), measurementThread, SLOT(GetMeasure(QHash<QString,double>,QHash<QString,double>)));
+
+        // messages
+        connect(m_test,SIGNAL(message(QString)),this,SLOT(message(QString)));
+
+        // stop connects
+        connect(ui->ThreadButton, SIGNAL(clicked()), m_test, SLOT(stop()));
+        connect(m_thread,SIGNAL(finished()),this,SLOT(ThreadButton_cleanup()));
+
+        // pass the values from comboboxes to the thread. only for free control
+        connect(this,SIGNAL(set_variable(QHash<QString,double>)),m_test,SLOT(manual_control(QHash<QString,double>)));
+
+        // enable spinboxs and manual button
+        if (measurementThread->control == ""){
+            ui->ManualButton->setEnabled(true);
+            foreach (QDoubleSpinBox *spin, list_spins) {
+                spin->setEnabled(true);
+                foreach (VariableModel * var, measurementThread->variables) {
+                    for(int k=0; k<var->meta->get_num(); k++){
+                        if(var->meta->get_name(k) == spin->objectName()){
+                            spin->setValue(var->start.at(k));
+                        }
                     }
                 }
             }
         }
-    }
-    if ( (measurementThread->control == "" && measurementThread->iterations >0) || measurementThread->control != ""){
-        if(ui->progressBar->isVisible()){
-            ui->progressBar->setEnabled(true);
-            ui->progressBar->setValue(0);
-            connect(m_test, SIGNAL(progress(int)),ui->progressBar,SLOT(setValue(int)));
+        // enable progress bar
+        if ( (measurementThread->control == "" && measurementThread->iterations >0) || measurementThread->control != ""){
+            if(ui->progressBar->isVisible()){
+                ui->progressBar->setEnabled(true);
+                ui->progressBar->setValue(0);
+                connect(m_test, SIGNAL(progress(int)),ui->progressBar,SLOT(setValue(int)));
+            }
         }
-    }
 
-    m_thread->start();
+        m_thread->start();
 
-    if (ui->actionTable_follows_Start->isChecked()){
-        proxy->setSourceModel(measurementThread);
-        ui->tableView->resizeColumnsToContents();
-    }
+        // change the table view
+        if (ui->actionTable_follows_Start->isChecked()){
+            proxy->setSourceModel(measurementThread);
+            ui->tableView->resizeColumnsToContents();
+        }
 
-    thread_status = MEASURE_RUNNING;
-    QString text(tr("Stop "));
-    text.append( measurementThread->name);
-    ui->ThreadButton->setText(text);
-    return;
+        thread_status = MEASURE_RUNNING;
+        QString text(tr("Stop "));
+        text.append( measurementThread->name);
+        ui->ThreadButton->setText(text);
+        return;
     }
 }
 
@@ -239,12 +243,17 @@ void AeroISTWindow::ThreadButton_cleanup(){
 }
 
 void AeroISTWindow::cleanup(){
-    if (m_thread->isRunning()){
-        qWarning() << "thread is running";
-        return;
-    }
+    // MeasureThread pass itself back to main thread at produce() end. So we can delete with no problems here.
     delete m_test;
     m_test = 0;
+
+    // QThread finished is for the user processing only. There is still cleanup() going on.
+    // Since Qt 4.8, delete QThread call wait()
+    //if (m_thread->isRunning()){
+    //    qWarning() << "thread is running";
+    //    //return;
+    //}
+
     delete m_thread;
     m_thread = 0;
 }
@@ -294,7 +303,7 @@ void AeroISTWindow::on_actionExport_to_csv_triggered()
 
     QFile data(fileName);
     if (data.open(QFile::WriteOnly | QFile::Text)) {
-        QTextStream out(&data);       
+        QTextStream out(&data);
         measurement->save_csv(&out,true);
     }
     data.close();
@@ -566,7 +575,7 @@ void AeroISTWindow::save_settings(void){
 
     foreach (action, actions) {
         if (!action->isSeparator() ){
-        settings.setValue(SETTINGS_GUI_SHORTCUT + action->objectName() ,action->shortcut().toString());
+            settings.setValue(SETTINGS_GUI_SHORTCUT + action->objectName() ,action->shortcut().toString());
         }
     }
     foreach (action, ui->menuView->actions()) {
@@ -592,22 +601,22 @@ void AeroISTWindow::on_actionView_Measure_details_triggered()
 
 void AeroISTWindow::on_actionDelete_Reference_triggered()
 {
-     QModelIndex index = ui->listViewReference->currentIndex();
-     if (reference_list->at(index) == referenceThread && thread_status == REFERENCE_RUNNING){
-         message(tr("Measuring is being done. Stop it to delete"));
-         return;
-     }
+    QModelIndex index = ui->listViewReference->currentIndex();
+    if (reference_list->at(index) == referenceThread && thread_status == REFERENCE_RUNNING){
+        message(tr("Measuring is being done. Stop it to delete"));
+        return;
+    }
 
-     // if the to be deleted model is in the table, unset
-     if (reference_list->at(index) == proxy->sourceModel()){
-         proxy->setSourceModel(NULL);
-         ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tab),tr("Table"));
-     }
-     reference_list->deleteMeasure(index);
+    // if the to be deleted model is in the table, unset
+    if (reference_list->at(index) == proxy->sourceModel()){
+        proxy->setSourceModel(NULL);
+        ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tab),tr("Table"));
+    }
+    reference_list->deleteMeasure(index);
 
-     if (index.isValid() && index.row() < reference_list->rowCount()){
-         ui->listViewReference->setCurrentIndex(index);
-     }
+    if (index.isValid() && index.row() < reference_list->rowCount()){
+        ui->listViewReference->setCurrentIndex(index);
+    }
 }
 
 
@@ -724,7 +733,7 @@ void AeroISTWindow::message(const QString &string){
 
 // On exit warn if thread is runing and don't close
 void AeroISTWindow::closeEvent(QCloseEvent *event){
-    if (m_thread != 0 ) {
+    if (thread_status != STOPPED ) {
         QMessageBox mess;
         mess.setText(tr("A measurement is running"));
         mess.setInformativeText(tr("Do you really want to quit? Hardware may not be properly closed."));
