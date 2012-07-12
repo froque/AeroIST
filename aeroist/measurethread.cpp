@@ -98,6 +98,7 @@ void MeasureThread::produce(){
             for (int l =0; l< measures_per_iteration; l++){
                 read_m();
                 emit MeasureDone(m_hash,raw_hash);
+                emit newData(true);
                 eloop.processEvents(QEventLoop::AllEvents, 50);
 
                 if(control == ""){

@@ -113,6 +113,7 @@ AeroISTWindow::AeroISTWindow(QWidget *parent) :
     }
     manager.destroyListVariableMeta(variables);
     ui->ManualButton->setEnabled(false);
+    setWindowFilePath("New Project");
 }
 
 AeroISTWindow::~AeroISTWindow()
@@ -178,6 +179,7 @@ void AeroISTWindow::on_ThreadButton_clicked(){
 
         // dump connect
         connect(m_test,SIGNAL(MeasureDone(QHash<QString,double>,QHash<QString,double>)), measurementThread, SLOT(GetMeasure(QHash<QString,double>,QHash<QString,double>)));
+        connect(m_test,SIGNAL(newData(bool)), this, SLOT(setWindowModified(bool)));
 
         // messages
         connect(m_test,SIGNAL(message(QString)),this,SLOT(message(QString)));
@@ -355,6 +357,7 @@ void AeroISTWindow::on_actionNew_Measure_triggered(){
     } else {
         measure_list->newMeasure(measurement);
         ui->listView->setCurrentIndex(measure_list->index(measure_list->rowCount()-1,0));
+        setWindowModified(true);
     }
     delete meas_prefs;
 }
@@ -376,23 +379,16 @@ void AeroISTWindow::on_actionDelete_Measure_triggered(){
     if (index.isValid() && index.row() < measure_list->rowCount()){
         ui->listView->setCurrentIndex(index);
     }
+    setWindowModified(true);
 }
 
 void AeroISTWindow::on_actionSave_Project_as_triggered(){
-    if (thread_status != STOPPED){
-        message(tr("Measuring is being done. Stop it to save to disk."));
-        return;
-    }
     QSettings settings;
     project_filename = QFileDialog::getSaveFileName(this, tr("Save Project"), settings.value(SETTINGS_PROJECT_FOLDER).toString(),"*.xml");
     save_xml(project_filename);
 }
 
 void AeroISTWindow::on_actionSave_Project_triggered(){
-    if (thread_status != STOPPED){
-        message(tr("Measuring is being done. Stop it to save to disk"));
-        return;
-    }
     if (project_filename.isNull() || project_filename.isEmpty()){
         QSettings settings;
         project_filename = QFileDialog::getSaveFileName(this, tr("Save Project"), settings.value(SETTINGS_PROJECT_FOLDER).toString(), "*.xml");
@@ -416,15 +412,29 @@ void AeroISTWindow::save_xml(QString fileName){
     if (file.open(QFile::WriteOnly|QFile::Text)){
         QTextStream out(&file);
         out << document.toString();
+        setWindowFilePath(fileName);
+        setWindowModified(false);
+        file.close();   // close only if it has been opened
     }
-    file.close();
 }
 
 void AeroISTWindow::on_actionLoad_Project_triggered(){
-    if ( measure_list->rowCount() != 0){
-        message(tr("There is data in the project"));
-        return;
+    if(isWindowModified()){
+        QMessageBox mess;
+        mess.setText(tr("Current project is not saved"));
+        mess.setInformativeText(tr("Do you want to load a new one without saving?"));
+        mess.setIcon(QMessageBox::Warning);
+        mess.setStandardButtons(QMessageBox::Yes|QMessageBox::No);
+        mess.setDefaultButton(QMessageBox::No);
+        switch (mess.exec()){
+        case QMessageBox::No:
+            return;
+            break;
+        case QMessageBox::Yes:
+            break;
+        }
     }
+    on_actionClear_Project_triggered();
     QString fileName;
     QSettings settings;
     fileName = QFileDialog::getOpenFileName(this, tr("Load Project"), settings.value(SETTINGS_PROJECT_FOLDER).toString(), "*.xml");
@@ -458,6 +468,8 @@ void AeroISTWindow::load_xml(QString fileName){
     }
 
     project_filename = fileName;
+    setWindowFilePath(project_filename);
+    setWindowModified(false);
 
     QDomDocument document;
     document.setContent(&file);
@@ -473,6 +485,7 @@ void AeroISTWindow::on_actionClear_Project_triggered(){
     reference_list->clear();
     proxy->setSourceModel(NULL);
     ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tab),tr("Table"));
+    setWindowModified(true);
 }
 
 // Open preferences dialog
@@ -617,6 +630,7 @@ void AeroISTWindow::on_actionDelete_Reference_triggered()
     if (index.isValid() && index.row() < reference_list->rowCount()){
         ui->listViewReference->setCurrentIndex(index);
     }
+    setWindowModified(true);
 }
 
 
@@ -690,6 +704,7 @@ void AeroISTWindow::on_actionNew_Reference_triggered(){
 
         // dump connect
         connect(m_test, SIGNAL(MeasureDone(QHash<QString,double>,QHash<QString,double>)),referenceThread, SLOT(GetMeasure(QHash<QString,double>,QHash<QString,double>)));
+        connect(m_test, SIGNAL(newData(bool)), this, SLOT(setWindowModified(bool)));
 
         // messages
         connect(m_test,SIGNAL(message(QString)),this,SLOT(message(QString)));
@@ -710,7 +725,8 @@ void AeroISTWindow::on_actionNew_Reference_triggered(){
             proxy->setSourceModel(referenceThread);
             ui->tableView->resizeColumnsToContents();
         }
-
+        setWindowModified(true);
+        // this return is stupid. probably a leftover and should be removed.
         return;
     }
 }
@@ -733,23 +749,41 @@ void AeroISTWindow::message(const QString &string){
 
 // On exit warn if thread is runing and don't close
 void AeroISTWindow::closeEvent(QCloseEvent *event){
+    bool acceptExit = true;
     if (thread_status != STOPPED ) {
         QMessageBox mess;
         mess.setText(tr("A measurement is running"));
         mess.setInformativeText(tr("Do you really want to quit? Hardware may not be properly closed."));
         mess.setIcon(QMessageBox::Warning);
-        mess.setStandardButtons(QMessageBox::Ok|QMessageBox::Cancel);
-        mess.setDefaultButton(QMessageBox::Cancel);
+        mess.setStandardButtons(QMessageBox::Yes|QMessageBox::No);
+        mess.setDefaultButton(QMessageBox::No);
         switch (mess.exec()){
-        case QMessageBox::Cancel:
-            event->ignore();
+        case QMessageBox::No:
+            acceptExit = false;
             break;
-        case QMessageBox::Ok:
-            event->accept();
+        case QMessageBox::Yes:
+            acceptExit = true;
+            break;
         }
-    } else {
-        event->accept();
     }
+    // don't ask if we don't want to quit in the previous question
+    if(isWindowModified() && acceptExit){
+        QMessageBox mess;
+        mess.setText(tr("Project is not saved"));
+        mess.setInformativeText(tr("Do you want to quit without saving?"));
+        mess.setIcon(QMessageBox::Warning);
+        mess.setStandardButtons(QMessageBox::Yes|QMessageBox::No);
+        mess.setDefaultButton(QMessageBox::No);
+        switch (mess.exec()){
+        case QMessageBox::No:
+            acceptExit = false;
+            break;
+        case QMessageBox::Yes:
+            acceptExit = true;
+            break;
+        }
+    }
+    event->setAccepted(acceptExit);
 }
 
 // PLOT add, delete and clear
